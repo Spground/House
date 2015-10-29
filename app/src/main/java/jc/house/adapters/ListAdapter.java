@@ -35,7 +35,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		this.lists = lists;
 		this.type = modelType;
 		this.circleView = circleView;
-		this.hasCircleView = (null == this.circleView);
+		this.hasCircleView = (null != this.circleView);
 	}
 
 	@Override
@@ -47,8 +47,10 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	public Object getItem(int pos) {
 		if(this.hasCircleView && 0 == pos) {
 			return this.circleView;
-		} else {
+		} else if(this.hasCircleView) {
 			return this.lists.get(pos - 1);
+		} else {
+			return this.lists.get(pos);
 		}
 	}
 
@@ -59,10 +61,10 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		if(pos == 0 && null != circleView) {
+		if(pos == 0 && this.hasCircleView) {
 			convertView = circleView;
 		} else {
-			int mPos = this.hasCircleView ? pos -1 : pos;
+			int mPos = this.hasCircleView ? pos - 1 : pos;
 			switch(type) {
 				case CHAT_USER:
 					ViewHolderChatUser viewHolderChatUser;
@@ -97,7 +99,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.lists.get(mPos);
-					viewHolderNews.picture.setImageResource(R.drawable.user_mao);
+					viewHolderNews.picture.setImageResource(R.drawable.caodi);
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
 					viewHolderNews.date.setText(news.getDate());

@@ -21,11 +21,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ChatFragment extends JCBaseFragment implements XListView.XListViewListener {
 	private XListView xListView;
-
-	public ChatFragment() {
-
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

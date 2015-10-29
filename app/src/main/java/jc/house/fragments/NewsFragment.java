@@ -20,19 +20,15 @@ public class NewsFragment extends JCBaseFragment {
 		R.drawable.chengbao, R.drawable.caodi };
 //	private static final String[] imageUrls = {"123", "456"};
 	private XListView xlistView;
-	
-	public NewsFragment() {
-
-	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		this.xlistView = (XListView)view.findViewById(R.id.list);
 		List<News> news = new ArrayList<News>();
-		news.add(new News(1, " ", "hello world", "哈哈哈哈哈哈", "2015/10/23"));
-		news.add(new News(2, " ", "hello world, hahahha", "哈哈哈哈哈哈哈", "2015/10/24"));
-		news.add(new News(3, " ", "hello world", "哈哈哈哈哈哈哈", "2015/10/24"));
+		news.add(new News(1, " ", "今天是1015年10月29，北京房价又涨价了，来自某网站信息。", "楠楠", "2015/10/23"));
+		news.add(new News(2, " ", "hello world, hahahha", "楠楠", "2015/10/24"));
+		news.add(new News(3, " ", "hello world", "楠楠", "2015/10/24"));
 		CircleView circleView = new CircleView(this.getActivity());
 		circleView.setAutoPlay(true);
 		circleView.setTimeInterval(3.6f);
