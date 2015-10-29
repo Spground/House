@@ -17,7 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-//hzj 2015/10/29 分支
+
 public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private List<TabViewItem> tabViewItems;
 	private List<Fragment> fragments;
@@ -64,7 +64,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		TabViewItem meItem = (TabViewItem) this.findViewById(R.id.me);
 		meItem.setSelectedResId(R.drawable.chat_selected);
 		meItem.setNormalResId(R.drawable.chat);
-		meItem.setTabName("我的");
+		meItem.setTabName("关于");
 		meItem.setSelected(false);
 		meItem.setIndex(4);
 		meItem.setOnClickListener(this);
