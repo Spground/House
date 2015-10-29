@@ -8,10 +8,11 @@
 
     <ImageView
         android:id="@+id/picture"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
+        android:layout_width="120dp"
+        android:layout_height="72dp"
         android:padding="3dp"
-        android:src="@drawable/user_mao" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/caodi" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:text="hello world"
+            android:text="新闻标题"
             android:textStyle="italic"
             android:textSize="18sp" />
 

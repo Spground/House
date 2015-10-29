@@ -1,5 +1,6 @@
-package jc.house;
+package jc.house.activities;
 
+import jc.house.R;
 import jc.house.views.TitleBar;
 import android.app.Activity;
 import android.os.Bundle;

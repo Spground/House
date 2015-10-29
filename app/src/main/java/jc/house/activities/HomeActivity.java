@@ -1,8 +1,9 @@
-package jc.house;
+package jc.house.activities;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jc.house.R;
 import jc.house.fragments.ChatFragment;
 import jc.house.fragments.JCBaseFragment;
 import jc.house.fragments.NewsFragment;
@@ -71,15 +72,15 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		meItem.setOnClickListener(this);
 		tabViewItems.add(meItem);
 		this.fragments = new ArrayList<Fragment>(4);
-		NewsFragment newsFragment = new NewsFragment(R.layout.news_list);
+		NewsFragment newsFragment = new NewsFragment();
 		this.fragments.add(newsFragment);
-		ChatFragment chatFragment = new ChatFragment(R.layout.chat_user_list);
+		ChatFragment chatFragment = new ChatFragment();
 		this.fragments.add(chatFragment);
-		ChatFragment chatFragment2 = new ChatFragment(R.layout.chat_user_list);
+		ChatFragment chatFragment2 = new ChatFragment();
 		this.fragments.add(chatFragment2);
-		ChatFragment chatFragment3 = new ChatFragment(R.layout.chat_user_list);
+		ChatFragment chatFragment3 = new ChatFragment();
 		this.fragments.add(chatFragment3);
-		ChatFragment chatFragment4 = new ChatFragment(R.layout.chat_user_list);
+		ChatFragment chatFragment4 = new ChatFragment();
 		this.fragments.add(chatFragment4);
 		this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
 		this.viewPager.setAdapter(new FragmentPagerAdapter(this

@@ -21,8 +21,8 @@ public class NewsFragment extends JCBaseFragment {
 //	private static final String[] imageUrls = {"123", "456"};
 	private XListView xlistView;
 	
-	public NewsFragment(int viewResId) {
-		super(viewResId);
+	public NewsFragment() {
+
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class NewsFragment extends JCBaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		this.view = (View)inflater.inflate(this.viewResId, container, false); 
+		this.view = (View)inflater.inflate(R.layout.common_list, container, false);
 		return this.view;
 	}
 	

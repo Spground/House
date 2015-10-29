@@ -3,7 +3,7 @@ package jc.house.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import jc.house.NewsDetailActivity;
+import jc.house.activities.NewsDetailActivity;
 import jc.house.R;
 import jc.house.adapters.ListAdapter;
 import jc.house.models.ChatUser;
@@ -22,14 +22,14 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ChatFragment extends JCBaseFragment implements XListView.XListViewListener {
 	private XListView xListView;
 
-	public ChatFragment(int viewResId) {
-		super(viewResId);
+	public ChatFragment() {
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.chat_user_list, container, false);
+		view = inflater.inflate(R.layout.common_list, container, false);
 		return view;
 	}
 
