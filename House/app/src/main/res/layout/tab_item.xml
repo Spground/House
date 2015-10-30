@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/tab_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:paddingTop="5dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/tab_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="3dp"
+        android:textSize="16.0sp" />
+
+</LinearLayout>

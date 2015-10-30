@@ -8,41 +8,43 @@
 
     <ImageView
         android:id="@+id/picture"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:padding="3dp"
-        android:src="@drawable/user_mao" />
+        android:layout_width="100dp"
+        android:layout_height="72dp"
+        android:padding="1dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/caodi" />
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginLeft="6dp"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginLeft="2dp"
         android:gravity="center"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:paddingTop="5dp"
-            android:text="hello world"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="新闻标题"
             android:textStyle="italic"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
-            android:paddingBottom="5dp" >
+            android:paddingBottom="1dp" >
 
             <TextView
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#777777"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:text="发布者：楠楠" />
 
             <TextView
@@ -55,6 +57,6 @@
                 android:textColor="#999999"
                 android:textSize="13sp" />
         </RelativeLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout><!-- From: file:/C:/Users/hzj/AndroidStudioProjects/House/app/src/main/res/layout/news_list_item.xml -->

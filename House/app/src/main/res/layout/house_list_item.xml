@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/listview_selector"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="110dp"
+        android:layout_height="82dp"
+        android:paddingLeft="2dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/caodi" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_marginLeft="3dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp"
+            android:text="楼盘名称"
+            android:textStyle="italic"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textColor="#777777"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:text="关于楼盘的信息" />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColor="@android:color/holo_red_light"
+            android:text="13699297633"/>
+
+    </LinearLayout>
+
+</LinearLayout>

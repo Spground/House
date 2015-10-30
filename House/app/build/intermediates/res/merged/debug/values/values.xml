@@ -294,6 +294,8 @@
     <eat-comment/>
     <string name="action_settings">设置</string>
     <string name="app_name">金宸</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_news_detail">详情</string>
     <!-- From: file:/C:/Users/hzj/AndroidStudioProjects/House/app/src/main/res/values/styles.xml -->
     <eat-comment/>
