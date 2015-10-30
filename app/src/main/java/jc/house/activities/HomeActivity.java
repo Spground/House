@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jc.house.R;
+import jc.house.fragments.ActivityFragment;
 import jc.house.fragments.ChatFragment;
+import jc.house.fragments.HouseFragment;
 import jc.house.fragments.JCBaseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.views.TabViewItem;
@@ -74,10 +76,10 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		this.fragments = new ArrayList<Fragment>(4);
 		NewsFragment newsFragment = new NewsFragment();
 		this.fragments.add(newsFragment);
-		ChatFragment chatFragment = new ChatFragment();
-		this.fragments.add(chatFragment);
-		ChatFragment chatFragment2 = new ChatFragment();
-		this.fragments.add(chatFragment2);
+		HouseFragment houseFragment = new HouseFragment();
+		this.fragments.add(houseFragment);
+		ActivityFragment activityFragment = new ActivityFragment();
+		this.fragments.add(activityFragment);
 		ChatFragment chatFragment3 = new ChatFragment();
 		this.fragments.add(chatFragment3);
 		ChatFragment chatFragment4 = new ChatFragment();

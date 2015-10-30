@@ -7,4 +7,12 @@ public class StringUtils {
 		}
 		return false;
 	}
+
+	public static String subStr(String str, int length) {
+		if(null == str || str.length() <= length) {
+			return str;
+		}
+		String res = str.substring(0,length);
+		return null;
+	}
 }

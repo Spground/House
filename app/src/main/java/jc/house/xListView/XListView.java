@@ -146,6 +146,7 @@ public class XListView extends ListView implements OnScrollListener {
 
 	public void setxListener(XListViewListener xListener) {
 		this.xListener = xListener;
+		this.setPullLoadMore(this.pullLoadMore);
 	}
 
 	private void resetHeaderHeight() {

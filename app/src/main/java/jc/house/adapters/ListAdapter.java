@@ -5,6 +5,8 @@ import java.util.List;
 import jc.house.R;
 import jc.house.models.BaseModel;
 import jc.house.models.ChatUser;
+import jc.house.models.House;
+import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.views.CircleView;
@@ -105,6 +107,38 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					viewHolderNews.date.setText(news.getDate());
 					break;
 				case HOUSE:
+					ViewHolderHouse viewHolderHouse;
+					if(null == convertView) {
+						convertView = LayoutInflater.from(context).inflate(R.layout.house_list_item, parent, false);
+						viewHolderHouse = new ViewHolderHouse();
+						viewHolderHouse.picture = (ImageView)convertView.findViewById(R.id.picture);
+						viewHolderHouse.name = (TextView)convertView.findViewById(R.id.name);
+						viewHolderHouse.description = (TextView)convertView.findViewById(R.id.description);
+						viewHolderHouse.phone = (TextView)convertView.findViewById(R.id.phone);
+						convertView.setTag(viewHolderHouse);
+					} else {
+						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
+					}
+					House house = (House)this.lists.get(mPos);
+					viewHolderHouse.picture.setImageResource(R.drawable.caodi);
+					viewHolderHouse.name.setText(house.getName());
+					viewHolderHouse.description.setText(house.getIntro());
+					viewHolderHouse.phone.setText(house.getPhone());
+					break;
+				case ACTIVITY:
+					ViewHolderActivity viewHolderActivity;
+					if(null == convertView) {
+						convertView = LayoutInflater.from(context).inflate(R.layout.activities_list_item, parent, false);
+						viewHolderActivity = new ViewHolderActivity();
+						viewHolderActivity.picture = (ImageView)convertView.findViewById(R.id.picture);
+						viewHolderActivity.title = (TextView)convertView.findViewById(R.id.title);
+						convertView.setTag(viewHolderActivity);
+					} else {
+						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
+					}
+					JCActivity activity = (JCActivity)this.lists.get(mPos);
+					viewHolderActivity.picture.setImageResource(R.drawable.caodi);
+					viewHolderActivity.title.setText(activity.getName());
 					break;
 				default:
 					break;
@@ -125,6 +159,18 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		public ImageView picture;
 		public TextView author;
 		public TextView date;
+	}
+
+	private static final class ViewHolderHouse {
+		public TextView name;
+		public ImageView picture;
+		public TextView description;
+		public TextView phone;
+	}
+
+	private static final class ViewHolderActivity {
+		public ImageView picture;
+		public TextView title;
 	}
 
 }

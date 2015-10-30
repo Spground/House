@@ -3,18 +3,16 @@ package jc.house.models;
 public class House extends BaseModel{
 	private String url;
 	private String name;
-	private String content;
 	private String intro;
 	private String phone;
 	private double lat;
 	private double lng;
 	
-	public House(int ID, String url, String name, String content, String intro,
+	public House(int ID, String url, String name, String intro,
 			String phone, double lat, double lng) {
 		super(ID);
 		this.url = url;
 		this.name = name;
-		this.content = content;
 		this.intro = intro;
 		this.phone = phone;
 		this.lat = lat;
@@ -32,12 +30,6 @@ public class House extends BaseModel{
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
 	}
 	public String getIntro() {
 		return intro;
