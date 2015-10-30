@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-//hzj 2015/10/29 20:15
+//wujie 2015/10/29 20:15
 public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private List<TabViewItem> tabViewItems;
 	private List<Fragment> fragments;
