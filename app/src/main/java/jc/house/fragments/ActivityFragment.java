@@ -26,7 +26,7 @@ public class ActivityFragment extends JCBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.common_list, container, false);
+        this.view = inflater.inflate(R.layout.activity_list, container, false);
         return view;
     }
 
