@@ -3,8 +3,10 @@ package jc.house.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import jc.house.activities.MapActivity;
 import jc.house.activities.NewsDetailActivity;
 import jc.house.R;
+import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.models.ChatUser;
 import jc.house.models.ModelType;
@@ -41,12 +43,6 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 				"1019"));
 		chatUsers.add(new ChatUser(4, "grace", "哈哈哈哈哈哈", R.drawable.user_mao,
 				"1019"));
-//		chatUsers.add(new ChatUser("grace", "�������", R.drawable.user_mao,
-//				"10��19��"));
-//		chatUsers.add(new ChatUser("grace", "�������", R.drawable.user_mao,
-//				"10��19��"));
-//		chatUsers.add(new ChatUser("grace", "�������", R.drawable.user_mao,
-//				"10��19��"));
 		xListView
 				.setAdapter(new ListAdapter<ChatUser>(this.getActivity(), chatUsers, ModelType.CHAT_USER));
 		this.xListView.setxListener(this);
@@ -74,6 +70,14 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 				if(1 == pos) {
 					Intent intent = new Intent();
 					intent.setClass(getActivity(), NewsDetailActivity.class);
+					startActivity(intent);
+				} else if (2 == pos) {
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), MapActivity.class);
+					startActivity(intent);
+				} else if(3 == pos) {
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), WebActivity.class);
 					startActivity(intent);
 				}
 			}
