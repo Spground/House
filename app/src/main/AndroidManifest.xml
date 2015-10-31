@@ -70,6 +70,10 @@
             android:name=".activities.WebActivity"
             android:label="@string/title_activity_web" >
         </activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:label="@string/title_activity_chat" >
+        </activity>
     </application>
 
 </manifest>
