@@ -1,8 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MapActivity" >
+    <jc.house.views.TitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></jc.house.views.TitleBar>
 
     <com.tencent.tencentmap.mapsdk.map.MapView
         android:id="@+id/mapview"
@@ -10,4 +14,4 @@
         android:layout_height="match_parent" >
     </com.tencent.tencentmap.mapsdk.map.MapView>
 
-</FrameLayout>
+</LinearLayout>

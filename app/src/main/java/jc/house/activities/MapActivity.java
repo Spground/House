@@ -2,6 +2,7 @@ package jc.house.activities;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
@@ -20,6 +21,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_map);
         this.mapView = (MapView)this.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);

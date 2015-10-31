@@ -6,6 +6,7 @@ import java.util.List;
 import jc.house.activities.MapActivity;
 import jc.house.activities.NewsDetailActivity;
 import jc.house.R;
+import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.models.ChatUser;
 import jc.house.models.ModelType;
@@ -73,6 +74,10 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 				} else if (2 == pos) {
 					Intent intent = new Intent();
 					intent.setClass(getActivity(), MapActivity.class);
+					startActivity(intent);
+				} else if(3 == pos) {
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), WebActivity.class);
 					startActivity(intent);
 				}
 			}
