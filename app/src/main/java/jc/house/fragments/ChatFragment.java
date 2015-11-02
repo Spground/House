@@ -3,6 +3,7 @@ package jc.house.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import jc.house.activities.ChatActivity;
 import jc.house.activities.MapActivity;
 import jc.house.activities.NewsDetailActivity;
 import jc.house.R;
@@ -78,6 +79,12 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 				} else if(3 == pos) {
 					Intent intent = new Intent();
 					intent.setClass(getActivity(), WebActivity.class);
+					startActivity(intent);
+				}
+				else{
+					Intent intent = new Intent();
+					intent.putExtra("toChatUserName","admin");
+					intent.setClass(getActivity(), ChatActivity.class);
 					startActivity(intent);
 				}
 			}

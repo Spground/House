@@ -16,10 +16,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.easemob.EMCallBack;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMGroupManager;
 
 //wujie 2015/10/29 20:15
 public class HomeActivity extends FragmentActivity implements OnClickListener {
@@ -122,6 +127,30 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 		});
 		this.currentIndex = 0;
+
+		/**login huanxing**/
+		EMChatManager.getInstance().login("wujie","wujie",new EMCallBack() {//回调
+			@Override
+			public void onSuccess() {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						EMGroupManager.getInstance().loadAllGroups();
+						EMChatManager.getInstance().loadAllConversations();
+						Log.d("main", "登陆聊天服务器成功！");
+					}
+				});
+			}
+
+			@Override
+			public void onProgress(int progress, String status) {
+
+			}
+
+			@Override
+			public void onError(int code, String message) {
+				Log.d("main", "登陆聊天服务器失败！");
+			}
+		});
 	}
 
 	@Override
