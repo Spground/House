@@ -1,7 +1,15 @@
 package jc.house.global;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,7 +29,6 @@ public class MApplication extends Application {
 		config.tasksProcessingOrder(QueueProcessingType.LIFO);
 		config.writeDebugLogs();
 		ImageLoader.getInstance().init(config.build());
-		Log.i("application", "application create");
 	}
-	
+
 }

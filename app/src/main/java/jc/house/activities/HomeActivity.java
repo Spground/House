@@ -9,17 +9,28 @@ import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
 import jc.house.fragments.JCBaseFragment;
 import jc.house.fragments.NewsFragment;
+import jc.house.global.Constants;
 import jc.house.views.TabViewItem;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 //wujie 2015/10/29 20:15
 public class HomeActivity extends FragmentActivity implements OnClickListener {
@@ -27,6 +38,12 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private List<Fragment> fragments;
 	private ViewPager viewPager;
 	private int currentIndex;
+
+	private ConnectivityManager manager;
+	private IntentFilter filter;
+	private MyReceiver mReceiver;
+	public static boolean isNetAvailable;
+	private static final boolean DEBUG = Constants.DEBUG;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +116,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 			}
 
 		});
-		this.viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+		this.viewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageScrollStateChanged(int pos) {
@@ -122,6 +139,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 		});
 		this.currentIndex = 0;
+		this.initManager();
 	}
 
 	@Override
@@ -159,6 +177,38 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	private void initManager() {
+		this.manager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+		this.filter = new IntentFilter();
+		this.filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		this.mReceiver = new MyReceiver();
+		this.registerReceiver(this.mReceiver, this.filter);
+	}
+
+	private class MyReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			switch(intent.getAction()) {
+				case ConnectivityManager.CONNECTIVITY_ACTION:
+					NetworkInfo active = manager.getActiveNetworkInfo();
+					if(null == active || !active.isConnected()) {
+						isNetAvailable = false;
+						if(DEBUG) {
+							Log.i("NetWork", "NetWork is unConnected!");
+						}
+					} else {
+						isNetAvailable = true;
+						if(DEBUG) {
+							Log.i("NetWork", "NetWork is connected!");
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
 	}
 
 }

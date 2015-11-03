@@ -82,7 +82,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderChatUser = (ViewHolderChatUser)convertView.getTag();
 					}
 					ChatUser user = (ChatUser)this.lists.get(mPos);
-					viewHolderChatUser.portrait.setImageResource(user.getImageResId());
+					viewHolderChatUser.portrait.setImageResource(R.drawable.user_mao);
 					viewHolderChatUser.name.setText(user.getName());
 					viewHolderChatUser.msg.setText(user.getMsg());
 					viewHolderChatUser.time.setText(user.getTime());

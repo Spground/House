@@ -35,13 +35,13 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 		super.onActivityCreated(savedInstanceState);
 		xListView = (XListView) view.findViewById(R.id.list);
 		List<ChatUser> chatUsers = new ArrayList<ChatUser>();
-		chatUsers.add(new ChatUser(1, "楠楠", "哈哈哈哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(1, "楠楠", "哈哈哈哈哈哈哈哈哈", "",
 				"1020"));
-		chatUsers.add(new ChatUser(2, "grace", "哈哈哈哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(2, "grace", "哈哈哈哈哈哈哈哈哈", "",
 				"1019"));
-		chatUsers.add(new ChatUser(3, "grace", "哈哈哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(3, "grace", "哈哈哈哈哈哈哈哈", "",
 				"1019"));
-		chatUsers.add(new ChatUser(4, "grace", "哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(4, "grace", "哈哈哈哈哈哈", "",
 				"1019"));
 		xListView
 				.setAdapter(new ListAdapter<ChatUser>(this.getActivity(), chatUsers, ModelType.CHAT_USER));

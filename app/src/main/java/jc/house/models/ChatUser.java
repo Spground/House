@@ -3,14 +3,14 @@ package jc.house.models;
 public class ChatUser extends BaseModel {
 	private String name;
 	private String msg;
-	private int imageResId;
+	private String url;
 	private String time;
 
-	public ChatUser(int ID, String name, String msg, int imageResId, String time) {
+	public ChatUser(int ID, String name, String msg, String url, String time) {
 		super(ID);
 		this.name = name;
 		this.msg = msg;
-		this.imageResId = imageResId;
+		this.url = url;
 		this.time = time;
 	}
 
@@ -30,12 +30,12 @@ public class ChatUser extends BaseModel {
 		this.msg = msg;
 	}
 
-	public int getImageResId() {
-		return imageResId;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setImageResId(int imageResId) {
-		this.imageResId = imageResId;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String getTime() {
