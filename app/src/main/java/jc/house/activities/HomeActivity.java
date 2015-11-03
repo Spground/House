@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 //wujie 2015/10/29 20:15
@@ -44,6 +45,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private MyReceiver mReceiver;
 	public static boolean isNetAvailable;
 	private static final boolean DEBUG = Constants.DEBUG;
+	private static final String TAG = "HomeActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,26 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 				return fragments.size();
 			}
 
+			@Override
+			public Object instantiateItem(ViewGroup container, int pos) {
+				if(DEBUG) {
+					Log.i(TAG, "instantiateItem pos is " + pos);
+				}
+				return super.instantiateItem(container, pos);
+			}
+
+			@Override
+			public void destroyItem(ViewGroup container, int pos, Object object) {
+				if(DEBUG) {
+					Log.i(TAG, "destroyItem pos is " + pos);
+				}
+				//super.destroyItem(container, pos, object);
+			}
+
+			@Override
+			public boolean isViewFromObject(View view, Object object) {
+				return super.isViewFromObject(view, object);
+			}
 		});
 		this.viewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
@@ -196,12 +218,12 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 					if(null == active || !active.isConnected()) {
 						isNetAvailable = false;
 						if(DEBUG) {
-							Log.i("NetWork", "NetWork is unConnected!");
+							Log.i(TAG, "NetWork is unConnected!");
 						}
 					} else {
 						isNetAvailable = true;
 						if(DEBUG) {
-							Log.i("NetWork", "NetWork is connected!");
+							Log.i(TAG, "NetWork is connected!");
 						}
 					}
 					break;
@@ -211,4 +233,9 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		}
 	}
 
+	@Override
+	protected void onDestroy() {
+		this.unregisterReceiver(this.mReceiver);
+		super.onDestroy();
+	}
 }

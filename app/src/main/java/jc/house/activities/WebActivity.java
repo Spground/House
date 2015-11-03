@@ -18,7 +18,7 @@ public class WebActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_web);
         this.webView = (WebView)this.findViewById(R.id.webView);
-        this.webView.loadUrl("http://kb.qq.com/");
+        this.webView.loadUrl("http://mp.weixin.qq.com/s?__biz=MjM5ODQ5NDU0NQ==&mid=401086800&idx=1&sn=32714399b9af548a9fbe252fc9a76b33&scene=0#wechat_redirect");
         this.webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {

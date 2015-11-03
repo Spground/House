@@ -52,7 +52,8 @@ public class NewsFragment extends JCBaseFragment {
 		circleView.setImageReIds(imageReIds);
 		ListAdapter<News> adapter = new ListAdapter<News>(this.getActivity(), news, ModelType.NEWS, circleView);
 		this.xlistView.setAdapter(adapter);
-		
+
+		Log.i("NewsFragment", "onActivityCreated!");
 
 		AsyncHttpClient client = new AsyncHttpClient();
 		/*
