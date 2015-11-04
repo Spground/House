@@ -1,33 +1,21 @@
 package jc.house.fragments;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import jc.house.R;
+import com.loopj.android.http.AsyncHttpClient;
+
+import jc.house.xListView.XListView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class JCNetFragment extends Fragment {
+public abstract class JCNetFragment extends JCBaseFragment {
 
-
-    public JCNetFragment() {
-        // Required empty public constructor
+    protected XListView xlistView;
+    protected AsyncHttpClient client;
+    protected JCNetFragment() {
+        this.client = new AsyncHttpClient();
     }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
-    }
-
 
 }
