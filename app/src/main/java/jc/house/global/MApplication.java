@@ -4,12 +4,8 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
-import com.easemob.EMCallBack;
 import com.easemob.chat.EMChat;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -31,7 +27,6 @@ public class MApplication extends Application {
 		config.tasksProcessingOrder(QueueProcessingType.LIFO);
 		config.writeDebugLogs();
 		ImageLoader.getInstance().init(config.build());
-		Log.i("application", "application create");
 
 		int pid = android.os.Process.myPid();
 		String processAppName = getAppName(pid);
@@ -75,4 +70,5 @@ public class MApplication extends Application {
 		}
 		return processName;
 	}
+
 }

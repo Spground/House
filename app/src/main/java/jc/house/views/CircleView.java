@@ -175,7 +175,7 @@ public class CircleView extends LinearLayout {
 		}
 		this.viewPager.setAdapter(new CirclePagerAdapter());
 		this.viewPager
-				.setOnPageChangeListener(new CircleOnPageChangeListener());
+				.addOnPageChangeListener(new CircleOnPageChangeListener());
 		this.indicatorView.setNormalresId(R.drawable.indicator_normal);
 		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.indicatorView.setNum(num);

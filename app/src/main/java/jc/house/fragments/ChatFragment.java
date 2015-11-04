@@ -22,8 +22,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ChatFragment extends JCBaseFragment implements XListView.XListViewListener {
-	private XListView xListView;
+public class ChatFragment extends JCNetFragment implements XListView.XListViewListener {
+
+	public ChatFragment() {
+		super();
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,19 +37,19 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		xListView = (XListView) view.findViewById(R.id.list);
+		xlistView = (XListView) view.findViewById(R.id.list);
 		List<ChatUser> chatUsers = new ArrayList<ChatUser>();
-		chatUsers.add(new ChatUser(1, "楠楠", "哈哈哈哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(1, "楠楠", "哈哈哈哈哈哈哈哈哈", "",
 				"1020"));
-		chatUsers.add(new ChatUser(2, "grace", "哈哈哈哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(2, "grace", "哈哈哈哈哈哈哈哈哈", "",
 				"1019"));
-		chatUsers.add(new ChatUser(3, "grace", "哈哈哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(3, "grace", "哈哈哈哈哈哈哈哈", "",
 				"1019"));
-		chatUsers.add(new ChatUser(4, "grace", "哈哈哈哈哈哈", R.drawable.user_mao,
+		chatUsers.add(new ChatUser(4, "grace", "哈哈哈哈哈哈", "",
 				"1019"));
-		xListView
+		xlistView
 				.setAdapter(new ListAdapter<ChatUser>(this.getActivity(), chatUsers, ModelType.CHAT_USER));
-		this.xListView.setxListener(this);
+		this.xlistView.setxListener(this);
 		/*
 		this.xListView
 				.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -63,7 +66,7 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 				});
 				*/
 		
-		this.xListView.setOnItemClickListener(new OnItemClickListener() {
+		this.xlistView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
@@ -100,7 +103,7 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 
 			@Override
 			public void run() {
-				xListView.stopLoadMore();
+				xlistView.stopLoadMore();
 			}
 			
 		}, 2000);
@@ -113,7 +116,7 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 
 			@Override
 			public void run() {
-				xListView.stopRefresh();
+				xlistView.stopRefresh();
 			}
 			
 		}, 2000);

@@ -1,15 +1,11 @@
 package jc.house.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jc.house.R;
-import jc.house.fragments.ActivityFragment;
-import jc.house.fragments.ChatFragment;
-import jc.house.fragments.HouseFragment;
-import jc.house.fragments.JCBaseFragment;
-import jc.house.fragments.NewsFragment;
-import jc.house.views.TabViewItem;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,10 +17,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jc.house.R;
+import jc.house.fragments.ActivityFragment;
+import jc.house.fragments.ChatFragment;
+import jc.house.fragments.HouseFragment;
+import jc.house.fragments.NewsFragment;
+import jc.house.global.Constants;
+import jc.house.interfaces.IRefresh;
+import jc.house.views.TabViewItem;
 
 //wujie 2015/10/29 20:15
 public class HomeActivity extends FragmentActivity implements OnClickListener {
@@ -33,62 +42,22 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private ViewPager viewPager;
 	private int currentIndex;
 
+	private ConnectivityManager manager;
+	private IntentFilter filter;
+	private MyReceiver mReceiver;
+	public static boolean isNetAvailable;
+	private static final boolean DEBUG = Constants.DEBUG;
+	private static final String TAG = "HomeActivity";
+	private static final String[] tabNames = {"首页", "楼盘", "活动", "聊天", "关于"};
+	private static final int[] selectedResIds = {R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected};
+	private static final int[] normalResIds = {R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		this.tabViewItems = new ArrayList<TabViewItem>(5);
-		TabViewItem chatItem = (TabViewItem) this.findViewById(R.id.first_page);
-		chatItem.setSelectedResId(R.drawable.chat_selected);
-		chatItem.setNormalResId(R.drawable.chat);
-		chatItem.setSelected(true);
-		chatItem.setTabName("首页");
-		chatItem.setIndex(0);
-		chatItem.setOnClickListener(this);
-		tabViewItems.add(chatItem);
-		TabViewItem frendsItem = (TabViewItem) this.findViewById(R.id.building);
-		frendsItem.setSelectedResId(R.drawable.chat_selected);
-		frendsItem.setNormalResId(R.drawable.chat);
-		frendsItem.setTabName("楼盘");
-		frendsItem.setSelected(false);
-		frendsItem.setIndex(1);
-		frendsItem.setOnClickListener(this);
-		tabViewItems.add(frendsItem);
-		TabViewItem activityItem = (TabViewItem) this.findViewById(R.id.activities);
-		activityItem.setSelectedResId(R.drawable.chat_selected);
-		activityItem.setNormalResId(R.drawable.chat);
-		activityItem.setTabName("活动");
-		activityItem.setSelected(false);
-		activityItem.setIndex(2);
-		activityItem.setOnClickListener(this);
-		tabViewItems.add(activityItem);
-		TabViewItem findingItem = (TabViewItem) this.findViewById(R.id.chat);
-		findingItem.setSelectedResId(R.drawable.chat_selected);
-		findingItem.setNormalResId(R.drawable.chat);
-		findingItem.setTabName("聊天");
-		findingItem.setSelected(false);
-		findingItem.setIndex(3);
-		findingItem.setOnClickListener(this);
-		tabViewItems.add(findingItem);
-		TabViewItem meItem = (TabViewItem) this.findViewById(R.id.me);
-		meItem.setSelectedResId(R.drawable.chat_selected);
-		meItem.setNormalResId(R.drawable.chat);
-		meItem.setTabName("关于");
-		meItem.setSelected(false);
-		meItem.setIndex(4);
-		meItem.setOnClickListener(this);
-		tabViewItems.add(meItem);
-		this.fragments = new ArrayList<Fragment>(4);
-		NewsFragment newsFragment = new NewsFragment();
-		this.fragments.add(newsFragment);
-		HouseFragment houseFragment = new HouseFragment();
-		this.fragments.add(houseFragment);
-		ActivityFragment activityFragment = new ActivityFragment();
-		this.fragments.add(activityFragment);
-		ChatFragment chatFragment3 = new ChatFragment();
-		this.fragments.add(chatFragment3);
-		ChatFragment chatFragment4 = new ChatFragment();
-		this.fragments.add(chatFragment4);
+		this.initTabViewItems();
+		this.initFragments();
 		this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
 		this.viewPager.setAdapter(new FragmentPagerAdapter(this
 				.getSupportFragmentManager()) {
@@ -103,8 +72,28 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 				return fragments.size();
 			}
 
+			@Override
+			public Object instantiateItem(ViewGroup container, int pos) {
+				if (DEBUG) {
+					Log.i(TAG, "instantiateItem pos is " + pos);
+				}
+				return super.instantiateItem(container, pos);
+			}
+
+			@Override
+			public void destroyItem(ViewGroup container, int pos, Object object) {
+				if (DEBUG) {
+					Log.i(TAG, "destroyItem pos is " + pos);
+				}
+				//super.destroyItem(container, pos, object);
+			}
+
+			@Override
+			public boolean isViewFromObject(View view, Object object) {
+				return super.isViewFromObject(view, object);
+			}
 		});
-		this.viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+		this.viewPager.addOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageScrollStateChanged(int pos) {
@@ -151,6 +140,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 				Log.d("main", "登陆聊天服务器失败！");
 			}
 		});
+		this.initManager();
 	}
 
 	@Override
@@ -168,6 +158,44 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void initTabViewItems() {
+		this.tabViewItems = new ArrayList<TabViewItem>(5);
+		TabViewItem chatItem = (TabViewItem) this.findViewById(R.id.first_page);
+		tabViewItems.add(chatItem);
+		TabViewItem friendsItem = (TabViewItem) this.findViewById(R.id.building);
+		tabViewItems.add(friendsItem);
+		TabViewItem activityItem = (TabViewItem) this.findViewById(R.id.activities);
+		tabViewItems.add(activityItem);
+		TabViewItem findingItem = (TabViewItem) this.findViewById(R.id.chat);
+		tabViewItems.add(findingItem);
+		TabViewItem meItem = (TabViewItem) this.findViewById(R.id.me);
+		tabViewItems.add(meItem);
+		this.currentIndex = 0;
+		int i = 0;
+		for(TabViewItem item : tabViewItems) {
+			tabViewItems.get(i).setTabName(tabNames[i]);
+			tabViewItems.get(i).setSelectedResId(selectedResIds[i]);
+			tabViewItems.get(i).setNormalResId(normalResIds[i]);
+			item.setSelected(this.currentIndex == i);
+			item.setIndex(i++);
+			item.setOnClickListener(this);
+		}
+	}
+
+	private void initFragments() {
+		this.fragments = new ArrayList<Fragment>(5);
+		NewsFragment newsFragment = new NewsFragment();
+		this.fragments.add(newsFragment);
+		HouseFragment houseFragment = new HouseFragment();
+		this.fragments.add(houseFragment);
+		ActivityFragment activityFragment = new ActivityFragment();
+		this.fragments.add(activityFragment);
+		ChatFragment chatFragment3 = new ChatFragment();
+		this.fragments.add(chatFragment3);
+		ChatFragment chatFragment4 = new ChatFragment();
+		this.fragments.add(chatFragment4);
+	}
+
 	@Override
 	public void onClick(View v) {
 		TabViewItem item = (TabViewItem) v;
@@ -175,7 +203,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		if (currentIndex != index) {
 			viewPager.setCurrentItem(index, false);
 		} else {
-			((JCBaseFragment) (fragments.get(index))).refresh();
+			((IRefresh) (fragments.get(index))).refresh();
 		}
 		currentIndex = index;
 	}
@@ -190,4 +218,41 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 
+	private void initManager() {
+		this.manager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+		this.filter = new IntentFilter();
+		this.filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		this.mReceiver = new MyReceiver();
+		this.registerReceiver(this.mReceiver, this.filter);
+	}
+
+	private class MyReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			switch(intent.getAction()) {
+				case ConnectivityManager.CONNECTIVITY_ACTION:
+					NetworkInfo active = manager.getActiveNetworkInfo();
+					if(null == active || !active.isConnected()) {
+						isNetAvailable = false;
+						if(DEBUG) {
+							Log.i(TAG, "NetWork is unConnected!");
+						}
+					} else {
+						isNetAvailable = true;
+						if(DEBUG) {
+							Log.i(TAG, "NetWork is connected!");
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		this.unregisterReceiver(this.mReceiver);
+		super.onDestroy();
+	}
 }

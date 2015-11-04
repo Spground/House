@@ -1,5 +1,13 @@
 package jc.house.adapters;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import java.util.List;
 
 import jc.house.R;
@@ -10,13 +18,6 @@ import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.views.CircleView;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	private Context context;
@@ -82,7 +83,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderChatUser = (ViewHolderChatUser)convertView.getTag();
 					}
 					ChatUser user = (ChatUser)this.lists.get(mPos);
-					viewHolderChatUser.portrait.setImageResource(user.getImageResId());
+					viewHolderChatUser.portrait.setImageResource(R.drawable.user_mao);
 					viewHolderChatUser.name.setText(user.getName());
 					viewHolderChatUser.msg.setText(user.getMsg());
 					viewHolderChatUser.time.setText(user.getTime());
