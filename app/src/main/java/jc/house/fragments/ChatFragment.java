@@ -83,7 +83,9 @@ public class ChatFragment extends JCBaseFragment implements XListView.XListViewL
 				}
 				else{
 					Intent intent = new Intent();
+
 					intent.putExtra("toChatUserName","admin");
+
 					intent.setClass(getActivity(), ChatActivity.class);
 					startActivity(intent);
 				}

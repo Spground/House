@@ -15,15 +15,18 @@ import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
 import jc.house.widgets.ChatMessageList;
 
+
 /**
  * 2015-10-31
  */
 public class ChatActivity extends Activity {
 
     private TitleBar titleBar;
+
     private String toChatUserName;
 
     private ChatMessageList chatMsgList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,5 +78,6 @@ public class ChatActivity extends Activity {
             }
         });
     }
+
 }
 
