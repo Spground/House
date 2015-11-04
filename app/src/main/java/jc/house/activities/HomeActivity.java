@@ -26,9 +26,9 @@ import jc.house.R;
 import jc.house.fragments.ActivityFragment;
 import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
-import jc.house.fragments.JCBaseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
+import jc.house.interfaces.IRefresh;
 import jc.house.views.TabViewItem;
 
 //wujie 2015/10/29 20:15
@@ -174,7 +174,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		if (currentIndex != index) {
 			viewPager.setCurrentItem(index, false);
 		} else {
-			((JCBaseFragment) (fragments.get(index))).refresh();
+			((IRefresh) (fragments.get(index))).refresh();
 		}
 		currentIndex = index;
 	}

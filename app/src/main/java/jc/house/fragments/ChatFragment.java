@@ -1,16 +1,5 @@
 package jc.house.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jc.house.activities.MapActivity;
-import jc.house.activities.NewsDetailActivity;
-import jc.house.R;
-import jc.house.activities.WebActivity;
-import jc.house.adapters.ListAdapter;
-import jc.house.models.ChatUser;
-import jc.house.models.ModelType;
-import jc.house.xListView.XListView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jc.house.R;
+import jc.house.activities.MapActivity;
+import jc.house.activities.NewsDetailActivity;
+import jc.house.activities.WebActivity;
+import jc.house.adapters.ListAdapter;
+import jc.house.models.ChatUser;
+import jc.house.models.ModelType;
+import jc.house.xListView.XListView;
 
 public class ChatFragment extends JCNetFragment implements XListView.XListViewListener {
 
