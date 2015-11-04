@@ -182,7 +182,7 @@ public class NewsFragment extends JCNetFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                 Log.i("jsonObject", response.toString());
                 super.onSuccess(statusCode, headers, response);
             }
