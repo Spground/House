@@ -12,8 +12,6 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 
-import com.easemob.chat.TextMessageBody;
-
 import java.util.List;
 
 import jc.house.utils.LogUtils;
@@ -103,13 +101,12 @@ public class ChatMessageAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
         /**get message from data-source**/
+        /**TODO:此处应该缓存优化**/
         EMMessage message = getItem(position);
-        if(convertView == null){
-            convertView = createChatRow(context, message, position);
-        }
-//        缓存的view的message很可能不是当前item的，传入当前message和position更新ui
+        convertView = createChatRow(context, message, position);
+//      缓存的view的message很可能不是当前item的，传入当前message和position更新ui
         ((EaseChatRow)convertView).setUpView(message, position, itemClickListener);
         return convertView;
     }

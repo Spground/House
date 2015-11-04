@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.TextMessageBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,31 +118,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 		});
 		this.currentIndex = 0;
-
-		/**login huanxing**/
-		EMChatManager.getInstance().login("wujie","wujie",new EMCallBack() {//回调
-			@Override
-			public void onSuccess() {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						EMGroupManager.getInstance().loadAllGroups();
-						EMChatManager.getInstance().loadAllConversations();
-						Log.d("main", "登陆聊天服务器成功！");
-					}
-				});
-			}
-
-			@Override
-			public void onProgress(int progress, String status) {
-
-			}
-
-			@Override
-			public void onError(int code, String message) {
-				Log.d("main", "登陆聊天服务器失败！");
-			}
-		});
 		this.initManager();
+		loginHuanXin();
 	}
 
 	@Override
@@ -254,5 +233,35 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	protected void onDestroy() {
 		this.unregisterReceiver(this.mReceiver);
 		super.onDestroy();
+	}
+
+	/**
+	 * 登录环信
+	 */
+	private void loginHuanXin(){
+		/**login huanxing**/
+		EMChatManager.getInstance().login("wujie","wujie",new EMCallBack() {//回调
+			@Override
+			public void onSuccess() {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						Log.d("main", "登陆聊天服务器成功！");
+						//登录成功加载所有的数据库记录到内存
+						EMGroupManager.getInstance().loadAllGroups();
+						EMChatManager.getInstance().loadAllConversations();
+					}
+				});
+			}
+
+			@Override
+			public void onProgress(int progress, String status) {
+
+			}
+
+			@Override
+			public void onError(int code, String message) {
+				Log.d("main", "登陆聊天服务器失败！");
+			}
+		});
 	}
 }

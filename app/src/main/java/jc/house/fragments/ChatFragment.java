@@ -40,14 +40,14 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 		super.onActivityCreated(savedInstanceState);
 		xlistView = (XListView) view.findViewById(R.id.list);
 		List<ChatUser> chatUsers = new ArrayList<ChatUser>();
-		chatUsers.add(new ChatUser(1, "楠楠", "哈哈哈哈哈哈哈哈哈", "",
-				"1020"));
-		chatUsers.add(new ChatUser(2, "grace", "哈哈哈哈哈哈哈哈哈", "",
-				"1019"));
-		chatUsers.add(new ChatUser(3, "grace", "哈哈哈哈哈哈哈哈", "",
-				"1019"));
-		chatUsers.add(new ChatUser(4, "grace", "哈哈哈哈哈哈", "",
-				"1019"));
+		chatUsers.add(new ChatUser(1, "发现", "我发现一个比较好玩的地方", "",
+				"10:20"));
+		chatUsers.add(new ChatUser(2, "地图", "点击我可以看见附件的楼盘信息", "",
+				"13:29"));
+		chatUsers.add(new ChatUser(3, "活动宣传", "点击我可以看见公司最新的活动详情", "",
+				"19:23"));
+		chatUsers.add(new ChatUser(4, "客服聊天", "点击我可以向公司的客户直接沟通", "",
+				"21:15"));
 		xlistView
 				.setAdapter(new ListAdapter<ChatUser>(this.getActivity(), chatUsers, ModelType.CHAT_USER));
 		this.xlistView.setxListener(this);

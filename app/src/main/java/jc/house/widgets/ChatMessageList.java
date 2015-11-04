@@ -1,33 +1,26 @@
 package jc.house.widgets;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
+
 import jc.house.R;
 import jc.house.adapters.ChatMessageAdapter;
 
 public class ChatMessageList extends RelativeLayout{
     
-    protected static final String TAG = "JcChatMessageList";
     protected ListView listView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected Context context;
-    protected EMConversation conversation;
     protected int chatType;
     protected String toChatUsername;
     protected ChatMessageAdapter messageAdapter;
     protected boolean showUserNick;
-    protected boolean showAvatar;
-    protected Drawable myBubbleBg;
-    protected Drawable otherBuddleBg;
 
 	public ChatMessageList(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);
@@ -60,16 +53,9 @@ public class ChatMessageList extends RelativeLayout{
         this.chatType = chatType;
         this.toChatUsername = toChatUsername;
         
-        conversation = EMChatManager.getInstance().getConversation(toChatUsername);
         messageAdapter = new ChatMessageAdapter(context, toChatUsername, listView);
-//        messageAdapter.setShowAvatar(showAvatar);
-//        messageAdapter.setShowUserNick(showUserNick);
-//        messageAdapter.setMyBubbleBg(myBubbleBg);
-//        messageAdapter.setOtherBuddleBg(otherBuddleBg);
-//        messageAdapter.setCustomChatRowProvider(customChatRowProvider);
         // 设置adapter显示消息
         listView.setAdapter(messageAdapter);
-        
         refreshSelectLast();
     }
     

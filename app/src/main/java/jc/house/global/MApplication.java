@@ -27,19 +27,8 @@ public class MApplication extends Application {
 		config.tasksProcessingOrder(QueueProcessingType.LIFO);
 		config.writeDebugLogs();
 		ImageLoader.getInstance().init(config.build());
-
-		int pid = android.os.Process.myPid();
-		String processAppName = getAppName(pid);
-		// 如果app启用了远程的service，此application:onCreate会被调用2次
-		// 为了防止环信SDK被初始化2次，加此判断会保证SDK被初始化1次
-		// 默认的app会在以包名为默认的process name下运行，如果查到的process name不是app的process name就立即返回
-		if (processAppName == null || !processAppName.equalsIgnoreCase(getApplicationContext().getPackageName())) {
-			// 则此application::onCreate 是被service 调用的，直接返回
-			return;
-		}
-		/**init huanxing SDK**/
-		EMChat.getInstance().init(getApplicationContext());
-
+		//初始化环信SDK
+		initHuanXinSDK();
 	}
 
 	/**
@@ -71,4 +60,20 @@ public class MApplication extends Application {
 		return processName;
 	}
 
+	/**
+	 * 初始化环信SDK
+	 */
+	private void initHuanXinSDK(){
+		int pid = android.os.Process.myPid();
+		String processAppName = getAppName(pid);
+		// 如果app启用了远程的service，此application:onCreate会被调用2次
+		// 为了防止环信SDK被初始化2次，加此判断会保证SDK被初始化1次
+		// 默认的app会在以包名为默认的process name下运行，如果查到的process name不是app的process name就立即返回
+		if (processAppName == null || !processAppName.equalsIgnoreCase(getApplicationContext().getPackageName())) {
+			// 则此application::onCreate 是被service 调用的，直接返回
+			return;
+		}
+		/**init huanxing SDK**/
+		EMChat.getInstance().init(getApplicationContext());
+	}
 }
