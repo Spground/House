@@ -16,33 +16,15 @@
        <jc.house.widgets.ChatMessageList
            android:id="@+id/message_list"
            android:layout_below="@id/titlebar"
-           android:layout_above="@+id/input_layout"
+           android:layout_above="@+id/input_menu"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            >
        </jc.house.widgets.ChatMessageList>
 
-    <LinearLayout
-        android:id="@+id/input_layout"
+    <jc.house.widgets.ChatInputMenu
+        android:id="@+id/input_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:background="#EFEFEF"
-        >
-        <EditText
-            android:id="@+id/inputEText"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:textColor="@color/black"
-            />
-        <Button
-            android:id="@+id/sendBtn"
-            android:layout_width="0dp"
-            android:layout_weight="2.5"
-            android:layout_height="wrap_content"
-            android:text="发送"/>
-    </LinearLayout>
-
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

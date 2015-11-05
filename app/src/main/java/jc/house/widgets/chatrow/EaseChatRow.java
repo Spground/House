@@ -62,30 +62,32 @@ public abstract class EaseChatRow extends LinearLayout {
         initView();
     }
 
+    /**
+     * 初始化视图
+     */
     private void initView() {
-        /**填充View**/
         onInflatView();
         timeStampView = (TextView) findViewById(R.id.timestamp);
         userAvatarView = (ImageView) findViewById(R.id.iv_userhead);
         bubbleLayout = findViewById(R.id.bubble);
         usernickView = (TextView) findViewById(R.id.tv_userid);
-
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         statusView = (ImageView) findViewById(R.id.msg_status);
         ackedView = (TextView) findViewById(R.id.tv_ack);
         deliveredView = (TextView) findViewById(R.id.tv_delivered);
-
         onFindViewById();
     }
 
     /**
      * 根据当前message和position设置控件属性等
      * 
-     * @param message
-     * @param position
+     * @param message ChatRow对应的Message对象
+     * @param position ChatRow在ListView中的位置
+     * @param itemClickListener ChatRow的点击事件监听者
      */
     public void setUpView(EMMessage message, int position,
             ChatMessageList.MessageListItemClickListener itemClickListener) {
+
         this.message = message;
         this.position = position;
         this.itemClickListener = itemClickListener;
@@ -95,11 +97,15 @@ public abstract class EaseChatRow extends LinearLayout {
         setClickListener();
     }
 
-    /**设置基本的View**/
+    /**
+     * 设置基本的View
+     * */
     private void setUpBaseView() {
         // 设置用户昵称头像，bubble背景等
+        /** timestamp visible logic **/
         TextView timestamp = (TextView) findViewById(R.id.timestamp);
         if (timestamp != null) {
+            //ListView中的第一行，显示此Message对象的时间戳
             if (position == 0) {
                 timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
                 timestamp.setVisibility(View.VISIBLE);
@@ -114,18 +120,8 @@ public abstract class EaseChatRow extends LinearLayout {
                 }
             }
         }
-        //设置头像和nick
-        if(message.direct == Direct.SEND){
-//            EaseUserUtils.setUserAvatar(context, EMChatManager.getInstance().getCurrentUser(), userAvatarView);
-            //发送方不显示nick
-            userAvatarView.setVisibility(View.VISIBLE);
-//            UserUtils.setUserNick(EMChatManager.getInstance().getCurrentUser(), usernickView);
-        }else{
-            userAvatarView.setVisibility(View.VISIBLE);
-//            EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-//            EaseUserUtils.setUserNick(message.getFrom(), usernickView);
-        }
-        
+
+        //设置已发送提示
         if(deliveredView != null){
             if (message.isDelivered) {
                 deliveredView.setVisibility(View.VISIBLE);
@@ -133,7 +129,8 @@ public abstract class EaseChatRow extends LinearLayout {
                 deliveredView.setVisibility(View.INVISIBLE);
             }
         }
-        
+
+        //设置消息发送的回执
         if(ackedView != null){
             if (message.isAcked) {
                 if (deliveredView != null) {
@@ -144,31 +141,6 @@ public abstract class EaseChatRow extends LinearLayout {
                 ackedView.setVisibility(View.INVISIBLE);
             }
         }
-        
-
-//        if (adapter instanceof ChatMessageAdapter) {
-//            if (((ChatMessageAdapter) adapter).isShowAvatar())
-//                userAvatarView.setVisibility(View.VISIBLE);
-//            else
-//                userAvatarView.setVisibility(View.GONE);
-//            if (usernickView != null) {
-//                if (((ChatMessageAdapter) adapter).isShowUserNick())
-//                    usernickView.setVisibility(View.VISIBLE);
-//                else
-//                    usernickView.setVisibility(View.GONE);
-//            }
-//            if (message.direct == Direct.SEND) {
-//                if (((ChatMessageAdapter) adapter).getMyBubbleBg() != null)
-//                    bubbleLayout.setBackgroundDrawable(((ChatMessageAdapter) adapter).getMyBubbleBg());
-//                // else
-//                // bubbleLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.chatto_bg));
-//            } else if (message.direct == Direct.RECEIVE) {
-//                if (((ChatMessageAdapter) adapter).getOtherBuddleBg() != null)
-//                    bubbleLayout.setBackgroundDrawable(((ChatMessageAdapter) adapter).getOtherBuddleBg());
-////                else
-////                    bubbleLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ease_chatfrom_bg));
-//            }
-//        }
     }
 
     /**
@@ -182,7 +154,7 @@ public abstract class EaseChatRow extends LinearLayout {
                 public void onSuccess() {
                     updateView();
                 }
-                
+
                 @Override
                 public void onProgress(final int progress, String status) {
                     activity.runOnUiThread(new Runnable() {
@@ -190,7 +162,6 @@ public abstract class EaseChatRow extends LinearLayout {
                         public void run() {
                             if(percentageView != null)
                                 percentageView.setText(progress + "%");
-
                         }
                     });
                 }
@@ -235,12 +206,16 @@ public abstract class EaseChatRow extends LinearLayout {
         }
         message.setMessageStatusCallback(messageReceiveCallback);
     }
-    
-    
+
+    /**
+     * 设置该ChatRow Bubble的各种点击事件
+     * Bubble的长按和短按
+     * 发送状态的点击(重发)
+     * 头像的点击
+     */
     private void setClickListener() {
         if(bubbleLayout != null){
             bubbleLayout.setOnClickListener(new OnClickListener() {
-    
                 @Override
                 public void onClick(View v) {
                     if (itemClickListener != null){
@@ -251,7 +226,7 @@ public abstract class EaseChatRow extends LinearLayout {
                     }
                 }
             });
-    
+            //长按的事件监听
             bubbleLayout.setOnLongClickListener(new OnLongClickListener() {
     
                 @Override
@@ -264,20 +239,21 @@ public abstract class EaseChatRow extends LinearLayout {
             });
         }
 
+        /**设置状态视图的点击事件监听比如发送失败的“感叹号”==**/
         if (statusView != null) {
             statusView.setOnClickListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     if (itemClickListener != null) {
+                        //重发消息
                         itemClickListener.onResendClick(message);
                     }
                 }
             });
         }
 
+        /**设置头像的点击事件监听**/
         userAvatarView.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (itemClickListener != null) {
@@ -291,7 +267,10 @@ public abstract class EaseChatRow extends LinearLayout {
         });
     }
 
-
+    /**
+     * 根据Message对象的状态
+     * 更新当前的ChatRow视图
+     */
     protected void updateView() {
         activity.runOnUiThread(new Runnable() {
             public void run() {
@@ -313,6 +292,14 @@ public abstract class EaseChatRow extends LinearLayout {
     }
 
     /**
+     * 得到该ChatRow的对应的消息的类型
+     * @return EMMessage.Type ChatRow的对应的消息的类型
+     */
+    public  EMMessage.Direct getMessageDirect(){
+        return this.message.direct;
+    }
+
+    /**
      * 填充layout
      */
     protected abstract void onInflatView();
@@ -323,7 +310,7 @@ public abstract class EaseChatRow extends LinearLayout {
     protected abstract void onFindViewById();
 
     /**
-     * 消息状态改变，刷新listview
+     * 消息状态改变，刷新ListView
      */
     protected abstract void onUpdateView();
 
@@ -336,5 +323,6 @@ public abstract class EaseChatRow extends LinearLayout {
      * 聊天气泡被点击事件
      */
     protected abstract void onBubbleClick();
+
 
 }

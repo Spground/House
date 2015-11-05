@@ -52,9 +52,7 @@ public class ChatMessageList extends RelativeLayout{
     public void init(String toChatUsername, int chatType) {
         this.chatType = chatType;
         this.toChatUsername = toChatUsername;
-        
         messageAdapter = new ChatMessageAdapter(context, toChatUsername, listView);
-        // 设置adapter显示消息
         listView.setAdapter(messageAdapter);
         refreshSelectLast();
     }

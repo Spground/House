@@ -32,7 +32,7 @@ public class ChatMessageAdapter extends BaseAdapter {
     private ListView chatMsgListView;
 
     private String chatUserName;
-    private List<EMMessage> msgDataSrc;
+    private List<EMMessage> msgDataSrc;//数据源
     private EMConversation conversation;
     /**
      * ChatMessageList中的聊天项的点击监听
@@ -80,7 +80,6 @@ public class ChatMessageAdapter extends BaseAdapter {
         this.chatUserName = chatUserName;
         this.chatMsgListView = chatMsgListView;
         this.conversation =  EMChatManager.getInstance().getConversation(chatUserName);
-
     }
 
     @Override
@@ -103,10 +102,11 @@ public class ChatMessageAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
         /**get message from data-source**/
-        /**TODO:此处应该缓存优化**/
         EMMessage message = getItem(position);
-        convertView = createChatRow(context, message, position);
-//      缓存的view的message很可能不是当前item的，传入当前message和position更新ui
+        if(convertView == null ||
+                ((EaseChatRow)convertView).getMessageDirect() != message.direct)
+            convertView = createChatRow(context, message, position);
+      //缓存的view的message很可能不是当前item的，传入当前message和position更新ui
         ((EaseChatRow)convertView).setUpView(message, position, itemClickListener);
         return convertView;
     }
@@ -145,6 +145,7 @@ public class ChatMessageAdapter extends BaseAdapter {
      * create a ChatRow for every message
      */
     private EaseChatRow createChatRow(Context context ,EMMessage message, int position){
+        //TXT消息
         if(message.getType().equals(EMMessage.Type.TXT))
             return new EaseChatRowText(context,message,position,this);
         return null;

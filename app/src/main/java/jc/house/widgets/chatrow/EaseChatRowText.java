@@ -14,6 +14,8 @@ import com.easemob.chat.TextMessageBody;
 import com.easemob.exceptions.EaseMobException;
 
 import jc.house.R;
+import jc.house.utils.EmojiUtils;
+import jc.house.utils.LogUtils;
 
 public class EaseChatRowText extends EaseChatRow{
 
@@ -36,27 +38,25 @@ public class EaseChatRowText extends EaseChatRow{
 
     @Override
     public void onSetUpView() {
-        TextMessageBody txtBody = (TextMessageBody) message.getBody();
-        //Spannable span = EaseSmileUtils.getSmiledText(context, txtBody.getMessage());
-        // 设置内容
-        //contentView.setText(span, BufferType.SPANNABLE);
         /**TODO:设置聊天表情**/
-        contentView.setText(txtBody.getMessage());
-
+        TextMessageBody txtBody = (TextMessageBody) message.getBody();
+        Spannable span = EmojiUtils.getSmiledText(context, txtBody.getMessage());
+        // 设置内容
+        contentView.setText(span, BufferType.SPANNABLE);
+//        contentView.setText(txtBody.getMessage());
         if (message.direct == EMMessage.Direct.SEND) {
+            //设置发送消息后的相关回调
             setMessageSendCallback();
             switch (message.status) {
             case CREATE: 
                 progressBar.setVisibility(View.VISIBLE);
                 statusView.setVisibility(View.GONE);
-                // 发送消息
-//                sendMsgInBackground(message);
                 break;
             case SUCCESS: // 发送成功
                 progressBar.setVisibility(View.GONE);
                 statusView.setVisibility(View.GONE);
                 break;
-            case FAIL: // 发送失败
+            case FAIL: // 发送失败，显示感叹号
                 progressBar.setVisibility(View.GONE);
                 statusView.setVisibility(View.VISIBLE);
                 break;
@@ -67,13 +67,18 @@ public class EaseChatRowText extends EaseChatRow{
             default:
                break;
             }
-        }else{
+        }
+        //如果是接收的message
+        else{
+            //如果是收到的message还没有向发送者发送ack
+            //那么赶紧ack收到的此消息
             if(!message.isAcked() && message.getChatType() == ChatType.Chat){
                 try {
                     EMChatManager.getInstance().ackMessageRead(message.getFrom(), message.getMsgId());
                     message.isAcked = true;
                 } catch (EaseMobException e) {
                     e.printStackTrace();
+                    LogUtils.debug("message:" + message.getMsgId() + "ack失败！" + e.toString());
                 }
             }
         }
@@ -87,9 +92,6 @@ public class EaseChatRowText extends EaseChatRow{
     @Override
     protected void onBubbleClick() {
         // TODO Auto-generated method stub
-        
     }
-
-
 
 }
