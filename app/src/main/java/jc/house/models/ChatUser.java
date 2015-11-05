@@ -1,6 +1,6 @@
 package jc.house.models;
 
-public class ChatUser extends BaseModel {
+public final class ChatUser extends BaseModel {
 	private String name;
 	private String msg;
 	private String url;

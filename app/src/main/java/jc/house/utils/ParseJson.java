@@ -13,7 +13,7 @@ import jc.house.models.News;
 /**
  * Created by hzj on 2015/11/1.
  */
-public class ParseJson {
+public final class ParseJson {
     private static final int CODE_SUCCESS = 1;
     public static List<News> parseChatUser(JSONArray array) {
         List<News> result = new ArrayList<News>();
