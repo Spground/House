@@ -1,6 +1,6 @@
 package jc.house.models;
 
-public class House extends BaseModel{
+public final class House extends BaseModel{
 	private String url;
 	private String name;
 	private String intro;

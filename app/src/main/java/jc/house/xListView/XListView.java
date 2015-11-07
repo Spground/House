@@ -13,8 +13,8 @@ import android.widget.Scroller;
 public class XListView extends ListView implements OnScrollListener {
 	
 	public interface XListViewListener {
-		public void refreshing();
-		public void loadMore();
+		void refreshing();
+		void loadMore();
 	}
 	
 	private boolean pullRefresh;

@@ -4,12 +4,16 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
-
 import com.easemob.chat.EMChat;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+
+import java.io.File;
 
 import java.util.Iterator;
 import java.util.List;
@@ -19,13 +23,25 @@ public class MApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "jcimageloader/cache");
 		ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
-		config.threadPriority(Thread.NORM_PRIORITY - 2);
-		config.denyCacheImageMultipleSizesInMemory();
-		config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
-		config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
-		config.tasksProcessingOrder(QueueProcessingType.LIFO);
-		config.writeDebugLogs();
+		config.threadPriority(Thread.NORM_PRIORITY - 2)
+				.denyCacheImageMultipleSizesInMemory()
+				.threadPoolSize(3)
+				.memoryCacheExtraOptions(480, 800)
+				.memoryCache(new UsingFreqLimitedMemoryCache(3 * 1024 * 1024))
+				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+				.diskCache(new UnlimitedDiskCache(cacheDir))
+				.diskCacheFileCount(200)
+//				.diskCacheExtraOptions(480, 800, new BitmapProcessor() {
+//					@Override
+//					public Bitmap process(Bitmap bitmap) {
+//						return bitmap;
+//					}
+//				})
+				.diskCacheSize(50 * 1024 * 1024)
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.writeDebugLogs();
 		ImageLoader.getInstance().init(config.build());
 		//初始化环信SDK
 		initHuanXinSDK();
