@@ -21,6 +21,7 @@ import com.easemob.chat.TextMessageBody;
 
 import jc.house.R;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ToastUtils;
 import jc.house.views.TitleBar;
 import jc.house.widgets.ChatInputMenu;
 import jc.house.widgets.ChatMessageList;
@@ -35,6 +36,8 @@ public class ChatActivity extends Activity {
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
+
+    public static ChatActivity instance = null;
 
     protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
     protected int[] itemsDrawables = { R.drawable.jc_chat_takepic_selector, R.drawable.jc_chat_image_selector,
@@ -65,6 +68,8 @@ public class ChatActivity extends Activity {
         //注册广播
         registerBroadcastReceiver();
         EMChat.getInstance().setAppInited();
+
+        instance = this;
     }
 
     @Override
@@ -76,6 +81,7 @@ public class ChatActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterBroadcastReceiver();
+        instance = null;
     }
 
     @Override
@@ -176,7 +182,7 @@ public class ChatActivity extends Activity {
         message0.setMsgTime(System.currentTimeMillis() + 1000 * 20);
         message0.direct = EMMessage.Direct.RECEIVE;
         message0.setTo("wujie");
-        receiveMessage(message0);
+//        receiveMessage(message0);
 
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
@@ -200,25 +206,34 @@ public class ChatActivity extends Activity {
 
     /**注册新消息接受广播**/
     private void registerBroadcastReceiver() {
-        broadcastManager = LocalBroadcastManager.getInstance(this);
+        LogUtils.debug(TAG, "注册新消息广播接收者");
         IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
+        intentFilter.setPriority(3);
         broadcastReceiver = new BroadcastReceiver() {
-
             @Override
             public void onReceive(Context context, Intent intent) {
                 String msgId = intent.getStringExtra("msgid");
+                String from = intent.getStringExtra("from");
+                //if receive other person's message ignore
+                if(!from.equals(toChatUserName))
+                    return;
                 EMMessage message = EMChatManager.getInstance().getMessage(msgId);
                 LogUtils.debug(TAG, "收到消息" + msgId);
+                ToastUtils.debugShow(ChatActivity.this, "收到来自" + message.getFrom() + "的消息！");
+                //refresh listview
+                chatMsgList.refresh();
             }
         };
-        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     /**
      * 注销广播监听着
      */
     private void unregisterBroadcastReceiver(){
-        broadcastManager.unregisterReceiver(broadcastReceiver);
+        if(broadcastReceiver != null)
+            unregisterReceiver(broadcastReceiver);
+        return;
     }
 
     /**
@@ -228,7 +243,6 @@ public class ChatActivity extends Activity {
     private void receiveMessage(EMMessage message){
         EMChatManager.getInstance().importMessage(message, true);
     }
-
 
     /**
      * 扩展菜单栏item点击事件

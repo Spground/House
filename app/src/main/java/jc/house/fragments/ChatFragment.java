@@ -1,6 +1,9 @@
 package jc.house.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,21 +13,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.easemob.chat.EMChatManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import jc.house.R;
 import jc.house.activities.ChatActivity;
+import jc.house.activities.HomeActivity;
 import jc.house.activities.MapActivity;
 import jc.house.activities.NewsDetailActivity;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.models.ChatUser;
 import jc.house.models.ModelType;
+import jc.house.utils.ToastUtils;
 import jc.house.xListView.XListView;
 
 public class ChatFragment extends JCNetFragment implements XListView.XListViewListener {
-
+	private BroadcastReceiver receiver;
 	public ChatFragment() {
 		super();
 	}
@@ -88,26 +95,28 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 				else{
 					/**聊天Activity**/
 					Intent intent = new Intent();
-					intent.putExtra("toChatUserName","admin");
+					intent.putExtra("toChatUserName","wangzhuo");
 					intent.setClass(getActivity(), ChatActivity.class);
 					startActivity(intent);
 				}
 			}
 
 		});
+
+		//register receiver
+		registerReceiver();
 	}
 
 	@Override
 	public void loadMore() {
-		new Handler().postDelayed(new Runnable(){
+		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 				xlistView.stopLoadMore();
 			}
-			
+
 		}, 2000);
-		
 	}
 
 	@Override
@@ -120,9 +129,30 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 			}
 			
 		}, 2000);
-		
 	}
-	
-	
+
+	/**
+	 * 注册新消息广播接收者
+	 * TODO
+	 */
+	private void registerReceiver(){
+		if(receiver != null)
+			return;
+		receiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				String msgId = intent.getStringExtra("msgid");
+				String from = intent.getStringExtra("from");
+				//if user is in the ChatActivity do nothing just return;
+				if(ChatActivity.instance != null)
+					return;
+				ToastUtils.show(getActivity(), "收到来自" + from + "的消息，请你查收！");
+				abortBroadcast();
+			}
+		};
+		IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
+		intentFilter.setPriority(3);
+		getActivity().registerReceiver(receiver,intentFilter );
+	}
 
 }
