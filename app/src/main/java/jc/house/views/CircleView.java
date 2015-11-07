@@ -159,6 +159,7 @@ public class CircleView extends LinearLayout {
 			} else {
 				ImageLoader.getInstance().displayImage(
 						"http://avatar.csdn.net/2/C/D/1_totogo2010.jpg",
+//						"http://avatar.csdn.net/E/8/F/1_hyr83960944.jpg",
 						imageView);
 			}
 			imageView.setOnClickListener(new OnClickListener() {

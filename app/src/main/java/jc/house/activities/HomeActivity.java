@@ -24,8 +24,6 @@ import android.widget.Toast;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.TextMessageBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +33,9 @@ import jc.house.fragments.ActivityFragment;
 import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
-import jc.house.global.Constants;
 import jc.house.interfaces.IRefresh;
+import jc.house.utils.LogUtils;
+import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;
 
 //hzj 2015/10/29 20:15
@@ -54,7 +53,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private MyReceiver mReceiver;
 	public static boolean isNetAvailable;
 
-	private static final boolean DEBUG = Constants.DEBUG;
 	private static final String TAG = "HomeActivity";
 	private static final String[] tabNames = {"首页", "楼盘", "活动", "聊天", "关于"};
 	private static final int[] selectedResIds = {R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected};
@@ -113,17 +111,13 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 			@Override
 			public Object instantiateItem(ViewGroup container, int pos) {
-				if (DEBUG) {
-					Log.i(TAG, "instantiateItem pos is " + pos);
-				}
+				LogUtils.debug(TAG, "instantiateItem pos is " + pos);
 				return super.instantiateItem(container, pos);
 			}
 
 			@Override
 			public void destroyItem(ViewGroup container, int pos, Object object) {
-				if (DEBUG) {
-					Log.i(TAG, "destroyItem pos is " + pos);
-				}
+				LogUtils.debug(TAG, "destroyItem pos is " + pos);
 				//super.destroyItem(container, pos, object);
 			}
 
@@ -211,14 +205,10 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 					NetworkInfo active = netConnectManager.getActiveNetworkInfo();
 					if(null == active || !active.isConnected()) {
 						isNetAvailable = false;
-						if(DEBUG) {
-							Log.i(TAG, "NetWork is unConnected!");
-						}
+						LogUtils.debug(TAG, "NetWork is unConnected!");
 					} else {
 						isNetAvailable = true;
-						if(DEBUG) {
-							Log.i(TAG, "NetWork is connected!");
-						}
+						LogUtils.debug(TAG, "NetWork is connected!");
 					}
 					break;
 				default:
@@ -235,7 +225,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 				finish();
 			} else {
 				lastTime = currentTime;
-				Toast.makeText(HomeActivity.this, "再次点击退出应用", Toast.LENGTH_SHORT).show();
+				ToastUtils.show(HomeActivity.this, "再次点击退出应用");
 			}
 			return true;
 		}
@@ -258,7 +248,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 			public void onSuccess() {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						Log.d("main", "登陆聊天服务器成功！");
+						LogUtils.debug(TAG, "登陆聊天服务器成功！");
 						//登录成功加载所有的数据库记录到内存
 						EMGroupManager.getInstance().loadAllGroups();
 						EMChatManager.getInstance().loadAllConversations();
@@ -273,7 +263,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 			@Override
 			public void onError(int code, String message) {
-				Log.d("main", "登陆聊天服务器失败！");
+				LogUtils.debug(TAG, "登陆聊天服务器失败！");
 			}
 		});
 	}

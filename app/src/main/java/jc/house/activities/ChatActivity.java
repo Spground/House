@@ -31,7 +31,7 @@ import jc.house.widgets.ChatExtendMenu;
  * 2015-10-31
  */
 public class ChatActivity extends Activity {
-    
+    public static final String TAG = "ChatActivity";
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
@@ -143,8 +143,8 @@ public class ChatActivity extends Activity {
      * 初始化聊天对话列表
      */
     private void initChatMsgList(){
-        LogUtils.debug("初始化ChatMsgList");
-        LogUtils.debug("和" + toChatUserName + "的聊天对话中有" +
+        LogUtils.debug(TAG, "初始化ChatMsgList");
+        LogUtils.debug(TAG, "和" + toChatUserName + "的聊天对话中有" +
                 EMChatManager.getInstance().getConversation(toChatUserName).getUnreadMsgCount() +
                 " 条未读");
         this.chatMsgList.init(toChatUserName, 0);
@@ -181,19 +181,19 @@ public class ChatActivity extends Activity {
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
             public void onSuccess() {
-                LogUtils.debug("发送成功！");
+                LogUtils.debug(TAG, "发送成功！");
                 /**refresh chatMsgList**/
                 ChatActivity.this.chatMsgList.refresh();
             }
 
             @Override
             public void onError(int i, String s) {
-                LogUtils.debug("发送失败！");
+                LogUtils.debug(TAG, "发送失败！");
             }
 
             @Override
             public void onProgress(int i, String s) {
-                LogUtils.debug("正在发送！");
+                LogUtils.debug(TAG, "正在发送！");
             }
         });
     }
@@ -208,7 +208,7 @@ public class ChatActivity extends Activity {
             public void onReceive(Context context, Intent intent) {
                 String msgId = intent.getStringExtra("msgid");
                 EMMessage message = EMChatManager.getInstance().getMessage(msgId);
-                LogUtils.debug("收到消息" + msgId);
+                LogUtils.debug(TAG, "收到消息" + msgId);
             }
         };
         broadcastManager.registerReceiver(broadcastReceiver, intentFilter);

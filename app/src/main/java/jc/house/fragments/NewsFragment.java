@@ -22,6 +22,7 @@ import jc.house.R;
 import jc.house.adapters.ListAdapter;
 import jc.house.models.ModelType;
 import jc.house.models.News;
+import jc.house.utils.LogUtils;
 import jc.house.views.CircleView;
 import jc.house.xListView.XListView;
 
@@ -50,7 +51,7 @@ public class NewsFragment extends JCNetFragment {
         ListAdapter<News> adapter = new ListAdapter<News>(this.getActivity(), news, ModelType.NEWS, circleView);
         this.xlistView.setAdapter(adapter);
 
-        Log.i("NewsFragment", "onActivityCreated!");
+		LogUtils.debug("NewsFragment","onActivityCreated!");
 
 		/*
         client.post("", new RequestParams(new HashMap<String, String>()), new ResponseHandlerInterface() {
@@ -166,13 +167,13 @@ public class NewsFragment extends JCNetFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers,
                                   JSONArray response) {
-                Log.i("jsonArray", response.toString());
+				LogUtils.debug("jsonArray", response.toString());
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject item = response.getJSONObject(i);
                         int id = item.getInt("id");
                         String name = item.getString("name");
-                        Log.i("user" + i, "id is " + id + " name is " + name);
+						LogUtils.debug("user" + i, "id is " + id + " name is " + name);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -183,7 +184,7 @@ public class NewsFragment extends JCNetFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 //                Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("jsonObject", response.toString());
+				LogUtils.debug("jsonObject", response.toString());
                 super.onSuccess(statusCode, headers, response);
             }
         });

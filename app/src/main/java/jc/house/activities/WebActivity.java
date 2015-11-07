@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import jc.house.R;
+import jc.house.utils.ToastUtils;
 
 public class WebActivity extends Activity {
     private WebView webView;
@@ -22,13 +23,13 @@ public class WebActivity extends Activity {
         this.webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                Toast.makeText(WebActivity.this, "web load started", Toast.LENGTH_SHORT).show();
+                ToastUtils.debugShow(WebActivity.this, "web load started");
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Toast.makeText(WebActivity.this, "web load finished", Toast.LENGTH_SHORT).show();
+                ToastUtils.debugShow(WebActivity.this, "web load finished");
                 super.onPageFinished(view, url);
             }
         });

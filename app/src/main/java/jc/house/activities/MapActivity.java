@@ -14,6 +14,7 @@ import com.tencent.tencentmap.mapsdk.map.OnMapHitListener;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 
 import jc.house.R;
+import jc.house.utils.ToastUtils;
 
 public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
 
@@ -39,7 +40,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(MapActivity.this, "hahaha", Toast.LENGTH_SHORT).show();
+                ToastUtils.show(MapActivity.this,"hahaha");
             }
         });
     }

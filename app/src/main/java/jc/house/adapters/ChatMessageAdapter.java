@@ -23,6 +23,7 @@ import jc.house.widgets.chatrow.EaseChatRowText;
  * ChatMessageAdapter，used only for ChatActivity
  */
 public class ChatMessageAdapter extends BaseAdapter {
+    public static final String TAG = "ChatMessageAdapter";
 
     private static final int HANDLER_MESSAGE_REFRESH_LIST = 0;
     private static final int HANDLER_MESSAGE_SELECT_LAST = 1;
@@ -75,7 +76,7 @@ public class ChatMessageAdapter extends BaseAdapter {
     };
 
     public ChatMessageAdapter(Context context, String chatUserName,ListView chatMsgListView){
-        LogUtils.debug("ChatMessageAdapter构造函数被调用");
+        LogUtils.debug(TAG, "ChatMessageAdapter构造函数被调用");
         this.context = context;
         this.chatUserName = chatUserName;
         this.chatMsgListView = chatMsgListView;
