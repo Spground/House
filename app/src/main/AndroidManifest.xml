@@ -93,9 +93,17 @@
             android:label="@string/title_activity_web" >
         </activity>
         <activity
-            android:name=".activities.ChatActivity"
+            android:name=".chat.ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
+
+        <!-- service goes here-->
+        <service
+            android:name=".chat.service.ReceiveNewMessageService"
+            android:enabled="true"
+            >
+        </service>
+
     </application>
 
 </manifest>

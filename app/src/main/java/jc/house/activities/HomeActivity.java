@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
@@ -28,11 +27,16 @@ import com.easemob.chat.EMGroupManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import jc.house.R;
+import jc.house.chat.ChatActivity;
+import jc.house.chat.event.NewMessageEvent;
+import jc.house.chat.service.ReceiveNewMessageService;
 import jc.house.fragments.ActivityFragment;
 import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
+import jc.house.global.Constants;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
@@ -59,6 +63,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private static final int[] normalResIds = {R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat};
 	private static final int[] tabItemIds= {R.id.first_page, R.id.building, R.id.building, R.id.activities, R.id.chat, R.id.me};
 
+	private boolean isEventBusRegister = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,6 +74,23 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		this.lastTime = 0;
 		this.initViewPager();
 		this.initNetConnectManager();
+		startUpReceiveNewMessageService();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		registerEventBus();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
 	}
 
 	@Override
@@ -81,7 +103,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initTabViewItems() {
-		this.tabViewItems = new ArrayList<TabViewItem>(TAB_ITEMS_NUM);
+		this.tabViewItems = new ArrayList<>(TAB_ITEMS_NUM);
 		for(int i = 0; i< TAB_ITEMS_NUM; i++) {
 			TabViewItem item = (TabViewItem) this.findViewById(tabItemIds[i]);
 			item.setTabName(tabNames[i]);
@@ -159,7 +181,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initFragments() {
-		this.fragments = new ArrayList<Fragment>(TAB_ITEMS_NUM);
+		this.fragments = new ArrayList<>(TAB_ITEMS_NUM);
 		this.fragments.add(new NewsFragment());
 		this.fragments.add(new HouseFragment());
 		this.fragments.add(new ActivityFragment());
@@ -193,10 +215,15 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		this.netConnectManager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
 		this.filter = new IntentFilter();
 		this.filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		//add new message broadcast action
+		this.filter.addAction(EMChatManager.getInstance().getNewMessageBroadcastAction());
 		this.mReceiver = new MyReceiver();
 		this.registerReceiver(this.mReceiver, this.filter);
 	}
 
+	/**
+	 * 广播接收者
+	 */
 	private class MyReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -214,6 +241,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 				default:
 					break;
 			}
+
 		}
 	}
 
@@ -222,6 +250,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		if(KeyEvent.KEYCODE_BACK == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) {
 			long currentTime = System.currentTimeMillis();
 			if((currentTime - lastTime) <= EXIT_TIME_SPAN) {
+				//remember to stop service while exiting the app
+				stopService(new Intent(this, ReceiveNewMessageService.class));
 				finish();
 			} else {
 				lastTime = currentTime;
@@ -242,8 +272,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	 * 登录环信
 	 */
 	private void loginHuanXin(){
-		/**login huanxing**/
-		EMChatManager.getInstance().login("wujie","wujie",new EMCallBack() {//回调
+		/**login huanxin**/
+		EMChatManager.getInstance().login(Constants.ACCOUNT.Account, Constants.ACCOUNT.Pwd, new EMCallBack() {//回调
 			@Override
 			public void onSuccess() {
 				runOnUiThread(new Runnable() {
@@ -267,4 +297,43 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 			}
 		});
 	}
+
+	private void registerEventBus(){
+		if(!isEventBusRegister){
+			EventBus.getDefault().register(this);
+			isEventBusRegister = true;
+		}
+	}
+
+	private void unregisterEventBus(){
+		if(isEventBusRegister){
+			EventBus.getDefault().unregister(this);
+			isEventBusRegister = false;
+		}
+	}
+
+	/**
+	 * called when new message is coming!
+	 * @param event new message event
+	 */
+	public void onEventMainThread(NewMessageEvent event){
+		LogUtils.debug(TAG, "Receive new message event");
+		Intent intent = event.getIntent();
+		String msgId = intent.getStringExtra("msgid");
+		String from = intent.getStringExtra("from");
+		//if user is in the ChatActivity do nothing just return;
+		if(ChatActivity.instance != null)
+			return;
+		ToastUtils.show(this, "收到来自" + from + "的消息，请你查收！");
+	}
+
+	/**
+	 * startup service to receive new message
+	 */
+	private void startUpReceiveNewMessageService(){
+		Intent intent = new Intent(this, ReceiveNewMessageService.class);
+		startService(intent);
+		LogUtils.debug(TAG, "ReceiveNewMessageService is starting up...");
+	}
+
 }

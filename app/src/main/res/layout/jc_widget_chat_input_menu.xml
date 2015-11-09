@@ -20,7 +20,7 @@
         android:background="#fff"
         android:visibility="gone" >
 
-        <jc.house.widgets.ChatExtendMenu
+        <jc.house.chat.widget.ChatExtendMenu
             android:id="@+id/extend_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

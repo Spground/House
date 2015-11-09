@@ -16,6 +16,6 @@ public class LogUtils {
 
     public static void debug(String tag,String str){
         if(DEBUG)
-            Log.v(tag,str);
+            Log.v("===" + tag + "===",str);
     }
 }

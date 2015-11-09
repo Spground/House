@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="jc.house.activities.ChatActivity">
+    tools:context="jc.house.chat.ChatActivity">
 
     <jc.house.views.TitleBar
         android:id="@+id/titlebar"
@@ -13,16 +13,16 @@
     </jc.house.views.TitleBar>
 
     <!-- ChatMessageListView-->
-       <jc.house.widgets.ChatMessageList
+       <jc.house.chat.widget.ChatMessageList
            android:id="@+id/message_list"
            android:layout_below="@id/titlebar"
            android:layout_above="@+id/input_menu"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            >
-       </jc.house.widgets.ChatMessageList>
+       </jc.house.chat.widget.ChatMessageList>
 
-    <jc.house.widgets.ChatInputMenu
+    <jc.house.chat.widget.ChatInputMenu
         android:id="@+id/input_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
