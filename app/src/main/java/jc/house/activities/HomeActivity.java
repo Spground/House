@@ -43,7 +43,7 @@ import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;
 
 //hzj 2015/10/29 20:15
-public class HomeActivity extends FragmentActivity implements OnClickListener {
+public class HomeActivity extends FragmentActivity implements OnClickListener, ChatFragment.OnNewMessageReceivedListener {
 	private List<TabViewItem> tabViewItems;
 	private List<Fragment> fragments;
 	private ViewPager viewPager;
@@ -61,9 +61,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private static final String[] tabNames = {"首页", "楼盘", "活动", "聊天", "关于"};
 	private static final int[] selectedResIds = {R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected};
 	private static final int[] normalResIds = {R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat};
-	private static final int[] tabItemIds= {R.id.first_page, R.id.building, R.id.building, R.id.activities, R.id.chat, R.id.me};
+	private static final int[] tabItemIds= {R.id.first_page, R.id.building, R.id.activities, R.id.chat, R.id.me};
 
-	private boolean isEventBusRegister = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,7 +79,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		registerEventBus();
 	}
 
 	@Override
@@ -152,7 +150,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 			@Override
 			public void onPageScrollStateChanged(int pos) {
-
 			}
 
 			@Override
@@ -162,6 +159,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 
 			@Override
 			public void onPageSelected(int pos) {
+				/**set little red dot invisible**/
+				tabViewItems.get(pos).unlightLittleRedDot();
 				if (pos != currentIndex) {
 					tabViewItems.get(pos).setSelected(true);
 					tabViewItems.get(currentIndex).setSelected(false);
@@ -193,6 +192,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	public void onClick(View v) {
 		TabViewItem item = (TabViewItem) v;
 		int index = item.getIndex();
+		/**set little red dot invisible**/
+		tabViewItems.get(index).unlightLittleRedDot();
 		if (currentIndex != index) {
 			viewPager.setCurrentItem(index, false);
 		} else {
@@ -298,35 +299,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		});
 	}
 
-	private void registerEventBus(){
-		if(!isEventBusRegister){
-			EventBus.getDefault().register(this);
-			isEventBusRegister = true;
-		}
-	}
-
-	private void unregisterEventBus(){
-		if(isEventBusRegister){
-			EventBus.getDefault().unregister(this);
-			isEventBusRegister = false;
-		}
-	}
-
-	/**
-	 * called when new message is coming!
-	 * @param event new message event
-	 */
-	public void onEventMainThread(NewMessageEvent event){
-		LogUtils.debug(TAG, "Receive new message event");
-		Intent intent = event.getIntent();
-		String msgId = intent.getStringExtra("msgid");
-		String from = intent.getStringExtra("from");
-		//if user is in the ChatActivity do nothing just return;
-		if(ChatActivity.instance != null)
-			return;
-		ToastUtils.show(this, "收到来自" + from + "的消息，请你查收！");
-	}
-
 	/**
 	 * startup service to receive new message
 	 */
@@ -336,4 +308,10 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		LogUtils.debug(TAG, "ReceiveNewMessageService is starting up...");
 	}
 
+	@Override
+	public void onNewMessageReceived() {
+		/**update tab item's unread**/
+		if(currentIndex != 3)
+			tabViewItems.get(3).lightLittleRedDot();
+	}
 }

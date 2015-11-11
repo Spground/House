@@ -27,41 +27,6 @@ import android.text.style.ImageSpan;
 import jc.house.R;
 
 public class EmojiUtils {
-//	public static final String ee_1 = "[:)::]";
-//	public static final String ee_2 = "[::D:]";
-//	public static final String ee_3 = "[:;):]";
-//	public static final String ee_4 = "[::-o:]";
-//	public static final String ee_5 = "[::p:]";
-//	public static final String ee_6 = "[:(H):]";
-//	public static final String ee_7 = "[::@:]";
-//	public static final String ee_8 = "[::s:]";
-//	public static final String ee_9 = "[::$:]";
-//	public static final String ee_10 = "[::(:]";
-//	public static final String ee_11 = "[::'(:]";
-//	public static final String ee_12 = "[::|:]";
-//	public static final String ee_13 = "[:(a):]";
-//	public static final String ee_14 = "[:8o|:]";
-//	public static final String ee_15 = "[:8-|:]";
-//	public static final String ee_16 = "[:+o(:]";
-//	public static final String ee_17 = "[:<o):]";
-//	public static final String ee_18 = "[:|-):]";
-//	public static final String ee_19 = "[:*-):]";
-//	public static final String ee_20 = "[::-#:]";
-//	public static final String ee_21 = "[::-*:]";
-//	public static final String ee_22 = "[:^o):]";
-//	public static final String ee_23 = "[:8-):]";
-//	public static final String ee_24 = "[:(|):]";
-//	public static final String ee_25 = "[:(u):]";
-//	public static final String ee_26 = "[:(S):]";
-//	public static final String ee_27 = "[:(*):]";
-//	public static final String ee_28 = "[:(#):]";
-//	public static final String ee_29 = "[:(R):]";
-//	public static final String ee_30 = "[:({):]";
-//	public static final String ee_31 = "[:(}):]";
-//	public static final String ee_32 = "[:(k):]";
-//	public static final String ee_33 = "[:(F):]";
-//	public static final String ee_34 = "[:(W):]";
-//	public static final String ee_35 = "[:(D):]";
 	public static final String ee_0 = "[:0a:]";
 	public static final String ee_1 = "[:1b:]";
 	public static final String ee_2 = "[:2c:]";
@@ -162,7 +127,6 @@ public class EmojiUtils {
 	private static int simlesSize = 0;
 
 	static {
-		
 	    addPattern(emoticons, ee_1, R.drawable.ee_1);
 	    addPattern(emoticons, ee_2, R.drawable.ee_2);
 	    addPattern(emoticons, ee_3, R.drawable.ee_3);

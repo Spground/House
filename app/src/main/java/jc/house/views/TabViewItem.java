@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 public class TabViewItem extends LinearLayout {
 	private ImageView imageView;
 	private TextView textView;
+	private View littleRedDotView;//小红点
+
 	private boolean selected;
 	private int normalResId, selectedResId;
 	private int index;
@@ -37,6 +40,7 @@ public class TabViewItem extends LinearLayout {
 		LayoutInflater.from(context).inflate(R.layout.tab_item, this);
 		this.imageView = (ImageView) this.findViewById(R.id.tab_image);
 		this.textView = (TextView) this.findViewById(R.id.tab_name);
+		this.littleRedDotView = this.findViewById(R.id.unread_msg_little_red_dot);
 		this.setBackgroundColor(Color.rgb(231, 231, 231));
 		this.textView.setTextColor(normalTextColor);
 		this.selectedResId = R.drawable.ic_launcher;
@@ -127,5 +131,18 @@ public class TabViewItem extends LinearLayout {
 											.blue(selectedTextColor) - Color
 											.blue(normalTextColor)))));
 		}
+	}
+
+	/**
+	 * set little red dot visible
+	 */
+	public void lightLittleRedDot(){
+		if(this.littleRedDotView != null || this.littleRedDotView.getVisibility() == View.INVISIBLE)
+			this.littleRedDotView.setVisibility(View.VISIBLE);
+	}
+
+	public void unlightLittleRedDot(){
+		if(this.littleRedDotView != null || this.littleRedDotView.getVisibility() == View.VISIBLE)
+			this.littleRedDotView.setVisibility(View.INVISIBLE);
 	}
 }

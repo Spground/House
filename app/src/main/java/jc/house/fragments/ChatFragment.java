@@ -1,6 +1,5 @@
 package jc.house.fragments;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,19 +14,30 @@ import android.widget.AdapterView.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import jc.house.R;
 import jc.house.activities.MapActivity;
 import jc.house.activities.NewsDetailActivity;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.chat.ChatActivity;
+import jc.house.chat.event.NewMessageEvent;
 import jc.house.models.ChatUser;
 import jc.house.models.ModelType;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ToastUtils;
 import jc.house.xListView.XListView;
 
 public class ChatFragment extends JCNetFragment implements XListView.XListViewListener {
 	public static final String TAG = "ChatFragment";
+	private boolean isEventBusRegister = false;
+
+	private OnNewMessageReceivedListener newMessageCallBack;
+
+	public interface OnNewMessageReceivedListener{
+		void onNewMessageReceived();
+	}
+
 	public ChatFragment() {
 		super();
 		LogUtils.debug(TAG, "ChatFragment's constructor is invoked!");
@@ -69,11 +79,15 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 	public void onDestroy() {
 		super.onDestroy();
 		LogUtils.debug(TAG, "onDestroy() is invoked!");
+		unregisterEventBus();
 	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		newMessageCallBack = (OnNewMessageReceivedListener)getActivity();
+		/**register event bus**/
+		registerEventBus();
 		LogUtils.debug(TAG, "onActivityCreated() is invoked!");
 		xlistView = (XListView) view.findViewById(R.id.list);
 		List<ChatUser> chatUsers = new ArrayList<>();
@@ -177,13 +191,45 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 
 	@Override
 	public void refreshing() {
-		new Handler().postDelayed(new Runnable(){
+		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 				xlistView.stopRefresh();
 			}
-			
+
 		}, 2000);
+	}
+
+	/**
+	 * called when new message is coming!
+	 * @param event new message event
+	 */
+	public void onEventMainThread(NewMessageEvent event){
+		LogUtils.debug(TAG, "Receive new message event");
+		Intent intent = event.getIntent();
+		String msgId = intent.getStringExtra("msgid");
+		String from = intent.getStringExtra("from");
+		//if user is in the ChatActivity do nothing just return;
+		if(ChatActivity.instance != null)
+			return;
+		ToastUtils.show(getActivity(), "收到来自" + from + "的消息，请你查收！");
+		//callback HomeActivity to update little red dot
+		if(newMessageCallBack != null)
+			newMessageCallBack.onNewMessageReceived();
+	}
+
+	private void registerEventBus(){
+		if(!isEventBusRegister){
+			EventBus.getDefault().register(this);
+			isEventBusRegister = true;
+		}
+	}
+
+	private void unregisterEventBus(){
+		if(isEventBusRegister){
+			EventBus.getDefault().unregister(this);
+			isEventBusRegister = false;
+		}
 	}
 }

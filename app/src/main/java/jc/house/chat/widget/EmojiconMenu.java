@@ -82,7 +82,7 @@ public class EmojiconMenu extends EmojiconMenuBase {
 	        View view = View.inflate(context, R.layout.jc_expression_gridview, null);
 	        ExpandGridView gv = (ExpandGridView) view.findViewById(R.id.gridview);
 	        gv.setNumColumns(emojiconColumns);
-	        List<String> list = new ArrayList<String>();
+	        List<String> list = new ArrayList<>();
 	        if(i != pageSize -1){
 	            list.addAll(reslist.subList(i * itemSize, (i+1) * itemSize));
 	        }else{
@@ -100,7 +100,7 @@ public class EmojiconMenu extends EmojiconMenuBase {
 	                    if (filename != "delete_expression"){
 	                        try {
 	                            // 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
-	                            Class clz = Class.forName("jc.house.chat.utils.EmojiUtils");
+	                            Class clz = Class.forName("jc.house.chat.util.EmojiUtils");
 	                            Field field = clz.getField(filename);
 	                            CharSequence cs = EmojiUtils.getSmiledText(context,(String) field.get(null));
 	                            listener.onExpressionClicked(cs);
@@ -120,7 +120,7 @@ public class EmojiconMenu extends EmojiconMenuBase {
 	}
 	
 	private List<String> getExpressionRes(int getSum) {
-		List<String> reslist = new ArrayList<String>();
+		List<String> reslist = new ArrayList<>();
 		for (int x = 1; x <= getSum; x++) {
 			String filename = "ee_" + x;
 			reslist.add(filename);

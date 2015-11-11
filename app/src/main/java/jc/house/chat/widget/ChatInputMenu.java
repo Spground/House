@@ -185,7 +185,6 @@ public class ChatInputMenu extends LinearLayout {
                 chatPrimaryMenu.onEmojiconDeleteEvent();
             }
         });
-
     }
 
     /**
@@ -209,9 +208,7 @@ public class ChatInputMenu extends LinearLayout {
             } else {
                 chatExtendMenuContainer.setVisibility(View.GONE);
             }
-
         }
-
     }
 
     /**
