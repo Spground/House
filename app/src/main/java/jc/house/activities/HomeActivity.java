@@ -24,8 +24,6 @@ import android.widget.Toast;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.TextMessageBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	private static final String[] tabNames = {"首页", "楼盘", "活动", "聊天", "关于"};
 	private static final int[] selectedResIds = {R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected};
 	private static final int[] normalResIds = {R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat};
-	private static final int[] tabItemIds= {R.id.first_page, R.id.building, R.id.building, R.id.activities, R.id.chat, R.id.me};
+	private static final int[] tabItemIds= {R.id.first_page, R.id.building, R.id.activities, R.id.chat, R.id.me};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -253,7 +251,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 	 */
 	private void loginHuanXin(){
 		/**login huanxing**/
-		EMChatManager.getInstance().login("wujie","wujie",new EMCallBack() {//回调
+		EMChatManager.getInstance().login("wujie", "wujie", new EMCallBack() {//回调
 			@Override
 			public void onSuccess() {
 				runOnUiThread(new Runnable() {
