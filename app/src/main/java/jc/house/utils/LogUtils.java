@@ -9,7 +9,7 @@ import jc.house.global.Constants;
  */
 public final class LogUtils {
     private static final boolean DEBUG = Constants.DEBUG;
-    
+
     public static void debug(String tag){
         if(DEBUG)
             Log.v("---jc---", tag);
