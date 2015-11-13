@@ -8,9 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.List;
 
 import jc.house.R;
+import jc.house.global.Constants;
 import jc.house.models.BaseModel;
 import jc.house.models.ChatUser;
 import jc.house.models.House;
@@ -121,7 +124,8 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.lists.get(mPos);
-					viewHolderHouse.picture.setImageResource(R.drawable.caodi);
+					loadImage(viewHolderHouse.picture, house.getUrl());
+//					viewHolderHouse.picture.setImageResource(R.drawable.caodi);
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());
@@ -146,6 +150,12 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 			}
 		}
 		return convertView;
+	}
+
+	private void loadImage(ImageView imageView, String url) {
+		ImageLoader.getInstance().displayImage(
+				Constants.IMAGE_URL + url,
+				imageView);
 	}
 	
 	private static final class ViewHolderChatUser {

@@ -90,6 +90,7 @@ public class HouseFragment extends JCNetFragment implements XListView.XListViewL
                     params.put("id", String.valueOf(((House) this.houses.get(0)).getID()));
                 }
             } else {
+                resetXListView();
                 return;
             }
         }
@@ -114,17 +115,21 @@ public class HouseFragment extends JCNetFragment implements XListView.XListViewL
                             }
                             houses.addAll(lists);
                             adapter.notifyDataSetChanged();
+                        } else {
+                            handleCode(code, TAG);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                resetXListView();
                 LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                resetXListView();
                 LogUtils.debug(TAG, "statusCode is " + statusCode);
             }
 
