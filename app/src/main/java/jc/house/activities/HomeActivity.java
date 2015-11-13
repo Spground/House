@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,10 +26,7 @@ import com.easemob.chat.EMGroupManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import jc.house.R;
-import jc.house.chat.ChatActivity;
-import jc.house.chat.event.NewMessageEvent;
 import jc.house.chat.service.ReceiveNewMessageService;
 import jc.house.fragments.ActivityFragment;
 import jc.house.fragments.ChatFragment;
@@ -273,6 +269,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 	 * 登录环信
 	 */
 	private void loginHuanXin(){
+
 		/**login huanxin**/
 		EMChatManager.getInstance().login(Constants.ACCOUNT.Account, Constants.ACCOUNT.Pwd, new EMCallBack() {//回调
 			@Override

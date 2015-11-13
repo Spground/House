@@ -9,20 +9,28 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpResponse;
 import jc.house.R;
 import jc.house.adapters.ListAdapter;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.utils.LogUtils;
+import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 import jc.house.xListView.XListView;
 
@@ -30,6 +38,7 @@ public class NewsFragment extends JCNetFragment {
     private static final int[] imageReIds = {R.drawable.caodi,
             R.drawable.chengbao, R.drawable.caodi};
 //	private static final String[] imageUrls = {"123", "456"};
+	private static final String TAG = "NewsFragment";
 
     public NewsFragment() {
         super();
@@ -53,110 +62,33 @@ public class NewsFragment extends JCNetFragment {
 
 		LogUtils.debug("NewsFragment","onActivityCreated!");
 
-		/*
-        client.post("", new RequestParams(new HashMap<String, String>()), new ResponseHandlerInterface() {
-			@Override
-			public void sendResponseMessage(HttpResponse response) throws IOException {
+        this.client.setURLEncodingEnabled(true);
+        this.client.setAuthenticationPreemptive(true);
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("name", "maoni");
+		client.post("http://192.168.9.72/mn/web/index.php?r=test/test", new JsonHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                LogUtils.debug(TAG, "statusCode is " + statusCode + " responseString is " + responseString);
+            }
 
-			}
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                LogUtils.debug(TAG, "JSONObject statusCode is " + statusCode + "result is " + response.toString());
+            }
 
-			@Override
-			public void sendStartMessage() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                LogUtils.debug(TAG, "JSONArray statusCode is " + statusCode);
+            }
+        });
 
-			}
-
-			@Override
-			public void sendFinishMessage() {
-
-			}
-
-			@Override
-			public void sendProgressMessage(long bytesWritten, long bytesTotal) {
-
-			}
-
-			@Override
-			public void sendCancelMessage() {
-
-			}
-
-			@Override
-			public void sendSuccessMessage(int statusCode, Header[] headers, byte[] responseBody) {
-
-			}
-
-			@Override
-			public void sendFailureMessage(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-			}
-
-			@Override
-			public void sendRetryMessage(int retryNo) {
-
-			}
-
-			@Override
-			public URI getRequestURI() {
-				return null;
-			}
-
-			@Override
-			public void setRequestURI(URI requestURI) {
-
-			}
-
-			@Override
-			public Header[] getRequestHeaders() {
-				return new Header[0];
-			}
-
-			@Override
-			public void setRequestHeaders(Header[] requestHeaders) {
-
-			}
-
-			@Override
-			public boolean getUseSynchronousMode() {
-				return false;
-			}
-
-			@Override
-			public void setUseSynchronousMode(boolean useSynchronousMode) {
-
-			}
-
-			@Override
-			public boolean getUsePoolThread() {
-				return false;
-			}
-
-			@Override
-			public void setUsePoolThread(boolean usePoolThread) {
-
-			}
-
-			@Override
-			public void onPreProcessResponse(ResponseHandlerInterface instance, HttpResponse response) {
-
-			}
-
-			@Override
-			public void onPostProcessResponse(ResponseHandlerInterface instance, HttpResponse response) {
-
-			}
-
-			@Override
-			public Object getTag() {
-				return null;
-			}
-
-			@Override
-			public void setTag(Object TAG) {
-
-			}
-		});
-		*/
-        client.get("http://192.168.9.72/mn/web/index.php?r=test%2Fjsons", new JsonHttpResponseHandler() {
+        Map<String, String> params2 = new HashMap<String, String>();
+        params2.put("name", "maonia");
+        client.get("http://192.168.9.72/mn/web/index.php?r=test/test", new RequestParams(params2), new JsonHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, Header[] headers,
@@ -188,36 +120,7 @@ public class NewsFragment extends JCNetFragment {
                 super.onSuccess(statusCode, headers, response);
             }
         });
-		/*
-		client.get("https://www.google.com", new AsyncHttpResponseHandler() {
 
-			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-					Throwable arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onRetry(int retryNo) {
-				// TODO Auto-generated method stub
-				super.onRetry(retryNo);
-			}
-
-			@Override
-			public void onStart() {
-				// TODO Auto-generated method stub
-				super.onStart();
-			}
-			
-		});
-		*/
     }
 
     @Override
