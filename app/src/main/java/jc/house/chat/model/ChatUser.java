@@ -1,4 +1,6 @@
-package jc.house.models;
+package jc.house.chat.model;
+
+import jc.house.models.BaseModel;
 
 public final class ChatUser extends BaseModel {
 	private String name;

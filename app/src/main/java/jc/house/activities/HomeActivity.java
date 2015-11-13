@@ -28,6 +28,7 @@ import java.util.List;
 
 import jc.house.R;
 import jc.house.chat.service.ReceiveNewMessageService;
+import jc.house.fragments.AboutFragment;
 import jc.house.fragments.ActivityFragment;
 import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
@@ -181,7 +182,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 		this.fragments.add(new HouseFragment());
 		this.fragments.add(new ActivityFragment());
 		this.fragments.add(new ChatFragment());
-		this.fragments.add(new ChatFragment());
+		this.fragments.add(new AboutFragment());
 	}
 
 	@Override
