@@ -39,8 +39,6 @@ public class TabViewItem extends LinearLayout {
 		this.textView = (TextView) this.findViewById(R.id.tab_name);
 		this.setBackgroundColor(Color.rgb(231, 231, 231));
 		this.textView.setTextColor(normalTextColor);
-		this.selectedResId = R.drawable.ic_launcher;
-		this.normalResId = R.drawable.ic_launcher;
 		this.selected = false;
 		this.imageView.setImageResource(this.normalResId);
 		this.index = 0;
@@ -73,16 +71,8 @@ public class TabViewItem extends LinearLayout {
 		this.selected = selected;
 	}
 
-	public int getSelectedResId() {
-		return selectedResId;
-	}
-
 	public void setSelectedResId(int selectedResId) {
 		this.selectedResId = selectedResId;
-	}
-
-	public int getNormalResId() {
-		return normalResId;
 	}
 
 	public void setNormalResId(int normalResId) {

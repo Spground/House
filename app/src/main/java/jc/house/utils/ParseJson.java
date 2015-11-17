@@ -11,6 +11,7 @@ import java.util.List;
 
 import jc.house.models.ChatUser;
 import jc.house.models.House;
+import jc.house.models.JCActivity;
 import jc.house.models.News;
 
 /**
@@ -18,7 +19,7 @@ import jc.house.models.News;
  */
 public final class ParseJson {
 
-    public static List<News> parseChatUser(JSONArray array) {
+    public static List<News> parseNews(JSONArray array) {
         List<News> result = new ArrayList<News>();
         try {
             for (int i = 0; i < array.length(); i++) {
@@ -62,5 +63,26 @@ public final class ParseJson {
 
         }
         return houses;
+    }
+
+    public static List<JCActivity> parseActivity(JSONArray array) {
+        List<JCActivity> activities = new ArrayList<JCActivity>();
+        if (null == array && array.length() == 0) {
+            return activities;
+        }
+        for (int i = 0; i< array.length(); i++) {
+            try {
+                JSONObject item = array.getJSONObject(i);
+                if (item.has("id") && item.has("url") && item.has("name")) {
+                    int id = item.getInt("id");
+                    String url = item.getString("url");
+                    String name = item.getString("name");
+                    activities.add(new JCActivity(id, url, name));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return activities;
     }
 }

@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <jc.house.xListView.XListView
+    <jc.house.JCListView.XListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#999999"
+        android:divider="#CCCCCC"
         android:dividerHeight=".5dp"
-        android:footerDividersEnabled="false"
+        android:footerDividersEnabled="true"
         android:headerDividersEnabled="false"
         android:scrollbarStyle="outsideOverlay"
         android:transcriptMode="normal" />

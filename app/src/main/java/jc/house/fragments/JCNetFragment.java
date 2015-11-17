@@ -1,21 +1,23 @@
 package jc.house.fragments;
 
 import android.support.v4.app.Fragment;
-import android.util.DebugUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 
+import org.json.JSONObject;
+
+import jc.house.JCListView.XListView;
 import jc.house.global.Constants;
+import jc.house.global.FetchType;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.LogUtils;
-import jc.house.xListView.XListView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public abstract class JCNetFragment extends Fragment implements IRefresh {
+public abstract class JCNetFragment extends Fragment implements IRefresh, XListView.IXListViewListener {
     protected View view;
     protected XListView xlistView;
     protected AsyncHttpClient client;
@@ -45,4 +47,17 @@ public abstract class JCNetFragment extends Fragment implements IRefresh {
                 break;
         }
     }
+
+    @Override
+    public void onRefresh() {
+        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+    }
+
+    @Override
+    public void onLoadMore() {
+        this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
+    }
+
+    protected abstract void fetchDataFromServer(final FetchType fetchtype);
+    protected abstract void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype);
 }

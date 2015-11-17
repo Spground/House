@@ -3,7 +3,7 @@ package jc.house.models;
 /**
  * Created by hzj on 2015/11/9.
  */
-public class HouseDetail extends House {
+public final class HouseDetail extends House {
     private String houseType;
     private String forceType;
     private String avgPrice;
