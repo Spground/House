@@ -3,6 +3,7 @@ package jc.house.global;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import com.easemob.chat.EMChat;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -17,6 +18,9 @@ import java.io.File;
 
 import java.util.Iterator;
 import java.util.List;
+
+import jc.house.chat.service.ReceiveNewMessageService;
+import jc.house.utils.LogUtils;
 
 public class MApplication extends Application {
 
@@ -45,6 +49,7 @@ public class MApplication extends Application {
 		ImageLoader.getInstance().init(config.build());
 		//初始化环信SDK
 		initHuanXinSDK();
+		EMChat.getInstance().setAppInited();
 	}
 
 	/**
@@ -92,4 +97,5 @@ public class MApplication extends Application {
 		/**init huanxing SDK**/
 		EMChat.getInstance().init(getApplicationContext());
 	}
+
 }

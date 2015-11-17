@@ -14,9 +14,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.List;
 
 import jc.house.R;
+import jc.house.chat.model.ChatUser;
 import jc.house.global.Constants;
 import jc.house.models.BaseModel;
-import jc.house.models.ChatUser;
 import jc.house.models.House;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;

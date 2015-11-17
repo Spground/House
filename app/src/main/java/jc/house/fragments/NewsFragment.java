@@ -55,6 +55,7 @@ public class NewsFragment extends JCNetFragment {
         circleView.setImageReIds(imageReIds);
         this.adapter = new ListAdapter<News>(this.getActivity(), news, ModelType.NEWS, circleView);
         this.xlistView.setAdapter(adapter);
+		LogUtils.debug("NewsFragment","onActivityCreated!");
         this.client.setURLEncodingEnabled(true);
         this.client.setAuthenticationPreemptive(true);
     }

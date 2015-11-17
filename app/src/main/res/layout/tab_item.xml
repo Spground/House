@@ -6,13 +6,30 @@
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:paddingRight="5dp"
+        >
     <ImageView
         android:id="@+id/tab_image"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:paddingTop="5dp"
         android:src="@drawable/ic_launcher"
-        android:layout_gravity="center" />
+         />
+    <View
+        android:id="@+id/unread_msg_little_red_dot"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="0.1dp"
+        android:layout_marginTop="0.1dp"
+        android:background="@drawable/jc_unread_tab_item_little_red_dot"
+        android:visibility="invisible"
+        />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tab_name"
@@ -20,6 +37,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="3dp"
+        android:text="liaotian"
         android:textSize="15.0sp" />
-
 </LinearLayout>

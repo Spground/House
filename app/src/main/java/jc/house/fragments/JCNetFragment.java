@@ -2,7 +2,6 @@ package jc.house.fragments;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 
@@ -13,6 +12,7 @@ import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ToastUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +27,7 @@ public abstract class JCNetFragment extends Fragment implements IRefresh, XListV
 
     @Override
     public void refresh() {
-        Toast.makeText(this.getActivity(), "刷新数据或者是滑到最上面", Toast.LENGTH_SHORT).show();
+        ToastUtils.show(this.getActivity(), "刷新数据或者是滑到最上面");
     }
 
     protected void resetXListView() {

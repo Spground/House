@@ -1,7 +1,5 @@
 package jc.house.utils;
 
-import android.graphics.LinearGradient;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +7,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import jc.house.models.ChatUser;
 import jc.house.models.House;
 import jc.house.models.JCActivity;
 import jc.house.models.News;

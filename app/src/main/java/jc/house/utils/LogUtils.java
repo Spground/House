@@ -7,16 +7,15 @@ import jc.house.global.Constants;
 /**
  * Created by wujie on 2015/11/app.
  */
-public final class LogUtils {
+public class LogUtils {
     private static final boolean DEBUG = Constants.DEBUG;
-    
-    public static void debug(String tag){
+    public static void debug(String str){
         if(DEBUG)
-            Log.v("---jc---", tag);
+            Log.v("===JC===",str);
     }
 
-    public static void debug(String tag, String str){
+    public static void debug(String tag,String str){
         if(DEBUG)
-            Log.v(tag, str);
+            Log.v("===" + tag + "===",str);
     }
 }
