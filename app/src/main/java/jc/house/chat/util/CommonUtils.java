@@ -2,21 +2,22 @@ package jc.house.chat.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.text.TextUtils;
-import jc.house.R;
-import jc.house.global.Constants;
-import jc.house.utils.LogUtils;
 
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
 
 import java.util.List;
 
+import jc.house.R;
+import jc.house.global.Constants;
+import jc.house.utils.LogUtils;
+
 /**
  * Created by WuJie on 2015/11/13.
  */
 public class CommonUtils {
     private static final String TAG = "CommonUtils";
+
     /**
      * 根据消息内容和消息类型获取消息内容提示
      *
@@ -25,7 +26,7 @@ public class CommonUtils {
      * @return
      */
     public static String getMessageDigest(EMMessage message, Context context) {
-        String digest = "";
+        String digest;
         switch (message.getType()) {
             case LOCATION: // 位置消息
                 if (message.direct == EMMessage.Direct.RECEIVE) {
@@ -61,7 +62,7 @@ public class CommonUtils {
                 digest = getString(context, R.string.file);
                 break;
             default:
-                LogUtils.debug(TAG, "error, unknow type");
+                LogUtils.debug(TAG, "error, unknown type");
                 return "";
         }
 

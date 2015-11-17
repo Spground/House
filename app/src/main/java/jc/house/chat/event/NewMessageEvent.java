@@ -34,6 +34,4 @@ public class NewMessageEvent extends BaseEvent {
     public NewMessageEvent(EMMessage message){
         this.message = message;
     }
-
-
 }

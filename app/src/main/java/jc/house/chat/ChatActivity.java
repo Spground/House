@@ -1,11 +1,9 @@
 package jc.house.chat;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.MotionEvent;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.Window;
 
 import com.easemob.EMCallBack;
-import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
@@ -22,12 +19,12 @@ import com.easemob.chat.TextMessageBody;
 import de.greenrobot.event.EventBus;
 import jc.house.R;
 import jc.house.chat.event.NewMessageEvent;
+import jc.house.chat.widget.ChatExtendMenu;
+import jc.house.chat.widget.ChatInputMenu;
+import jc.house.chat.widget.ChatMessageList;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 import jc.house.views.TitleBar;
-import jc.house.chat.widget.ChatInputMenu;
-import jc.house.chat.widget.ChatMessageList;
-import jc.house.chat.widget.ChatExtendMenu;
 
 
 /**

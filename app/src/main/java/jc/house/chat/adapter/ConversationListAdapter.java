@@ -1,7 +1,6 @@
 package jc.house.chat.adapter;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +28,11 @@ import jc.house.chat.util.EmojiUtils;
  */
 public class ConversationListAdapter extends BaseAdapter {
     private static final String TAG = "ConversationListAdapter";
+
     private List<EMConversation> conversationList;
     private List<EMConversation> copyConversationList;
+
     private boolean notifyByFilter;
-
-    protected int primaryColor;
-    protected int secondaryColor;
-    protected int timeColor;
-    protected int primarySize;
-    protected int secondarySize;
-    protected float timeSize;
-
     private Context context;
 
     public ConversationListAdapter(Context context, List<EMConversation> conversationList) {
@@ -105,28 +98,18 @@ public class ConversationListAdapter extends BaseAdapter {
         if (conversation.getMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
-            holder.message.setText(EmojiUtils.getSmiledText(this.context, CommonUtils.getMessageDigest(lastMessage, (this.context))),
+            holder.message.setText(EmojiUtils.getSmiledText(this.context,
+                    CommonUtils.getMessageDigest(lastMessage, (this.context))),
                     BufferType.SPANNABLE);
 
             holder.time.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
-            if (lastMessage.direct == EMMessage.Direct.SEND && lastMessage.status == EMMessage.Status.FAIL) {
+            if (lastMessage.direct == EMMessage.Direct.SEND
+                    && lastMessage.status == EMMessage.Status.FAIL) {
                 holder.msgState.setVisibility(View.VISIBLE);
             } else {
                 holder.msgState.setVisibility(View.GONE);
             }
         }
-
-        //设置自定义属性
-        /*holder.name.setTextColor(primaryColor);
-        holder.message.setTextColor(secondaryColor);
-        holder.time.setTextColor(timeColor);
-        if(primarySize != 0)
-            holder.name.setTextSize(TypedValue.COMPLEX_UNIT_PX, primarySize);
-        if(secondarySize != 0)
-            holder.message.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondarySize);
-        if(timeSize != 0)
-            holder.time.setTextSize(TypedValue.COMPLEX_UNIT_PX, timeSize);*/
-
         return convertView;
     }
 
@@ -138,30 +121,6 @@ public class ConversationListAdapter extends BaseAdapter {
             copyConversationList.addAll(conversationList);
             notifyByFilter = false;
         }
-    }
-
-    public void setPrimaryColor(int primaryColor) {
-        this.primaryColor = primaryColor;
-    }
-
-    public void setSecondaryColor(int secondaryColor) {
-        this.secondaryColor = secondaryColor;
-    }
-
-    public void setTimeColor(int timeColor) {
-        this.timeColor = timeColor;
-    }
-
-    public void setPrimarySize(int primarySize) {
-        this.primarySize = primarySize;
-    }
-
-    public void setSecondarySize(int secondarySize) {
-        this.secondarySize = secondarySize;
-    }
-
-    public void setTimeSize(float timeSize) {
-        this.timeSize = timeSize;
     }
 
     public static class ViewHolder {

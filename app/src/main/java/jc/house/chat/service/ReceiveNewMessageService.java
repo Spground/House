@@ -16,7 +16,6 @@ import jc.house.utils.LogUtils;
  * Created by WuJie on 2015/11/9.
  */
 public class ReceiveNewMessageService extends BaseService {
-
     private BroadcastReceiver receiver;
     public static final String INTENT_ACTION = "RECEIVE_NEW_MESSAGE_SERVICE";
 

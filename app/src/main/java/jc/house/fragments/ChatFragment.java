@@ -153,6 +153,36 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 		});
 	}
 
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		LogUtils.debug(TAG, "onDestroyView() is invoked!");
+	}
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		LogUtils.debug(TAG, "onAttach() is invoked!");
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		LogUtils.debug(TAG, "onCreate() is invoked!");
+	}
+
+	@Override
+	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		LogUtils.debug(TAG, "onViewCreated() is invoked!");
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		LogUtils.debug(TAG, "onDetach() is invoked!");
+	}
+
 	/**
 	 * load data source to memory
 	 */
@@ -210,36 +240,6 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 		this.conversationList.clear();
 		this.conversationList.addAll(loadHistoryConversationDataSource());
 		this.conversationListAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		LogUtils.debug(TAG, "onDestroyView() is invoked!");
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		LogUtils.debug(TAG, "onAttach() is invoked!");
-	}
-
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		LogUtils.debug(TAG, "onCreate() is invoked!");
-	}
-
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		LogUtils.debug(TAG, "onViewCreated() is invoked!");
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		LogUtils.debug(TAG, "onDetach() is invoked!");
 	}
 
 	@Override
