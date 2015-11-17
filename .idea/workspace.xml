@@ -18,66 +18,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="378d5e10-f86c-4701-b02b-aa0321b3c5df" name="Default" comment="Merge branch 'master' of https://github.com/nannanIT/House into wujie&#10;&#10;# Conflicts:&#10;#&#9;.idea/gradle.xml&#10;#&#9;app/src/main/java/jc/house/adapters/ListAdapter.java&#10;#&#9;app/src/main/java/jc/house/fragments/ChatFragment.java&#10;#&#9;app/src/main/java/jc/house/fragments/JCNetFragment.java&#10;#&#9;app/src/main/java/jc/house/fragments/NewsFragment.java&#10;#&#9;app/src/main/java/jc/house/global/Constants.java&#10;#&#9;app/src/main/java/jc/house/utils/EmojiUtils.java&#10;#&#9;app/src/main/java/jc/house/views/CircleView.java&#10;#&#9;app/src/main/res/layout/tab_item.xml&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/app.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/JCListView/XListView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/JCListView/XListViewFooter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/JCListView/XListViewHeader.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/android_async_http_1_4_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/httpclient_4_3_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/jclistview_header.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/universal_image_loader_1_9_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\.idea\misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\app\src\main\java\jc\house\xListView\XListView.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\app\src\main\java\jc\house\xListView\XListViewBaser.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\app\src\main\java\jc\house\xListView\XListViewFooter.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\app\src\main\java\jc\house\xListView\XListViewHeader.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\app\src\main\res\layout\fragment_chat.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\WuJie\git\House\app\src\main\res\layout\xlistview_header.xml" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\WuJie\git\House\app\src\main\res\layout\xlistview_footer.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/jclistview_footer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/.gitignore" afterPath="$PROJECT_DIR$/app/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/AboutFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/AboutFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ActivityFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ActivityFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/chat/widget/AlertDialog.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/chat/widget/AlertDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/views/CircleView.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/views/CircleView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/global/Constants.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/global/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/EmojiExpressionPagerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/EmojiExpressionPagerAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/chat/widget/ExpandGridView.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/chat/widget/ExpandGridView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/activities/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/activities/HomeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/models/HouseDetail.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/models/HouseDetail.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/HouseFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/HouseFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/interfaces/IRefresh.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/interfaces/IRefresh.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/views/IndicatorView.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/views/IndicatorView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/JCNetFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/JCNetFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/adapters/ListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/adapters/ListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/utils/LogUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/utils/LogUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/NewsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/NewsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/utils/ParseJson.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/utils/ParseJson.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/views/TabViewItem.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/views/TabViewItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/utils/ToastUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/utils/ToastUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/jc/house/activities/WebActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/jc/house/activities/WebActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activities_list_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activities_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_news_detail.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_news_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/chat_user_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chat_user_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/common_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/common_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/home.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/house_list_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/house_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/list_pressed.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/list_pressed.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/news_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/news_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/tab_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/tab_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="House.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -123,121 +69,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/activities/HomeActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.488255">
-              <caret line="192" column="8" selection-start-line="192" selection-start-column="8" selection-end-line="192" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CircleView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/views/CircleView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/activities/WebActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="55" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EmojiExpressionPagerAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/EmojiExpressionPagerAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChatMessageAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/ChatMessageAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChatFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ChatFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="69.11539">
-              <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+            <state vertical-scroll-proportion="3.8104026">
+              <caret line="271" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3148#3158#0" expanded="true" />
-                <element signature="e#3616#4057#0" expanded="true" />
-                <element signature="e#4056#4057#0" expanded="true" />
-                <element signature="e#5977#6291#0" expanded="true" />
-                <element signature="e#6290#6291#0" expanded="true" />
-                <element signature="e#6599#6689#0" expanded="true" />
-                <element signature="e#6688#6689#0" expanded="true" />
-                <element signature="e#6768#6858#0" expanded="true" />
-                <element signature="e#6857#6858#0" expanded="true" />
-                <element signature="e#7881#7882#0" expanded="true" />
-                <element signature="e#7915#7916#0" expanded="true" />
+                <element signature="e#6410#6507#0" expanded="true" />
+                <element signature="e#6506#6507#0" expanded="true" />
+                <element signature="e#6590#6686#0" expanded="true" />
+                <element signature="e#6685#6686#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NewsFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/NewsFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="65" column="21" selection-start-line="65" selection-start-column="21" selection-end-line="65" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/adapters/ListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="79" column="90" selection-start-line="79" selection-start-column="90" selection-end-line="79" selection-end-column="90" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConversationListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/ConversationListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AboutFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/AboutFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -1725,9 +1568,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/jc/house/views/CircleView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/jc/house/global/Constants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/JCNetFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/NewsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/AboutFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java" />
       </list>
     </option>
   </component>
@@ -1835,28 +1678,6 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="global" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="House" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="house" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="fragments" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -1880,32 +1701,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="House" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="house" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2255,7 +2050,7 @@
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23280802" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15329513" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15846995" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2690,7 +2485,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/NewsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="1.4681208">
           <caret line="65" column="21" selection-start-line="65" selection-start-column="21" selection-end-line="65" selection-end-column="21" />
           <folding />
         </state>
@@ -2698,38 +2493,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/views/CircleView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.9580537">
           <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="69.11539">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3148#3158#0" expanded="true" />
-            <element signature="e#3616#4057#0" expanded="true" />
-            <element signature="e#4056#4057#0" expanded="true" />
-            <element signature="e#5977#6291#0" expanded="true" />
-            <element signature="e#6290#6291#0" expanded="true" />
-            <element signature="e#6599#6689#0" expanded="true" />
-            <element signature="e#6688#6689#0" expanded="true" />
-            <element signature="e#6768#6858#0" expanded="true" />
-            <element signature="e#6857#6858#0" expanded="true" />
-            <element signature="e#7881#7882#0" expanded="true" />
-            <element signature="e#7915#7916#0" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/activities/WebActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.54530203">
           <caret line="22" column="55" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="55" />
           <folding />
         </state>
@@ -2737,7 +2511,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/EmojiExpressionPagerAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.20973155">
           <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
           <folding />
         </state>
@@ -2745,7 +2519,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/ChatMessageAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-2.978188">
           <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
         </state>
@@ -2753,7 +2527,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/adapters/ListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="3.1459732">
           <caret line="79" column="90" selection-start-line="79" selection-start-column="90" selection-end-line="79" selection-end-column="90" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -2763,7 +2537,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/chat/adapter/ConversationListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-0.25671142">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -2773,7 +2547,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/AboutFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="1.5939597">
           <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
           <folding />
         </state>
@@ -2784,6 +2558,20 @@
         <state vertical-scroll-proportion="4.488255">
           <caret line="192" column="8" selection-start-line="192" selection-start-column="8" selection-end-line="192" selection-end-column="8" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/jc/house/fragments/ChatFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.8104026">
+          <caret line="271" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6410#6507#0" expanded="true" />
+            <element signature="e#6506#6507#0" expanded="true" />
+            <element signature="e#6590#6686#0" expanded="true" />
+            <element signature="e#6685#6686#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
