@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-        <jc.house.xListView.XListView
+        <jc.house.JCListView.XListView
 	        android:id="@+id/list"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"

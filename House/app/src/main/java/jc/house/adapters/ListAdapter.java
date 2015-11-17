@@ -1,15 +1,5 @@
 package jc.house.adapters;
 
-import java.util.List;
-
-import jc.house.R;
-import jc.house.models.BaseModel;
-import jc.house.models.ChatUser;
-import jc.house.models.House;
-import jc.house.models.JCActivity;
-import jc.house.models.ModelType;
-import jc.house.models.News;
-import jc.house.views.CircleView;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +8,31 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
+
+import jc.house.R;
+import jc.house.global.Constants;
+import jc.house.models.BaseModel;
+import jc.house.models.ChatUser;
+import jc.house.models.House;
+import jc.house.models.JCActivity;
+import jc.house.models.ModelType;
+import jc.house.models.News;
+import jc.house.views.CircleView;
+
 public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	private Context context;
 	private List<T> lists;
 	private ModelType type;
 	private CircleView circleView;
 	private boolean hasCircleView;
+	private DisplayImageOptions options;
 	
 	public ListAdapter(Context context, List<T> lists, ModelType modelType) {
-		this.context = context;
-		this.lists = lists;
-		this.type = modelType;
-		this.hasCircleView = false;
+		this(context, lists, modelType, null);
 	}
 	
 	public ListAdapter(Context context, List<T> lists, ModelType modelType, CircleView circleView) {
@@ -38,6 +41,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
+		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.caodi).showImageForEmptyUri(R.drawable.caodi).build();
 	}
 
 	@Override
@@ -82,7 +86,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderChatUser = (ViewHolderChatUser)convertView.getTag();
 					}
 					ChatUser user = (ChatUser)this.lists.get(mPos);
-					viewHolderChatUser.portrait.setImageResource(user.getImageResId());
+					viewHolderChatUser.portrait.setImageResource(R.drawable.user_mao);
 					viewHolderChatUser.name.setText(user.getName());
 					viewHolderChatUser.msg.setText(user.getMsg());
 					viewHolderChatUser.time.setText(user.getTime());
@@ -120,7 +124,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.lists.get(mPos);
-					viewHolderHouse.picture.setImageResource(R.drawable.caodi);
+					loadImage(viewHolderHouse.picture, house.getUrl());
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());
@@ -145,6 +149,12 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 			}
 		}
 		return convertView;
+	}
+
+	private void loadImage(ImageView imageView, String url) {
+		ImageLoader.getInstance().displayImage(
+				Constants.IMAGE_URL + url,
+				imageView, options);
 	}
 	
 	private static final class ViewHolderChatUser {

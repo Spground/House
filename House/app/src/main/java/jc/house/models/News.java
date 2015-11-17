@@ -1,6 +1,6 @@
 package jc.house.models;
 
-public class News extends BaseModel{
+public final class News extends BaseModel{
 	private String url;
 	private String title;
 	private String author;

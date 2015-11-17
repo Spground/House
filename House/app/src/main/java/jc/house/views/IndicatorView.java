@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class IndicatorView extends LinearLayout {
-	private int normalresId;
+	private int normalResId;
 	private int selectedResId;
 	private int spacing;
 	private int num;
@@ -35,7 +35,7 @@ public class IndicatorView extends LinearLayout {
 	}
 	
 	private void initView(Context context) {
-		this.normalresId = R.drawable.ic_launcher;
+		this.normalResId = R.drawable.ic_launcher;
 		this.selectedResId = R.drawable.ic_launcher;
 		this.spacing = 5;
 		this.selectedIndex = 0;
@@ -59,7 +59,7 @@ public class IndicatorView extends LinearLayout {
 				if (this.selectedIndex == i) {
 					imageView.setImageResource(this.selectedResId);
 				} else {
-					imageView.setImageResource(this.normalresId);
+					imageView.setImageResource(this.normalResId);
 				}
 				imageView.setPadding(this.spacing, 0, 0, 0);
 				imageViews.add(imageView);
@@ -76,19 +76,19 @@ public class IndicatorView extends LinearLayout {
 		if (this.selectedIndex != selectedIndex && selectedIndex < this.num
 				&& selectedIndex >= 0) {
 			((ImageView) (imageViews.get(this.selectedIndex)))
-					.setImageResource(this.normalresId);
+					.setImageResource(this.normalResId);
 			((ImageView) (imageViews.get(selectedIndex)))
 					.setImageResource(this.selectedResId);
 			this.selectedIndex = selectedIndex;
 		}
 	}
 
-	public int getNormalresId() {
-		return normalresId;
+	public int getNormalResId() {
+		return normalResId;
 	}
 
-	public void setNormalresId(int normalresId) {
-		this.normalresId = normalresId;
+	public void setNormalResId(int normalResId) {
+		this.normalResId = normalResId;
 	}
 
 	public int getSelectedResId() {

@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:2:1-70:12
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:2:1-101:12
 	package
 		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:3:5-23
 		INJECTED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml
@@ -17,8 +17,8 @@ ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest
 		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:2:11-69
 uses-sdk
 ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:appcompat-v7:20.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\20.0.0\AndroidManifest.xml:16:5-42
-MERGED from [com.android.support:support-v4:20.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\AndroidManifest.xml:16:5-42
+MERGED from [com.android.support:appcompat-v7:23.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\AndroidManifest.xml:20:5-43
 	android:targetSdkVersion
 		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:9:9-38
 		INJECTED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml
@@ -107,53 +107,83 @@ uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:39:5-80
 	android:name
 		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:39:22-77
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:44:5-71
+	android:name
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:44:22-68
+uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:54:5-80
+	android:name
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:54:22-77
 application
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:41:5-68:19
-MERGED from [com.android.support:appcompat-v7:20.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\20.0.0\AndroidManifest.xml:17:5-19
-MERGED from [com.android.support:support-v4:20.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\AndroidManifest.xml:17:5-19
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:57:5-99:19
+MERGED from [com.android.support:appcompat-v7:23.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.0.0] C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\AndroidManifest.xml:22:5-20
 	android:label
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:45:9-41
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:61:9-41
 	android:allowBackup
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:43:9-35
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:59:9-35
 	android:icon
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:44:9-45
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:60:9-37
 	android:theme
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:46:9-40
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:62:9-40
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:42:9-44
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:58:9-44
 meta-data#TencentMapSDK
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:47:9-49:67
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:63:9-65:67
 	android:value
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:49:13-64
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:65:13-64
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:48:13-41
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:64:13-41
+meta-data#EASEMOB_APPKEY
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:68:9-70:47
+	android:value
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:70:13-45
+	android:name
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:69:13-42
+service#com.easemob.chat.EMChatService
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:71:9-66
+	android:name
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:71:18-63
 activity#jc.house.activities.HomeActivity
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:50:9-58:20
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:73:9-81:20
 	android:label
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:52:13-45
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:75:13-45
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:51:13-52
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:74:13-52
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:53:13-57:29
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:76:13-80:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:54:17-69
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:77:17-69
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:54:25-66
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:77:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:56:17-77
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:79:17-77
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:56:27-74
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:79:27-74
 activity#jc.house.activities.NewsDetailActivity
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:59:9-63:20
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:82:9-86:20
 	android:label
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:61:13-63
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:84:13-63
 	android:theme
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:62:13-60
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:85:13-60
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:60:13-58
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:83:13-58
 activity#jc.house.activities.MapActivity
-ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:64:9-67:20
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:87:9-90:20
 	android:label
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:66:13-55
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:89:13-55
 	android:name
-		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:65:13-51
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:88:13-51
+activity#jc.house.activities.WebActivity
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:91:9-94:20
+	android:label
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:93:13-55
+	android:name
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:92:13-51
+activity#jc.house.activities.ChatActivity
+ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:95:9-98:20
+	android:label
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:97:13-56
+	android:name
+		ADDED from C:\Users\hzj\AndroidStudioProjects\House\app\src\main\AndroidManifest.xml:96:13-52

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="jc.house.activities.ChatActivity">
+
+    <jc.house.views.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </jc.house.views.TitleBar>
+
+    <!-- ChatMessageListView-->
+       <jc.house.widgets.ChatMessageList
+           android:id="@+id/message_list"
+           android:layout_below="@id/titlebar"
+           android:layout_above="@+id/input_menu"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           >
+       </jc.house.widgets.ChatMessageList>
+
+    <jc.house.widgets.ChatInputMenu
+        android:id="@+id/input_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

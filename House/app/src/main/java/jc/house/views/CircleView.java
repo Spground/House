@@ -158,7 +158,7 @@ public class CircleView extends LinearLayout {
 						imageReIds[i]));
 			} else {
 				ImageLoader.getInstance().displayImage(
-						"http://avatar.csdn.net/2/C/D/1_totogo2010.jpg",
+						"http://avatar.csdn.net/app/C/D/1_totogo2010.jpg",
 						imageView);
 			}
 			imageView.setOnClickListener(new OnClickListener() {
@@ -175,8 +175,8 @@ public class CircleView extends LinearLayout {
 		}
 		this.viewPager.setAdapter(new CirclePagerAdapter());
 		this.viewPager
-				.setOnPageChangeListener(new CircleOnPageChangeListener());
-		this.indicatorView.setNormalresId(R.drawable.indicator_normal);
+				.addOnPageChangeListener(new CircleOnPageChangeListener());
+		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
 		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.indicatorView.setNum(num);
 		if (this.autoPlay && null == this.mHandler && num > 1

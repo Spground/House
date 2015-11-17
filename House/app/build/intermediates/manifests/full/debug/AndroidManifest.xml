@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="20" />
+        android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CAMERA" >
@@ -38,15 +38,38 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- huanxing SDK Required -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name="jc.house.global.MApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/app"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="TencentMapSDK"
             android:value="XV2BZ-XMIKS-CZBOI-62IYY-6PTE2-74B2J" />
+
+        <!-- huanxing SDK -->
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="wujieim#houstest" />
+
+        <service android:name="com.easemob.chat.EMChatService" />
 
         <activity
             android:name="jc.house.activities.HomeActivity"
@@ -65,6 +88,14 @@
         <activity
             android:name="jc.house.activities.MapActivity"
             android:label="@string/title_activity_map" >
+        </activity>
+        <activity
+            android:name="jc.house.activities.WebActivity"
+            android:label="@string/title_activity_web" >
+        </activity>
+        <activity
+            android:name="jc.house.activities.ChatActivity"
+            android:label="@string/title_activity_chat" >
         </activity>
     </application>
 

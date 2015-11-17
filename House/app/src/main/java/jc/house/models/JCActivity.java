@@ -1,11 +1,9 @@
 package jc.house.models;
 
-import jc.house.utils.StringUtils;
-
 /**
  * Created by hzj on 2015/10/30.
  */
-public class JCActivity extends BaseModel {
+public final class JCActivity extends BaseModel {
     private String picUrl;
     private String name;
     public JCActivity(int ID, String picUrl, String name) {

@@ -11,7 +11,7 @@
         android:layout_width="110dp"
         android:layout_height="82dp"
         android:paddingLeft="2dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@drawable/caodi" />
 
     <LinearLayout
