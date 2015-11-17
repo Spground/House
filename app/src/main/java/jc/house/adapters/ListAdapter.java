@@ -8,10 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-<<<<<<< HEAD:House/app/src/main/java/jc/house/adapters/ListAdapter.java
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-=======
->>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/adapters/ListAdapter.java
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -128,10 +125,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					}
 					House house = (House)this.lists.get(mPos);
 					loadImage(viewHolderHouse.picture, house.getUrl());
-<<<<<<< HEAD:House/app/src/main/java/jc/house/adapters/ListAdapter.java
-=======
 //					viewHolderHouse.picture.setImageResource(R.drawable.caodi);
->>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/adapters/ListAdapter.java
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());
@@ -161,11 +155,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	private void loadImage(ImageView imageView, String url) {
 		ImageLoader.getInstance().displayImage(
 				Constants.IMAGE_URL + url,
-<<<<<<< HEAD:House/app/src/main/java/jc/house/adapters/ListAdapter.java
 				imageView, options);
-=======
-				imageView);
->>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/adapters/ListAdapter.java
 	}
 	
 	private static final class ViewHolderChatUser {
