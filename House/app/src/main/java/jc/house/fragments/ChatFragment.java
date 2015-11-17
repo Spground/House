@@ -10,23 +10,37 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+<<<<<<< HEAD:House/app/src/main/java/jc/house/fragments/ChatFragment.java
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import jc.house.JCListView.XListView;
+=======
+import java.util.ArrayList;
+import java.util.List;
+
+>>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/fragments/ChatFragment.java
 import jc.house.R;
 import jc.house.activities.ChatActivity;
 import jc.house.activities.MapActivity;
 import jc.house.activities.NewsDetailActivity;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
+<<<<<<< HEAD:House/app/src/main/java/jc/house/fragments/ChatFragment.java
 import jc.house.global.FetchType;
 import jc.house.models.ChatUser;
 import jc.house.models.ModelType;
 
 public class ChatFragment extends JCNetFragment {
+=======
+import jc.house.models.ChatUser;
+import jc.house.models.ModelType;
+import jc.house.xListView.XListView;
+
+public class ChatFragment extends JCNetFragment implements XListView.XListViewListener {
+>>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/fragments/ChatFragment.java
 
 	public ChatFragment() {
 		super();
@@ -53,7 +67,11 @@ public class ChatFragment extends JCNetFragment {
 				"21:15"));
 		xlistView
 				.setAdapter(new ListAdapter<ChatUser>(this.getActivity(), chatUsers, ModelType.CHAT_USER));
+<<<<<<< HEAD:House/app/src/main/java/jc/house/fragments/ChatFragment.java
 		this.xlistView.setXListViewListener(this);
+=======
+		this.xlistView.setxListener(this);
+>>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/fragments/ChatFragment.java
 		/*
 		this.xListView
 				.setOnItemLongClickListener(new OnItemLongClickListener() {

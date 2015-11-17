@@ -176,7 +176,11 @@ public class CircleView extends LinearLayout {
 		this.viewPager.setAdapter(new CirclePagerAdapter());
 		this.viewPager
 				.addOnPageChangeListener(new CircleOnPageChangeListener());
+<<<<<<< HEAD:House/app/src/main/java/jc/house/views/CircleView.java
 		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
+=======
+		this.indicatorView.setNormalresId(R.drawable.indicator_normal);
+>>>>>>> 0a2804ec72a94b93dcd745682f8b86016598f340:app/src/main/java/jc/house/views/CircleView.java
 		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.indicatorView.setNum(num);
 		if (this.autoPlay && null == this.mHandler && num > 1
