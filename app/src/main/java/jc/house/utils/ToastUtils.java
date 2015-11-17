@@ -6,7 +6,7 @@ import android.widget.Toast;
 import jc.house.global.Constants;
 
 /**
- * Created by wujie on 2015/11/2.
+ * Created by wujie on 2015/11/app.
  */
 public class ToastUtils {
     private static final boolean DEBUG = Constants.DEBUG;

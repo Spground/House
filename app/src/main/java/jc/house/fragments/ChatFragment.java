@@ -16,6 +16,8 @@ import android.widget.BaseAdapter;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,18 +25,19 @@ import java.util.Hashtable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import jc.house.JCListView.XListView;
 import jc.house.R;
-import jc.house.activities.MapActivity;
-import jc.house.activities.NewsDetailActivity;
-import jc.house.activities.WebActivity;
+import jc.house.adapters.ListAdapter;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
+import jc.house.chat.model.ChatUser;
+import jc.house.global.FetchType;
+import jc.house.models.ModelType;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
-import jc.house.xListView.XListView;
 
-public class ChatFragment extends JCNetFragment implements XListView.XListViewListener {
+public class ChatFragment extends JCNetFragment {
 	public static final String TAG = "ChatFragment";
 	private boolean isEventBusRegister = false;
 	private List<EMConversation> conversationList;
@@ -44,7 +47,6 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 	public interface OnNewMessageReceivedListener{
 		void onNewMessageReceived();
 	}
-
 	public ChatFragment() {
 		super();
 		LogUtils.debug(TAG, "ChatFragment's constructor is invoked!");
@@ -102,47 +104,23 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 		this.conversationList.addAll(loadHistoryConversationDataSource());
 		this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList);
 		xlistView.setAdapter(this.conversationListAdapter);
-		this.xlistView.setxListener(this);
-		/*
-		this.xListView
-				.setOnItemLongClickListener(new OnItemLongClickListener() {
+		List<ChatUser> chatUsers = new ArrayList<ChatUser>();
+		chatUsers.add(new ChatUser(1, "发现", "我发现一个比较好玩的地方", "",
+				"10:20"));
+		chatUsers.add(new ChatUser(2, "地图", "点击我可以看见附件的楼盘信息", "",
+				"13:29"));
+		chatUsers.add(new ChatUser(3, "活动宣传", "点击我可以看见公司最新的活动详情", "",
+				"19:23"));
+		chatUsers.add(new ChatUser(4, "客服聊天", "点击我可以向公司的客户直接沟通", "",
+				"21:15"));
+		xlistView
+				.setAdapter(new ListAdapter<ChatUser>(this.getActivity(), chatUsers, ModelType.CHAT_USER));
 
-					@Override
-					public boolean onItemLongClick(AdapterView<?> parent,
-							View view, int pos, long id) {
-						Toast.makeText(getActivity(),
-								"long click item at " + pos, Toast.LENGTH_SHORT)
-								.show();
-						return true;
-					}
-
-				});
-				*/
-		
 		this.xlistView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 									long id) {
-//				if (1 == pos) {
-//					Intent intent = new Intent();
-//					intent.setClass(getActivity(), NewsDetailActivity.class);
-//					startActivity(intent);
-//				} else if (2 == pos) {
-//					Intent intent = new Intent();
-//					intent.setClass(getActivity(), MapActivity.class);
-//					startActivity(intent);
-//				} else if (3 == pos) {
-//					Intent intent = new Intent();
-//					intent.setClass(getActivity(), WebActivity.class);
-//					startActivity(intent);
-//				} else {
-//					/**聊天Activity**/
-//					Intent intent = new Intent();
-//					intent.putExtra("toChatUserName", "admin");
-//					intent.setClass(getActivity(), ChatActivity.class);
-//					startActivity(intent);
-//				}
 				/**聊天Activity**/
 				String toChatUserName = ((ConversationListAdapter.ViewHolder) view.getTag()).name.getText().toString();
 				Intent intent = new Intent();
@@ -243,26 +221,22 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 	}
 
 	@Override
-	public void loadMore() {
-		new Handler().postDelayed(new Runnable() {
-
+	public void onLoadMore() {
+		new Handler().postDelayed(new Runnable(){
 			@Override
 			public void run() {
 				xlistView.stopLoadMore();
 			}
-
 		}, 2000);
 	}
 
 	@Override
-	public void refreshing() {
+	public void onRefresh() {
 		new Handler().postDelayed(new Runnable() {
-
 			@Override
 			public void run() {
 				xlistView.stopRefresh();
 			}
-
 		}, 2000);
 	}
 
@@ -292,10 +266,25 @@ public class ChatFragment extends JCNetFragment implements XListView.XListViewLi
 		}
 	}
 
-	private void unregisterEventBus(){
-		if(isEventBusRegister){
+	private void unregisterEventBus() {
+		if (isEventBusRegister) {
 			EventBus.getDefault().unregister(this);
 			isEventBusRegister = false;
 		}
+	}
+
+	@Override
+	protected void handleCode(int code, String tag) {
+		super.handleCode(code, tag);
+	}
+
+	@Override
+	protected void handleResponse(int statusCode, JSONObject response, FetchType fetchtype) {
+
+	}
+
+	@Override
+	protected void fetchDataFromServer(FetchType fetchtype) {
+
 	}
 }

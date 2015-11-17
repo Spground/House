@@ -2,6 +2,7 @@ package jc.house.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -14,7 +15,7 @@ import jc.house.R;
 /**
  * Created by WuJie on 2015/11/13.
  */
-public class AboutFragment extends JCNetFragment {
+public class AboutFragment extends Fragment{
 
     private View view;
     private TextView contentTextView;

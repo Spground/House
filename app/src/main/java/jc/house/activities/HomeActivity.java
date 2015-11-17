@@ -90,10 +90,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			this.finish();
-		}
 		return super.onOptionsItemSelected(item);
 	}
 

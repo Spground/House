@@ -1,12 +1,5 @@
 package jc.house.views;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import jc.house.R;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +17,14 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import jc.house.R;
 
 public class CircleView extends LinearLayout {
 
@@ -158,8 +159,7 @@ public class CircleView extends LinearLayout {
 						imageReIds[i]));
 			} else {
 				ImageLoader.getInstance().displayImage(
-						"http://avatar.csdn.net/2/C/D/1_totogo2010.jpg",
-//						"http://avatar.csdn.net/E/8/F/1_hyr83960944.jpg",
+						"http://avatar.csdn.net/E/8/F/1_hyr83960944.jpg",
 						imageView);
 			}
 			imageView.setOnClickListener(new OnClickListener() {
@@ -177,7 +177,7 @@ public class CircleView extends LinearLayout {
 		this.viewPager.setAdapter(new CirclePagerAdapter());
 		this.viewPager
 				.addOnPageChangeListener(new CircleOnPageChangeListener());
-		this.indicatorView.setNormalresId(R.drawable.indicator_normal);
+		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
 		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.indicatorView.setNum(num);
 		if (this.autoPlay && null == this.mHandler && num > 1

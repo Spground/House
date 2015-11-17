@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -36,8 +37,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="3dp"
-        android:textSize="16.0sp"
         android:text="liaotian"
-        />
-
+        android:textSize="15.0sp" />
 </LinearLayout>
