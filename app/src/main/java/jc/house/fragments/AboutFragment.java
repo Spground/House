@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import jc.house.R;
+import jc.house.interfaces.IRefresh;
 
 /**
  * Created by WuJie on 2015/11/13.
  */
-public class AboutFragment extends Fragment{
+public class AboutFragment extends Fragment implements IRefresh{
 
     private View view;
     private TextView contentTextView;
@@ -67,5 +68,10 @@ public class AboutFragment extends Fragment{
             this.contentTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
             this.contentTextView.setText(Html.fromHtml(this.htmlSrc));
         }
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }
