@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-7d9f016a46ca05fc8e76f8f7ad26f702b95b0e5b.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-3416ff5d5fec84646418c93df2a80d3a4c646237.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\libs\TencentMapSDK_Raster_v1.1.2.15850.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ffb241eab4cc7d41b9635bd8939ee7c7ae737ac1">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\TencentMapSDK_Raster_v1.1.2.15850-2e624e147abb8fc523a755a9c87a90c7d27e59b4.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.9\386a4339ffe52d5d63e80f9bed8d2b1d1a418249\android-async-http-1.4.9.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="386a4339ffe52d5d63e80f9bed8d2b1d1a418249">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\android-async-http-1.4.9-e8fa66bee480b4c2ff6a7b2aa2dbb578dfd30782.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8413c27b45b7fe61dca4a98159f65e2cee215f5a">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-1230f7b150d7adf6b741fa2bef4bcfc393742c25.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\libs\easemobchat_2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="272e12284f694ce18895e715ca593cba0bca8bfc">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\easemobchat_2.2.3-8d74917c08f2d5bf3a2d2fcfe58938fa27b3edc7.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-bea2b45509d4d6e42080690b4dd6418e120e3086.jar" />
+    </item>
+    <item
+        jar="D:\adt-bundle-windows-x86_64-20140702\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.0\support-annotations-23.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.0-0335939e1bad4769792ee75e0dcb4d88ff079c37.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\cz.msebera.android\httpclient\4.3.6\526a9f794eab830eae4f23a62c572878b3f491ab\httpclient-4.3.6.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="526a9f794eab830eae4f23a62c572878b3f491ab">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\httpclient-4.3.6-78fdc3c26b1833c3a764160dfd0d94db4af8312f.jar" />
+    </item>
+
+</items>

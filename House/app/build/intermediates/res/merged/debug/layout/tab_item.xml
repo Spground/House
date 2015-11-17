@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/tab_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/ic_launcher"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/tab_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="3dp"
+        android:textSize="15.0sp" />
+
+</LinearLayout><!-- From: file:/C:/Users/hzj/AndroidStudioProjects/House/app/src/main/res/layout/tab_item.xml -->
