@@ -1,36 +1,33 @@
 package jc.house.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import android.widget.AdapterView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.R;
+import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.models.ModelType;
 import jc.house.models.News;
-import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
 import jc.house.views.CircleView;
 
-public class NewsFragment extends JCNetFragment {
+public class NewsFragment extends JCNetFragment implements CircleView.CircleViewOnClickListener {
     private static final int[] imageReIds = {R.drawable.caodi,
             R.drawable.chengbao, R.drawable.caodi};
 //	private static final String[] imageUrls = {"123", "456"};
@@ -47,17 +44,27 @@ public class NewsFragment extends JCNetFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.xlistView = (XListView) view.findViewById(R.id.list);
-        this.xlistView.setPullLoadEnable(true);
         news = new ArrayList<News>();
         CircleView circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
         circleView.setTimeInterval(3.6f);
         circleView.setImageReIds(imageReIds);
+        circleView.setOnCircleViewItemClickListener(this);
+        news.add(new News(1, "", "最近房价的走势,哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈", "楠楠", "2015/11/18"));
+        news.add(new News(1, "", "最近房价的走势", "楠楠", "2015/11/18"));
+        news.add(new News(1, "", "最近房价的走势", "楠楠", "2015/11/18"));
+        news.add(new News(1, "", "最近房价的走势", "楠楠", "2015/11/18"));
         this.adapter = new ListAdapter<News>(this.getActivity(), news, ModelType.NEWS, circleView);
         this.xlistView.setAdapter(adapter);
-		LogUtils.debug("NewsFragment","onActivityCreated!");
-        this.client.setURLEncodingEnabled(true);
-        this.client.setAuthenticationPreemptive(true);
+        this.xlistView.setXListViewListener(this);
+        this.xlistView.setPullLoadEnable(true);
+        this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -97,6 +104,13 @@ public class NewsFragment extends JCNetFragment {
 
     @Override
     protected void fetchDataFromServer(final FetchType fetchtype) {
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+                resetXListView();
+//            }
+//        }, 1000);
+        /*
         Map<String, String> params = new HashMap<String, String>();
         params.put("pageSize", String.valueOf(PAGE_SIZE));
         if (FetchType.FETCH_TYPE_LOAD_MORE == fetchtype) {
@@ -123,5 +137,12 @@ public class NewsFragment extends JCNetFragment {
                 LogUtils.debug(TAG, "statusCode is " + statusCode);
             }
         });
+        */
+    }
+
+    @Override
+    public void onCircleViewItemClick(View v, int index) {
+        Intent intent = new Intent(getActivity(), WebActivity.class);
+        startActivity(intent);
     }
 }

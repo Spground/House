@@ -10,16 +10,16 @@ import jc.house.global.Constants;
  */
 public class ToastUtils {
     private static final boolean DEBUG = Constants.DEBUG;
-    public static void show(Context ctx,String msg){
+    public static void show(Context ctx, String msg) {
         if(ctx == null || msg == null)
             return;
-        Toast.makeText(ctx,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static void debugShow(Context ctx,String msg){
+    public static void debugShow(Context ctx, String msg) {
         if(ctx == null || msg == null)
             return;
         if(DEBUG)
-            Toast.makeText(ctx,msg,Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
     }
 }

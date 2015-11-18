@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:divider="#EFEFEF"
         android:dividerHeight="10dp"
+        android:padding="3dp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="false"
         android:scrollbarStyle="outsideOverlay"

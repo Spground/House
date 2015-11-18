@@ -29,7 +29,7 @@ import jc.house.R;
 public class CircleView extends LinearLayout {
 
 	public interface CircleViewOnClickListener {
-		void onClick(View v, int index);
+		void onCircleViewItemClick(View v, int index);
 	}
 
 	private boolean autoPlay;
@@ -108,11 +108,7 @@ public class CircleView extends LinearLayout {
 		return imageReIds;
 	}
 
-	public CircleViewOnClickListener getCircleClickListener() {
-		return circleClickListener;
-	}
-
-	public void setCircleClickListener(
+	public void setOnCircleViewItemClickListener(
 			CircleViewOnClickListener circleClickListener) {
 		this.circleClickListener = circleClickListener;
 	}
@@ -167,7 +163,7 @@ public class CircleView extends LinearLayout {
 				@Override
 				public void onClick(View v) {
 					if (null != circleClickListener) {
-						circleClickListener.onClick(v, currentIndex);
+						circleClickListener.onCircleViewItemClick(v, currentIndex);
 					}
 				}
 

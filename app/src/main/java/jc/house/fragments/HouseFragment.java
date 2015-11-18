@@ -100,12 +100,15 @@ public class HouseFragment extends JCNetFragment {
     }
 
     private void updateListView(List<House> lists, final FetchType fetchtype) {
-        if (null != lists && lists.size() > 0) {
-            if (FetchType.FETCH_TYPE_REFRESH == fetchtype) {
+        if (null != lists) {
+            if (FetchType.FETCH_TYPE_REFRESH == fetchtype && lists.size() > 0) {
                 houses.clear();
                 isOver = false;
             }
             if (lists.size() < PAGE_SIZE) {
+                if (lists.size() == 0) {
+                    toastNoMoreData();
+                }
                 isOver = true;
             }
             houses.addAll(lists);
@@ -124,6 +127,7 @@ public class HouseFragment extends JCNetFragment {
                 }
             } else {
                 resetXListView();
+                toastNoMoreData();
                 return;
             }
         }

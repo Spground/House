@@ -10,6 +10,7 @@ package jc.house.JCListView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -95,7 +96,7 @@ public class XListView extends ListView implements OnScrollListener {
 		// init footer view
 		mFooterView = new XListViewFooter(context);
 //		mHeaderViewHeight = mHeaderViewContent.getHeight();
-		mHeaderViewHeight = 60;
+		mHeaderViewHeight = 80;
 	}
 
 	public void setFooterInvisible() {
@@ -134,11 +135,15 @@ public class XListView extends ListView implements OnScrollListener {
 	public void setPullLoadEnable(boolean enable) {
 		mEnablePullLoad = enable;
 		if (!mEnablePullLoad) {
-			mFooterView.hide();
+			this.setFooterInvisible();
+//			mFooterView.hide();
+			this.setFooterDividersEnabled(false);
 			mFooterView.setOnClickListener(null);
 		} else {
 			mPullLoading = false;
-			mFooterView.show();
+//			mFooterView.show();
+			this.mFooterView.setVisibility(View.VISIBLE);
+			this.setFooterDividersEnabled(true);
 			mFooterView.setState(XListViewFooter.STATE_NORMAL);
 			// both "pull up" and "click" will invoke load more.
 			mFooterView.setOnClickListener(new OnClickListener() {
@@ -157,6 +162,12 @@ public class XListView extends ListView implements OnScrollListener {
 		if (mPullRefreshing == true) {
 			mPullRefreshing = false;
 			resetHeaderHeight();
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					mHeaderView.setState(XListViewHeader.STATE_NORMAL);
+				}
+			}, SCROLL_DURATION - 50);
 		}
 	}
 
@@ -216,8 +227,7 @@ public class XListView extends ListView implements OnScrollListener {
 	private void updateFooterHeight(float delta) {
 		int height = mFooterView.getBottomMargin() + (int) delta;
 		if (mEnablePullLoad && !mPullLoading) {
-			if (height > PULL_LOAD_MORE_DELTA) { // height enough to invoke load
-													// more.
+			if (height > PULL_LOAD_MORE_DELTA) { // height enough to invoke load more.
 				mFooterView.setState(XListViewFooter.STATE_READY);
 			} else {
 				mFooterView.setState(XListViewFooter.STATE_NORMAL);
@@ -240,10 +250,10 @@ public class XListView extends ListView implements OnScrollListener {
 
 	private void startLoadMore() {
 		mFooterView.show();
-		mFooterView.setState(XListViewFooter.STATE_LOADING);
 		if (mListViewListener != null && !mPullLoading) {
-			mListViewListener.onLoadMore();
 			mPullLoading = true;
+			mFooterView.setState(XListViewFooter.STATE_LOADING);
+			mListViewListener.onLoadMore();
 		}
 	}
 
@@ -279,8 +289,8 @@ public class XListView extends ListView implements OnScrollListener {
 						&& mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 					mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
 					if (mListViewListener != null && !mPullRefreshing) {
-						mListViewListener.onRefresh();
 						mPullRefreshing = true;
+						mListViewListener.onRefresh();
 					}
 				}
 				resetHeaderHeight();

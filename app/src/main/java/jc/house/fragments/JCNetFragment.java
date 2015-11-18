@@ -48,6 +48,10 @@ public abstract class JCNetFragment extends Fragment implements IRefresh, XListV
         }
     }
 
+    protected void toastNoMoreData() {
+        ToastUtils.show(this.getActivity(), "暂时没有更多信息");
+    }
+
     @Override
     public void onRefresh() {
         this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);

@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import jc.house.R;
+import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 
 public class WebActivity extends Activity {
@@ -22,17 +23,17 @@ public class WebActivity extends Activity {
         this.webView.getSettings().setBlockNetworkImage(false);
         this.webView.getSettings().setBlockNetworkLoads(false);
         this.webView.getSettings().setJavaScriptEnabled(true);
-        this.webView.loadUrl("http://mp.weixin.qq.com/s?__biz=MjM5ODQ5NDU0NQ==&mid=401086800&idx=1&sn=32714399b9af548a9fbe252fc9a76b33&scene=0#wechat_redirect");
+        this.webView.loadUrl("http://xw.qq.com/m/news/index.htm");
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                ToastUtils.debugShow(WebActivity.this, "web load started");
+                LogUtils.debug("WebView", "web load started");
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                ToastUtils.debugShow(WebActivity.this, "web load finished");
+                LogUtils.debug("WebView", "web load finished");
                 super.onPageFinished(view, url);
             }
         });

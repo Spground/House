@@ -9,13 +9,13 @@ import jc.house.global.Constants;
  */
 public class LogUtils {
     private static final boolean DEBUG = Constants.DEBUG;
-    public static void debug(String str){
+    public static void debug(String str) {
         if(DEBUG)
-            Log.v("===JC===",str);
+            Log.v("===JC===", str);
     }
 
-    public static void debug(String tag,String str){
+    public static void debug(String tag, String str) {
         if(DEBUG)
-            Log.v("===" + tag + "===",str);
+            Log.v("===" + tag + "===", str);
     }
 }
