@@ -142,7 +142,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
 					JCActivity activity = (JCActivity)this.lists.get(mPos);
-					viewHolderActivity.picture.setImageResource(R.drawable.caodi);
+					viewHolderActivity.picture.setImageResource(Constants.res[(int)(Math.random() * 4)]);
 					viewHolderActivity.title.setText(activity.getName());
 					break;
 				default:

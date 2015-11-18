@@ -96,7 +96,7 @@ public class XListView extends ListView implements OnScrollListener {
 		// init footer view
 		mFooterView = new XListViewFooter(context);
 //		mHeaderViewHeight = mHeaderViewContent.getHeight();
-		mHeaderViewHeight = 80;
+		mHeaderViewHeight = 90;
 	}
 
 	public void setFooterInvisible() {

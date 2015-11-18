@@ -44,13 +44,13 @@ public class ActivityFragment extends JCNetFragment{
         super.onActivityCreated(savedInstanceState);
         this.xlistView = (XListView)view.findViewById(R.id.list);
         this.xlistView.setPullLoadEnable(true);
-        this.activities = new ArrayList<JCActivity>();
-        this.activities.add(new JCActivity(1,"","万达广场"));
-        this.activities.add(new JCActivity(1,"","万达广场"));
-        this.activities.add(new JCActivity(1,"","万达广场"));
-        this.activities.add(new JCActivity(1,"","万达广场"));
-        this.activities.add(new JCActivity(1, "", "万达广场"));
-        this.xlistView.setAdapter(new ListAdapter<JCActivity>(this.getActivity(), this.activities, ModelType.ACTIVITY));
+        this.activities = new ArrayList<>();
+        this.activities.add(new JCActivity(1,"","金宸•蓝郡一期"));
+        this.activities.add(new JCActivity(1,"","连大•文润金宸三期"));
+        this.activities.add(new JCActivity(1,"","金宸•蓝郡二期"));
+        this.activities.add(new JCActivity(1,"","连大•文润金宸三期"));
+        this.activities.add(new JCActivity(1, "", "金宸•蓝郡三期"));
+        this.xlistView.setAdapter(new ListAdapter<>(this.getActivity(), this.activities, ModelType.ACTIVITY));
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullLoadEnable(true);
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,4 +1,7 @@
 package jc.house.global;
+
+import jc.house.R;
+
 //wujie
 public final class Constants {
 	public static final boolean DEBUG = true;
@@ -13,4 +16,6 @@ public final class Constants {
 	public static final int CODE_SUCCESS = 1;
 	public static final int CODE_FAILED = 0;
 	public static final int CODE_NO_DATA = 2;
+
+	public static final int[] res = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d};
 }

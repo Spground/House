@@ -107,6 +107,7 @@ public class ChatFragment extends JCNetFragment{
 			this.conversationList.addAll(loadHistoryConversationDataSource());
 			this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList);
 			xlistView.setAdapter(this.conversationListAdapter);
+			this.xlistView.setPullLoadEnable(false);
 			this.xlistView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
