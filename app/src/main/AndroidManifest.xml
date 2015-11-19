@@ -45,7 +45,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -64,10 +64,11 @@
             android:name="TencentMapSDK"
             android:value="XV2BZ-XMIKS-CZBOI-62IYY-6PTE2-74B2J" />
 
-        <!-- huanxing SDK-->
+        <!-- huanxing SDK -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="wujieim#houstest"/>
+            android:value="wujieim#houstest" />
+
         <service android:name="com.easemob.chat.EMChatService" />
 
         <activity
@@ -80,7 +81,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.NewsDetailActivity"
+            android:name=".activities.HouseDetailActivity"
             android:label="@string/title_activity_news_detail"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
@@ -97,13 +98,14 @@
             android:label="@string/title_activity_chat" >
         </activity>
 
-        <!-- service goes here-->
+        <!-- service goes here -->
         <service
             android:name=".chat.service.ReceiveNewMessageService"
-            android:enabled="true"
-            >
+            android:enabled="true" >
         </service>
 
+        <activity android:name=".activities.BaseActivity" >
+        </activity>
     </application>
 
 </manifest>

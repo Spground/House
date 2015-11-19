@@ -24,7 +24,7 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.R;
-import jc.house.activities.NewsDetailActivity;
+import jc.house.activities.HouseDetailActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
@@ -69,8 +69,9 @@ public class HouseFragment extends JCNetFragment {
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
                 startActivity(intent);
+                LogUtils.debug(TAG, "pos is " + position);
             }
         });
     }

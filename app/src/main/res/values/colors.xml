@@ -342,6 +342,8 @@
     <color name="holo_red_light">#ffff4444</color>
     <!-- 聊天用到的颜色值-->
 
+    <color name="map_normal">#FFFFFF</color>
+    <color name="map_selected">#CCCCCC</color>
 
 
 </resources>

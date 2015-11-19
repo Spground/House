@@ -1,5 +1,6 @@
 package jc.house.activities;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,13 +13,14 @@ import jc.house.R;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 
-public class WebActivity extends Activity {
+public class WebActivity extends BaseActivity {
     private WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_web);
+        this.progressDialog.show();
         this.webView = (WebView)this.findViewById(R.id.webView);
         this.webView.getSettings().setBlockNetworkImage(false);
         this.webView.getSettings().setBlockNetworkLoads(false);
@@ -35,6 +37,7 @@ public class WebActivity extends Activity {
             public void onPageFinished(WebView view, String url) {
                 LogUtils.debug("WebView", "web load finished");
                 super.onPageFinished(view, url);
+                progressDialog.dismiss();
             }
         });
 

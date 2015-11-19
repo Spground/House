@@ -26,18 +26,13 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import jc.house.JCListView.XListView;
 import jc.house.R;
-import jc.house.activities.MapActivity;
-import jc.house.activities.NewsDetailActivity;
-import jc.house.activities.WebActivity;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
-import jc.house.adapters.ListAdapter;
 import jc.house.global.FetchType;
-import jc.house.chat.model.ChatUser;
-import jc.house.models.ModelType;
+
 public class ChatFragment extends JCNetFragment{
 	public static final String TAG = "ChatFragment";
 	private boolean isEventBusRegister = false;

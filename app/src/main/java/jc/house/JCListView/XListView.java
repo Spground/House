@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -23,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 import jc.house.R;
+import jc.house.utils.LogUtils;
 
 public class XListView extends ListView implements OnScrollListener {
 
@@ -95,8 +97,16 @@ public class XListView extends ListView implements OnScrollListener {
 
 		// init footer view
 		mFooterView = new XListViewFooter(context);
-//		mHeaderViewHeight = mHeaderViewContent.getHeight();
-		mHeaderViewHeight = 80;
+		mHeaderViewHeight = 90;
+//		ViewTreeObserver observer = mHeaderViewContent.getViewTreeObserver();
+//		observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//			@Override
+//			public void onGlobalLayout() {
+//				mHeaderViewHeight = mHeaderViewContent.getHeight();
+//				LogUtils.debug("headerHeight is " + mHeaderViewHeight);
+//			}
+//		});
+
 	}
 
 	public void setFooterInvisible() {

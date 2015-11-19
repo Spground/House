@@ -53,6 +53,7 @@ public class ActivityFragment extends JCNetFragment{
         this.xlistView.setAdapter(new ListAdapter<JCActivity>(this.getActivity(), this.activities, ModelType.ACTIVITY));
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullLoadEnable(true);
+        this.xlistView.setHeaderDividersEnabled(false);
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

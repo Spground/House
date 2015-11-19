@@ -40,9 +40,10 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                ToastUtils.show(MapActivity.this,"hahaha");
+                ToastUtils.show(MapActivity.this, "hahaha");
             }
         });
+        this.mapView.getMap().setCenter(new LatLng(39.90, 116.425));
     }
 
     @Override
