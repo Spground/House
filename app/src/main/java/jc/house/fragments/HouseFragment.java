@@ -60,8 +60,8 @@ public class HouseFragment extends JCNetFragment {
         super.onActivityCreated(savedInstanceState);
         this.xlistView = (XListView) this.view.findViewById(R.id.list);
         this.isOver = false;
-        this.houses = new ArrayList<House>();
-        this.adapter = new ListAdapter<House>(this.getActivity(), this.houses, ModelType.HOUSE);
+        this.houses = new ArrayList<>();
+        this.adapter = new ListAdapter<>(this.getActivity(), this.houses, ModelType.HOUSE);
         this.xlistView.setAdapter(this.adapter);
         this.xlistView.setPullLoadEnable(true);
         this.xlistView.setXListViewListener(this);

@@ -23,15 +23,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+
 import de.greenrobot.event.EventBus;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
+import jc.house.global.FetchType;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
-import jc.house.global.FetchType;
 
 public class ChatFragment extends JCNetFragment{
 	public static final String TAG = "ChatFragment";

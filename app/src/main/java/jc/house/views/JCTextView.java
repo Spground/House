@@ -1,6 +1,7 @@
 package jc.house.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.TextView;
 import jc.house.R;
@@ -32,6 +33,7 @@ public class JCTextView extends TextView {
         this.selected = false;
         this.normalDrawable = R.drawable.jctextview_normal;
         this.selectedDrawable = R.drawable.jctextview_selected;
+        this.setTextColor(Color.rgb(170, 170, 170));
         this.setBackgroundResource(normalDrawable);
     }
 

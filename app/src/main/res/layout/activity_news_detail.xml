@@ -24,101 +24,131 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="电        话："/>
-                <TextView
-                    android:id="@+id/phone"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:text="13699297633"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:text="电        话："/>
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:textColor="#555555"
+                        android:text="13699297633"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/houseType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:text="物业类型："/>
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#555555"
+                        android:text="商品房"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:text="主力户型："/>
+                    <TextView
+                        android:id="@+id/force"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#555555"
+                        android:text="别墅"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:text="均        价："/>
+                    <TextView
+                        android:id="@+id/avgPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#555555"
+                        android:text="1.6万/平"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:text="地        址："/>
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#555555"
+                        android:text="大连市甘井子区大连理工大学"/>
+                </LinearLayout>
+
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/houseType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="物业类型："/>
-                <TextView
-                    android:id="@+id/type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="商品房"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="主力户型："/>
-                <TextView
-                    android:id="@+id/force"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="别墅"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="均        价："/>
-                <TextView
-                    android:id="@+id/avgPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="1.6万/平"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="地        址："/>
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="大连市甘井子区大连理工大学"/>
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/chat"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center"
+                android:src="@drawable/qq"/>
 
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#EEEEEE"
+            android:layout_marginTop="2dp"
+            android:padding="1dp"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
                 android:orientation="horizontal">
 
                 <jc.house.views.JCTextView
@@ -129,7 +159,7 @@
                     android:gravity="center"
                     android:textSize="16sp"
                     android:padding="3dp"
-                    android:layout_marginRight="1dp"
+                    android:layout_marginRight="0.3dp"
                     android:text="推荐理由"/>
                 <jc.house.views.JCTextView
                     android:id="@+id/traffic"
@@ -139,7 +169,7 @@
                     android:gravity="center"
                     android:textSize="16sp"
                     android:padding="3dp"
-                    android:layout_marginRight="1dp"
+                    android:layout_marginRight="0.3dp"
                     android:text="行车路线"/>
                 <jc.house.views.JCTextView
                     android:id="@+id/design"
@@ -156,6 +186,7 @@
             <jc.house.views.MViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
+                android:layout_gravity="center"
                 android:layout_height="160dp" >
             </jc.house.views.MViewPager>
 

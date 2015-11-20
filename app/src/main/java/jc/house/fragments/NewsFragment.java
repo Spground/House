@@ -44,7 +44,7 @@ public class NewsFragment extends JCNetFragment implements CircleView.CircleView
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.xlistView = (XListView) view.findViewById(R.id.list);
-        news = new ArrayList<News>();
+        news = new ArrayList<>();
         CircleView circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
         circleView.setTimeInterval(3.6f);
@@ -70,7 +70,7 @@ public class NewsFragment extends JCNetFragment implements CircleView.CircleView
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = (View) inflater.inflate(R.layout.common_list, container, false);
+        this.view = inflater.inflate(R.layout.common_list, container, false);
         return this.view;
     }
 
@@ -104,12 +104,7 @@ public class NewsFragment extends JCNetFragment implements CircleView.CircleView
 
     @Override
     protected void fetchDataFromServer(final FetchType fetchtype) {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-                resetXListView();
-//            }
-//        }, 1000);
+        resetXListView();
         /*
         Map<String, String> params = new HashMap<String, String>();
         params.put("pageSize", String.valueOf(PAGE_SIZE));

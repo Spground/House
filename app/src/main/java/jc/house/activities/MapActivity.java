@@ -1,16 +1,13 @@
 package jc.house.activities;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
 import com.tencent.mapsdk.raster.model.LatLng;
 import com.tencent.mapsdk.raster.model.Marker;
 import com.tencent.mapsdk.raster.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.map.MapView;
-import com.tencent.tencentmap.mapsdk.map.OnMapHitListener;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 
 import jc.house.R;

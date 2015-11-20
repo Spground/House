@@ -1,17 +1,13 @@
 package jc.house.activities;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import jc.house.R;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ToastUtils;
 
 public class WebActivity extends BaseActivity {
     private WebView webView;
@@ -25,7 +21,7 @@ public class WebActivity extends BaseActivity {
         this.webView.getSettings().setBlockNetworkImage(false);
         this.webView.getSettings().setBlockNetworkLoads(false);
         this.webView.getSettings().setJavaScriptEnabled(true);
-        this.webView.loadUrl("http://xw.qq.com/m/news/index.htm");
+        this.webView.loadUrl("http://zhan.qq.com/sites/templates/41428/index.html");
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {

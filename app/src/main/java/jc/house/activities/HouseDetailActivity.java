@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	private List<TextView> textViews;
 	private List<JCTextView> titles;
 	private TextView mapTextView;
+	private ImageView chatImage;
 	private int currentIndex;
 	private static final String TAG = "HouseDetailActivity";
 	private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
@@ -38,7 +41,6 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		setContentView(R.layout.activity_news_detail);
 		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
 		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.right_view, null);
-//		this.mapTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		this.mapTextView.setText("地图");
 		this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -60,6 +62,13 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		});
 		this.titleBar.setRightChildView(mapTextView);
 		this.titleBar.setTitle("楼盘详情");
+		this.chatImage = (ImageView)this.findViewById(R.id.chat);
+		this.chatImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//跳转到聊天页面
+			}
+		});
 		this.viewPager = (MViewPager)this.findViewById(R.id.viewpager);
 		this.currentIndex = 0;
 		this.titles = new ArrayList<>(3);
@@ -72,25 +81,28 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		}
 		this.textViews = new ArrayList<>(3);
 		for (int i = 0; i < 3; i++) {
-			final TextView textView = new TextView(this);
+			TextView textView = new TextView(this);
 			textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			textView.setPadding(5, 1, 5, 5);
+			textView.setPadding(2, 2, 0, 2);
+			textView.setTextSize(15.0f);
+			textView.setTextColor(Color.rgb(90, 90, 90));
+			textView.setBackgroundColor(Color.rgb(240,240,240));
 			if (i == 0) {
 				textView.setText("\n" +
 						"当你需要获取textview真正高度时\n" +
 						"思考-设计-code\n" +
-
 						"31省前三季度GDP之和超出全国1.9万亿， 广东GDP居首\n" +
 						"扑克牌里“J、Q、K”，你们都叫什么？\n" +
-						"算法和设计\n");
+						"算法和设计\nkkkkkkkkk\niiiiiiiii");
 			} else {
 				textView.setText("\n" +
 						"当你需要获取textview真正高度时\n" +
 						"31省前三季度GDP之和超出全国1.9万亿， 广东GDP居首\n" +
 						"因此我们需要给textview绑定一个监听器\n" +
 						"扑克牌里“J、Q、K”，你们都叫什么？\n" +
-						"算法和设计\n" + "算法和设计\n" + "hello world!\n");
+						"算法和设计\n" + "算法和设计\n" + "hello world!\nhhhhhhhhhhh\njjjjjjjjj");
 			}
+			textView.setMovementMethod(ScrollingMovementMethod.getInstance());
 			textViews.add(textView);
 		}
 		this.viewPager.setAdapter(new PagerAdapter() {

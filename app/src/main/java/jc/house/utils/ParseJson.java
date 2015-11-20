@@ -17,7 +17,10 @@ import jc.house.models.News;
 public final class ParseJson {
 
     public static List<News> parseNews(JSONArray array) {
-        List<News> result = new ArrayList<News>();
+        List<News> news = new ArrayList<News>();
+        if (null == array && array.length() == 0) {
+            return news;
+        }
         try {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject item = array.getJSONObject(i);
@@ -27,13 +30,13 @@ public final class ParseJson {
                     String title = item.getString("title");
                     String author = item.getString("author");
                     String date = item.getString("date");
-                    result.add(new News(id, url, title, author, date));
+                    news.add(new News(id, url, title, author, date));
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return result;
+        return news;
     }
 
     public static List<House> parseHouse(JSONArray array) {

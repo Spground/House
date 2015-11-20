@@ -12,7 +12,6 @@ public final class StringUtils {
 		if(null == str || str.length() <= length) {
 			return str;
 		}
-		String res = str.substring(0,length);
-		return null;
+		return str.substring(0,length);
 	}
 }
