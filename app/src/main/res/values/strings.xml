@@ -316,5 +316,7 @@
     <string name="toast_updatephoto_success">更新头像成功!</string>
     <string name="toast_updatephoto_fail">更新头像失败!</string>
     <string name="title_activity_company_introduction">CompanyIntroductionActivity</string>
+    <string name="title_activity_user_feedback">UserFeedbackActivity</string>
+    <string name="title_activity_about_us">AboutUsActivity</string>
     <!-- -->
 </resources>

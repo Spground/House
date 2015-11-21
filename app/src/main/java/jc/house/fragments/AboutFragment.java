@@ -1,5 +1,6 @@
 package jc.house.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import jc.house.R;
+import jc.house.activities.AboutUsActivity;
+import jc.house.activities.CompanyIntroductionActivity;
+import jc.house.activities.UserFeedbackActivity;
 import jc.house.interfaces.IRefresh;
 
 /**
@@ -48,12 +52,15 @@ public class AboutFragment extends Fragment implements IRefresh, View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.id_company_introduction:
+                startActivity(new Intent(getActivity(), CompanyIntroductionActivity.class));
                 break;
             case R.id.id_user_feedback:
+                startActivity(new Intent(getActivity(), UserFeedbackActivity.class));
                 break;
             case R.id.id_check_update:
                 break;
             case R.id.id_about_us:
+                startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
         }
     }
