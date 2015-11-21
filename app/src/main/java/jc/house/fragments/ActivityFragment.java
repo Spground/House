@@ -58,6 +58,13 @@ public class ActivityFragment extends JCNetFragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
+                if (position == 1) {
+                    intent.putExtra("url", "http://zhan.qq.com/sites/templates/41428/index.html");
+                } else if(position == 2) {
+                    intent.putExtra("url", "http://zhan.qq.com/sites/templates/1068/index.html");
+                } else if (position == 3) {
+                    intent.putExtra("url", "http://zhan.qq.com/sites/templates/1060/index.html");
+                }
                 startActivity(intent);
             }
         });

@@ -48,7 +48,7 @@ public class JCTextView extends TextView {
     @Override
     public void setSelected(boolean selected) {
         this.selected = selected;
-        if (selected) {
+        if (this.selected) {
             this.setBackgroundResource(selectedDrawable);
         } else {
             this.setBackgroundResource(normalDrawable);

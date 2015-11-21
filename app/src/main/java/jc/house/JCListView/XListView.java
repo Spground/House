@@ -167,6 +167,8 @@ public class XListView extends ListView implements OnScrollListener {
 					mHeaderView.setState(XListViewHeader.STATE_NORMAL);
 				}
 			}, SCROLL_DURATION - 50);
+		} else {
+			resetHeaderHeight();
 		}
 	}
 
@@ -176,6 +178,8 @@ public class XListView extends ListView implements OnScrollListener {
 	public void stopLoadMore() {
 		if (mPullLoading == true) {
 			mPullLoading = false;
+			mFooterView.setState(XListViewFooter.STATE_NORMAL);
+		} else {
 			mFooterView.setState(XListViewFooter.STATE_NORMAL);
 		}
 	}
@@ -253,6 +257,7 @@ public class XListView extends ListView implements OnScrollListener {
 			mPullLoading = true;
 			mFooterView.setState(XListViewFooter.STATE_LOADING);
 			mListViewListener.onLoadMore();
+			stopRefresh();
 		}
 	}
 
@@ -287,7 +292,7 @@ public class XListView extends ListView implements OnScrollListener {
 				if (mEnablePullRefresh
 						&& mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 					mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
-					if (mListViewListener != null && !mPullRefreshing) {
+					if (mListViewListener != null && !mPullRefreshing && !mPullLoading) {
 						mPullRefreshing = true;
 						mListViewListener.onRefresh();
 					}
@@ -297,8 +302,9 @@ public class XListView extends ListView implements OnScrollListener {
 			if (getLastVisiblePosition() == mTotalItemCount - 1) {
 				// invoke load more.
 				if (mEnablePullLoad
-						&& mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA) {
+						&& mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA && !mPullLoading && !mPullRefreshing) {
 					startLoadMore();
+					stopRefresh();
 				}
 				resetFooterHeight();
 			}

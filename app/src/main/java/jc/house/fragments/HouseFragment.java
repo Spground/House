@@ -25,6 +25,7 @@ import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HouseDetailActivity;
+import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
@@ -65,7 +66,21 @@ public class HouseFragment extends JCNetFragment {
         this.xlistView.setAdapter(this.adapter);
         this.xlistView.setPullLoadEnable(true);
         this.xlistView.setXListViewListener(this);
-        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+//        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
+                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
+                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学北山研教楼",
+                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
+                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学北山研教楼",
+                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
+                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
+                "13699297633", 112, 125));
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -119,12 +134,14 @@ public class HouseFragment extends JCNetFragment {
 
     @Override
     protected void fetchDataFromServer(final FetchType fetchtype) {
+        resetXListView();
+        /*
         Map<String, String> params = new HashMap<String, String>();
         params.put("pageSize", String.valueOf(PAGE_SIZE));
         if (FetchType.FETCH_TYPE_LOAD_MORE == fetchtype) {
             if (!this.isOver) {
                 if (null != this.houses && this.houses.size() > 0) {
-                    params.put("id", String.valueOf(((House) this.houses.get(houses.size() - 1)).getID()));
+                    params.put("id", String.valueOf((this.houses.get(houses.size() - 1)).getID()));
                 }
             } else {
                 resetXListView();
@@ -148,5 +165,6 @@ public class HouseFragment extends JCNetFragment {
             }
 
         });
+        */
     }
 }

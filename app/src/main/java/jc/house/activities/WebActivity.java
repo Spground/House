@@ -1,5 +1,6 @@
 package jc.house.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Window;
@@ -8,6 +9,7 @@ import android.webkit.WebViewClient;
 
 import jc.house.R;
 import jc.house.utils.LogUtils;
+import jc.house.utils.StringUtils;
 
 public class WebActivity extends BaseActivity {
     private WebView webView;
@@ -21,7 +23,13 @@ public class WebActivity extends BaseActivity {
         this.webView.getSettings().setBlockNetworkImage(false);
         this.webView.getSettings().setBlockNetworkLoads(false);
         this.webView.getSettings().setJavaScriptEnabled(true);
-        this.webView.loadUrl("http://zhan.qq.com/sites/templates/41428/index.html");
+        Intent intent = this.getIntent();
+        String url = intent.getStringExtra("url");
+        if (!StringUtils.strEmpty(url)) {
+            this.webView.loadUrl(url);
+        } else {
+            this.webView.loadUrl("http://zhan.qq.com/sites/templates/41428/index.html");
+        }
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {

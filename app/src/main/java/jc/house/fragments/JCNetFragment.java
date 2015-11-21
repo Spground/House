@@ -8,6 +8,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import org.json.JSONObject;
 
 import jc.house.JCListView.XListView;
+import jc.house.activities.HomeActivity;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.interfaces.IRefresh;
@@ -50,6 +51,13 @@ public abstract class JCNetFragment extends Fragment implements IRefresh, XListV
 
     protected void toastNoMoreData() {
         ToastUtils.show(this.getActivity(), "暂时没有更多信息");
+    }
+    protected void handleFailure() {
+        if (!HomeActivity.isNetAvailable) {
+            ToastUtils.show(this.getActivity(), "当前网络不可用！");
+        } else {
+            ToastUtils.show(this.getActivity(), "服务器连接错误，请重新尝试！");
+        }
     }
 
     @Override

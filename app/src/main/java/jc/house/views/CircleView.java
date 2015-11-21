@@ -74,7 +74,7 @@ public class CircleView extends LinearLayout {
 		this.timeInterval = 0;
 		this.num = 0;
 		this.context = context;
-		this.imageViews = new ArrayList<ImageView>();
+		this.imageViews = new ArrayList<>();
 		this.animation = new AlphaAnimation(0.6f, 1.0f);
 		this.animation.setDuration(1000);
 		this.scrollOrientaion = SCROLL_RIGHT;
@@ -227,14 +227,14 @@ public class CircleView extends LinearLayout {
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int pos) {
-			View view = (View) imageViews.get(pos);
+			View view = imageViews.get(pos);
 			container.addView(view);
 			return view;
 		}
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView((View) (imageViews.get(position)));
+			container.removeView(imageViews.get(position));
 		}
 
 	}
@@ -268,24 +268,24 @@ public class CircleView extends LinearLayout {
 	}
 
 	private static final class MyHandler extends Handler {
-		private WeakReference<CircleView> weakCirclerView;
+		private WeakReference<CircleView> weakCircleView;
 
 		public MyHandler(CircleView view) {
-			this.weakCirclerView = new WeakReference<CircleView>(view);
+			this.weakCircleView = new WeakReference<>(view);
 		}
 
 		@Override
 		public void handleMessage(Message msg) {
-			CircleView circleView = this.weakCirclerView.get();
+			CircleView circleView = this.weakCircleView.get();
 			if (null != circleView) {
 				switch (msg.what) {
-				case CIRCLE_FLAG:
-					if(circleView.autoPlay) {
-						circleView.circle();
-					}
-					break;
-				default:
-					break;
+					case CIRCLE_FLAG:
+						if(circleView.autoPlay) {
+							circleView.circle();
+						}
+						break;
+					default:
+						break;
 				}
 			}
 		}
