@@ -2,11 +2,74 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\de.greenrobot\eventbus\2.4.0\ddd166d01b3158d1c00576d29f7ed15c030df719\eventbus-2.4.0.jar"
+        jar="C:\Users\asus\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-e961ff2f463e31ea814640e74e1eea5d6e40e627.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\git\House\app\libs\easemobchat_2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="272e12284f694ce18895e715ca593cba0bca8bfc">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\easemobchat_2.2.3-a06aac2d4303373379846fe459690fb49ffd04ea.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.9\386a4339ffe52d5d63e80f9bed8d2b1d1a418249\android-async-http-1.4.9.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="386a4339ffe52d5d63e80f9bed8d2b1d1a418249">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\android-async-http-1.4.9-4b584545127343fbf270b14c798fc765ddc5918f.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-93063e02a65b66d0534c2bd88484ae63c03d7a2a.jar" />
+    </item>
+    <item
+        jar="D:\android-sdk-windows\extras\android\m2repository\com\android\support\support-annotations\23.0.0\support-annotations-23.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.0-06ad90457e9511b5dc4d2cbcd484d3bc353c137c.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\git\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\classes-94fb508224f589e3863924076091ca896353ea0d.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\.gradle\caches\modules-2\files-2.1\de.greenrobot\eventbus\2.4.0\ddd166d01b3158d1c00576d29f7ed15c030df719\eventbus-2.4.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-778811954342ff933c87640b1ed02708d7eac854.jar" />
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-96f4ab332cf06aec0c1ac8b64d24f89dc495d048.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\.gradle\caches\modules-2\files-2.1\cz.msebera.android\httpclient\4.3.6\526a9f794eab830eae4f23a62c572878b3f491ab\httpclient-4.3.6.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="526a9f794eab830eae4f23a62c572878b3f491ab">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\httpclient-4.3.6-16e7303d5b0ecbc942b92c3f6e96995227ce7dd0.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\git\House\app\libs\TencentMapSDK_Raster_v1.1.2.15850.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ffb241eab4cc7d41b9635bd8939ee7c7ae737ac1">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\TencentMapSDK_Raster_v1.1.2.15850-c36c099041d44059e7c8b4a7a6c50cadadc1dac8.jar" />
+    </item>
+    <item
+        jar="C:\Users\asus\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8413c27b45b7fe61dca4a98159f65e2cee215f5a">
+        <dex dex="C:\Users\asus\git\House\app\build\intermediates\pre-dexed\debug\classes-7d1a551ab0d126960d2d43d8e92cbaa2666e216d.jar" />
     </item>
 
 </items>
