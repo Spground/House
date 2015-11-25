@@ -19,6 +19,7 @@
        android:background="@color/light_gray"
        >
        <EditText
+           android:id="@+id/id_user_feedback_edit_text"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
            android:layout_gravity="top"
@@ -34,6 +35,7 @@
            android:padding="10dip"
            android:textSize="15sp" />
        <Button
+           android:id="@+id/id_user_feedback_submit_button"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
            android:background="@drawable/basic_large_btn_selector"

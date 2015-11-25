@@ -9,15 +9,14 @@
     <RelativeLayout
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:paddingTop="5dp"
         android:layout_gravity="center"
-        android:padding="5dp"
-        android:paddingRight="5dp"
         >
     <ImageView
         android:id="@+id/tab_image"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/tab_home_normal"
          />
     <View
         android:id="@+id/unread_msg_little_red_dot"
@@ -36,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="3dp"
-        android:text="liaotian"
-        android:textSize="15.0sp" />
+        android:padding="2dp"
+        android:text="主页"
+        android:textSize="12sp" />
 </LinearLayout>

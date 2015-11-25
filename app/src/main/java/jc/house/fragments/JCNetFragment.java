@@ -22,10 +22,10 @@ public abstract class JCNetFragment extends Fragment implements IRefresh, XListV
     protected View view;
     protected XListView xlistView;
     protected AsyncHttpClient client;
+
     protected JCNetFragment() {
         this.client = new AsyncHttpClient();
     }
-
     @Override
     public void refresh() {
         ToastUtils.show(this.getActivity(), "刷新数据或者是滑到最上面");

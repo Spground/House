@@ -19,7 +19,7 @@ public class TabViewItem extends LinearLayout {
 	private int normalResId, selectedResId;
 	private int index;
 	private final int normalTextColor = Color.rgb(99, 99, 99);
-	private final int selectedTextColor = Color.rgb(66, 204, 99);
+	private final int selectedTextColor = Color.rgb(229, 1, 19);
 
 	public TabViewItem(Context context) {
 		super(context);

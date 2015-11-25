@@ -40,12 +40,22 @@
                     android:textStyle="bold"
                     android:textSize="14sp" />
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_gravity="left"
+                    android:text="推荐指数4.5"
+                    android:textSize="8sp"
+                    android:gravity="left|center"
+                    android:textColor="@color/grey"
+                    android:drawableLeft="@drawable/temp_rating_bar" />
+                <TextView
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:textColor="#777777"
-                    android:gravity="center_vertical"
+                    android:gravity="left|center_vertical"
                     android:textSize="10sp"
                     android:text="沙河口 小户型 南北通透 双卫" />
 

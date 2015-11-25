@@ -39,7 +39,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_news_detail);
+		setContentView(R.layout.activity_house_detail);
 		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
 		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.right_view, null);
 		this.mapTextView.setText("地图");

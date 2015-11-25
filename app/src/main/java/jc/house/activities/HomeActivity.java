@@ -56,8 +56,16 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
 	private static final String TAG = "HomeActivity";
 	private static final String[] tabNames = {"首页", "楼盘", "活动", "聊天", "关于"};
-	private static final int[] selectedResIds = {R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected, R.drawable.chat_selected};
-	private static final int[] normalResIds = {R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat, R.drawable.chat};
+	private static final int[] selectedResIds = {R.drawable.tab_home_selected,
+												R.drawable.tab_building_selected,
+												R.drawable.tab_activity_selected,
+												R.drawable.tab_chat_selected,
+												R.drawable.tab_about_selected};
+	private static final int[] normalResIds = {R.drawable.tab_home_normal,
+												R.drawable.tab_building_normal,
+												R.drawable.tab_activity_normal,
+												R.drawable.tab_chat_normal,
+												R.drawable.tab_about_normal};
 	private static final int[] tabItemIds= {R.id.first_page, R.id.building, R.id.activities, R.id.chat, R.id.me};
 
 	@Override

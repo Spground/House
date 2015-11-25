@@ -12,11 +12,12 @@
         android:layout_height="72dp"
         android:padding="1dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/caodi" />
+         />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp"
         android:layout_marginLeft="2dp"
         android:gravity="center"
         android:orientation="vertical" >
@@ -29,7 +30,6 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textStyle="bold"
-            android:text="心系昭通 情献灾区"
             android:textSize="14sp" />
 
         <RelativeLayout
@@ -44,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#777777"
-                android:text="管理员"
                 android:textSize="14sp" />
 
             <TextView
@@ -54,7 +53,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:textColor="#999999"
-                android:text="2012/02/12"
                 android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>

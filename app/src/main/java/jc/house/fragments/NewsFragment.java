@@ -29,7 +29,7 @@ import jc.house.views.CircleView;
 
 public class NewsFragment extends JCNetFragment implements CircleView.CircleViewOnClickListener {
     private static final int[] imageReIds = {R.drawable.caodi,
-            R.drawable.chengbao, R.drawable.caodi};
+            R.drawable.chengbao, R.drawable.jc_logo_flash};
 //	private static final String[] imageUrls = {"123", "456"};
 	private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
