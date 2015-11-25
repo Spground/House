@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jc.house.R;
+import jc.house.chat.ChatActivity;
 import jc.house.views.JCTextView;
 import jc.house.views.MViewPager;
 import jc.house.views.TitleBar;
@@ -67,6 +68,9 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 			@Override
 			public void onClick(View v) {
 				//跳转到聊天页面
+				Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
+						intent.putExtra("toChatUserName", "admin");
+				startActivity(intent);
 			}
 		});
 		this.viewPager = (MViewPager)this.findViewById(R.id.viewpager);

@@ -29,7 +29,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textStyle="bold"
-            android:textSize="15sp" />
+            android:text="心系昭通 情献灾区"
+            android:textSize="14sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#777777"
+                android:text="管理员"
                 android:textSize="14sp" />
 
             <TextView
@@ -52,6 +54,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:textColor="#999999"
+                android:text="2012/02/12"
                 android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>
