@@ -33,7 +33,7 @@ public class JCTextView extends TextView {
         this.selected = false;
         this.normalDrawable = R.drawable.jctextview_normal;
         this.selectedDrawable = R.drawable.jctextview_selected;
-        this.setTextColor(Color.rgb(170, 170, 170));
+        this.setTextColor(Color.rgb(160, 160, 160));
         this.setBackgroundResource(normalDrawable);
     }
 

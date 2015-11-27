@@ -67,20 +67,20 @@ public class HouseFragment extends JCNetFragment {
         this.xlistView.setPullLoadEnable(true);
         this.xlistView.setXListViewListener(this);
 //        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
-                "13699297633", 112, 125));
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
-                "13699297633", 112, 125));
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学北山研教楼",
-                "13699297633", 112, 125));
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
-                "13699297633", 112, 125));
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学北山研教楼",
-                "13699297633", 112, 125));
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
-                "13699297633", 112, 125));
-        this.houses.add(new House(1, "", "大连理工大学", "辽宁省大连市甘井子区大连理工大学",
-                "13699297633", 112, 125));
+        this.houses.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
+                "0411-86536589", 112, 125));
+        this.houses.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
+                "0411-86536589", 112, 125));
+        this.houses.add(new House(1, "", "金宸.蓝郡三期", "沙河口区 小户型 板楼 双卫",
+                "0411-86536589", 112, 125));
+        this.houses.add(new House(1, "", "连大.文润金宸二期", "沙河口 小户型 南北通透 双卫",
+                "0411-86536589", 112, 125));
+        this.houses.add(new House(1, "", "连大.文润金宸一期", "甘井子区 板楼 南北通透 海景地产",
+                "0411-86536589", 112, 125));
+        this.houses.add(new House(1, "", "金宸.蓝郡三期", "沙河口 小户型 南北通透 双卫",
+                "0411-86536589", 112, 125));
+        this.houses.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
+                "0411-86536589", 112, 125));
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

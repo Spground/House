@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/listview_selector"
     android:gravity="center"
+    android:padding="2dp"
     android:orientation="horizontal" >
 
     <ImageView
@@ -12,11 +13,12 @@
         android:layout_height="72dp"
         android:padding="1dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/caodi" />
+         />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp"
         android:layout_marginLeft="2dp"
         android:gravity="center"
         android:orientation="vertical" >
@@ -27,9 +29,9 @@
             android:layout_height="0dp"
             android:paddingTop="5dp"
             android:layout_weight="1"
+            android:textColor="#666666"
             android:gravity="center_vertical"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,8 +44,8 @@
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#777777"
-                android:textSize="14sp" />
+                android:textColor="#888888"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/date"
@@ -52,7 +54,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:textColor="#999999"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -21,7 +21,8 @@
             android:layout_weight="1"
             android:paddingBottom="3dp"
             android:paddingLeft="8dp"
-            android:textSize="18sp"
+            android:textSize="15sp"
+            android:textColor="#666666"
             android:text="hello world"/>
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +31,7 @@
             android:paddingRight="25dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textColor="@android:color/darker_gray"
             android:drawableRight="@drawable/mm_submenu_normal"
             android:drawablePadding="2dp"

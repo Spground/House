@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jc.house.R;
+import jc.house.chat.ChatActivity;
 import jc.house.views.JCTextView;
 import jc.house.views.MViewPager;
 import jc.house.views.TitleBar;
@@ -38,7 +39,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_news_detail);
+		setContentView(R.layout.activity_house_detail);
 		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
 		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.right_view, null);
 		this.mapTextView.setText("地图");
@@ -67,6 +68,9 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 			@Override
 			public void onClick(View v) {
 				//跳转到聊天页面
+				Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
+						intent.putExtra("toChatUserName", "admin");
+				startActivity(intent);
 			}
 		});
 		this.viewPager = (MViewPager)this.findViewById(R.id.viewpager);
@@ -83,25 +87,11 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		for (int i = 0; i < 3; i++) {
 			TextView textView = new TextView(this);
 			textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			textView.setPadding(2, 2, 0, 2);
+			textView.setPadding(12, 10, 12, 5);
 			textView.setTextSize(15.0f);
-			textView.setTextColor(Color.rgb(90, 90, 90));
-			textView.setBackgroundColor(Color.rgb(240,240,240));
-			if (i == 0) {
-				textView.setText("\n" +
-						"当你需要获取textview真正高度时\n" +
-						"思考-设计-code\n" +
-						"31省前三季度GDP之和超出全国1.9万亿， 广东GDP居首\n" +
-						"扑克牌里“J、Q、K”，你们都叫什么？\n" +
-						"算法和设计\nkkkkkkkkk\niiiiiiiii");
-			} else {
-				textView.setText("\n" +
-						"当你需要获取textview真正高度时\n" +
-						"31省前三季度GDP之和超出全国1.9万亿， 广东GDP居首\n" +
-						"因此我们需要给textview绑定一个监听器\n" +
-						"扑克牌里“J、Q、K”，你们都叫什么？\n" +
-						"算法和设计\n" + "算法和设计\n" + "hello world!\nhhhhhhhhhhh\njjjjjjjjj");
-			}
+			textView.setTextColor(Color.rgb(120, 120, 120));
+			textView.setBackgroundColor(Color.rgb(250,250,250));
+			textView.setText("NBA卫冕冠军库里在新赛季依旧有着高光的发挥，他带领勇士队在新赛季获得16连胜，风头正劲的库里在NBA中的地位就如同梅西在足球界的地位。");
 			textView.setMovementMethod(ScrollingMovementMethod.getInstance());
 			textViews.add(textView);
 		}

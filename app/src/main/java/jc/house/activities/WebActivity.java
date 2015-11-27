@@ -16,8 +16,8 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_web);
+        setTitleBarTitle("Web界面");
         this.progressDialog.show();
         this.webView = (WebView)this.findViewById(R.id.webView);
         this.webView.getSettings().setBlockNetworkImage(false);
