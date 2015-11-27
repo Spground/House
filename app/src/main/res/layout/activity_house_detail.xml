@@ -26,6 +26,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -38,8 +39,40 @@
 
                 <!-- house detail table style-->
                 <LinearLayout
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="32dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/font_grey_500"
+                        android:paddingLeft="25dp"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="楼盘地址:"/>
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/font_grey_700"
+                        android:gravity="center"
+                        android:textSize="10sp"
+                        android:text="大连市中山区上海路42号都市银座1113室"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5px"
+                    android:background="@color/font_grey_300"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal"
@@ -50,32 +83,32 @@
                         android:layout_width="0dp"
                         android:layout_weight="4"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
+                        android:textColor="@color/font_grey_500"
                         android:paddingLeft="25dp"
-                        android:text="物业类型："
-                        android:textSize="12sp"
-                        android:gravity="center_vertical"
+                        android:text="物业类型:"
+                        android:textSize="@dimen/font_small_size"
+                        android:gravity="center"
                         />
                     <TextView
                         android:id="@+id/type"
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_height="match_parent"
-                        android:textColor="#555555"
+                        android:textColor="@color/font_grey_700"
                         android:gravity="center"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:text="商品房"/>
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5px"
-                    android:background="@color/gray"
+                    android:layout_height="0.5dp"
+                    android:background="@color/font_grey_300"
                     />
                 <LinearLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="32dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
@@ -83,32 +116,32 @@
                         android:layout_width="0dp"
                         android:layout_weight="4"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
                         android:paddingLeft="25dp"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:textSize="12sp"
-                        android:textColor="#333333"
-                        android:text="主力户型："/>
+                        android:textColor="@color/font_grey_500"
+                        android:text="主力户型:"/>
                     <TextView
                         android:id="@+id/force"
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_height="match_parent"
-                        android:textColor="#555555"
+                        android:textColor="@color/font_grey_700"
                         android:gravity="center"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:text="别墅"/>
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5px"
-                    android:background="@color/gray"
+                    android:background="@color/font_grey_300"
                     />
 
                 <LinearLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="32dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
@@ -116,33 +149,32 @@
                         android:layout_width="0dp"
                         android:layout_weight="4"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
+                        android:textColor="@color/font_grey_500"
                         android:paddingLeft="25dp"
                         android:textSize="12sp"
-                        android:gravity="center_vertical"
-                        android:text="均        价："/>
+                        android:gravity="center"
+                        android:text="楼盘均价:"/>
                     <TextView
                         android:id="@+id/avgPrice"
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_height="match_parent"
-                        android:textColor="#555555"
+                        android:textColor="@color/font_grey_700"
                         android:gravity="center"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:text="1.6万/m²"/>
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5px"
-                    android:background="@color/gray"
+                    android:background="@color/font_grey_300"
                     />
 
                 <LinearLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:layout_height="32dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
@@ -150,66 +182,32 @@
                         android:layout_width="0dp"
                         android:layout_weight="4"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
+                        android:textColor="@color/font_grey_500"
                         android:paddingLeft="25dp"
-                        android:textSize="12sp"
-                        android:gravity="center_vertical"
-                        android:text="地        址："/>
-                    <TextView
-                        android:id="@+id/address"
-                        android:layout_width="0dp"
-                        android:layout_weight="6"
-                        android:layout_height="match_parent"
-                        android:textColor="#555555"
                         android:gravity="center"
                         android:textSize="12sp"
-                        android:text="大连市中山区上海路42号都市银座1113室"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5px"
-                    android:background="@color/gray"
-                    />
-
-                <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
-                        android:paddingLeft="25dp"
-                        android:gravity="center_vertical"
-                        android:textSize="12sp"
-                        android:text="电        话："/>
+                        android:text="咨询热线:"/>
                     <TextView
                         android:id="@+id/phone"
                         android:layout_width="0dp"
                         android:layout_weight="6"
                         android:layout_height="match_parent"
                         android:autoLink="phone"
-                        android:textColor="#555555"
+                        android:textColor="@color/font_grey_700"
                         android:gravity="center|center"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:text="0411-84506069"/>
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5px"
-                    android:background="@color/gray"
+                    android:background="@color/font_grey_300"
                     />
                 <!-- online question-->
                 <LinearLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="32dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
@@ -217,12 +215,11 @@
                         android:layout_width="0dp"
                         android:layout_weight="4"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
+                        android:textColor="@color/font_grey_500"
                         android:paddingLeft="25dp"
                         android:textSize="12sp"
-                        android:gravity="center_vertical"
-                        android:text="在线咨询"/>
+                        android:gravity="center"
+                        android:text="在线咨询:"/>
                     <ImageView
                         android:id="@+id/chat"
                         android:layout_width="0dp"
@@ -232,16 +229,20 @@
                         android:gravity="center"
                         />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5px"
+                    android:background="@color/font_grey_300"
+                    />
             </LinearLayout>
         </LinearLayout>
 
-
-
+        <!-- view pager-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:padding="1dp"
             android:orientation="vertical">
             <LinearLayout
@@ -288,9 +289,7 @@
                 android:layout_gravity="center"
                 android:layout_height="127dp" >
             </jc.house.views.MViewPager>
-
         </LinearLayout>
-
     </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -54,7 +54,7 @@ public class NewsFragment extends JCNetFragment implements CircleView.CircleView
         news.add(new News(1, "" + R.drawable.temp_jianzhu, "创新营销 挑战逆境 创回款年度新", "管理员", "2015/11/18"));
         news.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
         news.add(new News(1, "" + R.drawable.temp_dongshizhanghuojiang, "金宸集团董事长马国君先生再次荣获大连市慈善", "管理员", "2015/11/18"));
-        this.adapter = new ListAdapter<News>(this.getActivity(), news, ModelType.NEWS, circleView);
+        this.adapter = new ListAdapter<>(this.getActivity(), news, ModelType.NEWS, circleView);
         this.xlistView.setAdapter(adapter);
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullLoadEnable(true);
