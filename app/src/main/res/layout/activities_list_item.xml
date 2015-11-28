@@ -1,21 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/listview_selector_corner"
-    android:orientation="vertical">
+ <LinearLayout
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    >
+    <android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:contentPadding="10dp"
+    card_view:cardElevation="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:touchscreenBlocksFocus="true"
+    >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:textSize="15sp"
+        android:textColor="#666666"
+        android:text="hello world"/>
     <ImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
-        android:layout_height="132dp"
+        android:layout_height="120dp"
         android:src="@drawable/caodi"
-        android:layout_margin="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:scaleType="centerCrop" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -23,12 +55,12 @@
             android:paddingLeft="8dp"
             android:textSize="15sp"
             android:textColor="#666666"
-            android:text="hello world"/>
+            android:text="2012年8月1日"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="25dp"
-            android:paddingRight="25dp"
+            android:paddingRight="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:textSize="13sp"
@@ -37,4 +69,6 @@
             android:drawablePadding="2dp"
             android:text="查看详情"/>
     </LinearLayout>
+</LinearLayout>
+</android.support.v7.widget.CardView>
 </LinearLayout>

@@ -10,10 +10,12 @@ public final class Constants {
 		public static final String Account = "wujie";
 		public static final String Pwd = "wujie";
 	}
-	private static final String SERVER_ROOT = "http://192.168.9.72/house/";
+	//http://192.168.31.195/jchouse/web/index.php?r=feedback/feedbacks
+//	private static final String SERVER_ROOT = "http://192.168.9.72/house/";
+    private static final String SERVER_ROOT = "http://192.168.31.195/jchouse/";
 	public static final String SERVER_URL = SERVER_ROOT + "web/index.php?r=";
 	public static final String IMAGE_URL = SERVER_ROOT + "images/";
-	public static final String FEEDBACK_URL = SERVER_ROOT + "";
+	public static final String FEEDBACK_URL = SERVER_URL + "feedback/feedbacks";
 	public static final int CODE_SUCCESS = 1;
 	public static final int CODE_FAILED = 0;
 	public static final int CODE_NO_DATA = 2;
