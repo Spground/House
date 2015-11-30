@@ -1,10 +1,11 @@
 package jc.house.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -24,11 +25,14 @@ import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 
-public class UserFeedbackActivity extends BaseActivity implements View.OnClickListener {
+public class UserFeedbackActivity extends BaseActivity implements View.OnClickListener,
+        DialogInterface.OnClickListener {
     private static final String TAG = "UserFeedbackActivity";
 
     private EditText mEditText;
     private Button mButton;
+
+    private AlertDialog alertDialog;
 
     private String feedbackContent;
 
@@ -40,6 +44,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_feedback);
         mClient = new AsyncHttpClient();
+        mClient.setConnectTimeout(5 * 1000);
         setTitleBarTitle("用户反馈");
         initView();
         reqParams = new HashMap<>();
@@ -53,10 +58,16 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         this.mButton = (Button)findViewById(R.id.id_user_feedback_submit_button);
         this.mButton.setOnClickListener(this);
         this.progressDialog.setMessage("正在提交，请稍后...");
+        alertDialog = new AlertDialog.Builder(this).
+                setMessage("提交反馈成功,谢谢您的反馈!")
+                .setNeutralButton("知道了", UserFeedbackActivity.this)
+                .setCancelable(false)
+                .create();
     }
 
     @Override
     public void onClick(View v) {
+        closeSoftInputWindow();
         if(v.getId() != R.id.id_user_feedback_submit_button || mEditText  == null)
             return;
         //check the character limit, no more than 140 characters
@@ -70,41 +81,45 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         /**-----------perform network request----------------**/
         reqParams.clear();
         reqParams.put("content", feedbackContent);
+        LogUtils.debug(TAG, "start network request");
         mClient.post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
             //the callback will happens UI thread
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 //parse json, get the server's return info
-                if(response == null){
+                LogUtils.debug(TAG, response.toString());
+                if (response == null) {
                     ToastUtils.show(UserFeedbackActivity.this, "JSON解析错误");
                     return;
                 }
-
                 try {
                     code = response.getInt("code");
                 } catch (JSONException e) {
                     e.printStackTrace();
                     LogUtils.debug(TAG, e.toString());
-                }
-                finally {
+                } finally {
                     cancelDlg();
                 }
                 //submit successfully
-                if(code == 1){
-                    ToastUtils.show(UserFeedbackActivity.this, "谢谢您的反馈，我们将尽快处理");
-                    UserFeedbackActivity.this.finish();
-                }
-                else{
+                if (code == 1) {
+                    alertDialog.show();
+                } else {
                     ToastUtils.show(UserFeedbackActivity.this, "抱歉，出现错误，请您稍后再试");
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                LogUtils.debug(TAG, "network request failed");
                 cancelDlg();
                 ToastUtils.show(UserFeedbackActivity.this, "网络出现错误，请您稍后再试");
             }
         });
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        UserFeedbackActivity.this.finish();
     }
 
     private void showDlg(){
@@ -115,5 +130,13 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
     private void cancelDlg(){
         if(this.progressDialog != null && this.progressDialog.isShowing() == true)
             this.progressDialog.hide();
+    }
+
+    /**
+     * close soft input
+     */
+    private void closeSoftInputWindow(){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
 }

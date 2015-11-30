@@ -89,7 +89,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 			TextView textView = new TextView(this);
 			textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 			textView.setPadding(12, 10, 12, 5);
-			textView.setTextSize(15.0f);
+			textView.setTextSize(12.0f);
 			textView.setTextColor(Color.rgb(120, 120, 120));
 			textView.setBackgroundColor(Color.rgb(250, 250, 250));
 			textView.setText("NBA卫冕冠军库里在新赛季依旧有着高光的发挥，他带领勇士队在新赛季获得16连胜，风头正劲的库里在NBA中的地位就如同梅西在足球界的地位。");

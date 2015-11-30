@@ -2,74 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\WuJie\git\House\app\libs\easemobchat_2.2.3.jar"
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.1.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="272e12284f694ce18895e715ca593cba0bca8bfc">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\easemobchat_2.2.3-e65855de3579c9b8d7bab37e01305ad7a3d9f67a.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-40cff15feb7accde2b5a6c5cae2f5a8a553b75a8.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\.gradle\caches\modules-2\files-2.1\cz.msebera.android\httpclient\4.3.6\526a9f794eab830eae4f23a62c572878b3f491ab\httpclient-4.3.6.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="526a9f794eab830eae4f23a62c572878b3f491ab">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\httpclient-4.3.6-19de59abd4e1f38aa01ce3b090e4808d47a42be1.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8413c27b45b7fe61dca4a98159f65e2cee215f5a">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\classes-fb94b081a89d8ab146f94f0dbdcb3d582459d2c5.jar" />
-    </item>
-    <item
-        jar="D:\android-sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.0\support-annotations-23.0.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.0-f165efc654ca04c3976ab097f9025a71df150637.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\.gradle\caches\modules-2\files-2.1\de.greenrobot\eventbus\2.4.0\ddd166d01b3158d1c00576d29f7ed15c030df719\eventbus-2.4.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-57adf4470733fcfd5f0c4faf8ed945e7720aa947.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.9\386a4339ffe52d5d63e80f9bed8d2b1d1a418249\android-async-http-1.4.9.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="386a4339ffe52d5d63e80f9bed8d2b1d1a418249">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\android-async-http-1.4.9-b52c20bebe8dd8e927c42d196a6340d322f7ffcd.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\classes-b966fea40197bfb117d15b5cf6651f7d0ad21628.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-ee835274369e763d53e3d99a80d9a43a4df61232.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\git\House\app\libs\TencentMapSDK_Raster_v1.1.2.15850.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="ffb241eab4cc7d41b9635bd8939ee7c7ae737ac1">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\TencentMapSDK_Raster_v1.1.2.15850-1280046fcdbe5207b33203a52369bb3951eb4c94.jar" />
+        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-24140d68f637cecba15c2ebe314a36d68f78bce4.jar" />
     </item>
 
 </items>

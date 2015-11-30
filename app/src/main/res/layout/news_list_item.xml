@@ -9,16 +9,18 @@
 
     <ImageView
         android:id="@+id/picture"
-        android:layout_width="100dp"
-        android:layout_height="72dp"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
         android:padding="1dp"
+        android:src="@drawable/temp_zhaotong"
         android:scaleType="centerCrop"
          />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="72dp"
+        android:minHeight="60dp"
+        android:padding="5dp"
         android:layout_marginLeft="2dp"
         android:gravity="center"
         android:orientation="vertical" >
@@ -27,11 +29,14 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="5dp"
             android:layout_weight="1"
-            android:textColor="#666666"
+            android:textColor="@color/font_grey_700"
+            android:text="心系昭通 情献灾区心系昭通 情献灾区心系昭通 情献灾区"
             android:gravity="center_vertical"
-            android:textSize="14sp" />
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:drawableRight="@drawable/new_tag"
+            android:textSize="@dimen/font_main_size" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,8 +49,9 @@
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#888888"
-                android:textSize="13sp" />
+                android:textColor="@color/font_grey_600"
+                android:text="管理员"
+                android:textSize="@dimen/font_very_small_size" />
 
             <TextView
                 android:id="@+id/date"
@@ -53,8 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
-                android:textColor="#999999"
-                android:textSize="12sp" />
+                android:text="2015/1/02"
+                android:textColor="@color/font_grey_500"
+                android:textSize="@dimen/font_very_small_size" />
         </RelativeLayout>
     </LinearLayout>
 
