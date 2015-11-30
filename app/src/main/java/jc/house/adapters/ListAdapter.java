@@ -126,7 +126,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					}
 					House house = (House)this.lists.get(mPos);
 					//loadImage(viewHolderHouse.picture, house.getUrl());
-					viewHolderHouse.picture.setImageResource(Constants.res[(int) (Math.random() * 4)]);
+					viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());
@@ -143,7 +143,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
 					JCActivity activity = (JCActivity)this.lists.get(mPos);
-					viewHolderActivity.picture.setImageResource(Constants.res[(int)(Math.random() * 4)]);
+					viewHolderActivity.picture.setImageResource(Constants.resActivity[(int)(Math.random() * 5)]);
 					viewHolderActivity.title.setText(activity.getName());
 					break;
 				default:

@@ -29,7 +29,7 @@
            android:background="@drawable/basic_edit_textiview_bg"
            android:textCursorDrawable="@null"
            android:gravity="left|top"
-           android:hint="请将您的反馈在这里填写，因为您的反馈，我们将做得更好！"
+           android:hint="请将您的反馈在这里填写，因为您的反馈，我们将做得更好，限140字内！"
            android:inputType="textMultiLine"
            android:minLines="6"
            android:padding="10dip"

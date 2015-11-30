@@ -39,7 +39,7 @@
                 android:layout_height="132dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:src="@drawable/caodi" />
 
             <LinearLayout

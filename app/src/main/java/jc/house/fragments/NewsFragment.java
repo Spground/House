@@ -2,7 +2,6 @@ package jc.house.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,8 @@ import jc.house.utils.ParseJson;
 import jc.house.views.CircleView;
 
 public class NewsFragment extends JCNetFragment implements CircleView.CircleViewOnClickListener {
-    private static final int[] imageReIds = {R.drawable.caodi,
-            R.drawable.chengbao, R.drawable.jc_logo_flash};
+    private static final int[] imageReIds = {R.drawable.temp_house_a,
+            R.drawable.temp_house_b, R.drawable.jc_logo_flash};
 //	private static final String[] imageUrls = {"123", "456"};
 	private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;

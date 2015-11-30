@@ -20,5 +20,8 @@ public final class Constants {
 	public static final int CODE_FAILED = 0;
 	public static final int CODE_NO_DATA = 2;
 
-	public static final int[] res = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d};
+	public static final int[] resActivity = {R.drawable.temp_activity_a, R.drawable.temp_activity_b,
+			R.drawable.temp_activity_c, R.drawable.temp_activity_d, R.drawable.temp_activity_e};
+	public static final int[] resHouse = {R.drawable.temp_house_a, R.drawable.temp_house_b,
+			R.drawable.temp_house_c, R.drawable.temp_house_d};
 }

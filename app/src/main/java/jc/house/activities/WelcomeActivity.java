@@ -34,6 +34,6 @@ public class WelcomeActivity extends Activity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_welcome_image);
         animation.setFillAfter(true);
         imageView.startAnimation(animation);
-        mHandler.sendEmptyMessageDelayed(0x123, 1 * 1000);
+        mHandler.sendEmptyMessageDelayed(0x123, 3 * 1000);
     }
 }

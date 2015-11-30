@@ -13,6 +13,8 @@ public class JCTextView extends TextView {
     private int index;
     private boolean selected;
     private int normalDrawable, selectedDrawable;
+    private int normalTextColor = Color.rgb(160, 160, 160);
+    private int selectedTextColor = Color.rgb(255, 255, 255);
     public JCTextView(Context context) {
         super(context);
         initView();
@@ -33,7 +35,7 @@ public class JCTextView extends TextView {
         this.selected = false;
         this.normalDrawable = R.drawable.jctextview_normal;
         this.selectedDrawable = R.drawable.jctextview_selected;
-        this.setTextColor(Color.rgb(160, 160, 160));
+        this.setTextColor(normalTextColor);
         this.setBackgroundResource(normalDrawable);
     }
 
@@ -50,8 +52,10 @@ public class JCTextView extends TextView {
         this.selected = selected;
         if (this.selected) {
             this.setBackgroundResource(selectedDrawable);
+            this.setTextColor(selectedTextColor);
         } else {
             this.setBackgroundResource(normalDrawable);
+            this.setTextColor(normalTextColor);
         }
     }
 }

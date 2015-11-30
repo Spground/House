@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:divider="#CCCCCC"
         android:dividerHeight=".1dp"
+        android:background="@drawable/activity_bg_bitmap"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="false"
         android:scrollbarStyle="outsideOverlay"
