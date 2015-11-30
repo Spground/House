@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -90,8 +91,10 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 			textView.setPadding(12, 10, 12, 5);
 			textView.setTextSize(15.0f);
 			textView.setTextColor(Color.rgb(120, 120, 120));
-			textView.setBackgroundColor(Color.rgb(250,250,250));
+			textView.setBackgroundColor(Color.rgb(250, 250, 250));
 			textView.setText("NBA卫冕冠军库里在新赛季依旧有着高光的发挥，他带领勇士队在新赛季获得16连胜，风头正劲的库里在NBA中的地位就如同梅西在足球界的地位。");
+			textView.setGravity(Gravity.CENTER_VERTICAL);
+			textView.setLineSpacing(0, 1.2f);
 			textView.setMovementMethod(ScrollingMovementMethod.getInstance());
 			textViews.add(textView);
 		}
