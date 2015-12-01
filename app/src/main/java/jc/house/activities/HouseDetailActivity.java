@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +21,7 @@ import java.util.List;
 
 import jc.house.R;
 import jc.house.chat.ChatActivity;
-import jc.house.views.JCTextView;
+import jc.house.views.ViewPagerTextView;
 import jc.house.views.MViewPager;
 import jc.house.views.TitleBar;
 
@@ -30,9 +29,9 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	private TitleBar titleBar;
 	private MViewPager viewPager;
 	private List<TextView> textViews;
-	private List<JCTextView> titles;
+	private List<ViewPagerTextView> titles;
 	private TextView mapTextView;
-	private ImageView chatImage;
+	private TextView chatTextView;
 	private int currentIndex;
 	private static final String TAG = "HouseDetailActivity";
 	private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
@@ -42,7 +41,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_house_detail);
 		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
-		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.right_view, null);
+		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.div_titlebar_right_view, null);
 		this.mapTextView.setText("地图");
 		this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -64,8 +63,8 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		});
 		this.titleBar.setRightChildView(mapTextView);
 		this.titleBar.setTitle("楼盘详情");
-		this.chatImage = (ImageView)this.findViewById(R.id.chat);
-		this.chatImage.setOnClickListener(new View.OnClickListener() {
+		this.chatTextView = (TextView)this.findViewById(R.id.chat);
+		this.chatTextView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//跳转到聊天页面
@@ -78,7 +77,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		this.currentIndex = 0;
 		this.titles = new ArrayList<>(3);
 		for (int i = 0; i< 3; i++) {
-			JCTextView title = (JCTextView)this.findViewById(ids[i]);
+			ViewPagerTextView title = (ViewPagerTextView)this.findViewById(ids[i]);
 			title.setIndex(i);
 			title.setSelected(i == currentIndex);
 			title.setOnClickListener(this);
@@ -89,7 +88,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 			TextView textView = new TextView(this);
 			textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 			textView.setPadding(12, 10, 12, 5);
-			textView.setTextSize(12.0f);
+			textView.setTextSize(13.0f);
 			textView.setTextColor(Color.rgb(120, 120, 120));
 			textView.setBackgroundColor(Color.rgb(250, 250, 250));
 			textView.setText("NBA卫冕冠军库里在新赛季依旧有着高光的发挥，他带领勇士队在新赛季获得16连胜，风头正劲的库里在NBA中的地位就如同梅西在足球界的地位。");
@@ -146,7 +145,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 
 	@Override
 	public void onClick(View v) {
-		int index = ((JCTextView)v).getIndex();
+		int index = ((ViewPagerTextView)v).getIndex();
 		if (index != currentIndex) {
 			titles.get(currentIndex).setSelected(false);
 			titles.get(index).setSelected(true);

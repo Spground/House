@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.1.0\jars\classes.jar"
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\in.srain.cube\ultra-ptr\1.0.11\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-24140d68f637cecba15c2ebe314a36d68f78bce4.jar" />
+        sha1="a0bdf70123d26dd83d8462d602b3a83a41934cf6">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-3055719330ffac0c251eaa533b976deebee60e1b.jar" />
     </item>
 
 </items>

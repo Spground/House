@@ -1,110 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/caodi"
-    android:orientation="vertical">
+    android:background="@drawable/about_bg_bitmap" >
 
-    <TextView
-        android:id="@+id/id_company_introduction"
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/rotate_header_list_view_frame"
+        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/jc_aboutfragment_textview_selector"
-        android:clickable="true"
-        android:drawableLeft="@drawable/ic_action_users"
-        android:drawablePadding="10dp"
-        android:drawableRight="@drawable/mm_submenu_normal"
-        android:gravity="left|center"
-        android:paddingBottom="8dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="8dp"
-        android:text="公司简介"
-        android:textColor="@color/font_grey_700"
-        android:textSize="@dimen/font_large_size" />
+        android:layout_height="match_parent"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/id_user_feedback"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/jc_aboutfragment_textview_selector"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_action_monolog"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/mm_submenu_normal"
-            android:gravity="left|center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="8dp"
-            android:text="意见反馈"
-            android:textColor="@color/font_grey_700"
-            android:textSize="@dimen/font_large_size" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/bg_gray" />
+            <TextView
+                android:id="@+id/id_company_introduction"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/jc_aboutfragment_textview_selector"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_action_users"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/mm_submenu_normal"
+                android:gravity="left|center"
+                android:paddingBottom="8dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:text="公司简介"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
 
-        <TextView
-            android:id="@+id/id_check_update"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/jc_aboutfragment_textview_selector"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_action_reload"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/mm_submenu_normal"
-            android:gravity="left|center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="8dp"
-            android:text="版本更新"
-            android:textColor="@color/font_grey_700"
-            android:textSize="@dimen/font_large_size" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@color/bg_gray" />
+                <TextView
+                    android:id="@+id/id_user_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/jc_aboutfragment_textview_selector"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_action_monolog"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/mm_submenu_normal"
+                    android:gravity="left|center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="8dp"
+                    android:text="意见反馈"
+                    android:textColor="@color/font_grey_700"
+                    android:textSize="@dimen/font_large_size" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@color/bg_gray" />
+
+                <TextView
+                    android:id="@+id/id_check_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/jc_aboutfragment_textview_selector"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_action_reload"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/mm_submenu_normal"
+                    android:gravity="left|center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="8dp"
+                    android:text="版本更新"
+                    android:textColor="@color/font_grey_700"
+                    android:textSize="@dimen/font_large_size" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@color/bg_gray" />
 
 
-        <TextView
-            android:id="@+id/id_about_us"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/jc_aboutfragment_textview_selector"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_action_info"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/mm_submenu_normal"
-            android:gravity="left|center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="8dp"
-            android:text="关于我们"
-            android:textColor="@color/font_grey_700"
-            android:textSize="@dimen/font_large_size" />
+                <TextView
+                    android:id="@+id/id_about_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/jc_aboutfragment_textview_selector"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_action_info"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/mm_submenu_normal"
+                    android:gravity="left|center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="8dp"
+                    android:text="关于我们"
+                    android:textColor="@color/font_grey_700"
+                    android:textSize="@dimen/font_large_size" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/bg_gray"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/bg_gray"
 
-            />
-    </LinearLayout>
-</LinearLayout>
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+</RelativeLayout>

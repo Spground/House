@@ -34,7 +34,7 @@ public class TitleBar extends LinearLayout {
 	
 	private void initView(Context context) {
 		this.mContext = context;
-		LayoutInflater.from(context).inflate(R.layout.titlebar, this);
+		LayoutInflater.from(context).inflate(R.layout.div_titlebar, this);
 		this.backImage = (ImageView)this.findViewById(R.id.back_image);
 		this.backImage.setOnClickListener(new OnClickListener(){
 

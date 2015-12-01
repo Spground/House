@@ -41,7 +41,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
-		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.caodi).showImageForEmptyUri(R.drawable.caodi).build();
+		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.qq).showImageForEmptyUri(R.drawable.qq).build();
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 				case NEWS:
 					ViewHolderNews viewHolderNews;
 					if(null == convertView) {
-						convertView = LayoutInflater.from(context).inflate(R.layout.news_list_item, parent, false);
+						convertView = LayoutInflater.from(context).inflate(R.layout.listview_news_item, parent, false);
 						viewHolderNews = new ViewHolderNews();
 						viewHolderNews.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderNews.author = (TextView)convertView.findViewById(R.id.author);
@@ -105,7 +105,6 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.lists.get(mPos);
-//					viewHolderNews.picture.setImageResource(R.drawable.caodi);
 					viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
@@ -114,7 +113,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 				case HOUSE:
 					ViewHolderHouse viewHolderHouse;
 					if(null == convertView) {
-						convertView = LayoutInflater.from(context).inflate(R.layout.house_list_item, parent, false);
+						convertView = LayoutInflater.from(context).inflate(R.layout.listview_house_item, parent, false);
 						viewHolderHouse = new ViewHolderHouse();
 						viewHolderHouse.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderHouse.name = (TextView)convertView.findViewById(R.id.name);
@@ -126,7 +125,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					}
 					House house = (House)this.lists.get(mPos);
 					//loadImage(viewHolderHouse.picture, house.getUrl());
-					viewHolderHouse.picture.setImageResource(Constants.res[(int) (Math.random() * 4)]);
+					viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());
@@ -134,7 +133,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 				case ACTIVITY:
 					ViewHolderActivity viewHolderActivity;
 					if(null == convertView) {
-						convertView = LayoutInflater.from(context).inflate(R.layout.activities_list_item, parent, false);
+						convertView = LayoutInflater.from(context).inflate(R.layout.listview_activity_item, parent, false);
 						viewHolderActivity = new ViewHolderActivity();
 						viewHolderActivity.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderActivity.title = (TextView)convertView.findViewById(R.id.title);
@@ -143,7 +142,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
 					JCActivity activity = (JCActivity)this.lists.get(mPos);
-					viewHolderActivity.picture.setImageResource(Constants.res[(int)(Math.random() * 4)]);
+					viewHolderActivity.picture.setImageResource(Constants.resActivity[(int)(Math.random() * 5)]);
 					viewHolderActivity.title.setText(activity.getName());
 					break;
 				default:

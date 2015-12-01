@@ -23,12 +23,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/caodi" />
+                android:src="@drawable/temp_house_a" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="5dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -36,8 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    >
 
                     <!-- house detail table style-->
                     <LinearLayout
@@ -52,22 +53,22 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
                             android:text="楼盘地址:"
                             android:textColor="@color/font_grey_500"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/address"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="3dp"
                             android:text="大连市中山区上海路42号都市银座1113室"
                             android:textColor="@color/font_grey_700"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
@@ -87,22 +88,22 @@
                             android:id="@+id/houseType"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
                             android:text="物业类型:"
                             android:textColor="@color/font_grey_500"
-                            android:textSize="@dimen/font_small_size" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/type"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="3dp"
                             android:text="商品房"
                             android:textColor="@color/font_grey_700"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
@@ -121,22 +122,22 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
                             android:text="主力户型:"
                             android:textColor="@color/font_grey_500"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/force"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="3dp"
                             android:text="别墅"
                             android:textColor="@color/font_grey_700"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
@@ -155,22 +156,22 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
                             android:text="楼盘均价:"
                             android:textColor="@color/font_grey_500"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/avgPrice"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="3dp"
                             android:text="1.6万/m²"
                             android:textColor="@color/font_grey_700"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
@@ -189,12 +190,11 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:paddingLeft="10dp"
                             android:text="咨询热线:"
                             android:textColor="@color/font_grey_500"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/phone"
@@ -202,10 +202,11 @@
                             android:layout_height="match_parent"
                             android:layout_weight="6"
                             android:autoLink="phone"
-                            android:gravity="center"
+                            android:paddingLeft="3dp"
+                            android:gravity="center_vertical"
                             android:text="0411-84506069"
-                            android:textColor="@color/font_grey_700"
-                            android:textSize="10sp" />
+                            android:textColor="@color/red"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <View
@@ -215,29 +216,25 @@
                     <!-- online question-->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="horizontal"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp">
+                        android:paddingBottom="8dp"
+                        android:background="@drawable/list_pressed"
+                        android:clickable="true"
+                        android:paddingTop="8dp">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4"
-                            android:gravity="center"
-                            android:paddingLeft="10dp"
-                            android:text="在线咨询:"
-                            android:textColor="@color/font_grey_500"
-                            android:textSize="12sp" />
-
-                        <ImageView
                             android:id="@+id/chat"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:src="@drawable/ic_action_dialog" />
+                            android:text="点击在线咨询:"
+                            android:textColor="@color/red"
+                            android:textStyle="bold"
+                            android:drawableRight="@drawable/ic_action_dialog"
+                            android:drawablePadding="3dp"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <View
@@ -252,6 +249,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:background="#FFFFFF"
                 android:orientation="vertical"
                 android:padding="1dp">
@@ -261,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <jc.house.views.JCTextView
+                    <jc.house.views.ViewPagerTextView
                         android:id="@+id/recommend"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -272,7 +271,7 @@
                         android:text="推荐理由"
                         android:textSize="14sp" />
 
-                    <jc.house.views.JCTextView
+                    <jc.house.views.ViewPagerTextView
                         android:id="@+id/traffic"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -283,7 +282,7 @@
                         android:text="行车路线"
                         android:textSize="14sp" />
 
-                    <jc.house.views.JCTextView
+                    <jc.house.views.ViewPagerTextView
                         android:id="@+id/design"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

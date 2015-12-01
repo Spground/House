@@ -31,7 +31,7 @@ public class ActivityFragment extends JCNetFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.activity_list, container, false);
+        this.view = inflater.inflate(R.layout.fragment_activity, container, false);
         return view;
     }
 
@@ -52,7 +52,7 @@ public class ActivityFragment extends JCNetFragment{
         this.activities.add(new JCActivity(1, "", "金宸•蓝郡三期"));
         this.xlistView.setAdapter(new ListAdapter<>(this.getActivity(), this.activities, ModelType.ACTIVITY));
         this.xlistView.setXListViewListener(this);
-        this.xlistView.setPullLoadEnable(true);
+        this.xlistView.setPullLoadEnable(false);
         this.xlistView.setHeaderDividersEnabled(false);
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

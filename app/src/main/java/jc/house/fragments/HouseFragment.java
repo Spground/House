@@ -9,23 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HouseDetailActivity;
-import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
@@ -52,7 +45,7 @@ public class HouseFragment extends JCNetFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.common_list, container, false);
+        this.view = inflater.inflate(R.layout.fragment_common, container, false);
         return view;
     }
 

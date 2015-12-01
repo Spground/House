@@ -2,9 +2,10 @@ package jc.house.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,6 @@ import android.widget.BaseAdapter;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,21 +24,25 @@ import java.util.Hashtable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
-import jc.house.global.FetchType;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 
-public class ChatFragment extends JCNetFragment{
+public class ChatFragment extends Fragment {
 	public static final String TAG = "ChatFragment";
 	private boolean isEventBusRegister = false;
 	private List<EMConversation> conversationList;
 	private OnNewMessageReceivedListener newMessageCallBack;
-
+	private View view;
+	private XListView xlistView;
 	private BaseAdapter conversationListAdapter;
 
 	public interface OnNewMessageReceivedListener {
@@ -48,15 +51,37 @@ public class ChatFragment extends JCNetFragment{
 
 	public ChatFragment() {
 			super();
-			LogUtils.debug(TAG, "ChatFragment's constructor is invoked!");
 			conversationList = new ArrayList<>();
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater,
 								 @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-			view = inflater.inflate(R.layout.common_list, container, false);
-			LogUtils.debug(TAG, "onCreateView() is invoked!");
+			view = inflater.inflate(R.layout.fragment_chat, container, false);
+			final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
+			StoreHouseHeader header = new StoreHouseHeader(getContext());
+			header.setPadding(0, 20, 0, 20);
+			header.initWithString("JIN CHEN");
+			header.setTextColor(Color.RED);
+			ptrFrameLayout.setDurationToCloseHeader(1500);
+			ptrFrameLayout.setHeaderView(header);
+			ptrFrameLayout.addPtrUIHandler(header);
+			ptrFrameLayout.setPtrHandler(new PtrHandler() {
+				@Override
+				public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+					return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+				}
+
+				@Override
+				public void onRefreshBegin(PtrFrameLayout frame) {
+					ptrFrameLayout.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							ptrFrameLayout.refreshComplete();
+						}
+					}, 1500);
+				}
+			});
 			return view;
 		}
 
@@ -208,28 +233,6 @@ public class ChatFragment extends JCNetFragment{
 			this.conversationListAdapter.notifyDataSetChanged();
 		}
 
-		@Override
-		public void onLoadMore() {
-			new Handler().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					xlistView.stopLoadMore();
-				}
-
-			}, 2000);
-		}
-
-		@Override
-		public void onRefresh() {
-			new Handler().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					xlistView.stopRefresh();
-				}
-
-			}, 2000);
-		}
-
 		/**
 		 * called when new message is coming!
 		 *
@@ -263,14 +266,4 @@ public class ChatFragment extends JCNetFragment{
 				isEventBusRegister = false;
 			}
 		}
-
-	@Override
-	protected void fetchDataFromServer(FetchType fetchtype) {
-
-	}
-
-	@Override
-	protected void handleResponse(int statusCode, JSONObject response, FetchType fetchtype) {
-
-	}
 }

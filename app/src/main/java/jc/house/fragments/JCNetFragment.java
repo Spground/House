@@ -24,6 +24,7 @@ public abstract class JCNetFragment extends Fragment implements IRefresh, XListV
     protected AsyncHttpClient client;
 
     protected JCNetFragment() {
+        super();
         this.client = new AsyncHttpClient();
     }
     @Override

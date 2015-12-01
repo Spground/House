@@ -37,7 +37,7 @@ public class TabViewItem extends LinearLayout {
 	}
 	
 	private void initView(Context context) {
-		LayoutInflater.from(context).inflate(R.layout.tab_item, this);
+		LayoutInflater.from(context).inflate(R.layout.div_tabview_item, this);
 		this.imageView = (ImageView) this.findViewById(R.id.tab_image);
 		this.textView = (TextView) this.findViewById(R.id.tab_name);
 		this.littleRedDotView = this.findViewById(R.id.unread_msg_little_red_dot);

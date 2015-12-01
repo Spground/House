@@ -66,7 +66,7 @@ public class CircleView extends LinearLayout {
 	}
 
 	private void initView(Context context) {
-		LayoutInflater.from(context).inflate(R.layout.circleview, this);
+		LayoutInflater.from(context).inflate(R.layout.div_circleview, this);
 		this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
 		this.indicatorView = (IndicatorView) this
 				.findViewById(R.id.indicatorView);
