@@ -318,5 +318,6 @@
     <string name="title_activity_company_introduction">CompanyIntroductionActivity</string>
     <string name="title_activity_user_feedback">UserFeedbackActivity</string>
     <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="title_activity_photo_view">PhotoViewActivity</string>
     <!-- -->
 </resources>

@@ -3,11 +3,8 @@ package jc.house.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import jc.house.R;
 import jc.house.utils.LogUtils;

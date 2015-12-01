@@ -260,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <jc.house.views.ViewPagerTextView
+                    <jc.house.views.ViewPagerTitle
                         android:id="@+id/recommend"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                         android:text="推荐理由"
                         android:textSize="14sp" />
 
-                    <jc.house.views.ViewPagerTextView
+                    <jc.house.views.ViewPagerTitle
                         android:id="@+id/traffic"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -282,7 +282,7 @@
                         android:text="行车路线"
                         android:textSize="14sp" />
 
-                    <jc.house.views.ViewPagerTextView
+                    <jc.house.views.ViewPagerTitle
                         android:id="@+id/design"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

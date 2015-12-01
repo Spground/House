@@ -12,6 +12,7 @@ public class BaseActivity extends Activity {
 
     protected ProgressDialog progressDialog;
     protected TitleBar titleBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -25,12 +26,13 @@ public class BaseActivity extends Activity {
 
     /**
      * set div_titlebar
+     *
      * @param title
      */
-    protected void setTitleBarTitle(String title){
+    protected void setTitleBarTitle(String title) {
         //maybe is null
-        titleBar = (TitleBar)findViewById(R.id.titlebar);
-        if(this.titleBar != null)
+        titleBar = (TitleBar) findViewById(R.id.titlebar);
+        if (this.titleBar != null)
             this.titleBar.setTitle(title);
     }
 }

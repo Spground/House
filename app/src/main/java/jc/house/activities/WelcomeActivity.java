@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Scroller;
 
 import jc.house.R;
 
@@ -35,5 +36,6 @@ public class WelcomeActivity extends Activity {
         animation.setFillAfter(true);
         imageView.startAnimation(animation);
         mHandler.sendEmptyMessageDelayed(0x123, 3 * 1000);
+        Scroller scroller = new Scroller(this);
     }
 }

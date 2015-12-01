@@ -21,7 +21,7 @@ import java.util.List;
 
 import jc.house.R;
 import jc.house.chat.ChatActivity;
-import jc.house.views.ViewPagerTextView;
+import jc.house.views.ViewPagerTitle;
 import jc.house.views.MViewPager;
 import jc.house.views.TitleBar;
 
@@ -29,7 +29,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	private TitleBar titleBar;
 	private MViewPager viewPager;
 	private List<TextView> textViews;
-	private List<ViewPagerTextView> titles;
+	private List<ViewPagerTitle> titles;
 	private TextView mapTextView;
 	private TextView chatTextView;
 	private int currentIndex;
@@ -41,7 +41,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_house_detail);
 		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
-		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.div_titlebar_right_view, null);
+		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
 		this.mapTextView.setText("地图");
 		this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -77,7 +77,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		this.currentIndex = 0;
 		this.titles = new ArrayList<>(3);
 		for (int i = 0; i< 3; i++) {
-			ViewPagerTextView title = (ViewPagerTextView)this.findViewById(ids[i]);
+			ViewPagerTitle title = (ViewPagerTitle)this.findViewById(ids[i]);
 			title.setIndex(i);
 			title.setSelected(i == currentIndex);
 			title.setOnClickListener(this);
@@ -145,7 +145,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 
 	@Override
 	public void onClick(View v) {
-		int index = ((ViewPagerTextView)v).getIndex();
+		int index = ((ViewPagerTitle)v).getIndex();
 		if (index != currentIndex) {
 			titles.get(currentIndex).setSelected(false);
 			titles.get(index).setSelected(true);

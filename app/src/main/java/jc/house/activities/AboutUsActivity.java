@@ -1,7 +1,6 @@
 package jc.house.activities;
 
 import android.os.Bundle;
-import android.view.Window;
 
 import jc.house.R;
 

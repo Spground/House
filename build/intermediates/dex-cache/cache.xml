@@ -2,11 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\in.srain.cube\ultra-ptr\1.0.11\jars\classes.jar"
+        jar="D:\adt-bundle-windows-x86_64-20140702\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="a0bdf70123d26dd83d8462d602b3a83a41934cf6">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-3055719330ffac0c251eaa533b976deebee60e1b.jar" />
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-727ef02d543c54057ede2abb8f1cffabd8339a5a.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-222562c3593afa7e4dacb5d09b84688791897001.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-f480c8a2046254f5393a2bfcfc587a7e6099f655.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.commit451\PhotoView\1.2.4\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="890be6e1e56a883c9b407a11e067a61886dec123">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-09b6c1956acb4c5bf2e329c1bcf00b7555bf6b5e.jar" />
     </item>
 
 </items>

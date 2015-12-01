@@ -16,6 +16,7 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.R;
 import jc.house.activities.AboutUsActivity;
 import jc.house.activities.CompanyIntroductionActivity;
+import jc.house.activities.PhotoViewActivity;
 import jc.house.activities.UserFeedbackActivity;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.ToastUtils;
@@ -86,7 +87,7 @@ public class AboutFragment extends Fragment implements IRefresh, View.OnClickLis
                 startActivity(new Intent(getActivity(), UserFeedbackActivity.class));
                 break;
             case R.id.id_check_update:
-                ToastUtils.show(getActivity(), "您当前的版本是最新的");
+                startActivity(new Intent(getActivity(), PhotoViewActivity.class));
                 break;
             case R.id.id_about_us:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
