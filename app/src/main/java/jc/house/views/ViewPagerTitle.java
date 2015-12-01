@@ -9,23 +9,23 @@ import jc.house.R;
 /**
  * Created by hzj on 2015/11/19.
  */
-public class ViewPagerTextView extends TextView {
+public class ViewPagerTitle extends TextView {
     private int index;
     private boolean selected;
     private int normalDrawable, selectedDrawable;
     private int normalTextColor = Color.rgb(160, 160, 160);
     private int selectedTextColor = Color.rgb(255, 255, 255);
-    public ViewPagerTextView(Context context) {
+    public ViewPagerTitle(Context context) {
         super(context);
         initView();
     }
 
-    public ViewPagerTextView(Context context, AttributeSet attrs) {
+    public ViewPagerTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
-    public ViewPagerTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ViewPagerTitle(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
