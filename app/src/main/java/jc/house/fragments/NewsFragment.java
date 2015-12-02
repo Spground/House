@@ -71,7 +71,7 @@ public class NewsFragment extends JCNetFragment implements CircleView.CircleView
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_common, container, false);
+        this.view = inflater.inflate(R.layout.fragment_news, container, false);
         return this.view;
     }
 

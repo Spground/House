@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <jc.house.JCListView.XListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#CCCCCC"
+        android:dividerHeight=".1dp"
+        android:background="@drawable/activity_bg_bitmap"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:transcriptMode="normal" />
+    <ImageButton
+        android:id="@+id/id_map_btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:requiresFadingEdge="horizontal"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_action_globe_normal"
+        android:background="@android:color/transparent"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="14dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

@@ -28,6 +28,7 @@ public class WebActivity extends BaseActivity {
             this.webView.loadUrl(url);
         } else {
             this.webView.loadUrl("http://zhan.qq.com/sites/templates/41428/index.html");
+//            this.webView.loadUrl("http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=12");
         }
         this.webView.setWebViewClient(new WebViewClient() {
             @Override

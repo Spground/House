@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import java.util.List;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HouseDetailActivity;
+import jc.house.activities.MapActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
@@ -30,13 +32,15 @@ import jc.house.utils.ParseJson;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HouseFragment extends JCNetFragment {
+public class HouseFragment extends JCNetFragment implements View.OnClickListener {
     private static final int PAGE_SIZE = 1;
     private static final String TAG = "HouseFragment";
     private static final String URL = Constants.SERVER_URL + "house/houses";
     private List<House> houses;
     private ListAdapter<House> adapter;
     private boolean isOver;
+
+    private ImageButton mapBtn;
 
     public HouseFragment() {
         super();
@@ -45,7 +49,7 @@ public class HouseFragment extends JCNetFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_common, container, false);
+        this.view = inflater.inflate(R.layout.fragment_house, container, false);
         return view;
     }
 
@@ -53,6 +57,8 @@ public class HouseFragment extends JCNetFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.xlistView = (XListView) this.view.findViewById(R.id.list);
+        this.mapBtn = (ImageButton)this.view.findViewById(R.id.id_map_btn);
+        this.mapBtn.setOnClickListener(this);
         this.isOver = false;
         this.houses = new ArrayList<>();
         this.adapter = new ListAdapter<>(this.getActivity(), this.houses, ModelType.HOUSE);
@@ -159,5 +165,12 @@ public class HouseFragment extends JCNetFragment {
 
         });
         */
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.id_map_btn){
+            startActivity(new Intent(getActivity(), MapActivity.class));
+        }
     }
 }

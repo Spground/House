@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,10 +37,13 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	private static final String TAG = "HouseDetailActivity";
 	private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
 
+	private ImageView houseImageView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_house_detail);
+		this.houseImageView = (ImageView)findViewById(R.id.house_image_view);
+		this.houseImageView.setOnClickListener(this);
 		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
 		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
 		this.mapTextView.setText("地图");
@@ -145,6 +149,12 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 
 	@Override
 	public void onClick(View v) {
+		if(v.getId() == R.id.house_image_view){
+			Intent showOriImg = new Intent(this, PhotoViewActivity.class);
+			showOriImg.putExtra("image_url", "http://www.jinchenchina.cn/uploads/allimg/150710/0-150G0124350951.jpg");
+			startActivity(showOriImg);
+			return;
+		}
 		int index = ((ViewPagerTitle)v).getIndex();
 		if (index != currentIndex) {
 			titles.get(currentIndex).setSelected(false);
@@ -154,22 +164,4 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.news_detail, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 }

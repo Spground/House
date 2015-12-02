@@ -17,7 +17,7 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        this.progressDialog = new ProgressDialog(this, R.style.CustomProgressDialog);
+        this.progressDialog = new ProgressDialog(this);
         this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         this.progressDialog.setMessage("正在加载中...");
         this.progressDialog.setCancelable(true);

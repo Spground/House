@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="D:\adt-bundle-windows-x86_64-20140702\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-727ef02d543c54057ede2abb8f1cffabd8339a5a.jar" />
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\classes-b966fea40197bfb117d15b5cf6651f7d0ad21628.jar" />
     </item>
     <item
-        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-222562c3593afa7e4dacb5d09b84688791897001.jar" />
+        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\classes-c8ec848a17522a3638670ea61b3a938927e1568a.jar" />
     </item>
     <item
-        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-f480c8a2046254f5393a2bfcfc587a7e6099f655.jar" />
+        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-60002d5774351a1d5e2c0b55c479bda75945aa70.jar" />
     </item>
     <item
-        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.commit451\PhotoView\1.2.4\jars\classes.jar"
+        jar="D:\android-sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="890be6e1e56a883c9b407a11e067a61886dec123">
-        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-09b6c1956acb4c5bf2e329c1bcf00b7555bf6b5e.jar" />
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-30988f1fe36b09fe750ef342667175c0af8e1dc8.jar" />
     </item>
 
 </items>

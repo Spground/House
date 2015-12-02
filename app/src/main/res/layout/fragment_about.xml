@@ -25,7 +25,7 @@
                 android:id="@+id/id_company_introduction"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="64dp"
                 android:background="@drawable/jc_aboutfragment_textview_selector"
                 android:clickable="true"
                 android:drawableLeft="@drawable/ic_action_users"
@@ -43,7 +43,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="40dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 

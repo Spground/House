@@ -87,7 +87,7 @@ public class AboutFragment extends Fragment implements IRefresh, View.OnClickLis
                 startActivity(new Intent(getActivity(), UserFeedbackActivity.class));
                 break;
             case R.id.id_check_update:
-                startActivity(new Intent(getActivity(), PhotoViewActivity.class));
+                ToastUtils.debugShow(getActivity(), "您的已经是最新版本!");
                 break;
             case R.id.id_about_us:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));

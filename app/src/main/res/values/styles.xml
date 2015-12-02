@@ -18,7 +18,8 @@
         <item name="android:windowTitleBackgroundStyle">@style/style_window_title_bg</item>
         <item name="android:actionBarStyle">@style/style_window_title_bg</item>
     </style>
-    <!-- action bar -->
+
+    <!-- action bar style -->
     <style name="style_window_title_bg" parent="android:Widget.ActionBar">
         <item name="android:background">@drawable/titlebar_bg</item>
         <item name="android:actionBarSize">?actionBarSize</item>
@@ -29,7 +30,6 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
-
 
     <!-- 聊天对话的日期的显示样式-->
     <style name="chat_text_date_style">
