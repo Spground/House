@@ -128,6 +128,7 @@ public class ChatFragment extends Fragment {
 			this.conversationList.addAll(loadHistoryConversationDataSource());
 			this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList);
 			xlistView.setAdapter(this.conversationListAdapter);
+			this.xlistView.setPullRefreshEnable(false);
 			this.xlistView.setPullLoadEnable(false);
 			this.xlistView.setOnItemClickListener(new OnItemClickListener() {
 
