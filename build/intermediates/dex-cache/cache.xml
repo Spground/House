@@ -2,32 +2,109 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\jars\classes.jar"
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\in.srain.cube\ultra-ptr\1.0.11\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\classes-b966fea40197bfb117d15b5cf6651f7d0ad21628.jar" />
+        sha1="a0bdf70123d26dd83d8462d602b3a83a41934cf6">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-3055719330ffac0c251eaa533b976deebee60e1b.jar" />
     </item>
     <item
-        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\classes-c8ec848a17522a3638670ea61b3a938927e1568a.jar" />
-    </item>
-    <item
-        jar="C:\Users\WuJie\git\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-60002d5774351a1d5e2c0b55c479bda75945aa70.jar" />
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-f480c8a2046254f5393a2bfcfc587a7e6099f655.jar" />
     </item>
     <item
-        jar="D:\android-sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\cz.msebera.android\httpclient\4.3.6\526a9f794eab830eae4f23a62c572878b3f491ab\httpclient-4.3.6.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="526a9f794eab830eae4f23a62c572878b3f491ab">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\httpclient-4.3.6-78fdc3c26b1833c3a764160dfd0d94db4af8312f.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\library-2.4.0-6193315faf5fe90ee28231b57714afb6237bb377.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-222562c3593afa7e4dacb5d09b84688791897001.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\it.sephiroth.android.library.imagezoom\imagezoom\2.2.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0ae6b077aa2e6de9fa3e754e5d55a5efcb43db52">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-666280e6ea2ee9b07da6c0d18edfa6eaba0400ff.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-3416ff5d5fec84646418c93df2a80d3a4c646237.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.commit451\PhotoView\1.2.4\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="890be6e1e56a883c9b407a11e067a61886dec123">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-09b6c1956acb4c5bf2e329c1bcf00b7555bf6b5e.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\libs\TencentMapSDK_Raster_v1.1.2.15850.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ffb241eab4cc7d41b9635bd8939ee7c7ae737ac1">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\TencentMapSDK_Raster_v1.1.2.15850-2e624e147abb8fc523a755a9c87a90c7d27e59b4.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\libs\easemobchat_2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="272e12284f694ce18895e715ca593cba0bca8bfc">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\easemobchat_2.2.3-8d74917c08f2d5bf3a2d2fcfe58938fa27b3edc7.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\de.greenrobot\eventbus\2.4.0\ddd166d01b3158d1c00576d29f7ed15c030df719\eventbus-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-778811954342ff933c87640b1ed02708d7eac854.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-24140d68f637cecba15c2ebe314a36d68f78bce4.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.9\386a4339ffe52d5d63e80f9bed8d2b1d1a418249\android-async-http-1.4.9.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="386a4339ffe52d5d63e80f9bed8d2b1d1a418249">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\android-async-http-1.4.9-e8fa66bee480b4c2ff6a7b2aa2dbb578dfd30782.jar" />
+    </item>
+    <item
+        jar="D:\adt-bundle-windows-x86_64-20140702\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="C:\Users\WuJie\git\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-30988f1fe36b09fe750ef342667175c0af8e1dc8.jar" />
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-727ef02d543c54057ede2abb8f1cffabd8339a5a.jar" />
+    </item>
+    <item
+        jar="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="C:\Users\hzj\AndroidStudioProjects\House\app\build\intermediates\pre-dexed\debug\classes-bea2b45509d4d6e42080690b4dd6418e120e3086.jar" />
     </item>
 
 </items>

@@ -4,9 +4,14 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.activities.HomeActivity;
 import jc.house.global.Constants;
@@ -22,10 +27,11 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
     protected View view;
     protected XListView xlistView;
     protected AsyncHttpClient client;
-
+    protected boolean isOver;
     protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();
+        this.isOver = false;
     }
     @Override
     public void refresh() {
@@ -71,6 +77,6 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
         this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
     }
 
-    protected abstract void fetchDataFromServer(final FetchType fetchtype);
+    protected abstract void fetchDataFromServer(final FetchType fetchType);
     protected abstract void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype);
 }

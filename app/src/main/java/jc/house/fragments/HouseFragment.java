@@ -10,13 +10,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HouseDetailActivity;
@@ -32,7 +38,7 @@ import jc.house.utils.ParseJson;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HouseFragment extends JCNetFragment implements View.OnClickListener {
+public class HouseFragment extends BaseNetFragment implements View.OnClickListener {
     private static final int PAGE_SIZE = 1;
     private static final String TAG = "HouseFragment";
     private static final String URL = Constants.SERVER_URL + "house/houses";
@@ -115,27 +121,27 @@ public class HouseFragment extends JCNetFragment implements View.OnClickListener
     }
 
     private void updateListView(List<House> lists, final FetchType fetchtype) {
-        if (null != lists) {
-            if (FetchType.FETCH_TYPE_REFRESH == fetchtype && lists.size() > 0) {
+        if (null != lists && lists.size() > 0) {
+            if (FetchType.FETCH_TYPE_REFRESH == fetchtype) {
                 houses.clear();
                 isOver = false;
             }
             if (lists.size() < PAGE_SIZE) {
-                if (lists.size() == 0) {
-                    toastNoMoreData();
-                }
                 isOver = true;
             }
             houses.addAll(lists);
             adapter.notifyDataSetChanged();
+            if (fetchtype == FetchType.FETCH_TYPE_REFRESH) {
+                this.xlistView.smoothScrollToPosition(0);
+            }
+        } else if (null != lists && lists.size() == 0) {
+            toastNoMoreData();
         }
     }
 
     @Override
     protected void fetchDataFromServer(final FetchType fetchtype) {
-        resetXListView();
-        /*
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("pageSize", String.valueOf(PAGE_SIZE));
         if (FetchType.FETCH_TYPE_LOAD_MORE == fetchtype) {
             if (!this.isOver) {
@@ -164,7 +170,6 @@ public class HouseFragment extends JCNetFragment implements View.OnClickListener
             }
 
         });
-        */
     }
 
     @Override

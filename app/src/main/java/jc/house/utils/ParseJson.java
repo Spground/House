@@ -18,19 +18,19 @@ public final class ParseJson {
 
     public static List<News> parseNews(JSONArray array) {
         List<News> news = new ArrayList<News>();
-        if (null == array && array.length() == 0) {
+        if (null == array || array.length() == 0) {
             return news;
         }
         try {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject item = array.getJSONObject(i);
-                if (item.has("id") && item.has("url") && item.has("title") && item.has("author") && item.has("date")) {
+                if (item.has("id") && item.has("picUrl") && item.has("title") && item.has("author") && item.has("time")) {
                     int id = item.getInt("id");
-                    String url = item.getString("url");
+                    String url = item.getString("picUrl");
                     String title = item.getString("title");
                     String author = item.getString("author");
-                    String date = item.getString("date");
-                    news.add(new News(id, url, title, author, date));
+                    String time = item.getString("time");
+                    news.add(new News(id, url, title, author, time));
                 }
             }
         } catch (JSONException e) {
@@ -67,7 +67,7 @@ public final class ParseJson {
 
     public static List<JCActivity> parseActivity(JSONArray array) {
         List<JCActivity> activities = new ArrayList<JCActivity>();
-        if (null == array && array.length() == 0) {
+        if (null == array || array.length() == 0) {
             return activities;
         }
         for (int i = 0; i< array.length(); i++) {

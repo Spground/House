@@ -93,7 +93,8 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					break;
 				case NEWS:
 					ViewHolderNews viewHolderNews;
-					if(null == convertView) {
+
+					if(null == convertView || null == convertView.getTag()) {
 						convertView = LayoutInflater.from(context).inflate(R.layout.listview_news_item, parent, false);
 						viewHolderNews = new ViewHolderNews();
 						viewHolderNews.picture = (ImageView)convertView.findViewById(R.id.picture);
@@ -105,7 +106,8 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.lists.get(mPos);
-					viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
+//					viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
+					loadImage(viewHolderNews.picture, news.getUrl());
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
 					viewHolderNews.date.setText(news.getDate());
@@ -124,8 +126,8 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.lists.get(mPos);
-					//loadImage(viewHolderHouse.picture, house.getUrl());
-					viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
+					loadImage(viewHolderHouse.picture, house.getUrl());
+//					viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());

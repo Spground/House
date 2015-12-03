@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jc.house.JCListView.XListView;
 import jc.house.R;
@@ -26,7 +27,7 @@ import jc.house.models.ModelType;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ActivityFragment extends JCNetFragment{
+public class ActivityFragment extends BaseNetFragment {
     private List<JCActivity> activities;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

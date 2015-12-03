@@ -11,8 +11,8 @@ public final class Constants {
 		public static final String Pwd = "wujie";
 	}
 	//http://192.168.31.195/jchouse/web/index.php?r=feedback/feedbacks
-//	private static final String SERVER_ROOT = "http://192.168.9.72/house/";
-    private static final String SERVER_ROOT = "http://192.168.31.195/jchouse/";
+	private static final String SERVER_ROOT = "http://192.168.9.72/house/";
+//    private static final String SERVER_ROOT = "http://192.168.31.195/jchouse/";
 	public static final String SERVER_URL = SERVER_ROOT + "web/index.php?r=";
 	public static final String IMAGE_URL = SERVER_ROOT + "images/";
 	public static final String FEEDBACK_URL = SERVER_URL + "feedback/feedbacks";
