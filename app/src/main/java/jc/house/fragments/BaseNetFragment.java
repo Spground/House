@@ -18,12 +18,12 @@ import jc.house.utils.ToastUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public abstract class JCNetFragment extends Fragment implements IRefresh, XListView.IXListViewListener {
+public abstract class BaseNetFragment extends Fragment implements IRefresh, XListView.IXListViewListener {
     protected View view;
     protected XListView xlistView;
     protected AsyncHttpClient client;
 
-    protected JCNetFragment() {
+    protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();
     }
