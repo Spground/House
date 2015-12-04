@@ -2,6 +2,7 @@ package jc.house.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HouseDetailActivity;
@@ -56,6 +61,30 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_house, container, false);
+        final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
+        StoreHouseHeader header = new StoreHouseHeader(getContext());
+        header.setPadding(0, 20, 0, 20);
+        header.initWithString("JIN CHEN");
+        header.setTextColor(Color.RED);
+        ptrFrameLayout.setDurationToCloseHeader(1500);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                ptrFrameLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ptrFrameLayout.refreshComplete();
+                    }
+                }, 1500);
+            }
+        });
         return view;
     }
 
@@ -70,22 +99,27 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         this.adapter = new ListAdapter<>(this.getActivity(), this.houses, ModelType.HOUSE);
         this.xlistView.setAdapter(this.adapter);
         this.xlistView.setPullLoadEnable(true);
+        this.xlistView.setPullRefreshEnable(false);
         this.xlistView.setXListViewListener(this);
-//        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
-        this.houses.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
-                "0411-86536589", 112, 125));
-        this.houses.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
-                "0411-86536589", 112, 125));
-        this.houses.add(new House(1, "", "金宸.蓝郡三期", "沙河口区 小户型 板楼 双卫",
-                "0411-86536589", 112, 125));
-        this.houses.add(new House(1, "", "连大.文润金宸二期", "沙河口 小户型 南北通透 双卫",
-                "0411-86536589", 112, 125));
-        this.houses.add(new House(1, "", "连大.文润金宸一期", "甘井子区 板楼 南北通透 海景地产",
-                "0411-86536589", 112, 125));
-        this.houses.add(new House(1, "", "金宸.蓝郡三期", "沙河口 小户型 南北通透 双卫",
-                "0411-86536589", 112, 125));
-        this.houses.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
-                "0411-86536589", 112, 125));
+
+        if (DEBUG) {
+            this.houses.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
+                    "0411-86536589", 112, 125));
+            this.houses.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
+                    "0411-86536589", 112, 125));
+            this.houses.add(new House(1, "", "金宸.蓝郡三期", "沙河口区 小户型 板楼 双卫",
+                    "0411-86536589", 112, 125));
+            this.houses.add(new House(1, "", "连大.文润金宸二期", "沙河口 小户型 南北通透 双卫",
+                    "0411-86536589", 112, 125));
+            this.houses.add(new House(1, "", "连大.文润金宸一期", "甘井子区 板楼 南北通透 海景地产",
+                    "0411-86536589", 112, 125));
+            this.houses.add(new House(1, "", "金宸.蓝郡三期", "沙河口 小户型 南北通透 双卫",
+                    "0411-86536589", 112, 125));
+            this.houses.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
+                    "0411-86536589", 112, 125));
+        } else {
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+        }
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

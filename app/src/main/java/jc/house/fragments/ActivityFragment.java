@@ -2,6 +2,7 @@ package jc.house.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.WebActivity;
@@ -33,6 +38,30 @@ public class ActivityFragment extends BaseNetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_activity, container, false);
+        final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
+        StoreHouseHeader header = new StoreHouseHeader(getContext());
+        header.setPadding(0, 20, 0, 20);
+        header.initWithString("JIN CHEN");
+        header.setTextColor(Color.RED);
+        ptrFrameLayout.setDurationToCloseHeader(1500);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                ptrFrameLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ptrFrameLayout.refreshComplete();
+                    }
+                }, 1500);
+            }
+        });
         return view;
     }
 
@@ -53,6 +82,7 @@ public class ActivityFragment extends BaseNetFragment {
         this.activities.add(new JCActivity(1, "", "金宸•蓝郡三期"));
         this.xlistView.setAdapter(new ListAdapter<>(this.getActivity(), this.activities, ModelType.ACTIVITY));
         this.xlistView.setXListViewListener(this);
+        this.xlistView.setPullRefreshEnable(false);
         this.xlistView.setPullLoadEnable(false);
         this.xlistView.setHeaderDividersEnabled(false);
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

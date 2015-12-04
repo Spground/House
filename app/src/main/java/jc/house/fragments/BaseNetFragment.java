@@ -28,6 +28,7 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
     protected XListView xlistView;
     protected AsyncHttpClient client;
     protected boolean isOver;
+    protected static final boolean DEBUG = Constants.DEBUG;
     protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();
@@ -69,12 +70,20 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
 
     @Override
     public void onRefresh() {
-        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+        if (!DEBUG) {
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+        } else {
+            this.xlistView.stopRefresh();
+        }
     }
 
     @Override
     public void onLoadMore() {
-        this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
+        if (!DEBUG) {
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
+        } else {
+            this.xlistView.stopLoadMore();
+        }
     }
 
     protected abstract void fetchDataFromServer(final FetchType fetchType);
