@@ -33,10 +33,11 @@ import jc.house.R;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
+import jc.house.interfaces.IRefresh;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements IRefresh {
 	public static final String TAG = "ChatFragment";
 	private boolean isEventBusRegister = false;
 	private List<EMConversation> conversationList;
@@ -267,4 +268,9 @@ public class ChatFragment extends Fragment {
 				isEventBusRegister = false;
 			}
 		}
+
+	@Override
+	public void refresh() {
+
+	}
 }
