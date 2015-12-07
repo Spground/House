@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_height="37dp"
         android:layout_gravity="center"
         android:paddingTop="5dp">
 

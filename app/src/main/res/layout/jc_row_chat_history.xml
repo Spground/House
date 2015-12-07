@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="59dp"
-     android:id="@+id/list_itease_layout"
-     android:background="#fff"
+    android:id="@+id/list_itease_layout"
+    android:background="@drawable/listview_selector"
+    android:descendantFocusability="blocksDescendants"
     android:gravity="center_vertical" >
 
     <RelativeLayout

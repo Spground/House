@@ -3,22 +3,32 @@ package jc.house.chat;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
+import com.easemob.util.PathUtil;
+
+import java.io.File;
 
 import de.greenrobot.event.EventBus;
 import jc.house.R;
 import jc.house.chat.event.NewMessageEvent;
+import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
@@ -35,6 +45,15 @@ public class ChatActivity extends Activity {
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
+
+    /**
+     * 发送图片、照相、地图位置
+     */
+    protected static final int REQUEST_CODE_MAP = 1;
+    protected static final int REQUEST_CODE_CAMERA = 2;
+    protected static final int REQUEST_CODE_LOCAL = 3;
+    protected File cameraFile;
+
 
     public static ChatActivity instance = null;
 
@@ -110,7 +129,7 @@ public class ChatActivity extends Activity {
         this.swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
                 R.color.holo_orange_light, R.color.holo_red_light);
 
-        //下方输入菜单
+        //下方扩展菜单栏的监听器
         extendMenuItemClickListener = new MyItemClickListener();
         inputMenu = (ChatInputMenu)findViewById(R.id.input_menu);
         //注册扩展菜单项
@@ -169,14 +188,11 @@ public class ChatActivity extends Activity {
         EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
         //创建一条文本消息
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
-        //设置消息body
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
-        //设置接收人
         message.setReceipt(toChatUserName);
         //把消息加入到此会话对象中
         conversation.addMessage(message);
-        //发送消息
 
         /**发送一条消息**/
         EMMessage message0 = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
@@ -186,7 +202,6 @@ public class ChatActivity extends Activity {
         message0.setMsgTime(System.currentTimeMillis() + 1000 * 20);
         message0.direct = EMMessage.Direct.RECEIVE;
         message0.setTo("wujie");
-//        receiveMessage(message0);
 
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
@@ -209,11 +224,42 @@ public class ChatActivity extends Activity {
     }
 
     /**
-     * 假装收到一条消息
-     * @param message
+     * 发送图片消息
+     * @param imagePath
      */
-    private void receiveMessage(EMMessage message){
-        EMChatManager.getInstance().importMessage(message, true);
+    protected void sendImageMessage(String imagePath) {
+        //不是发送的原图
+        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, toChatUserName);
+        EMChatManager.getInstance().sendMessage(message, null);
+        ChatActivity.this.chatMsgList.refresh();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_CAMERA) { // 发送拍照的照片
+                if (cameraFile != null && cameraFile.exists())
+                    sendImageMessage(cameraFile.getAbsolutePath());
+            } else if (requestCode == REQUEST_CODE_LOCAL) { // 发送本地图片
+                if (data != null) {
+                    Uri selectedImage = data.getData();
+                    if (selectedImage != null) {
+                        sendPicByUri(selectedImage);
+                    }
+                }
+            } else if (requestCode == REQUEST_CODE_MAP) { // 地图
+                double latitude = data.getDoubleExtra("latitude", 0);
+                double longitude = data.getDoubleExtra("longitude", 0);
+                String locationAddress = data.getStringExtra("address");
+                if (locationAddress != null && !locationAddress.equals("")) {
+//                    sendLocationMessage(latitude, longitude, locationAddress);
+                } else {
+                    ToastUtils.show(this, "不能显示地图信息");
+                }
+            }
+        }
     }
 
     /**
@@ -230,10 +276,10 @@ public class ChatActivity extends Activity {
 //            }
             switch (itemId) {
                 case ITEM_TAKE_PICTURE: // 拍照
-//                    selectPicFromCamera();
+                    selectPicFromCamera();
                     break;
                 case ITEM_PICTURE:
-//                    selectPicFromLocal(); // 图库选择图片
+                    selectPicFromLocal(); // 图库选择图片
                     break;
                 case ITEM_LOCATION: // 位置
 //                    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
@@ -277,6 +323,72 @@ public class ChatActivity extends Activity {
         ToastUtils.debugShow(ChatActivity.this, "收到来自" + message.getFrom() + "的消息！");
         //refresh listview
         chatMsgList.refresh();
+    }
+
+    /**
+     * 根据图库图片uri发送图片
+     *
+     * @param selectedImage
+     */
+    protected void sendPicByUri(Uri selectedImage) {
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            if (picturePath == null || picturePath.equals("null")) {
+                Toast toast = Toast.makeText(this, R.string.cant_find_pictures, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                return;
+            }
+            sendImageMessage(picturePath);
+        } else {
+            File file = new File(selectedImage.getPath());
+            if (!file.exists()) {
+                Toast toast = Toast.makeText(this, R.string.cant_find_pictures, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                return;
+
+            }
+            sendImageMessage(file.getAbsolutePath());
+        }
+
+    }
+
+    /**
+     * 从图库获取图片
+     */
+    protected void selectPicFromLocal() {
+        Intent intent;
+        if (Build.VERSION.SDK_INT < 19) {
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+        } else {
+            intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        }
+        startActivityForResult(intent, REQUEST_CODE_LOCAL);
+    }
+
+    /**
+     * 照相获取图片
+     */
+    protected void selectPicFromCamera() {
+        if (!CommonUtils.isExitsSdcard()) {
+            ToastUtils.debugShow(this, "手机没有存储卡，不能拍照!");
+            return;
+        }
+
+        cameraFile = new File(PathUtil.getInstance().getImagePath(), EMChatManager.getInstance().getCurrentUser()
+                + System.currentTimeMillis() + ".jpg");
+        cameraFile.getParentFile().mkdirs();
+        startActivityForResult(
+                new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile)),
+                REQUEST_CODE_CAMERA);
     }
 }
 

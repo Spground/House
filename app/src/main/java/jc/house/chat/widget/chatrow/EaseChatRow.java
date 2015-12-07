@@ -295,8 +295,12 @@ public abstract class EaseChatRow extends LinearLayout {
      * 得到该ChatRow的对应的消息的类型
      * @return EMMessage.Type ChatRow的对应的消息的类型
      */
-    public  EMMessage.Direct getMessageDirect(){
+    public  EMMessage.Direct getMessageDirect() {
         return this.message.direct;
+    }
+
+    public EMMessage.Type getMessageType() {
+        return this.message.getType();
     }
 
     /**

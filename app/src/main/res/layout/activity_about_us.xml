@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="CopyRight©2015 DUT ChuangXin Shcool"
+            android:text="CopyRight©2015 DUT ChuangXin School"
             android:textSize="10sp"
             android:textColor="@color/gray"
             android:layout_gravity="center_horizontal"

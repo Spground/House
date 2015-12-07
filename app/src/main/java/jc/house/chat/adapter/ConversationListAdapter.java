@@ -77,7 +77,6 @@ public class ConversationListAdapter extends BaseAdapter {
             holder.list_itease_layout = (RelativeLayout) convertView.findViewById(R.id.list_itease_layout);
             convertView.setTag(holder);
         }
-        holder.list_itease_layout.setBackgroundResource(R.drawable.jc_conversation_item);
 
         // 获取与此用户的会话
         EMConversation conversation = getItem(position);
