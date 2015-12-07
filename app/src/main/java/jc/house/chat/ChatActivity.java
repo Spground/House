@@ -40,7 +40,8 @@ import jc.house.views.TitleBar;
 /**
  * 2015-10-31
  */
-public class ChatActivity extends Activity {
+public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener,
+        ChatMessageList.MessageListItemClickListener {
     public static final String TAG = "ChatActivity";
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
@@ -123,11 +124,15 @@ public class ChatActivity extends Activity {
         this.titleBar = (TitleBar)findViewById(R.id.titlebar);
         this.titleBar.setTitle("会话");
         this.toChatUserName = getIntent().getStringExtra("toChatUserName");
+
+        /**chat message ListView init**/
         this.chatMsgList = (ChatMessageList)findViewById(R.id.message_list);
 
+        /**swipe refresh layout init**/
         this.swipeRefreshLayout = chatMsgList.getSwipeRefreshLayout();
         this.swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
                 R.color.holo_orange_light, R.color.holo_red_light);
+        this.swipeRefreshLayout.setOnRefreshListener(this);
 
         //下方扩展菜单栏的监听器
         extendMenuItemClickListener = new MyItemClickListener();
@@ -146,6 +151,7 @@ public class ChatActivity extends Activity {
             //发送语音
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
+                ToastUtils.debugShow(ChatActivity.this, "按住说话");
 //                return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
 //
 //                    @Override
@@ -177,6 +183,7 @@ public class ChatActivity extends Activity {
                 EMChatManager.getInstance().getConversation(toChatUserName).getUnreadMsgCount() +
                 " 条未读");
         this.chatMsgList.init(toChatUserName, 0);
+        this.chatMsgList.setItemClickListener(this);
     }
 
     /**
@@ -193,16 +200,6 @@ public class ChatActivity extends Activity {
         message.setReceipt(toChatUserName);
         //把消息加入到此会话对象中
         conversation.addMessage(message);
-
-        /**发送一条消息**/
-        EMMessage message0 = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
-        TextMessageBody txtBody0 = new TextMessageBody(content);
-        message0.addBody(txtBody0);
-        message0.setFrom("admin");
-        message0.setMsgTime(System.currentTimeMillis() + 1000 * 20);
-        message0.direct = EMMessage.Direct.RECEIVE;
-        message0.setTo("wujie");
-
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
             public void onSuccess() {
@@ -321,7 +318,7 @@ public class ChatActivity extends Activity {
         EMMessage message = EMChatManager.getInstance().getMessage(msgId);
         LogUtils.debug(TAG, "收到消息" + msgId);
         ToastUtils.debugShow(ChatActivity.this, "收到来自" + message.getFrom() + "的消息！");
-        //refresh listview
+        //refresh ListView
         chatMsgList.refresh();
     }
 
@@ -389,6 +386,34 @@ public class ChatActivity extends Activity {
         startActivityForResult(
                 new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile)),
                 REQUEST_CODE_CAMERA);
+    }
+
+    @Override
+    public void onRefresh() {
+        //swipe refresh goes here
+        ToastUtils.debugShow(this, "Loading");
+        this.swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onResendClick(EMMessage message) {
+
+    }
+
+    @Override
+    public boolean onBubbleClick(EMMessage message) {
+        ToastUtils.debugShow(this, "click");
+        return false;
+    }
+
+    @Override
+    public void onBubbleLongClick(EMMessage message) {
+        ToastUtils.debugShow(this, "long click");
+    }
+
+    @Override
+    public void onUserAvatarClick(String username) {
+
     }
 }
 
