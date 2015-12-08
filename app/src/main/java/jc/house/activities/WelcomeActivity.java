@@ -36,6 +36,5 @@ public class WelcomeActivity extends Activity {
         animation.setFillAfter(true);
         imageView.startAnimation(animation);
         mHandler.sendEmptyMessageDelayed(0x123, 3 * 1000);
-        Scroller scroller = new Scroller(this);
     }
 }

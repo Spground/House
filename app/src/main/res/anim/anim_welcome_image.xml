@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/accelerate_interpolator"
     android:duration="1500"
-    >
-<scale
-    android:fromXScale="0.3"
-    android:toXScale="1.0"
-    android:fromYScale="0.3"
-    android:toYScale="1.0"
-    android:pivotX="50%"
-    android:pivotY="50%"
-    android:startOffset="0"
-    />
-<alpha
-    android:fromAlpha="0.5"
-    android:toAlpha="1.0"
-    android:fillAfter="true"
-    />
+    android:interpolator="@android:anim/accelerate_interpolator">
+    <scale
+        android:fromXScale="0.3"
+        android:fromYScale="0.3"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="0"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
+    <alpha
+        android:fillAfter="true"
+        android:fromAlpha="0.5"
+        android:toAlpha="1.0" />
 
     <!--<rotate-->
-        <!--android:fromDegrees="0"-->
-        <!--android:toDegrees="360"-->
-        <!--android:pivotX="50%"-->
-        <!--android:pivotY="50%"-->
-        <!--android:fillAfter="true"-->
-        <!--/>-->
+    <!--android:fromDegrees="0"-->
+    <!--android:toDegrees="360"-->
+    <!--android:pivotX="50%"-->
+    <!--android:pivotY="50%"-->
+    <!--android:fillAfter="true"-->
+    <!--/>-->
 </set>

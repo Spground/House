@@ -40,7 +40,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/qq" />
+                android:src="@drawable/failure_image_red" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -31,6 +31,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	private CircleView circleView;
 	private boolean hasCircleView;
 	private DisplayImageOptions options;
+	private static final boolean DEBUG = Constants.DEBUG;
 	
 	public ListAdapter(Context context, List<T> lists, ModelType modelType) {
 		this(context, lists, modelType, null);
@@ -107,8 +108,11 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.lists.get(mPos);
-					viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
-//					loadImage(viewHolderNews.picture, news.getUrl());
+					if (DEBUG) {
+						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
+					} else {
+						loadImage(viewHolderNews.picture, news.getUrl());
+					}
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
 					viewHolderNews.date.setText(news.getDate());
@@ -128,8 +132,11 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.lists.get(mPos);
-//					loadImage(viewHolderHouse.picture, house.getUrl());
-					viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
+					if (DEBUG) {
+						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
+					} else {
+						loadImage(viewHolderHouse.picture, house.getUrl());
+					}
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.ratingView.setParams(3, 3);

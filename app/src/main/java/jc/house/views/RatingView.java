@@ -53,7 +53,9 @@ public class RatingView extends LinearLayout {
         for (int i = 0; i < ALL_NUMBERS; i++) {
             ImageView imageView = new ImageView(context);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setPadding(this.spacing, 0, 0, 0);
+            if (i > 0) {
+                imageView.setPadding(this.spacing, 0, 0, 0);
+            }
             if (redCount <= this.ratingRedNumbers) {
                 imageView.setImageResource(RatingRedResID);
                 redCount++;

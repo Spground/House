@@ -3,9 +3,7 @@ package jc.house.fragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.Nullable;
-import android.util.DebugUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,14 +76,18 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         this.xlistView.setAdapter(adapter);
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullLoadEnable(true);
-        this.xlistView.setPullRefreshEnable(true);
+        this.xlistView.setPullRefreshEnable(false);
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LogUtils.debug(TAG, "position is " + position);
                 if (position >= 2 && position <= newses.size() + 1 ) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
-                    intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + newses.get(position - 2).getID());
+                    if (DEBUG){
+                        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
+                    } else {
+                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + newses.get(position - 2).getID());
+                    }
                     startActivity(intent);
                 }
             }
@@ -199,6 +201,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     public void onCircleViewItemClick(View v, int index) {
         Intent intent = new Intent(getActivity(), WebActivity.class);
+        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
         startActivity(intent);
     }
 }

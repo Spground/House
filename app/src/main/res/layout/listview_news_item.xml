@@ -13,7 +13,7 @@
         android:layout_width="58.5dp"
         android:layout_height="36dp"
         android:padding="1dp"
-        android:src="@drawable/temp_zhaotong"
+        android:src="@drawable/failure_image_red"
         android:scaleType="centerCrop"
          />
 
