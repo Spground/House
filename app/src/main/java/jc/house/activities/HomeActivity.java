@@ -115,6 +115,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
     private void initViewPager() {
         this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
+        this.viewPager.setOffscreenPageLimit(3);
         this.viewPager.setAdapter(new FragmentPagerAdapter(this
                 .getSupportFragmentManager()) {
 

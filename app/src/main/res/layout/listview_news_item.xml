@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/picture"
-        android:layout_width="48.5dp"
-        android:layout_height="30dp"
+        android:layout_width="58.5dp"
+        android:layout_height="36dp"
         android:padding="1dp"
         android:src="@drawable/temp_zhaotong"
         android:scaleType="centerCrop"

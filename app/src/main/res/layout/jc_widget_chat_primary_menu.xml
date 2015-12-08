@@ -46,6 +46,8 @@
             android:layout_marginRight="6dp"
             android:layout_marginTop="6dp"
             android:layout_weight="1"
+            android:touchscreenBlocksFocus="true"
+            android:descendantFocusability="blocksDescendants"
             android:background="@drawable/jc_chat_press_speak_btn"
             android:gravity="center"
             android:visibility="gone" >

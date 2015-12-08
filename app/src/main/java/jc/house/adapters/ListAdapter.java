@@ -22,6 +22,7 @@ import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.views.CircleView;
+import jc.house.views.RatingView;
 
 public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	private Context context;
@@ -41,7 +42,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
-		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.qq).showImageForEmptyUri(R.drawable.qq).build();
+		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.failure_image).showImageForEmptyUri(R.drawable.failure_image).build();
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderChatUser = (ViewHolderChatUser)convertView.getTag();
 					}
 					ChatUser user = (ChatUser)this.lists.get(mPos);
-					viewHolderChatUser.portrait.setImageResource(R.drawable.user_mao);
+					viewHolderChatUser.portrait.setImageResource(R.drawable.qq);
 					viewHolderChatUser.name.setText(user.getName());
 					viewHolderChatUser.msg.setText(user.getMsg());
 					viewHolderChatUser.time.setText(user.getTime());
@@ -121,6 +122,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 						viewHolderHouse.name = (TextView)convertView.findViewById(R.id.name);
 						viewHolderHouse.description = (TextView)convertView.findViewById(R.id.description);
 						viewHolderHouse.phone = (TextView)convertView.findViewById(R.id.phone);
+						viewHolderHouse.ratingView = (RatingView)convertView.findViewById(R.id.rating_view);
 						convertView.setTag(viewHolderHouse);
 					} else {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
@@ -130,6 +132,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
+					viewHolderHouse.ratingView.setParams(3, 3);
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
@@ -179,6 +182,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		public ImageView picture;
 		public TextView description;
 		public TextView phone;
+		public RatingView ratingView;
 	}
 
 	private static final class ViewHolderActivity {

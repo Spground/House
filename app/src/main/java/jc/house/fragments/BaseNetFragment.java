@@ -36,7 +36,8 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
     }
     @Override
     public void refresh() {
-        ToastUtils.show(this.getActivity(), "刷新数据或者是滑到最上面");
+        this.xlistView.smoothScrollToPosition(0);
+//        ToastUtils.show(this.getActivity(), "刷新数据或者是滑到最上面");
     }
 
     protected void resetXListView() {

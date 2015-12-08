@@ -42,7 +42,7 @@ import jc.house.views.CircleView;
 
 public class NewsFragment extends BaseNetFragment implements CircleView.CircleViewOnClickListener {
     private static final int[] imageReIds = {R.drawable.temp_house_a,
-            R.drawable.temp_house_b, R.drawable.jc_logo_flash};
+            R.drawable.temp_house_b, R.drawable.temp_house_a};
 //	private static final String[] imageUrls = {"123", "456"};
 	private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;

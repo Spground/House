@@ -27,7 +27,7 @@ public class MApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "jcimageloader/cache");
+		File cacheDir = StorageUtils.getCacheDirectory(this);
 		ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
 		config.threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
