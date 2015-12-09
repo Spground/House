@@ -6,10 +6,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import jc.house.models.BaseModel;
 import jc.house.models.House;
-import jc.house.models.JCActivity;
 import jc.house.models.News;
 
 /**
@@ -18,7 +19,7 @@ import jc.house.models.News;
 public final class ParseJson {
 
     public static List<News> parseNews(JSONArray array) {
-        List<News> news = new ArrayList<News>();
+        List<News> news = new ArrayList<>();
         if (null == array || array.length() == 0) {
             return news;
         }
@@ -41,7 +42,7 @@ public final class ParseJson {
     }
 
     public static List<House> parseHouse(JSONArray array) {
-        List<House> houses = new ArrayList<House>();
+        List<House> houses = new ArrayList<>();
         if (null == array || array.length() == 0) {
             return houses;
         }
@@ -66,58 +67,76 @@ public final class ParseJson {
         return houses;
     }
 
-    public static List<JCActivity> parseActivity(JSONArray array) {
-        List<JCActivity> activities = new ArrayList<JCActivity>();
+
+    /**
+     * json对象数组转对应的model对象List(json数组必须是同类)
+     * @param array
+     * @param clazz model的class对象
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    public static List<BaseModel> jsonArray2ModelList(JSONArray array,  Class<? extends BaseModel> clazz) {
+        List<BaseModel> modelList = new ArrayList<>();
         if (null == array || array.length() == 0) {
-            return activities;
+            return null;
         }
-        for (int i = 0; i< array.length(); i++) {
-            try {
-                JSONObject item = array.getJSONObject(i);
-                if (item.has("id") && item.has("url") && item.has("name")) {
-                    int id = item.getInt("id");
-                    String url = item.getString("url");
-                    String name = item.getString("name");
-                    activities.add(new JCActivity(id, url, name));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        for(int i = 0; i < array.length(); i++) {
+            JSONObject jsonObject = array.optJSONObject(i);
+            BaseModel modelObj = jsonObj2Model(jsonObject, clazz);
+            modelList.add(modelObj);
         }
-        return activities;
+        return modelList;
     }
 
-    public static List<JCActivity> parseActivity2(JSONArray array) throws IllegalAccessException, InstantiationException {
-        List<JCActivity> activities = new ArrayList<JCActivity>();
-        if (null == array || array.length() == 0) {
-            return activities;
+    /**
+     * json对象转model对象
+     * @param jsonObject
+     * @param clazz
+     * @return
+     */
+    public static BaseModel jsonObj2Model(JSONObject jsonObject, Class<? extends BaseModel> clazz) {
+        BaseModel modelObj;
+        try {
+            modelObj = clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            LogUtils.debug("===TAG===", e.toString());
+            return null;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            LogUtils.debug("===TAG===", e.toString());
+            return null;
         }
-        Class mClass = JCActivity.class;
-        Field[] fields = mClass.getFields();
-        for (int i = 0; i< array.length(); i++) {
-            try {
-                JSONObject item = array.getJSONObject(i);
-                JCActivity activity = (JCActivity)(mClass.newInstance());
 
-                for (int j = 0; j < fields.length; j++) {
-                    if (item.has(fields[j].getName())) {
-                        fields[j].setAccessible(true);
-                        fields[j].set(activity, item.get(fields[j].getName()));
-                    } else {
-                        break;
-                    }
-                }
-                activities.add(activity);
-//                if (item.has("id") && item.has("url") && item.has("name")) {
-//                    int id = item.getInt("id");
-//                    String url = item.getString("url");
-//                    String name = item.getString("name");
-//                    activities.add(new JCActivity(id, url, name));
-//                }
+        Iterator<String> iterator = jsonObject.keys();
+        while(iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = null;
+            try {
+                value = jsonObject.get(key);
             } catch (JSONException e) {
                 e.printStackTrace();
+                LogUtils.debug("===TAG===", e.toString());
+            }
+            Field field;
+            try {
+                field = clazz.getDeclaredField(key);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+                LogUtils.debug("===TAG===", e.toString());
+                continue;
+            }
+            if(field != null) {
+                try {
+                    field.setAccessible(true);
+                    field.set(modelObj, value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    LogUtils.debug("===TAG===", e.toString());
+                }
             }
         }
-        return activities;
+        return modelObj;
     }
 }

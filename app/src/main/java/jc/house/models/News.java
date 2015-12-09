@@ -6,6 +6,10 @@ public final class News extends BaseModel{
 	private String author;
 	private String date;
 
+	public News() {
+
+	}
+
 	public News(int ID, String url, String title, String author, String date) {
 		super(ID);
 		this.url = url;

@@ -2,7 +2,10 @@ package jc.house.models;
 
 public class BaseModel {
 	private int ID;
-	
+
+	public BaseModel() {
+
+	}
 	public BaseModel(int iD) {
 		ID = iD;
 	}

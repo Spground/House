@@ -53,8 +53,8 @@
                     android:textSize="9sp"
                     android:gravity="left|center"
                     android:textColor="@color/grey"
-                    android:visibility="gone"
-                    android:drawableLeft="@drawable/temp_rating_bar" />
+                    android:visibility="visible"
+                     />
                 <TextView
                     android:id="@+id/description"
                     android:layout_width="match_parent"

@@ -7,7 +7,11 @@ public class House extends BaseModel{
 	private String phone;
 	private double lat;
 	private double lng;
-	
+
+	public House() {
+
+	}
+
 	public House(int ID, String url, String name, String intro,
 			String phone, double lat, double lng) {
 		super(ID);

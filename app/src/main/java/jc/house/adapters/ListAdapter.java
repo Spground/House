@@ -155,7 +155,7 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					}
 					JCActivity activity = (JCActivity)this.lists.get(mPos);
 					viewHolderActivity.picture.setImageResource(Constants.resActivity[(int)(Math.random() * 5)]);
-					viewHolderActivity.title.setText(activity.getName());
+					viewHolderActivity.title.setText(activity.getTitle());
 					break;
 				default:
 					break;

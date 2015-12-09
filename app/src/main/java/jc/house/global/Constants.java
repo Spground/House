@@ -6,6 +6,7 @@ import jc.house.R;
 public final class Constants {
 	public static final boolean DEBUG = true;
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
+
 	public static class ACCOUNT{
 		public static final String Account = "wujie";
 		public static final String Pwd = "wujie";
@@ -24,4 +25,9 @@ public final class Constants {
 			R.drawable.temp_activity_c, R.drawable.temp_activity_d, R.drawable.temp_activity_e};
 	public static final int[] resHouse = {R.drawable.temp_house_a, R.drawable.temp_house_b,
 			R.drawable.temp_house_c, R.drawable.temp_house_d};
+
+	/**包名的信息**/
+	public static class PackageInfo {
+		public final static String modelPackage = "jc.house.models";
+	}
 }
