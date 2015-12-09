@@ -43,6 +43,9 @@ public class RatingView extends LinearLayout {
     }
 
     public void setParams(int ratingRedNumbers, int spacing) {
+        if (this.ratingRedNumbers == ratingRedNumbers) {
+            return;
+        }
         if (ratingRedNumbers > ALL_NUMBERS) {
             ratingRedNumbers = ALL_NUMBERS;
         }
