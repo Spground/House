@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,40 @@ public final class ParseJson {
                     String name = item.getString("name");
                     activities.add(new JCActivity(id, url, name));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return activities;
+    }
+
+    public static List<JCActivity> parseActivity2(JSONArray array) throws IllegalAccessException, InstantiationException {
+        List<JCActivity> activities = new ArrayList<JCActivity>();
+        if (null == array || array.length() == 0) {
+            return activities;
+        }
+        Class mClass = JCActivity.class;
+        Field[] fields = mClass.getFields();
+        for (int i = 0; i< array.length(); i++) {
+            try {
+                JSONObject item = array.getJSONObject(i);
+                JCActivity activity = (JCActivity)(mClass.newInstance());
+
+                for (int j = 0; j < fields.length; j++) {
+                    if (item.has(fields[j].getName())) {
+                        fields[j].setAccessible(true);
+                        fields[j].set(activity, item.get(fields[j].getName()));
+                    } else {
+                        break;
+                    }
+                }
+                activities.add(activity);
+//                if (item.has("id") && item.has("url") && item.has("name")) {
+//                    int id = item.getInt("id");
+//                    String url = item.getString("url");
+//                    String name = item.getString("name");
+//                    activities.add(new JCActivity(id, url, name));
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
