@@ -6,12 +6,12 @@
     android:background="@android:color/transparent"
     android:orientation="vertical"
     tools:context=".PhotoViewActivity" >
-    <jc.house.views.TitleBar
-        android:id="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<jc.house.views.TitleBar-->
+        <!--android:id="@+id/titlebar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-    </jc.house.views.TitleBar>
+    <!--</jc.house.views.TitleBar>-->
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/photoView"
         android:layout_width="match_parent"

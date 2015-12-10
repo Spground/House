@@ -28,7 +28,7 @@ public class PhotoViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_photo_view);
+        setJCContentView(R.layout.activity_photo_view);
         setTitleBarTitle("查看原图");
         this.imageUrl = getIntent().getStringExtra("image_url");
         initView();

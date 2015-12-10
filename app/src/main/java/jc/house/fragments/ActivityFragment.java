@@ -1,6 +1,5 @@
 package jc.house.fragments;
 
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,10 +34,20 @@ import jc.house.models.ModelType;
  */
 public class ActivityFragment extends BaseNetFragment {
     private List<JCActivity> activities;
+
+    public ActivityFragment() {
+        super();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_activity, container, false);
+        initHeaderView();
+        return view;
+    }
+
+    public void initHeaderView() {
         final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
         StoreHouseHeader header = new StoreHouseHeader(getContext());
         header.setPadding(0, 20, 0, 20);
@@ -63,11 +72,6 @@ public class ActivityFragment extends BaseNetFragment {
                 }, 1500);
             }
         });
-        return view;
-    }
-
-    public ActivityFragment() {
-        super();
     }
 
     @Override
@@ -103,7 +107,9 @@ public class ActivityFragment extends BaseNetFragment {
     }
 
     @Override
-    protected void handleResponse(int statusCode, JSONObject response, FetchType fetchtype) {};
+    protected void handleResponse(int statusCode, JSONObject response, FetchType fetchtype) {
+
+    }
 
     @Override
     protected void handleResponse(JSONArray array, FetchType fetchType) {

@@ -4,10 +4,20 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+
+import java.nio.MappedByteBuffer;
+
 import jc.house.R;
+import jc.house.global.MApplication;
+import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
 
 public class BaseActivity extends Activity {
@@ -15,6 +25,10 @@ public class BaseActivity extends Activity {
     protected ProgressDialog progressDialog;
     protected TitleBar titleBar;
     protected LayoutInflater mInflater;
+    protected MApplication mApplication;
+    protected LinearLayout baseLayout;
+    protected RelativeLayout contentLayout;
+    protected AsyncHttpClient mClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +40,26 @@ public class BaseActivity extends Activity {
         this.progressDialog.setCancelable(true);
         this.progressDialog.setCanceledOnTouchOutside(true);
         this.mInflater = this.getLayoutInflater();
+        this.mApplication = (MApplication)this.getApplication();
+        this.titleBar = new TitleBar(this);
+        this.titleBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        this.baseLayout = new LinearLayout(this);
+        this.baseLayout.setOrientation(LinearLayout.VERTICAL);
+        contentLayout = new RelativeLayout(this);
+        baseLayout.addView(titleBar, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        titleBar.setVisibility(View.GONE);
+        LinearLayout.LayoutParams layoutContent = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        baseLayout.addView(contentLayout, layoutContent);
+        setContentView(baseLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+    }
+
+    public void setJCContentView(View contentView) {
+        contentLayout.removeAllViews();
+        contentLayout.addView(contentView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+    }
+
+    public void setJCContentView(int resId) {
+        setJCContentView(mInflater.inflate(resId, null));
     }
 
     /**
@@ -35,9 +69,16 @@ public class BaseActivity extends Activity {
      */
     protected void setTitleBarTitle(String title) {
         //maybe is null
-        titleBar = (TitleBar) findViewById(R.id.titlebar);
-        if (this.titleBar != null)
-            this.titleBar.setTitle(title);
+        this.titleBar.setTitle(title);
+        setTitleBarVisible();
+    }
+
+    public void setTitleBarVisible() {
+        this.titleBar.setVisibility(View.VISIBLE);
+    }
+
+    public void setTitleBarHide() {
+        this.titleBar.setVisibility(View.GONE);
     }
 
     protected void ToastS(String msg) {

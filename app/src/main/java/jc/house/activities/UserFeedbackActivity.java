@@ -36,13 +36,12 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
 
     private String feedbackContent;
 
-    private AsyncHttpClient mClient;
     private Map<String, String> reqParams;
     private int code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_feedback);
+        setJCContentView(R.layout.activity_user_feedback);
         mClient = new AsyncHttpClient();
         mClient.setConnectTimeout(5 * 1000);
         setTitleBarTitle("用户反馈");

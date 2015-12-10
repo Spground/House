@@ -12,6 +12,10 @@ public final class HouseDetail extends House {
     private String trafficLines;
     private String designIdea;
 
+    public HouseDetail() {
+
+    }
+
     public HouseDetail(int ID, String url, String name, String intro,
                        String phone, double lat, double lng, String houseType, String forceType, String avgPrice, String address, String recReason, String trafficLines, String designIdea) {
         super(ID, url, name, intro, phone, lat, lng);

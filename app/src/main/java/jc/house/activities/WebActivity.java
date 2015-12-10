@@ -15,7 +15,7 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web);
+        setJCContentView(R.layout.activity_web);
         setTitleBarTitle("Web界面");
         this.progressDialog.show();
         this.webView = (WebView)this.findViewById(R.id.webView);

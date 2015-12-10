@@ -1,7 +1,6 @@
 package jc.house.fragments;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +23,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
+import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
@@ -33,20 +33,18 @@ import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
-import jc.house.utils.ToastUtils;
-import jc.house.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public abstract class BaseNetFragment extends Fragment implements IRefresh, XListView.IXListViewListener {
-    protected View view;
+public abstract class BaseNetFragment extends BaseFragment implements IRefresh, XListView.IXListViewListener {
     protected XListView xlistView;
     protected AsyncHttpClient client;
     protected boolean isOver;
     protected static final boolean DEBUG = Constants.DEBUG;
     protected List<BaseModel> datas;
     protected ListAdapter adapter;
+    private static final String TAG = "BaseNetFragment";
     protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();
@@ -65,23 +63,15 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
 
     protected void handleCode(int code, String tag) {
         switch (code) {
-            case Constants.CODE_FAILED:
+            case ServerResult.CODE_FAILED:
                 LogUtils.debug(tag, "网络请求参数有错误！");
                 break;
-            case Constants.CODE_NO_DATA:
+            case ServerResult.CODE_NO_DATA:
                 LogUtils.debug(tag, "网络请求连接正常，数据为空！");
                 break;
             default:
                 break;
         }
-    }
-
-    protected void ToastS(String msg) {
-        Toast.makeText(this.getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    protected void ToastL(String msg) {
-        Toast.makeText(this.getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     protected void toastNoMoreData() {
@@ -120,17 +110,13 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
         this.xlistView.setPullRefreshEnable(false);
     }
 
-    protected Map<String, String> getParams(final FetchType fetchType, int pageSize) {
+    protected Map<String, String> getParams(final FetchType fetchType) {
         if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType && this.isOver) {
+            resetXListView();
+            toastNoMoreData();
             return null;
         }
         Map<String, String> params = new HashMap<>();
-        params.put("pageSize", String.valueOf(pageSize));
-        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-            if (datas.size() > 0) {
-                params.put("id", String.valueOf(((BaseModel)datas.get(datas.size() - 1)).getID()));
-            }
-        }
         return params;
     }
     protected void fetchDataFromServer(final FetchType fetchType, String URL,  Map<String, String> params) {
@@ -141,6 +127,7 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
                 handleResponse(statusCode, response, fetchType);
             }
 
@@ -162,6 +149,8 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
             }
         }
     }
+
+    @Override
     protected void setHeader() {
         final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
         StoreHouseHeader header = new StoreHouseHeader(getContext());
@@ -179,6 +168,7 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
+                onRefresh();
                 ptrFrameLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -188,6 +178,28 @@ public abstract class BaseNetFragment extends Fragment implements IRefresh, XLis
             }
         });
     }
+    protected void updateListView(List<BaseModel> lists, final FetchType fetchType, final int pageSize) {
+        if (null != lists && lists.size() > 0) {
+            if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                this.datas.clear();
+                this.isOver = false;
+            } else {
+                if (lists.size() < pageSize) {
+                    this.isOver = true;
+                }
+            }
+            this.datas.addAll(lists);
+            adapter.notifyDataSetChanged();
+            if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                this.xlistView.smoothScrollToPosition(0);
+            }
+        } else if (null != lists && lists.size() == 0) {
+            isOver = true;
+            toastNoMoreData();
+        }
+        resetXListView();
+    }
+
     protected abstract void fetchDataFromServer(final FetchType fetchType);
     protected abstract void handleResponse(JSONArray array, final FetchType fetchType);
 }

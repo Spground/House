@@ -5,10 +5,10 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <jc.house.views.TitleBar
-        android:id="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></jc.house.views.TitleBar>
+    <!--<jc.house.views.TitleBar-->
+        <!--android:id="@+id/titlebar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"></jc.house.views.TitleBar>-->
 
     <ScrollView
         android:layout_width="match_parent"

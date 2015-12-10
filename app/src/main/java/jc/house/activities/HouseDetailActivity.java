@@ -26,8 +26,8 @@ import jc.house.views.ViewPagerTitle;
 import jc.house.views.MViewPager;
 import jc.house.views.TitleBar;
 
-public class HouseDetailActivity extends Activity implements View.OnClickListener {
-	private TitleBar titleBar;
+public class HouseDetailActivity extends BaseActivity implements View.OnClickListener {
+//	private TitleBar titleBar;
 	private MViewPager viewPager;
 	private List<TextView> textViews;
 	private List<ViewPagerTitle> titles;
@@ -41,10 +41,10 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_house_detail);
+		setJCContentView(R.layout.activity_house_detail);
 		this.houseImageView = (ImageView)findViewById(R.id.house_image_view);
 		this.houseImageView.setOnClickListener(this);
-		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
+//		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
 		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
 		this.mapTextView.setText("地图");
 		this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
@@ -66,7 +66,7 @@ public class HouseDetailActivity extends Activity implements View.OnClickListene
 			}
 		});
 		this.titleBar.setRightChildView(mapTextView);
-		this.titleBar.setTitle("楼盘详情");
+		this.setTitleBarTitle("楼盘详情");
 		this.chatTextView = (TextView)this.findViewById(R.id.chat);
 		this.chatTextView.setOnClickListener(new View.OnClickListener() {
 			@Override

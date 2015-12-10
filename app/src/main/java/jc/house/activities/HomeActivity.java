@@ -24,6 +24,7 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
 import jc.house.interfaces.IRefresh;
+import jc.house.models.News;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;

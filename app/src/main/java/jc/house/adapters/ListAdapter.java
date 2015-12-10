@@ -109,13 +109,13 @@ public class ListAdapter extends BaseAdapter {
 					}
 					News news = (News)this.lists.get(mPos);
 					if (DEBUG) {
-						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
+						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
-						loadImage(viewHolderNews.picture, news.getUrl());
+						loadImage(viewHolderNews.picture, news.getPicUrl());
 					}
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
-					viewHolderNews.date.setText(news.getDate());
+					viewHolderNews.date.setText(news.getTime());
 					break;
 				case HOUSE:
 					ViewHolderHouse viewHolderHouse;
@@ -155,7 +155,7 @@ public class ListAdapter extends BaseAdapter {
 					}
 					JCActivity activity = (JCActivity)this.lists.get(mPos);
 					viewHolderActivity.picture.setImageResource(Constants.resActivity[(int)(Math.random() * 5)]);
-					viewHolderActivity.title.setText(activity.getName());
+					viewHolderActivity.title.setText(activity.getTitle());
 					break;
 				default:
 					break;

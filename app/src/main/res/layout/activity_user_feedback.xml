@@ -6,11 +6,11 @@
     tools:context="jc.house.activities.UserFeedbackActivity"
     android:orientation="vertical"
     >
-    <jc.house.views.TitleBar
-        android:id="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </jc.house.views.TitleBar>
+    <!--<jc.house.views.TitleBar-->
+        <!--android:id="@+id/titlebar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" >-->
+    <!--</jc.house.views.TitleBar>-->
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"

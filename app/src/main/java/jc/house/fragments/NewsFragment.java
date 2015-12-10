@@ -1,7 +1,6 @@
 package jc.house.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,19 +10,16 @@ import android.widget.AdapterView;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.utils.LogUtils;
@@ -36,8 +32,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 //	private static final String[] imageUrls = {"123", "456"};
 	private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
-//    private List<News> newses;
-//    private ListAdapter adapter;
     protected String URL = Constants.SERVER_URL + "news2/news";
     public NewsFragment() {
         super();
@@ -46,7 +40,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        datas = new ArrayList<>();
         CircleView circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
         circleView.setTimeInterval(3.6f);
@@ -64,12 +57,13 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         }
         this.adapter = new ListAdapter(this.getActivity(), datas, ModelType.NEWS, circleView);
-        this.xlistView = (XListView) view.findViewById(R.id.list);
-//        this.xlistView.setAdapter(adapter);
-//        this.xlistView.setXListViewListener(this);
-//        this.xlistView.setPullLoadEnable(true);
-//        this.xlistView.setPullRefreshEnable(false);
         initListView();
+    }
+
+    @Override
+    protected void initListView() {
+        this.xlistView = (XListView) view.findViewById(R.id.list);
+        super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,9 +71,9 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 if (position >= 2 && position <= datas.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (DEBUG) {
-                        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
+                        intent.putExtra("url", "http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=13");
                     } else {
-                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + datas.get(position - 2).getID());
+                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News)datas.get(position - 2)).getId());
                     }
                     startActivity(intent);
                 }
@@ -91,117 +85,35 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_news, container, false);
-//        final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
-//        StoreHouseHeader header = new StoreHouseHeader(getContext());
-//        header.setPadding(0, 20, 0, 20);
-//        header.initWithString("JIN CHEN");
-//        header.setTextColor(Color.RED);
-//        ptrFrameLayout.setDurationToCloseHeader(1500);
-//        ptrFrameLayout.setHeaderView(header);
-//        ptrFrameLayout.addPtrUIHandler(header);
-//        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-//            @Override
-//            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-//                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-//            }
-//
-//            @Override
-//            public void onRefreshBegin(PtrFrameLayout frame) {
-//                ptrFrameLayout.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ptrFrameLayout.refreshComplete();
-//                    }
-//                }, 1500);
-//            }
-//        });
         setHeader();
         return this.view;
     }
 
-//    @Override
-//    protected void handleResponse(int statusCode, JSONObject response, FetchType fetchType) {
-//        resetXListView();
-//        if (200 == statusCode && null != response) {
-//            try {
-//                int code = response.getInt("code");
-//                if (Constants.CODE_SUCCESS == code) {
-//                    JSONArray array = response.getJSONArray("result");
-//                    List<News> lists = ParseJson.parseNews(array);
-//                    updateListView(lists, fetchType);
-//                } else {
-//                    handleCode(code, TAG);
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-    private void updateListView(List<News> lists, final FetchType fetchType) {
-        if (null != lists && lists.size() > 0) {
-            if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                this.datas.clear();
-                this.isOver = false;
-            } else {
-                if (lists.size() < PAGE_SIZE) {
-                    this.isOver = true;
-                }
-            }
-            this.datas.addAll(lists);
-            adapter.notifyDataSetChanged();
-            if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                this.xlistView.smoothScrollToPosition(0);
-            }
-        } else if (null != lists && lists.size() == 0) {
-            isOver = true;
-            toastNoMoreData();
-        }
-    }
 
     @Override
     protected void handleResponse(JSONArray array, FetchType fetchType) {
-        List<News> lists = ParseJson.parseNews(array);
-        updateListView(lists, fetchType);
+        List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, News.class);
+        updateListView(lists, fetchType, PAGE_SIZE);
+    }
+
+    @Override
+    protected Map<String, String> getParams(FetchType fetchType) {
+        Map<String, String> params = super.getParams(fetchType);
+        if (null != params) {
+            params.put("pageSize", String.valueOf(PAGE_SIZE));
+            if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+                if (datas.size() > 0) {
+                    params.put("id", String.valueOf(((News)datas.get(datas.size() - 1)).getId()));
+                }
+            }
+        }
+        return params;
     }
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        fetchDataFromServer(fetchType, URL, getParams(fetchType, PAGE_SIZE));
+        fetchDataFromServer(fetchType, URL, getParams(fetchType));
     }
-
-    //    @Override
-//    protected void fetchDataFromServer(final FetchType fetchtype) {
-//        Map<String, String> params = new HashMap<>();
-//        params.put("pageSize", String.valueOf(PAGE_SIZE));
-//        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchtype) {
-//            if (!this.isOver) {
-//                if (datas.size() > 0) {
-//                    params.put("id", String.valueOf(datas.get(datas.size() - 1).getID()));
-//                }
-//            } else {
-//                toastNoMoreData();
-//                resetXListView();
-//                return;
-//            }
-//        }
-//        this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                super.onSuccess(statusCode, headers, response);
-//                handleResponse(statusCode, response, fetchtype);
-//                LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
-//                LogUtils.debug(TAG, "statusCode is " + statusCode);
-//                resetXListView();
-//                handleFailure();
-//            }
-//        });
-//    }
 
     @Override
     public void onCircleViewItemClick(View v, int index) {
