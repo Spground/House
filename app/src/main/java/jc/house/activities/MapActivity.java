@@ -2,6 +2,8 @@ package jc.house.activities;
 
 import android.os.Bundle;
 import android.view.Window;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
 import com.tencent.mapsdk.raster.model.LatLng;
@@ -41,7 +43,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                ToastUtils.show(MapActivity.this, "It's mapView info window");
+                Toast.makeText(MapActivity.this, "It's mapView info window", Toast.LENGTH_SHORT).show();
             }
         });
         this.mapView.getMap().setCenter(new LatLng(39.90, 116.425));

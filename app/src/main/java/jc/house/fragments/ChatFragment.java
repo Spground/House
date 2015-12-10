@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
@@ -35,7 +36,6 @@ import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ToastUtils;
 
 public class ChatFragment extends Fragment implements IRefresh {
 	public static final String TAG = "ChatFragment";
@@ -248,7 +248,7 @@ public class ChatFragment extends Fragment implements IRefresh {
 			//if user is in the ChatActivity do nothing just return;
 			if (ChatActivity.instance != null)
 				return;
-			ToastUtils.show(getActivity(), "收到来自" + from + "的消息，请你查收！");
+			Toast.makeText(this.getActivity(), "收到来自" + from + "的消息，请你查收！", Toast.LENGTH_SHORT).show();
 			//callback HomeActivity to update little red dot
 			if (newMessageCallBack != null)
 				newMessageCallBack.onNewMessageReceived();

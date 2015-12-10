@@ -151,7 +151,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             //发送语音
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
-                ToastUtils.debugShow(ChatActivity.this, "按住说话");
+                Toast.makeText(ChatActivity.this, "按住说话", Toast.LENGTH_SHORT).show();
 //                return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
 //
 //                    @Override
@@ -253,7 +253,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 if (locationAddress != null && !locationAddress.equals("")) {
 //                    sendLocationMessage(latitude, longitude, locationAddress);
                 } else {
-                    ToastUtils.show(this, "不能显示地图信息");
+                    Toast.makeText(this, "不能显示地图信息", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -317,7 +317,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             return;
         EMMessage message = EMChatManager.getInstance().getMessage(msgId);
         LogUtils.debug(TAG, "收到消息" + msgId);
-        ToastUtils.debugShow(ChatActivity.this, "收到来自" + message.getFrom() + "的消息！");
+        Toast.makeText(ChatActivity.this, "收到来自" + message.getFrom() + "的消息！", Toast.LENGTH_SHORT).show();
         //refresh ListView
         chatMsgList.refresh();
     }
@@ -376,7 +376,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      */
     protected void selectPicFromCamera() {
         if (!CommonUtils.isExitsSdcard()) {
-            ToastUtils.debugShow(this, "手机没有存储卡，不能拍照!");
+            Toast.makeText(this, "手机没有存储卡，不能拍照!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -391,7 +391,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         //swipe refresh goes here
-        ToastUtils.debugShow(this, "Loading");
+        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
         this.swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -402,13 +402,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public boolean onBubbleClick(EMMessage message) {
-        ToastUtils.debugShow(this, "click");
+        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
     public void onBubbleLongClick(EMMessage message) {
-        ToastUtils.debugShow(this, "long click");
+        Toast.makeText(this, "long click", Toast.LENGTH_SHORT).show();
     }
 
     @Override

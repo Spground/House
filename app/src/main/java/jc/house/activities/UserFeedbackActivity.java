@@ -73,7 +73,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         //check the character limit, no more than 140 characters
         feedbackContent = mEditText.getText().toString().trim();
         if(feedbackContent.length() <=0 || feedbackContent.length() > 140){
-            ToastUtils.show(this, "抱歉，字数不满足要求!");
+            ToastS("抱歉，字数不满足要求!");
             return;
         }
         showDlg();
@@ -89,7 +89,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
                 //parse json, get the server's return info
                 LogUtils.debug(TAG, response.toString());
                 if (response == null) {
-                    ToastUtils.show(UserFeedbackActivity.this, "JSON解析错误");
+                    ToastS("JSON解析错误");
                     return;
                 }
                 try {
@@ -104,7 +104,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
                 if (code == 1) {
                     alertDialog.show();
                 } else {
-                    ToastUtils.show(UserFeedbackActivity.this, "抱歉，出现错误，请您稍后再试");
+                    ToastS("抱歉，出现错误，请您稍后再试");
                 }
             }
 
@@ -112,7 +112,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 LogUtils.debug(TAG, "network request failed");
                 cancelDlg();
-                ToastUtils.show(UserFeedbackActivity.this, "网络出现错误，请您稍后再试");
+                ToastS("网络出现错误，请您稍后再试");
             }
         });
     }

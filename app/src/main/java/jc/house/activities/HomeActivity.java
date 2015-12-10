@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
@@ -232,7 +233,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 finish();
             } else {
                 lastTime = currentTime;
-                ToastUtils.show(HomeActivity.this, "再次点击退出应用");
+                Toast.makeText(HomeActivity.this, "再次点击退出应用", Toast.LENGTH_SHORT).show();
+//                ToastUtils.show(HomeActivity.this, "再次点击退出应用");
             }
             return true;
         }

@@ -48,7 +48,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     private static final String TAG = "HouseFragment";
     private static final String URL = Constants.SERVER_URL + "house/houses";
     private List<House> houses;
-    private ListAdapter<House> adapter;
+    private ListAdapter adapter;
     private boolean isOver;
 
     private ImageButton mapBtn;
@@ -96,7 +96,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         this.mapBtn.setOnClickListener(this);
         this.isOver = false;
         this.houses = new ArrayList<>();
-        this.adapter = new ListAdapter<>(this.getActivity(), this.houses, ModelType.HOUSE);
+        this.adapter = new ListAdapter(this.getActivity(), this.houses, ModelType.HOUSE);
         this.xlistView.setAdapter(this.adapter);
         this.xlistView.setPullLoadEnable(true);
         this.xlistView.setPullRefreshEnable(false);
@@ -211,5 +211,15 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         if(v.getId() == R.id.id_map_btn){
             startActivity(new Intent(getActivity(), MapActivity.class));
         }
+    }
+
+    @Override
+    protected void handleResponse(JSONArray array, FetchType fetchType) {
+
+    }
+
+    @Override
+    protected void fetchDataFromServer(FetchType fetchType, String URL, Map<String, String> params) {
+        super.fetchDataFromServer(fetchType, URL, params);
     }
 }

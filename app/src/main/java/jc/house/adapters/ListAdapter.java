@@ -24,20 +24,20 @@ import jc.house.models.News;
 import jc.house.views.CircleView;
 import jc.house.views.RatingView;
 
-public class ListAdapter<T extends BaseModel> extends BaseAdapter {
+public class ListAdapter extends BaseAdapter {
 	private Context context;
-	private List<T> lists;
+	private List<? extends BaseModel> lists;
 	private ModelType type;
 	private CircleView circleView;
 	private boolean hasCircleView;
 	private DisplayImageOptions options;
 	private static final boolean DEBUG = Constants.DEBUG;
 	
-	public ListAdapter(Context context, List<T> lists, ModelType modelType) {
+	public ListAdapter(Context context, List<? extends BaseModel> lists, ModelType modelType) {
 		this(context, lists, modelType, null);
 	}
 	
-	public ListAdapter(Context context, List<T> lists, ModelType modelType, CircleView circleView) {
+	public ListAdapter(Context context, List<? extends BaseModel> lists, ModelType modelType, CircleView circleView) {
 		this.context = context;
 		this.lists = lists;
 		this.type = modelType;

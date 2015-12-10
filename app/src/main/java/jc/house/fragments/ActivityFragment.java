@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class ActivityFragment extends BaseNetFragment {
         this.activities.add(new JCActivity(1,"","金宸•蓝郡二期"));
         this.activities.add(new JCActivity(1,"","连大•文润金宸三期"));
         this.activities.add(new JCActivity(1, "", "金宸•蓝郡三期"));
-        this.xlistView.setAdapter(new ListAdapter<>(this.getActivity(), this.activities, ModelType.ACTIVITY));
+        this.xlistView.setAdapter(new ListAdapter(this.getActivity(), this.activities, ModelType.ACTIVITY));
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullRefreshEnable(false);
         this.xlistView.setPullLoadEnable(false);
@@ -105,6 +106,11 @@ public class ActivityFragment extends BaseNetFragment {
     protected void handleResponse(int statusCode, JSONObject response, FetchType fetchtype) {};
 
     @Override
+    protected void handleResponse(JSONArray array, FetchType fetchType) {
+
+    }
+
+    @Override
     public void refresh() {
         super.refresh();
     }
@@ -117,5 +123,10 @@ public class ActivityFragment extends BaseNetFragment {
                 resetXListView();
             }
         }, 1000);
+    }
+
+    @Override
+    protected void fetchDataFromServer(FetchType fetchType, String URL, Map<String, String> params) {
+        super.fetchDataFromServer(fetchType, URL, params);
     }
 }
