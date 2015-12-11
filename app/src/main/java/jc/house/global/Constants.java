@@ -4,7 +4,7 @@ import jc.house.R;
 
 //wujie
 public final class Constants {
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 
 	public static class ACCOUNT{

@@ -8,12 +8,6 @@
     android:background="@color/light_gray"
     >
 
-    <!--<jc.house.views.TitleBar-->
-        <!--android:id="@+id/titlebar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-    <!--</jc.house.views.TitleBar>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
