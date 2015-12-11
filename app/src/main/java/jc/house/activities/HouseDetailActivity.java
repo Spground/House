@@ -1,6 +1,5 @@
 package jc.house.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,8 +7,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +19,8 @@ import java.util.List;
 
 import jc.house.R;
 import jc.house.chat.ChatActivity;
-import jc.house.views.ViewPagerTitle;
 import jc.house.views.MViewPager;
-import jc.house.views.TitleBar;
+import jc.house.views.ViewPagerTitle;
 
 public class HouseDetailActivity extends BaseActivity implements View.OnClickListener {
 //	private TitleBar titleBar;

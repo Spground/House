@@ -68,7 +68,6 @@ public class BaseActivity extends Activity {
      * @param title
      */
     protected void setTitleBarTitle(String title) {
-        //maybe is null
         this.titleBar.setTitle(title);
         setTitleBarVisible();
     }

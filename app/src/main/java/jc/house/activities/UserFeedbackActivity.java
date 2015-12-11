@@ -23,7 +23,6 @@ import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ToastUtils;
 
 public class UserFeedbackActivity extends BaseActivity implements View.OnClickListener,
         DialogInterface.OnClickListener {

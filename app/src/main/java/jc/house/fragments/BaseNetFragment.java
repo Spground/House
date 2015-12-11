@@ -1,6 +1,7 @@
 package jc.house.fragments;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected List<BaseModel> datas;
     protected ListAdapter adapter;
     private static final String TAG = "BaseNetFragment";
+    protected Handler mHandler = new Handler();
     protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();

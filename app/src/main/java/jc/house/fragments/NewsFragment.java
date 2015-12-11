@@ -2,7 +2,9 @@ package jc.house.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +19,14 @@ import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
+import jc.house.async.IParseData;
+import jc.house.async.MThreadPool;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
 import jc.house.views.CircleView;
 
 public class NewsFragment extends BaseNetFragment implements CircleView.CircleViewOnClickListener {
@@ -73,7 +76,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                     if (DEBUG) {
                         intent.putExtra("url", "http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=13");
                     } else {
-                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News)datas.get(position - 2)).getId());
+                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) datas.get(position - 2)).getId());
                     }
                     startActivity(intent);
                 }
@@ -92,8 +95,17 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void handleResponse(JSONArray array, FetchType fetchType) {
-        List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, News.class);
-        updateListView(lists, fetchType, PAGE_SIZE);
+        MThreadPool.getInstance().submitParseDataTask(array, News.class, fetchType, new IParseData() {
+            @Override
+            public void onTaskCompleted(final List<BaseModel> lists, final FetchType fetchType) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateListView(lists, fetchType, PAGE_SIZE);
+                    }
+                });
+            }
+        });
     }
 
     @Override
