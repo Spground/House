@@ -99,7 +99,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             params.put("pageSize", String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
                 if (datas.size() > 0) {
-                    params.put("id", String.valueOf(((House)datas.get(datas.size() - 1)).getId()));
+                    params.put("id", String.valueOf(((House)datas.get(datas.size() - 1)).id));
                 }
             }
         }

@@ -13,11 +13,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 
-import java.nio.MappedByteBuffer;
-
-import jc.house.R;
 import jc.house.global.MApplication;
-import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
 
 public class BaseActivity extends Activity {

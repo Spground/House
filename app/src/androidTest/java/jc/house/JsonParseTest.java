@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import jc.house.models.BaseModel;
+import jc.house.models.HouseDetail;
 import jc.house.models.JCActivity;
 import jc.house.models.News;
 import jc.house.utils.LogUtils;
@@ -25,7 +26,7 @@ public class JsonParseTest extends AndroidTestCase {
           try {
               jsonObject.put("title", "JC");
               jsonObject.put("picUrl", "http://www.baidu.com");
-              jsonObject.put("id", 1000);
+              jsonObject.put("id", 10000);
               jsonObject.put("detailUrl", "http://");
               jsonObject.put("postTime", 1000L);
           } catch (JSONException e) {
@@ -34,11 +35,12 @@ public class JsonParseTest extends AndroidTestCase {
         LogUtils.debug("===TAG===", jsonObject.toString());
         JCActivity modelInstance = (JCActivity)ParseJson.jsonObj2Model(jsonObject, JCActivity.class);
         assertNotNull(modelInstance);
+        assertEquals(10000, modelInstance.id);
         LogUtils.debug("===TAG===", modelInstance.getPicUrl() + "");
         LogUtils.debug("===TAG===",  modelInstance.getTitle() + "");
         LogUtils.debug("===TAG===",  modelInstance.getDetailUrl() + "");
-        LogUtils.debug("===TAG===",  modelInstance.getId() + "");
-        LogUtils.debug("===TAG===",  modelInstance.getPostTime()  + "");
+        System.err.print("id is" + modelInstance.id + "");
+        LogUtils.debug("===TAG===", modelInstance.getPostTime()  + "");
     }
 
     public void test02() {
@@ -76,5 +78,23 @@ public class JsonParseTest extends AndroidTestCase {
         for (int i = 0; i < fields.length; i++) {
             LogUtils.debug("ClassFields" + i + fields[i].getName());
         }
+    }
+
+    public void test04() {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("houseType", "JC");
+            jsonObject.put("forceType", "http://www.baidu.com");
+            jsonObject.put("id", 10000);
+            jsonObject.put("avgPrice", "http://");
+            jsonObject.put("trafficLines", "55");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtils.debug("===TAG===", jsonObject.toString());
+        HouseDetail modelInstance = (HouseDetail)ParseJson.jsonObj2Model(jsonObject, HouseDetail.class);
+        assertNotNull(modelInstance);
+        assertEquals(10000, modelInstance.id);
     }
 }

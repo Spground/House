@@ -73,7 +73,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                     if (DEBUG) {
                         intent.putExtra("url", "http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=13");
                     } else {
-                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News)datas.get(position - 2)).getId());
+                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News)datas.get(position - 2)).id);
                     }
                     startActivity(intent);
                 }
@@ -103,7 +103,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             params.put("pageSize", String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
                 if (datas.size() > 0) {
-                    params.put("id", String.valueOf(((News)datas.get(datas.size() - 1)).getId()));
+                    params.put("id", String.valueOf(((News)datas.get(datas.size() - 1)).id));
                 }
             }
         }

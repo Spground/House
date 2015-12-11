@@ -16,9 +16,9 @@ public final class HouseDetail extends House {
 
     }
 
-    public HouseDetail(int ID, String url, String name, String intro,
+    public HouseDetail(int id, String url, String name, String intro,
                        String phone, double lat, double lng, String houseType, String forceType, String avgPrice, String address, String recReason, String trafficLines, String designIdea) {
-        super(ID, url, name, intro, phone, lat, lng);
+        super(id, url, name, intro, phone, lat, lng);
         this.houseType = houseType;
         this.forceType = forceType;
         this.avgPrice = avgPrice;

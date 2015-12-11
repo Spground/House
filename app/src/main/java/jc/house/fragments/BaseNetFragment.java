@@ -119,6 +119,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         Map<String, String> params = new HashMap<>();
         return params;
     }
+
     protected void fetchDataFromServer(final FetchType fetchType, String URL,  Map<String, String> params) {
         if (null == params) {
             return;
@@ -178,6 +179,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             }
         });
     }
+
     protected void updateListView(List<BaseModel> lists, final FetchType fetchType, final int pageSize) {
         if (null != lists && lists.size() > 0) {
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {

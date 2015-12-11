@@ -5,7 +5,6 @@ public final class News extends BaseModel{
 	private String title;
 	private String author;
 	private String time;
-	private int id;
 
 	public News() {
 
@@ -18,14 +17,6 @@ public final class News extends BaseModel{
 		this.title = title;
 		this.author = author;
 		this.time = time;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public String getPicUrl() {

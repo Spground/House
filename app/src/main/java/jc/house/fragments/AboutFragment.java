@@ -55,7 +55,7 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
                 startActivity(new Intent(getActivity(), UserFeedbackActivity.class));
                 break;
             case R.id.id_check_update:
-                ToastUtils.debugShow(getActivity(), "您的已经是最新版本!");
+                ToastUtils.show(getActivity(), "您的已经是最新版本!");
                 break;
             case R.id.id_about_us:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
