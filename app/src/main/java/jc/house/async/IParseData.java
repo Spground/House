@@ -9,5 +9,5 @@ import jc.house.models.BaseModel;
  * Created by hzj on 2015/12/11.
  */
 public interface IParseData {
-    void onTaskCompleted(List<BaseModel> lists, FetchType fetchType);
+    void onParseDataTaskCompleted(List<BaseModel> lists, FetchType fetchType);
 }

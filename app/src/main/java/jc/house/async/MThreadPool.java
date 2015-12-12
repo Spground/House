@@ -1,6 +1,7 @@
 package jc.house.async;
 
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.json.JSONArray;
 
@@ -38,27 +39,35 @@ public class MThreadPool {
         return instance;
     }
 
-    public void submitParseDataTask(JSONArray array, Class<? extends BaseModel> mClass, FetchType fetchType, IParseData praseData) {
-        this.executorService.submit(new ParseDataThread(array, mClass, fetchType,praseData));
+    public void submitParseDataTask(JSONArray array, Class<? extends BaseModel> mClass,
+                                    FetchType fetchType, IParseData parseData) {
+        this.executorService.submit(new ParseDataThread(array, mClass, fetchType, parseData));
     }
 
     private class ParseDataThread implements Runnable {
         private JSONArray array;
         private Class<? extends BaseModel> mClass;
         private FetchType fetchType;
-        private IParseData parseData;
+        private IParseData parseDataCallback;
 
-        public ParseDataThread(JSONArray array, Class<? extends BaseModel> mClass, FetchType fetchType, IParseData parseData) {
+        public ParseDataThread(JSONArray array, Class<? extends BaseModel> mClass,
+                               FetchType fetchType, IParseData parseDataCallback) {
             this.array = array;
             this.mClass = mClass;
             this.fetchType = fetchType;
-            this.parseData = parseData;
+            this.parseDataCallback = parseDataCallback;
         }
 
         @Override
         public void run() {
-            List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, mClass);
-            parseData.onTaskCompleted(lists, fetchType);
+            final List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, mClass);
+            LogUtils.debug(TAG, "parsed data set is" + lists.size());
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    parseDataCallback.onParseDataTaskCompleted(lists, fetchType);
+                }
+            });
         }
 
     }

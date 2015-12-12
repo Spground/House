@@ -22,6 +22,7 @@ import jc.house.activities.MapActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.ModelType;
@@ -58,19 +59,19 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         initListView();
 
         if (DEBUG) {
-            this.datas.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
+            this.dataSet.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
                     "0411-86536589", 112, 125));
-            this.datas.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
+            this.dataSet.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
                     "0411-86536589", 112, 125));
-            this.datas.add(new House(1, "", "金宸.蓝郡三期", "沙河口区 小户型 板楼 双卫",
+            this.dataSet.add(new House(1, "", "金宸.蓝郡三期", "沙河口区 小户型 板楼 双卫",
                     "0411-86536589", 112, 125));
-            this.datas.add(new House(1, "", "连大.文润金宸二期", "沙河口 小户型 南北通透 双卫",
+            this.dataSet.add(new House(1, "", "连大.文润金宸二期", "沙河口 小户型 南北通透 双卫",
                     "0411-86536589", 112, 125));
-            this.datas.add(new House(1, "", "连大.文润金宸一期", "甘井子区 板楼 南北通透 海景地产",
+            this.dataSet.add(new House(1, "", "连大.文润金宸一期", "甘井子区 板楼 南北通透 海景地产",
                     "0411-86536589", 112, 125));
-            this.datas.add(new House(1, "", "金宸.蓝郡三期", "沙河口 小户型 南北通透 双卫",
+            this.dataSet.add(new House(1, "", "金宸.蓝郡三期", "沙河口 小户型 南北通透 双卫",
                     "0411-86536589", 112, 125));
-            this.datas.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
+            this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
                     "0411-86536589", 112, 125));
         } else {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
@@ -80,7 +81,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     protected void initListView() {
         this.xlistView = (XListView) this.view.findViewById(R.id.list);
-        this.adapter = new ListAdapter(this.getActivity(), this.datas, ModelType.HOUSE);
+        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.HOUSE);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,8 +99,8 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         if (null != params) {
             params.put("pageSize", String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-                if (datas.size() > 0) {
-                    params.put("id", String.valueOf(((House)datas.get(datas.size() - 1)).id));
+                if (dataSet.size() > 0) {
+                    params.put("id", String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
                 }
             }
         }
@@ -121,6 +122,6 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        super.fetchDataFromServer(fetchType, URL, getParams(fetchType));
+        super.fetchDataFromServer(fetchType, RequestType.POST, URL, getParams(fetchType));
     }
 }

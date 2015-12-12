@@ -21,25 +21,26 @@ import jc.house.models.House;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
+import jc.house.utils.GeneralUtils;
 import jc.house.views.CircleView;
 import jc.house.views.RatingView;
 
 public class ListAdapter extends BaseAdapter {
 	private Context context;
-	private List<? extends BaseModel> lists;
+	private List<? extends BaseModel> dataSet;
 	private ModelType type;
 	private CircleView circleView;
 	private boolean hasCircleView;
 	private DisplayImageOptions options;
 	private static final boolean DEBUG = Constants.DEBUG;
 	
-	public ListAdapter(Context context, List<? extends BaseModel> lists, ModelType modelType) {
-		this(context, lists, modelType, null);
+	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType) {
+		this(context, dataSet, modelType, null);
 	}
 	
-	public ListAdapter(Context context, List<? extends BaseModel> lists, ModelType modelType, CircleView circleView) {
+	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType, CircleView circleView) {
 		this.context = context;
-		this.lists = lists;
+		this.dataSet = dataSet;
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
@@ -48,7 +49,7 @@ public class ListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return this.lists.size() + (this.hasCircleView ? 1 : 0);
+		return this.dataSet.size() + (this.hasCircleView ? 1 : 0);
 	}
 
 	@Override
@@ -56,9 +57,9 @@ public class ListAdapter extends BaseAdapter {
 		if(this.hasCircleView && 0 == pos) {
 			return this.circleView;
 		} else if(this.hasCircleView) {
-			return this.lists.get(pos - 1);
+			return this.dataSet.get(pos - 1);
 		} else {
-			return this.lists.get(pos);
+			return this.dataSet.get(pos);
 		}
 	}
 
@@ -68,11 +69,11 @@ public class ListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View convertView, ViewGroup parent) {
+	public View getView(final int pos, View convertView, ViewGroup parent) {
 		if(pos == 0 && this.hasCircleView) {
 			convertView = circleView;
 		} else {
-			int mPos = this.hasCircleView ? pos - 1 : pos;
+			final int mPos = this.hasCircleView ? pos - 1 : pos;
 			switch(type) {
 				case CHAT_USER:
 					ViewHolderChatUser viewHolderChatUser;
@@ -87,7 +88,7 @@ public class ListAdapter extends BaseAdapter {
 					} else {
 						viewHolderChatUser = (ViewHolderChatUser)convertView.getTag();
 					}
-					ChatUser user = (ChatUser)this.lists.get(mPos);
+					ChatUser user = (ChatUser)this.dataSet.get(mPos);
 					viewHolderChatUser.portrait.setImageResource(R.drawable.qq);
 					viewHolderChatUser.name.setText(user.getName());
 					viewHolderChatUser.msg.setText(user.getMsg());
@@ -107,7 +108,7 @@ public class ListAdapter extends BaseAdapter {
 					} else {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
-					News news = (News)this.lists.get(mPos);
+					News news = (News)this.dataSet.get(mPos);
 					if (DEBUG) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
@@ -131,7 +132,7 @@ public class ListAdapter extends BaseAdapter {
 					} else {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
-					House house = (House)this.lists.get(mPos);
+					House house = (House)this.dataSet.get(mPos);
 					if (DEBUG) {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 					} else {
@@ -143,19 +144,29 @@ public class ListAdapter extends BaseAdapter {
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
+					JCActivity activityModel = (JCActivity)this.dataSet.get(mPos);
 					ViewHolderActivity viewHolderActivity;
-					if(null == convertView) {
+					if(null == convertView || convertView.getTag() == null) {
 						convertView = LayoutInflater.from(context).inflate(R.layout.listview_activity_item, parent, false);
 						viewHolderActivity = new ViewHolderActivity();
 						viewHolderActivity.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderActivity.title = (TextView)convertView.findViewById(R.id.title);
+						viewHolderActivity.postTime = (TextView)convertView.findViewById(R.id.post_time);
 						convertView.setTag(viewHolderActivity);
 					} else {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
-					JCActivity activity = (JCActivity)this.lists.get(mPos);
-					viewHolderActivity.picture.setImageResource(Constants.resActivity[(int)(Math.random() * 5)]);
-					viewHolderActivity.title.setText(activity.getTitle());
+
+					if(DEBUG) {
+						viewHolderActivity.picture.setImageResource(Constants.resActivity[(int) (Math.random() * 5)]);
+						viewHolderActivity.title.setText(activityModel.getTitle());
+						viewHolderActivity.postTime.setText("2012-08-12");
+					} else {
+						loadImage(viewHolderActivity.picture, activityModel.getPicUrl());
+						viewHolderActivity.title.setText(activityModel.getTitle());
+						convertView.setId(activityModel.id);
+						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
+					}
 					break;
 				default:
 					break;
@@ -195,6 +206,7 @@ public class ListAdapter extends BaseAdapter {
 	private static final class ViewHolderActivity {
 		public ImageView picture;
 		public TextView title;
+		public TextView postTime;
 	}
 
 }

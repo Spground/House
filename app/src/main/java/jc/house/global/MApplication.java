@@ -33,7 +33,7 @@ public class MApplication extends Application {
 				.denyCacheImageMultipleSizesInMemory()
 				.threadPoolSize(3)
 				.memoryCacheExtraOptions(480, 800)
-				.memoryCache(new UsingFreqLimitedMemoryCache(3 * 1024 * 1024))
+				.memoryCache(new UsingFreqLimitedMemoryCache(10 * 1024 * 1024))
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
 				.diskCache(new UnlimitedDiskCache(cacheDir))
 				.diskCacheFileCount(200)

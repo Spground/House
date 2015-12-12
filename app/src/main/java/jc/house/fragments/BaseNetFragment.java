@@ -1,10 +1,8 @@
 package jc.house.fragments;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -29,11 +27,13 @@ import jc.house.activities.HomeActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.RequestType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
+import jc.house.utils.ToastUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,16 +43,16 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected AsyncHttpClient client;
     protected boolean isOver;
     protected static final boolean DEBUG = Constants.DEBUG;
-    protected List<BaseModel> datas;
+    protected List<BaseModel> dataSet;
     protected ListAdapter adapter;
     private static final String TAG = "BaseNetFragment";
-    protected Handler mHandler = new Handler();
     protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();
         this.isOver = false;
-        this.datas = new ArrayList<>();
+        this.dataSet = new ArrayList<>();
     }
+
     @Override
     public void refresh() {
         this.xlistView.smoothScrollToPosition(0);
@@ -79,6 +79,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected void toastNoMoreData() {
         ToastS("暂时没有更多信息");
     }
+
     protected void handleFailure() {
         if (!HomeActivity.isNetAvailable) {
             ToastS("当前网络不可用！");
@@ -122,26 +123,50 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         return params;
     }
 
-    protected void fetchDataFromServer(final FetchType fetchType, String URL,  Map<String, String> params) {
+    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType,
+                                       String URL, Map<String, String> params) {
         if (null == params) {
             return;
         }
-        this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
-                handleResponse(statusCode, response, fetchType);
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                resetXListView();
-                handleFailure();
-            }
-        });
+        if(requestType == RequestType.POST) {
+            this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
+                    handleResponse(statusCode, response, fetchType);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                    resetXListView();
+                    handleFailure();
+                }
+            });
+        } else {
+            this.client.get(URL, new RequestParams(params), new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
+                    handleResponse(statusCode, response, fetchType);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                    resetXListView();
+                    ToastUtils.show(getActivity(), "status code is " + statusCode);
+                    handleFailure();
+                }
+            });
+        }
+
+
     }
+
     protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             ServerResult result = ServerUtils.parseServerResponse(response);
@@ -150,6 +175,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             } else {
                 handleCode(result.code, "server code");
             }
+        } else {
+            ToastUtils.show(getActivity(), "网络请求未成功 status code : " + statusCode);
         }
     }
 
@@ -182,22 +209,23 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         });
     }
 
-    protected void updateListView(List<BaseModel> lists, final FetchType fetchType, final int pageSize) {
-        if (null != lists && lists.size() > 0) {
+    protected void updateListView(List<BaseModel> dataSet, final FetchType fetchType, final int pageSize) {
+        LogUtils.debug("===TAG===", "updateListView()'s data is  " + dataSet == null? "null":"not null");
+        if (null != dataSet && dataSet.size() > 0) {
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                this.datas.clear();
+                this.dataSet.clear();
                 this.isOver = false;
             } else {
-                if (lists.size() < pageSize) {
+                if (dataSet.size() < pageSize) {
                     this.isOver = true;
                 }
             }
-            this.datas.addAll(lists);
-            adapter.notifyDataSetChanged();
+            this.dataSet.addAll(dataSet);
+            this.adapter.notifyDataSetChanged();
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.xlistView.smoothScrollToPosition(0);
             }
-        } else if (null != lists && lists.size() == 0) {
+        } else if (null != dataSet && dataSet.size() == 0) {
             isOver = true;
             toastNoMoreData();
         }

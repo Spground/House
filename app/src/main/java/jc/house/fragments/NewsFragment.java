@@ -21,6 +21,7 @@ import jc.house.async.IParseData;
 import jc.house.async.MThreadPool;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
@@ -48,16 +49,16 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         circleView.setOnCircleViewItemClickListener(this);
 
         if (DEBUG) {
-            datas.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
-            datas.add(new News(1, "" + R.drawable.temp_jianzhu, "创新营销 挑战逆境 创回款年度新", "管理员", "2015/11/18"));
-            datas.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
-            datas.add(new News(1, "" + R.drawable.temp_dongshizhanghuojiang, "金宸集团董事长马国君先生再次荣获大连市慈善", "管理员", "2015/11/18"));
-            datas.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
-            datas.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
+            dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
+            dataSet.add(new News(1, "" + R.drawable.temp_jianzhu, "创新营销 挑战逆境 创回款年度新", "管理员", "2015/11/18"));
+            dataSet.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
+            dataSet.add(new News(1, "" + R.drawable.temp_dongshizhanghuojiang, "金宸集团董事长马国君先生再次荣获大连市慈善", "管理员", "2015/11/18"));
+            dataSet.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
+            dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
         } else {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         }
-        this.adapter = new ListAdapter(this.getActivity(), datas, ModelType.NEWS, circleView);
+        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
     }
 
@@ -69,12 +70,12 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LogUtils.debug(TAG, "position is " + position);
-                if (position >= 2 && position <= datas.size() + 1) {
+                if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (DEBUG) {
                         intent.putExtra("url", "http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=13");
                     } else {
-                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News)datas.get(position - 2)).id);
+                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) dataSet.get(position - 2)).id);
                     }
                     startActivity(intent);
                 }
@@ -90,18 +91,12 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         return this.view;
     }
 
-
     @Override
     protected void handleResponse(JSONArray array, FetchType fetchType) {
         MThreadPool.getInstance().submitParseDataTask(array, News.class, fetchType, new IParseData() {
             @Override
-            public void onTaskCompleted(final List<BaseModel> lists, final FetchType fetchType) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateListView(lists, fetchType, PAGE_SIZE);
-                    }
-                });
+            public void onParseDataTaskCompleted(List<BaseModel> lists, FetchType fetchType) {
+                updateListView(lists, fetchType, PAGE_SIZE);
             }
         });
     }
@@ -112,8 +107,8 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         if (null != params) {
             params.put("pageSize", String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-                if (datas.size() > 0) {
-                    params.put("id", String.valueOf(((News)datas.get(datas.size() - 1)).id));
+                if (dataSet.size() > 0) {
+                    params.put("id", String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
                 }
             }
         }
@@ -122,7 +117,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        fetchDataFromServer(fetchType, URL, getParams(fetchType));
+        fetchDataFromServer(fetchType, RequestType.POST, URL, getParams(fetchType));
     }
 
     @Override
