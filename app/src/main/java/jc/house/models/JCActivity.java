@@ -6,12 +6,11 @@ package jc.house.models;
 public final class JCActivity extends BaseModel {
     private String title;
     private String picUrl;
-    private int id;
     private String detailUrl;
     private Long postTime;
 
-    public JCActivity(int ID, String picUrl, String name) {
-        super(ID);
+    public JCActivity(int id, String picUrl, String name) {
+        super(id);
         this.picUrl = picUrl;
     }
 
@@ -31,14 +30,6 @@ public final class JCActivity extends BaseModel {
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDetailUrl() {

@@ -1,8 +1,12 @@
 package jc.house.utils;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import jc.house.R;
 import jc.house.global.Constants;
 
 /**
@@ -13,13 +17,23 @@ public class ToastUtils {
     public static void show(Context ctx, String msg) {
         if(ctx == null || msg == null)
             return;
-        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
+        doShowToast(ctx, msg);
     }
 
     public static void debugShow(Context ctx, String msg) {
         if(ctx == null || msg == null)
             return;
         if(DEBUG)
-            Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
+            doShowToast(ctx, msg);
+    }
+
+    private static void doShowToast(Context ctx, String msg) {
+        View toastView = LayoutInflater.from(ctx).inflate(R.layout.jc_default_toast_view, null);
+        Toast toast = Toast.makeText(ctx, null, Toast.LENGTH_SHORT);
+        if(toastView != null) {
+            ((TextView)toastView.findViewById(R.id.toast_message)).setText(msg);
+            toast.setView(toastView);
+        }
+        toast.show();
     }
 }

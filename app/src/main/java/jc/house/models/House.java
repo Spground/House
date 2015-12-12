@@ -7,28 +7,19 @@ public class House extends BaseModel{
 	private String phone;
 	private double lat;
 	private double lng;
-	private int id;
 
 	public House() {}
 
-	public House(int ID, String url, String name, String intro,
+	public House(int id, String url, String name, String intro,
 			String phone, double lat, double lng) {
-		super(ID);
-		this.id = ID;
+		super(id);
+		this.id = id;
 		this.url = url;
 		this.name = name;
 		this.intro = intro;
 		this.phone = phone;
 		this.lat = lat;
 		this.lng = lng;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public String getUrl() {
