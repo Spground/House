@@ -75,8 +75,8 @@ public class CircleView extends LinearLayout {
 		this.num = 0;
 		this.context = context;
 		this.imageViews = new ArrayList<>();
-		this.animation = new AlphaAnimation(0.6f, 1.0f);
-		this.animation.setDuration(1000);
+		this.animation = new AlphaAnimation(0.8f, 1.0f);
+		this.animation.setDuration(600);
 		this.scrollOrientaion = SCROLL_RIGHT;
 	}
 	

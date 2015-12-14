@@ -1,5 +1,6 @@
 package jc.house.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.accessibility.AccessibilityManager;
@@ -12,13 +13,20 @@ import com.tencent.mapsdk.raster.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.map.MapView;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 
+import java.util.List;
+
 import jc.house.R;
+import jc.house.models.House;
 import jc.house.utils.ToastUtils;
 import jc.house.views.TitleBar;
 
 public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
 
     private MapView mapView;
+    private boolean isSingleMarker = true;
+    private static final String IsSingleMarker = "isSingleMarker";
+    public static final String FLAG_HOUSE = "house";
+    public static final String FLAG_HOUSES = "houses";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,23 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         this.mapView = (MapView) this.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         this.initMapView();
+        Intent intent = this.getIntent();
+        isSingleMarker = intent.getBooleanExtra(IsSingleMarker, true);
+        if (isSingleMarker) {
+            House house = intent.getParcelableExtra(FLAG_HOUSE);
+            setMapViewData(house);
+        } else {
+            List<House> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
+            setMapViewDatas(houses);
+        }
+    }
+
+    private void setMapViewData(House house) {
+
+    }
+
+    private void setMapViewDatas(List<House> houses) {
+
     }
 
     private void initMapView() {

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_bg_bitmap"
+    android:background="@drawable/activity_bg01_bitmap"
     android:orientation="vertical">
 
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
@@ -10,7 +10,7 @@
         android:id="@+id/rotate_header_list_view_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/activity_bg_bitmap"
+        android:background="@drawable/activity_bg00_bitmap"
         cube_ptr:ptr_duration_to_close="200"
         cube_ptr:ptr_duration_to_close_header="1000"
         cube_ptr:ptr_keep_header_when_refresh="true"

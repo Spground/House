@@ -12,9 +12,7 @@ public final class HouseDetail extends House {
     private String trafficLines;
     private String designIdea;
 
-    public HouseDetail() {
-
-    }
+    public HouseDetail() {}
 
     public HouseDetail(int id, String url, String name, String intro,
                        String phone, double lat, double lng, String houseType, String forceType, String avgPrice, String address, String recReason, String trafficLines, String designIdea) {

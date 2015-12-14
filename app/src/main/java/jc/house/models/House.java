@@ -1,6 +1,9 @@
 package jc.house.models;
 
-public class House extends BaseModel{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class House extends BaseModel implements Parcelable {
 	private String url;
 	private String name;
 	private String intro;
@@ -21,6 +24,44 @@ public class House extends BaseModel{
 		this.lat = lat;
 		this.lng = lng;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(id);
+		dest.writeString(url);
+		dest.writeString(name);
+		dest.writeString(intro);
+		dest.writeString(phone);
+		dest.writeDouble(lat);
+		dest.writeDouble(lng);
+	}
+
+	private House(Parcel origin) {
+		this.id = origin.readInt();
+		this.url = origin.readString();
+		this.name = origin.readString();
+		this.intro = origin.readString();
+		this.phone = origin.readString();
+		this.lat = origin.readDouble();
+		this.lng = origin.readDouble();
+	}
+
+	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
+		@Override
+		public House createFromParcel(Parcel source) {
+			return new House(source);
+		}
+
+		@Override
+		public House[] newArray(int size) {
+			return new House[size];
+		}
+	};
 
 	public String getUrl() {
 		return url;

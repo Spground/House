@@ -14,7 +14,7 @@
         cube_ptr:ptr_keep_header_when_refresh="true"
         cube_ptr:ptr_pull_to_fresh="false"
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        android:background="@drawable/activity_bg_bitmap"
+        android:background="@drawable/activity_bg00_bitmap"
         cube_ptr:ptr_resistance="1.7">
 
         <jc.house.JCListView.XListView

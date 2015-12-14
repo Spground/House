@@ -53,39 +53,8 @@ public class ActivityFragment extends BaseNetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_activity, container, false);
-        initHeaderView();
+        setHeader();
         return view;
-    }
-
-    public void initHeaderView() {
-        final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
-        StoreHouseHeader header = new StoreHouseHeader(getContext());
-        header.setPadding(0, 20, 0, 20);
-        header.initWithString("JIN CHEN");
-        header.setTextColor(Color.RED);
-        ptrFrameLayout.setDurationToCloseHeader(1500);
-        ptrFrameLayout.setHeaderView(header);
-        ptrFrameLayout.addPtrUIHandler(header);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-            }
-
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                //refresh operation goes here
-                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
-
-                ptrFrameLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ptrFrameLayout.refreshComplete();
-                    }
-                }, 1500);
-            }
-
-        });
     }
 
     @Override
@@ -124,11 +93,11 @@ public class ActivityFragment extends BaseNetFragment {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (DEBUG) {
                     if (position == 1) {
-                        intent.putExtra("url", "http://zhan.qq.com/sites/templates/41428/index.html");
+                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     } else if (position == 2) {
-                        intent.putExtra("url", "http://zhan.qq.com/sites/templates/1068/index.html");
+                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     } else if (position == 3) {
-                        intent.putExtra("url", "http://zhan.qq.com/sites/templates/1060/index.html");
+                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     }
                 } else {
                     intent.putExtra("url", Constants.ACTIVITY_SHOW_URL + "&id=" + view.getId());

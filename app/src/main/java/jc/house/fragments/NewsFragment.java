@@ -73,7 +73,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (DEBUG) {
-                        intent.putExtra("url", "http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=13");
+                        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
                     } else {
                         intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) dataSet.get(position - 2)).id);
                     }
