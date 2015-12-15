@@ -233,7 +233,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             } else {
                 lastTime = currentTime;
                 Toast.makeText(HomeActivity.this, "再次点击退出应用", Toast.LENGTH_SHORT).show();
-//                ToastUtils.show(HomeActivity.this, "再次点击退出应用");
             }
             return true;
         }
