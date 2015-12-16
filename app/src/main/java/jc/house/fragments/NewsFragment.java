@@ -29,8 +29,8 @@ import jc.house.utils.LogUtils;
 import jc.house.views.CircleView;
 
 public class NewsFragment extends BaseNetFragment implements CircleView.CircleViewOnClickListener {
-    private static final int[] imageReIds = {R.drawable.temp_house_a,
-            R.drawable.temp_house_b, R.drawable.temp_house_a};
+    private static final int[] imageReIds = {R.drawable.home01,
+            R.drawable.home02, R.drawable.home03};
 //	private static final String[] imageUrls = {"123", "456"};
 	private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
@@ -73,7 +73,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (DEBUG) {
-                        intent.putExtra("url", "http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=13");
+                        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
                     } else {
                         intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) dataSet.get(position - 2)).id);
                     }

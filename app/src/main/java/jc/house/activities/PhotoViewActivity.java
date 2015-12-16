@@ -17,6 +17,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PhotoViewActivity extends BaseActivity {
     private final static String TAG = "PhotoViewActivity";
+    private final static String FLAG_IMAGE_URL = "image_url";
 
     private PhotoView photoView;
     private PhotoViewAttacher mAttacher;
@@ -30,7 +31,7 @@ public class PhotoViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_photo_view);
         setTitleBarTitle("查看原图");
-        this.imageUrl = getIntent().getStringExtra("image_url");
+        this.imageUrl = getIntent().getStringExtra(FLAG_IMAGE_URL);
         initView();
     }
 

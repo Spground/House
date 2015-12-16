@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/about_bg"
-    android:alpha="0.10"
+android:src="@drawable/about_bg2"
+android:alpha="0.10"
     >
 </bitmap>

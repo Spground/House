@@ -19,6 +19,7 @@ import java.util.List;
 
 import jc.house.R;
 import jc.house.chat.ChatActivity;
+import jc.house.models.House;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
@@ -40,7 +41,6 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
 		setJCContentView(R.layout.activity_house_detail);
 		this.houseImageView = (ImageView)findViewById(R.id.house_image_view);
 		this.houseImageView.setOnClickListener(this);
-//		this.titleBar = (TitleBar) this.findViewById(R.id.titlebar);
 		this.mapTextView = (TextView)this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
 		this.mapTextView.setText("地图");
 		this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
@@ -58,6 +58,7 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(HouseDetailActivity.this, MapActivity.class);
+				intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456","789", "hello", 123.12, 123.23));
 				startActivity(intent);
 			}
 		});

@@ -65,7 +65,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     protected void handleCode(int code, String tag) {
         switch (code) {
-            case ServerResult.CODE_FAILED:
+            case ServerResult.CODE_FAILURE:
                 LogUtils.debug(tag, "网络请求参数有错误！");
                 break;
             case ServerResult.CODE_NO_DATA:

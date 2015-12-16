@@ -11,6 +11,7 @@ import jc.house.R;
 import jc.house.activities.AboutUsActivity;
 import jc.house.activities.CompanyIntroductionActivity;
 import jc.house.activities.UserFeedbackActivity;
+import jc.house.activities.WebActivity;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.ToastUtils;
 
@@ -49,7 +50,9 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.id_company_introduction:
-                startActivity(new Intent(getActivity(), CompanyIntroductionActivity.class));
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                startActivity(intent);
                 break;
             case R.id.id_user_feedback:
                 startActivity(new Intent(getActivity(), UserFeedbackActivity.class));

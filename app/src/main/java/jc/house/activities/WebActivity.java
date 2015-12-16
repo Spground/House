@@ -12,6 +12,7 @@ import jc.house.utils.StringUtils;
 
 public class WebActivity extends BaseActivity {
     private WebView webView;
+    private static final String FLAG_URL = "url";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,12 +24,11 @@ public class WebActivity extends BaseActivity {
         this.webView.getSettings().setBlockNetworkLoads(false);
         this.webView.getSettings().setJavaScriptEnabled(true);
         Intent intent = this.getIntent();
-        String url = intent.getStringExtra("url");
+        String url = intent.getStringExtra(FLAG_URL);
         if (!StringUtils.strEmpty(url)) {
             this.webView.loadUrl(url);
         } else {
             this.webView.loadUrl("http://zhan.qq.com/sites/templates/41428/index.html");
-//            this.webView.loadUrl("http://192.168.9.72/house/web/index.php?r=news2%2Fmobile&id=12");
         }
         this.webView.setWebViewClient(new WebViewClient() {
             @Override

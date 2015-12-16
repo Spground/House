@@ -7,8 +7,10 @@ import org.json.JSONArray;
  */
 public class ServerResult {
     public static final int CODE_SUCCESS = 1;
-    public static final int CODE_FAILED = 0;
+    public static final int CODE_FAILURE = 0;
     public static final int CODE_NO_DATA = 2;
+    public static final String CODE = "code";
+    public static final String RESULT = "result";
     public int code;
     public boolean isSuccess;
     public JSONArray array;

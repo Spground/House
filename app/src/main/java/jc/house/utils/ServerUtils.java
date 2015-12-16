@@ -19,11 +19,11 @@ public final class ServerUtils {
     public static ServerResult parseServerResponse(JSONObject response) {
         ServerResult result = new ServerResult();
         try {
-            int code = response.getInt("code");
+            int code = response.getInt(ServerResult.CODE);
             result.code = code;
             result.isSuccess = (ServerResult.CODE_SUCCESS == code);
             if (result.isSuccess) {
-                result.array = response.getJSONArray("result");
+                result.array = response.getJSONArray(ServerResult.RESULT);
             }
         } catch (JSONException e) {
             e.printStackTrace();
