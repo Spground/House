@@ -1,11 +1,13 @@
 package jc.house.chat.widget.chatrow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.BaseAdapter;
 
 import com.easemob.chat.EMMessage;
 
 import jc.house.R;
+import jc.house.activities.HouseDetailActivity;
 
 /**
  * Created by WuJie on 2015/12/16.
@@ -40,6 +42,6 @@ public class EaseChatRowHouse extends EaseChatRow {
 
     @Override
     protected void onBubbleClick() {
-
+        context.startActivity(new Intent(context, HouseDetailActivity.class));
     }
 }

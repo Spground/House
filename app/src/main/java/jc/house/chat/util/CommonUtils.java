@@ -43,7 +43,7 @@ public class CommonUtils {
                 }
                 break;
             case IMAGE: // 图片消息
-                digest = getString(context, R.string.picture);
+                    digest = getString(context, R.string.picture);
                 break;
             case VOICE:// 语音消息
                 digest = getString(context, R.string.voice_prefix);
@@ -51,14 +51,13 @@ public class CommonUtils {
             case VIDEO: // 视频消息
                 digest = getString(context, R.string.video);
                 break;
-            case TXT: // 文本消息
-            if(!message.getBooleanAttribute(Constants.MESSAGE_ATTR_IS_VOICE_CALL,false)){
-                TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                digest = txtBody.getMessage();
-            }else{
-                TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                digest = getString(context, R.string.voice_call) + txtBody.getMessage();
-            }
+            case TXT: // 文本消息 包括house消息
+                if( message.getBooleanAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false))
+                    digest = "[楼盘消息]";
+                else {
+                    TextMessageBody txtBody = (TextMessageBody) message.getBody();
+                    digest = txtBody.getMessage();
+                }
                 break;
             case FILE: //普通文件消息
                 digest = getString(context, R.string.file);
@@ -120,13 +119,4 @@ public class CommonUtils {
         return false;
     }
 
-    /**
-     *
-     * @return 返回楼盘类型消息
-     */
-    public static EMMessage generateHouseMessage() {
-        EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
-        message.setAttribute("isHouse", true);
-        return message;
-    }
 }
