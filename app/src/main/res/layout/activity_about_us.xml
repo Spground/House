@@ -15,6 +15,7 @@
         android:layout_marginTop="36dp"
         >
         <ImageView
+            android:id="@+id/app_icon"
             android:layout_width="76dp"
             android:layout_height="76dp"
             android:src="@drawable/app"
@@ -33,7 +34,7 @@
             android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="版本:1.0.1"
+            android:text="版本:2.0.1"
             android:textSize="12sp"
             android:textColor="@color/gray"
             android:layout_gravity="center_horizontal"
@@ -43,38 +44,30 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:text="金宸集团App是一款金宸集团出品的App,主要是用来方便用户咨询以此来提高我们的服务水平,金宸集团App是一款金宸集团出品的App,主要是用来方便用户咨询，以此来提高我们的服务水平!金宸集团App是一款金宸集团出品的App,主要是用来方便用户咨询，以此来提高我们的服务水平金宸集团App是一款金宸集团出品的App,主要是用来方便用户咨询，以此来提高我们的服务水平
-
-金宸集团App是一款金宸集团出品的App,主要是用来方便用户咨询，以此来提高我们的服务水平
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:text="    金宸集团App是一款金宸集团出品的房产应用，主要是用来展示公司动态信息，主要楼盘信息以及最新的活动,同时可以提供用户咨询等服务，以此来提高我们的服务水平！
             "
             android:lineSpacingExtra="2dp"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/gray"
             android:layout_gravity="center_horizontal"
             android:gravity="left"
             />
 
-        <TextView
-            android:layout_marginTop="20dp"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="创新实验学院820实验室出品 2015"
-            android:textSize="10sp"
-            android:textColor="@color/gray"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            />
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="CopyRight©2015 DUT ChuangXin School"
-            android:textSize="10sp"
+            android:padding="5dp"
+            android:text="CopyRight©2015 金宸集团"
+            android:textSize="12sp"
             android:textColor="@color/gray"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
@@ -85,6 +78,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:padding="10dp"
             android:text="All Rights Reserved"
             android:textSize="10sp"
             android:textColor="@color/gray"
