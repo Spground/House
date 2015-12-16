@@ -14,6 +14,7 @@ import com.easemob.chat.EMMessage;
 
 import java.util.List;
 
+import jc.house.chat.widget.chatrow.EaseChatRowHouse;
 import jc.house.chat.widget.chatrow.EaseChatRowImage;
 import jc.house.utils.LogUtils;
 import jc.house.chat.widget.ChatMessageList;
@@ -154,8 +155,14 @@ public class ChatMessageAdapter extends BaseAdapter {
      */
     private EaseChatRow createChatRow(Context context ,EMMessage message, int position){
         //TXT消息
-        if(message.getType().equals(EMMessage.Type.TXT))
-            return new EaseChatRowText(context, message, position, this);
+        if(message.getType().equals(EMMessage.Type.TXT )) {
+            boolean isHouseType = message.getBooleanAttribute("isHouse", false);
+            if(isHouseType)
+                return new EaseChatRowHouse(context, message, position, this);
+            else
+                return new EaseChatRowText(context, message, position, this);
+        }
+
         if(message.getType().equals(EMMessage.Type.IMAGE))
             return new EaseChatRowImage(context, message, position, this);
         return null;

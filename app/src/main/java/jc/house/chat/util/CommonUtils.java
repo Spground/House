@@ -119,4 +119,14 @@ public class CommonUtils {
 
         return false;
     }
+
+    /**
+     *
+     * @return 返回楼盘类型消息
+     */
+    public static EMMessage generateHouseMessage() {
+        EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+        message.setAttribute("isHouse", true);
+        return message;
+    }
 }

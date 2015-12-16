@@ -122,9 +122,8 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      */
     private void init(){
         this.titleBar = (TitleBar)findViewById(R.id.titlebar);
-        this.titleBar.setTitle("会话");
         this.toChatUserName = getIntent().getStringExtra("toChatUserName");
-
+        this.titleBar.setTitle(toChatUserName == null ? "会话" : toChatUserName);
         /**chat message ListView init**/
         this.chatMsgList = (ChatMessageList)findViewById(R.id.message_list);
 
@@ -392,6 +391,16 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         //swipe refresh goes here
         Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
+        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
+        //创建一条文本消息
+        EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+        message.direct = EMMessage.Direct.RECEIVE;
+        message.setFrom(toChatUserName);
+        message.setAttribute("isHouse", true);
+        message.setReceipt("wujie");
+        //把消息加入到此会话对象中
+        conversation.addMessage(message);
+        ChatActivity.this.chatMsgList.refresh();
         this.swipeRefreshLayout.setRefreshing(false);
     }
 

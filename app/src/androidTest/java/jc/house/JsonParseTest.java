@@ -38,7 +38,6 @@ public class JsonParseTest extends AndroidTestCase {
         assertEquals(10000, modelInstance.id);
         LogUtils.debug("===TAG===", modelInstance.getPicUrl() + "");
         LogUtils.debug("===TAG===",  modelInstance.getTitle() + "");
-        LogUtils.debug("===TAG===",  modelInstance.getDetailUrl() + "");
         System.err.print("id is" + modelInstance.id + "");
         LogUtils.debug("===TAG===", modelInstance.getPostTime()  + "");
     }
