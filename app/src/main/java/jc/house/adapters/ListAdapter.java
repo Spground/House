@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,7 +32,6 @@ public class ListAdapter extends BaseAdapter {
 	private ModelType type;
 	private CircleView circleView;
 	private boolean hasCircleView;
-	private DisplayImageOptions options;
 	private static final boolean DEBUG = Constants.DEBUG;
 	
 	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType) {
@@ -44,7 +44,6 @@ public class ListAdapter extends BaseAdapter {
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
-		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.failure_image).showImageForEmptyUri(R.drawable.failure_image).build();
 	}
 
 	@Override
@@ -112,7 +111,7 @@ public class ListAdapter extends BaseAdapter {
 					if (DEBUG) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
-						loadImage(viewHolderNews.picture, news.getPicUrl());
+						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl());
 					}
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
@@ -136,7 +135,7 @@ public class ListAdapter extends BaseAdapter {
 					if (DEBUG) {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 					} else {
-						loadImage(viewHolderHouse.picture, house.getUrl());
+						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl());
 					}
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
@@ -162,7 +161,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						viewHolderActivity.postTime.setText("2012-08-12");
 					} else {
-						loadImage(viewHolderActivity.picture, activityModel.getPicUrl());
+						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl());
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						convertView.setId(activityModel.id);
 						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
@@ -175,10 +174,8 @@ public class ListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void loadImage(ImageView imageView, String url) {
-		ImageLoader.getInstance().displayImage(
-				Constants.IMAGE_URL + url,
-				imageView, options);
+	private void loadImageWithPicasso(ImageView imageView, String url) {
+		Picasso.with(context).load(url).into(imageView);
 	}
 	
 	private static final class ViewHolderChatUser {

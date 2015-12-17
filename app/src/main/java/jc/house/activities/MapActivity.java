@@ -49,13 +49,9 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         }
     }
 
-    private void setMapViewData(House house) {
+    private void setMapViewData(House house) {}
 
-    }
-
-    private void setMapViewDatas(List<House> houses) {
-
-    }
+    private void setMapViewDatas(List<House> houses) {}
 
     private void initMapView() {
         this.mapView.getMap().setZoom(16);
