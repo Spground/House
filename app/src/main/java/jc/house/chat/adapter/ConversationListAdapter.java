@@ -21,6 +21,7 @@ import java.util.List;
 import jc.house.R;
 import jc.house.chat.util.CommonUtils;
 import jc.house.chat.util.EmojiUtils;
+import jc.house.global.Constants;
 
 /**
  * 会话列表adapter
@@ -44,6 +45,9 @@ public class ConversationListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        //debug模式下返回一个item
+        if(Constants.DEBUG)
+            return 1;
         return conversationList != null ? conversationList.size() : 0;
     }
 
@@ -81,12 +85,12 @@ public class ConversationListAdapter extends BaseAdapter {
         // 获取与此用户的会话
         EMConversation conversation = getItem(position);
         // 获取toChatUserName
-        String username = conversation.getUserName();
+        String username = conversation == null ? "admin" :conversation.getUserName();
 
         /**set view**/
         holder.avatar.setImageResource(R.drawable.jc_default_avatar);
         holder.name.setText(username);
-        if (conversation.getUnreadMsgCount() > 0) {
+        if (conversation != null && conversation.getUnreadMsgCount() > 0) {
             // 显示与此用户的消息未读数
             holder.unreadLabel.setText(String.valueOf(conversation.getUnreadMsgCount()));
             holder.unreadLabel.setVisibility(View.VISIBLE);
@@ -94,7 +98,7 @@ public class ConversationListAdapter extends BaseAdapter {
             holder.unreadLabel.setVisibility(View.INVISIBLE);
         }
 
-        if (conversation.getMsgCount() != 0) {
+        if (conversation != null && conversation.getMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
             holder.message.setText(EmojiUtils.getSmiledText(this.context,

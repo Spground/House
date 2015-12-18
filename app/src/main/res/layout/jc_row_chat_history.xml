@@ -45,7 +45,7 @@
         android:layout_toRightOf="@id/avatar_container"
         android:textColor="@color/list_itease_primary_color"
         android:textSize="16sp"
-        android:text="环信小助手"
+        android:text="管理员"
         />
 
     <TextView
