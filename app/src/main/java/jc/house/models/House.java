@@ -8,6 +8,8 @@ public class House extends BaseModel implements Parcelable {
 	private String name;
 	private String intro;
 	private String phone;
+	private int stars;
+	private String labelContent;
 	private double lat;
 	private double lng;
 
@@ -39,6 +41,8 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeString(phone);
 		dest.writeDouble(lat);
 		dest.writeDouble(lng);
+		dest.writeInt(stars);
+		dest.writeString(labelContent);
 	}
 
 	private House(Parcel origin) {
@@ -49,6 +53,8 @@ public class House extends BaseModel implements Parcelable {
 		this.phone = origin.readString();
 		this.lat = origin.readDouble();
 		this.lng = origin.readDouble();
+		this.stars = origin.readInt();
+		this.labelContent = origin.readString();
 	}
 
 	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
@@ -99,5 +105,16 @@ public class House extends BaseModel implements Parcelable {
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-	
+	public void setLabelContent(String labelContent) {
+		this.labelContent = labelContent;
+	}
+	public String getLabelContent() {
+		return labelContent;
+	}
+	public void setStars(int stars) {
+		this.stars = stars;
+	}
+	public int getStars() {
+		return stars;
+	}
 }

@@ -29,13 +29,13 @@
 
         <RelativeLayout
             android:id="@+id/bubble"
-            android:layout_width="wrap_content" 
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_chat_activity"
             android:layout_toRightOf="@id/iv_userhead"
             android:layout_below="@+id/tv_userid"
             android:background="@drawable/jc_chatfrom_bg"
-             >
+            >
 
             <ImageView
                 android:id="@+id/image"
@@ -67,7 +67,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-         <TextView
+        <TextView
             android:id="@+id/tv_userid"
             style="@style/chat_text_name_style"
             android:layout_width="wrap_content"

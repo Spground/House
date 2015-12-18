@@ -32,8 +32,8 @@ import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
+import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ToastUtils;
 import jc.house.views.TitleBar;
 
 
@@ -69,9 +69,6 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     private ChatMessageList chatMsgList;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private LocalBroadcastManager broadcastManager;
-    private BroadcastReceiver broadcastReceiver;
 
     private ChatInputMenu inputMenu;
     protected MyItemClickListener extendMenuItemClickListener;
@@ -122,9 +119,8 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      */
     private void init(){
         this.titleBar = (TitleBar)findViewById(R.id.titlebar);
-        this.titleBar.setTitle("会话");
         this.toChatUserName = getIntent().getStringExtra("toChatUserName");
-
+        this.titleBar.setTitle(toChatUserName == null ? "会话" : toChatUserName);
         /**chat message ListView init**/
         this.chatMsgList = (ChatMessageList)findViewById(R.id.message_list);
 
@@ -145,21 +141,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onSendMessage(String content) {
                 // 发送文本消息
-                sendTxtMessage(content,toChatUserName);
+                sendTxtMessage(content, toChatUserName);
             }
 
             //发送语音
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
                 Toast.makeText(ChatActivity.this, "按住说话", Toast.LENGTH_SHORT).show();
-//                return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
-//
-//                    @Override
-//                    public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
-//                        // 发送语音消息
-//                        sendVoiceMessage(voiceFilePath, voiceTimeLength);
-//                    }
-//                });
                 return false;
             }
         });
@@ -197,6 +185,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
+        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false);
         message.setReceipt(toChatUserName);
         //把消息加入到此会话对象中
         conversation.addMessage(message);
@@ -231,6 +220,50 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         ChatActivity.this.chatMsgList.refresh();
     }
 
+    /**
+     *
+     * @param imgUrl
+     * @param houseName
+     * @param tag
+     * @param price
+     */
+    protected void sendHouseMessage(String id, String imgUrl, String houseName, String tag, String price) {
+        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
+        //创建一条house消息
+        final EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, true);
+        message.setAttribute("id", id);
+        message.setAttribute("img_url", imgUrl);
+        message.setAttribute("house_name", houseName);
+        message.setAttribute("tag", tag);
+        message.setAttribute("price", price);
+        TextMessageBody txtBody = new TextMessageBody("[楼盘消息]");
+        message.addBody(txtBody);
+        message.setReceipt(toChatUserName);
+        conversation.addMessage(message);
+        EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                LogUtils.debug(TAG, "发送成功！");
+                /**refresh chatMsgList**/
+                message.status = EMMessage.Status.SUCCESS;
+                ChatActivity.this.chatMsgList.refresh();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                message.status = EMMessage.Status.FAIL;
+                LogUtils.debug(TAG, "发送失败！");
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+                message.status = EMMessage.Status.INPROGRESS;
+                LogUtils.debug(TAG, "正在发送！");
+            }
+        });
+        ChatActivity.this.chatMsgList.refresh();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -392,7 +425,10 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         //swipe refresh goes here
         Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
+        sendHouseMessage("1", "1", "1", "1", "1");
+        chatMsgList.refreshSelectLast();
         this.swipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override

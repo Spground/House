@@ -139,7 +139,7 @@ public class ListAdapter extends BaseAdapter {
 					}
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
-					viewHolderHouse.ratingView.setParams(3, 3);
+					viewHolderHouse.ratingView.setParams(house.getStars(), 3);
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
@@ -175,7 +175,7 @@ public class ListAdapter extends BaseAdapter {
 	}
 
 	private void loadImageWithPicasso(ImageView imageView, String url) {
-		Picasso.with(context).load(url).into(imageView);
+		Picasso.with(context).load(Constants.IMAGE_URL + url).into(imageView);
 	}
 	
 	private static final class ViewHolderChatUser {

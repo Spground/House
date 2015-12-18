@@ -1,13 +1,22 @@
 package jc.house.utils;
 
+import android.animation.PropertyValuesHolder;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import jc.house.models.BaseModel;
 
@@ -31,7 +40,7 @@ public final class ParseJson {
         }
         for(int i = 0; i < array.length(); i++) {
             JSONObject jsonObject = array.optJSONObject(i);
-            BaseModel modelObj = jsonObj2Model(jsonObject, clazz);
+            BaseModel modelObj = jsonObjectToBaseModel(jsonObject, clazz);
             modelList.add(modelObj);
         }
         return modelList;
@@ -99,4 +108,78 @@ public final class ParseJson {
         }
         return modelObj;
     }
+
+    public static final Set<String> allFieldsInClass(Class mClass) {
+        if (null == mClass) {
+            return null;
+        }
+        Class curClass = mClass;
+        Set<String> result = new HashSet<>();
+        while(curClass != Object.class) {
+            Field[] fields = curClass.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                result.add(fields[i].getName());
+            }
+            curClass = curClass.getSuperclass();
+        }
+        return result;
+    }
+
+    private static final Map<String, Class> mapFromClass(Class mClass) {
+        if (null == mClass) {
+            return null;
+        }
+        Map<String, Class> result = new HashMap<>();
+        Class curClass = mClass;
+        while (curClass != Object.class) {
+            Field[] fields = curClass.getDeclaredFields();
+            for(int i = 0; i < fields.length; i++) {
+                result.put(fields[i].getName(), fields[i].getType());
+            }
+            curClass = curClass.getSuperclass();
+        }
+        return result;
+    }
+
+    public static final BaseModel jsonObjectToBaseModel(JSONObject object, Class<? extends BaseModel> mClass) {
+        if (null == object || null == mClass) {
+            return null;
+        }
+        Log.v("jsonModel", object.toString());
+        BaseModel result = null;
+        try {
+            result = mClass.newInstance();
+            Map<String, Class> fieldMap = mapFromClass(mClass);
+            Iterator<String> keys = object.keys();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                if (fieldMap.containsKey(key)) {
+                    try {
+                        Method method = mClass.getMethod(StringUtils.methodNameBaseFieldName(key), fieldMap.get(key));
+                        try {
+                            if (null != object.get(key)) {
+                                method.invoke(result, object.get(key));
+                            } else {
+
+                            }
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //输出没有key值
+                }
+            }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
