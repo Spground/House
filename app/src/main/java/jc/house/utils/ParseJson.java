@@ -158,6 +158,7 @@ public final class ParseJson {
                         Method method = mClass.getMethod(StringUtils.methodNameBaseFieldName(key), fieldMap.get(key));
                         try {
                             if (null != object.get(key)) {
+                                //TODO bug
                                 method.invoke(result, object.get(key));
                             } else {
 
