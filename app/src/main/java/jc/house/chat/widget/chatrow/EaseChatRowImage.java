@@ -56,6 +56,8 @@ public class EaseChatRowImage extends EaseChatRow {
     @Override
     protected void onSetUpView() {
         imgBody = (ImageMessageBody) message.getBody();
+        if(imgBody == null)
+            return;
         // 接收方向的消息
         if (message.direct == EMMessage.Direct.RECEIVE) {
             if (message.status == EMMessage.Status.INPROGRESS) {

@@ -42,6 +42,7 @@ import jc.house.views.TitleBar;
  */
 public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener,
         ChatMessageList.MessageListItemClickListener {
+    public static boolean ISFIRST = false;
     public static final String TAG = "ChatActivity";
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
@@ -83,6 +84,11 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         init();
         initChatMsgList();
         instance = this;
+        if(!ISFIRST) {
+            sendDebugMessage();
+            ISFIRST = true;
+        }
+
     }
 
     @Override
@@ -265,6 +271,27 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         ChatActivity.this.chatMsgList.refresh();
     }
 
+    /**
+     * 产品展示的时候调用
+     */
+    private void sendDebugMessage() {
+        if(!Constants.DEBUG) return;
+        sendTxtMessage("您好,请问有什么可以帮到您？", toChatUserName);
+        sendTxtMessage("[:3d:]", toChatUserName);
+
+        EMMessage imgMsg = EMMessage.createSendMessage(EMMessage.Type.IMAGE);
+        imgMsg.direct = EMMessage.Direct.SEND;
+        imgMsg.setTo("admin");
+        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
+        conversation.addMessage(imgMsg);
+
+        sendHouseMessage("1", "1", "1", "1", "1");
+        chatMsgList.refreshSelectLast();
+
+
+
+
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

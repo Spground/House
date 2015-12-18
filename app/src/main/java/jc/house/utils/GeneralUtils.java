@@ -1,9 +1,7 @@
 package jc.house.utils;
 
-import com.easemob.chat.EMMessage;
-
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
