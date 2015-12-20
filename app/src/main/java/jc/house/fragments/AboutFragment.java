@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import jc.house.R;
 import jc.house.activities.AboutUsActivity;
+import jc.house.activities.CalculatorActivity;
 import jc.house.activities.CompanyIntroductionActivity;
 import jc.house.activities.UserFeedbackActivity;
 import jc.house.activities.WebActivity;
@@ -39,6 +40,7 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
         this.view.findViewById(R.id.id_check_update).setOnClickListener(this);
         this.view.findViewById(R.id.id_company_introduction).setOnClickListener(this);
         this.view.findViewById(R.id.id_user_feedback).setOnClickListener(this);
+        this.view.findViewById(R.id.id_calculator).setOnClickListener(this);
     }
 
     @Override
@@ -63,6 +65,8 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
             case R.id.id_about_us:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
+            case R.id.id_calculator:
+                startActivity(new Intent(getActivity(), CalculatorActivity.class));
         }
     }
 }

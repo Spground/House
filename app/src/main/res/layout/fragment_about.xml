@@ -123,6 +123,31 @@
                     android:background="@color/bg_gray"
 
                     />
+                <TextView
+                    android:id="@+id/id_calculator"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/jc_aboutfragment_textview_selector"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/about_us"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/mm_submenu_normal"
+                    android:gravity="left|center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="8dp"
+                    android:text="房贷计算器"
+                    android:textColor="@color/font_grey_700"
+                    android:textSize="@dimen/font_large_size" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/bg_gray"
+
+                    />
+
             </LinearLayout>
         </LinearLayout>
 

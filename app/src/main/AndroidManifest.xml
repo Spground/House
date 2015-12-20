@@ -113,6 +113,8 @@
             android:name=".activities.PhotoViewActivity"
             android:label="@string/title_activity_photo_view" >
         </activity>
+        <activity android:name=".activities.CalculatorActivity" >
+        </activity>
     </application>
 
 </manifest>
