@@ -33,6 +33,7 @@ public class ListAdapter extends BaseAdapter {
 	private CircleView circleView;
 	private boolean hasCircleView;
 	private static final boolean DEBUG = Constants.DEBUG;
+	private static final boolean PRODUCT = Constants.PRODUCT;
 	
 	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType) {
 		this(context, dataSet, modelType, null);
@@ -108,7 +109,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.dataSet.get(mPos);
-					if (DEBUG) {
+					if (PRODUCT) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
 						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl());
@@ -127,19 +128,28 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderHouse.description = (TextView)convertView.findViewById(R.id.description);
 						viewHolderHouse.phone = (TextView)convertView.findViewById(R.id.phone);
 						viewHolderHouse.ratingView = (RatingView)convertView.findViewById(R.id.rating_view);
+						viewHolderHouse.recStars = (TextView)convertView.findViewById(R.id.rec_stars);
+						viewHolderHouse.labelFirst = (TextView)convertView.findViewById(R.id.label_first);
+						viewHolderHouse.labelOther = (TextView)convertView.findViewById(R.id.label_other);
 						convertView.setTag(viewHolderHouse);
 					} else {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.dataSet.get(mPos);
-					if (DEBUG) {
+					if (PRODUCT) {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
+						viewHolderHouse.ratingView.setParams(5, 3);
 					} else {
 						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl());
+						viewHolderHouse.ratingView.setParams(house.getStars(), 3);
+						viewHolderHouse.recStars.setText("推荐指数" + house.getStars());
+						if (null != house.getLabelsResult()) {
+							viewHolderHouse.labelFirst.setText(house.getLabelsResult()[0]);
+							viewHolderHouse.labelOther.setText(house.getLabelsResult()[1]);
+						}
 					}
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
-					viewHolderHouse.ratingView.setParams(house.getStars(), 3);
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
@@ -156,7 +166,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
 
-					if(DEBUG) {
+					if(PRODUCT) {
 						viewHolderActivity.picture.setImageResource(Constants.resActivity[(int) (Math.random() * 5)]);
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						viewHolderActivity.postTime.setText("2012-08-12");
@@ -198,6 +208,9 @@ public class ListAdapter extends BaseAdapter {
 		public TextView description;
 		public TextView phone;
 		public RatingView ratingView;
+		public TextView recStars;
+		public TextView labelFirst;
+		public TextView labelOther;
 	}
 
 	private static final class ViewHolderActivity {

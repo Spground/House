@@ -42,7 +42,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected XListView xlistView;
     protected AsyncHttpClient client;
     protected boolean isOver;
-    protected static final boolean DEBUG = Constants.DEBUG;
     protected List<BaseModel> dataSet;
     protected ListAdapter adapter;
     private static final String TAG = "BaseNetFragment";
@@ -90,7 +89,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void onRefresh() {
-        if (!DEBUG) {
+        if (!PRODUCT) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         } else {
             this.xlistView.stopRefresh();
@@ -99,7 +98,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void onLoadMore() {
-        if (!DEBUG) {
+        if (!PRODUCT) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
         } else {
             this.xlistView.stopLoadMore();

@@ -24,7 +24,7 @@ public class BaseActivity extends Activity {
     protected MApplication mApplication;
     protected LinearLayout baseLayout;
     protected RelativeLayout contentLayout;
-    protected AsyncHttpClient mClient = null;
+    private AsyncHttpClient mClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,14 @@ public class BaseActivity extends Activity {
     protected void setTitleBarTitle(String title) {
         this.titleBar.setTitle(title);
         setTitleBarVisible();
+    }
+
+    protected AsyncHttpClient getHttpClient() {
+        if (null == this.mClient) {
+            this.mClient = new AsyncHttpClient();
+            this.mClient.setTimeout(5 * 1000);
+        }
+        return this.mClient;
     }
 
     public void setTitleBarVisible() {

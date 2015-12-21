@@ -41,8 +41,6 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_user_feedback);
-        mClient = new AsyncHttpClient();
-        mClient.setConnectTimeout(5 * 1000);
         setTitleBarTitle("用户反馈");
         initView();
         reqParams = new HashMap<>();
@@ -80,7 +78,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         reqParams.clear();
         reqParams.put("content", feedbackContent);
         LogUtils.debug(TAG, "start network request");
-        mClient.post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
+        this.getHttpClient().post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
             //the callback will happens UI thread
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

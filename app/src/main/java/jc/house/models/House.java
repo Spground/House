@@ -3,6 +3,8 @@ package jc.house.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import jc.house.utils.StringUtils;
+
 public class House extends BaseModel implements Parcelable {
 	private String url;
 	private String name;
@@ -12,6 +14,7 @@ public class House extends BaseModel implements Parcelable {
 	private String labelContent;
 	private double lat;
 	private double lng;
+	private String[] labelsResult;
 
 	public House() {}
 
@@ -68,6 +71,13 @@ public class House extends BaseModel implements Parcelable {
 			return new House[size];
 		}
 	};
+
+	public String[] getLabelsResult() {
+		if (null == labelsResult) {
+			labelsResult = StringUtils.parseHouseLables(labelContent);
+		}
+		return labelsResult;
+	}
 
 	public String getUrl() {
 		return url;

@@ -48,7 +48,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         circleView.setImageReIds(imageReIds);
         circleView.setOnCircleViewItemClickListener(this);
 
-        if (DEBUG) {
+        if (PRODUCT) {
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_jianzhu, "创新营销 挑战逆境 创回款年度新", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
@@ -72,7 +72,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 LogUtils.debug(TAG, "position is " + position);
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
-                    if (DEBUG) {
+                    if (PRODUCT) {
                         intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
                     } else {
                         intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) dataSet.get(position - 2)).id);
