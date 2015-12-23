@@ -39,6 +39,10 @@ public class MThreadPool {
         return instance;
     }
 
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+
     public void submitParseDataTask(JSONArray array, Class<? extends BaseModel> mClass,
                                     FetchType fetchType, IParseData parseData) {
         this.executorService.submit(new ParseDataThread(array, mClass, fetchType, parseData));

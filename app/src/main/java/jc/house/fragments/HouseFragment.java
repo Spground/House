@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -110,7 +111,16 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.id_map_btn){
-            startActivity(new Intent(getActivity(), MapActivity.class));
+            Intent intent = new Intent(getActivity(), MapActivity.class);
+            if (PRODUCT) {
+                startActivity(intent);
+            } else {
+                ArrayList<House> houses = new ArrayList<>();
+                for (BaseModel model : dataSet) {
+                    houses.add((House)model);
+                }
+                intent.putParcelableArrayListExtra(MapActivity.FLAG_HOUSES,houses);
+            }
         }
     }
 

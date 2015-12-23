@@ -11,6 +11,7 @@ public class ServerResult {
     public static final int CODE_NO_DATA = 2;
     public static final String CODE = "code";
     public static final String RESULT = "result";
+    public static final String HELPER = "helper";
     public int code;
     public boolean isSuccess;
     public JSONArray array;

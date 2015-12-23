@@ -11,6 +11,7 @@ public final class HouseDetail extends House {
     private String recReason;
     private String trafficLines;
     private String designIdea;
+    private CustomerHelper helper;
 
     public HouseDetail() {}
 
@@ -80,5 +81,13 @@ public final class HouseDetail extends House {
 
     public String getDesignIdea() {
         return designIdea;
+    }
+
+    public CustomerHelper getHelper() {
+        return helper;
+    }
+
+    public void setHelper(CustomerHelper helper) {
+        this.helper = helper;
     }
 }

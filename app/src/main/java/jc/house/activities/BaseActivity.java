@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 
+import cz.msebera.android.httpclient.protocol.RequestTargetHost;
+import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.views.TitleBar;
 
@@ -25,6 +27,8 @@ public class BaseActivity extends Activity {
     protected LinearLayout baseLayout;
     protected RelativeLayout contentLayout;
     private AsyncHttpClient mClient = null;
+    public static final boolean DEBUG = Constants.DEBUG;
+    public static final boolean PRODUCT = Constants.PRODUCT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
