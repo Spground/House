@@ -26,7 +26,6 @@ public class BaseActivity extends Activity {
     protected MApplication mApplication;
     protected LinearLayout baseLayout;
     protected RelativeLayout contentLayout;
-    private AsyncHttpClient mClient = null;
     public static final boolean DEBUG = Constants.DEBUG;
     public static final boolean PRODUCT = Constants.PRODUCT;
 
@@ -72,12 +71,12 @@ public class BaseActivity extends Activity {
         setTitleBarVisible();
     }
 
-    protected AsyncHttpClient getHttpClient() {
-        if (null == this.mClient) {
-            this.mClient = new AsyncHttpClient();
-            this.mClient.setTimeout(5 * 1000);
-        }
-        return this.mClient;
+    protected void showDialog() {
+        this.progressDialog.show();
+    }
+
+    protected void hideDialog() {
+        this.progressDialog.hide();
     }
 
     public void setTitleBarVisible() {

@@ -157,7 +157,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
                     resetXListView();
-                    ToastUtils.show(getActivity(), "status code is " + statusCode);
                     handleFailure();
                 }
             });
@@ -175,7 +174,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 handleCode(result.code, "server code");
             }
         } else {
-            ToastUtils.show(getActivity(), "网络请求未成功 status code : " + statusCode);
+            handleFailure();
         }
     }
 

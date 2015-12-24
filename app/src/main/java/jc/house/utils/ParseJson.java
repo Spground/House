@@ -145,7 +145,6 @@ public final class ParseJson {
         if (null == object || null == mClass) {
             return null;
         }
-        Log.v("jsonModel", object.toString());
         BaseModel result = null;
         try {
             result = mClass.newInstance();

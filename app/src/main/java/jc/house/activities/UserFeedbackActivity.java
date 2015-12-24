@@ -24,7 +24,7 @@ import jc.house.R;
 import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
 
-public class UserFeedbackActivity extends BaseActivity implements View.OnClickListener,
+public class UserFeedbackActivity extends BaseNetActivity implements View.OnClickListener,
         DialogInterface.OnClickListener {
     private static final String TAG = "UserFeedbackActivity";
 
@@ -78,7 +78,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         reqParams.clear();
         reqParams.put("content", feedbackContent);
         LogUtils.debug(TAG, "start network request");
-        this.getHttpClient().post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
+        this.client.post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
             //the callback will happens UI thread
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -119,12 +119,12 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void showDlg(){
-        if(this.progressDialog != null && this.progressDialog.isShowing() == false)
+        if(!this.progressDialog.isShowing())
             this.progressDialog.show();
     }
 
     private void cancelDlg(){
-        if(this.progressDialog != null && this.progressDialog.isShowing() == true)
+        if(this.progressDialog.isShowing())
             this.progressDialog.hide();
     }
 

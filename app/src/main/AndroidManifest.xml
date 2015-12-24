@@ -108,6 +108,14 @@
             android:name=".activities.PhotoViewActivity"
             android:label="@string/title_activity_photo_view" >
         </activity>
+        <activity
+            android:name=".activities.BaseNetActivity"
+            android:label="@string/title_activity_base_net"
+            android:parentActivityName=".activities.BaseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="jc.house.activities.BaseActivity" />
+        </activity>
     </application>
 
 </manifest>

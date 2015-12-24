@@ -14,12 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,12 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpStatus;
 import jc.house.R;
 import jc.house.async.MThreadPool;
 import jc.house.chat.ChatActivity;
@@ -47,7 +41,7 @@ import jc.house.utils.ServerUtils;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
-public class HouseDetailActivity extends BaseActivity implements View.OnClickListener {
+public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener {
     private static final String TAG = "HouseDetailActivity";
     private static final String URL = Constants.SERVER_URL + "house/detail";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
@@ -60,12 +54,18 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
     private TextView chatTextView;
     private int currentIndex;
     private ImageView houseImageView;
+    private TextView tvAddress;
+    private TextView tvHouseType;
+    private TextView tvForceType;
+    private TextView tvAvgPrice;
+    private TextView tvPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_house_detail);
-        if (!PRODUCT) {
+        showDialog();
+        if (PRODUCT) {
             fetchDataFromServer();
         }
         initViews();
@@ -109,10 +109,23 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
             public void onClick(View v) {
                 //跳转到聊天页面
                 Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
-                intent.putExtra("toChatUserName", "admin");
+                if (!PRODUCT) {
+                    if (null != houseDetail && null != houseDetail.getHelper()) {
+                        intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());
+                        intent.putExtra("nickName", houseDetail.getHelper().getName());
+                    }
+                } else {
+                    intent.putExtra("toChatUserName", "admin");
+                }
                 startActivity(intent);
             }
         });
+
+        this.tvAddress = (TextView)this.findViewById(R.id.address);
+        this.tvHouseType = (TextView)this.findViewById(R.id.houseType);
+        this.tvForceType = (TextView)this.findViewById(R.id.forceType);
+        this.tvAvgPrice = (TextView)this.findViewById(R.id.avgPrice);
+        this.tvPhone = (TextView)this.findViewById(R.id.phone);
     }
 
     private void initViewPager() {
@@ -187,13 +200,24 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setServerData() {
-        Toast.makeText(this, this.houseDetail.getPhone() + this.houseDetail.getHelper().getName() + this.houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
+        if (null != this.houseDetail) {
+            this.tvAddress.setText(this.houseDetail.getAddress());
+            this.tvHouseType.setText(this.houseDetail.getHouseType());
+            this.tvForceType.setText(this.houseDetail.getForceType());
+            this.tvAvgPrice.setText(this.houseDetail.getAvgPrice());
+            this.tvPhone.setText(this.houseDetail.getPhone());
+            this.textViews.get(0).setText(this.houseDetail.getRecReason());
+            this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
+            this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
+            this.loadImage(houseImageView, this.houseDetail.getUrl());
+            hideDialog();
+        }
     }
 
     private void fetchDataFromServer() {
         Map<String, String> params = new HashMap<>();
         params.put("id", "1");
-        this.getHttpClient().post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
+        this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -211,7 +235,7 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void parseServerData(int statusCode, final JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            int code = 0;
+            int code;
             try {
                 code = response.getInt(ServerResult.CODE);
                 if (ServerResult.CODE_SUCCESS == code) {
@@ -232,11 +256,15 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
                             }
                         }
                     });
+                } else {
+                    handleCode(code, TAG);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+        } else {
+            handleFailure();
         }
     }
 
@@ -244,7 +272,13 @@ public class HouseDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v.getId() == R.id.house_image_view) {
             Intent showOriImg = new Intent(this, PhotoViewActivity.class);
-            showOriImg.putExtra("image_url", "http://www.jinchenchina.cn/uploads/allimg/150710/0-150G0124350951.jpg");
+            if (!PRODUCT) {
+                if (null != houseDetail) {
+                    showOriImg.putExtra("image_url", Constants.IMAGE_URL + houseDetail.getUrl());
+                }
+            } else {
+                showOriImg.putExtra("image_url", "http://www.jinchenchina.cn/uploads/allimg/150710/0-150G0124350951.jpg");
+            }
             startActivity(showOriImg);
             return;
         }

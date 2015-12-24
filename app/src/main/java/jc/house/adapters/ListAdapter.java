@@ -185,7 +185,7 @@ public class ListAdapter extends BaseAdapter {
 	}
 
 	private void loadImageWithPicasso(ImageView imageView, String url) {
-		Picasso.with(context).load(Constants.IMAGE_URL + url).into(imageView);
+		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
 	}
 	
 	private static final class ViewHolderChatUser {
