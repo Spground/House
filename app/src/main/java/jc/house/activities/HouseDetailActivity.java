@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -31,7 +32,6 @@ import jc.house.R;
 import jc.house.async.MThreadPool;
 import jc.house.chat.ChatActivity;
 import jc.house.global.Constants;
-import jc.house.models.CustomerHelper;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
@@ -59,13 +59,15 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private TextView tvForceType;
     private TextView tvAvgPrice;
     private TextView tvPhone;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_house_detail);
         showDialog();
-        if (PRODUCT) {
+        if (!PRODUCT) {
+            id = this.getIntent().getIntExtra("id",1);
             fetchDataFromServer();
         }
         initViews();
@@ -96,6 +98,9 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 123.12, 123.23));
                 } else {
                     //TODO 跳转
+                    House house = (House)houseDetail;
+                    intent.putExtra("IsSingleMarker", true);
+                    intent.putExtra(MapActivity.FLAG_HOUSE, house);
                 }
                 startActivity(intent);
             }
@@ -211,12 +216,15 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
             this.loadImage(houseImageView, this.houseDetail.getUrl());
             hideDialog();
+            if (null != houseDetail.getHelper()) {
+                Toast.makeText(this,houseDetail.getHelper().getName() + houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void fetchDataFromServer() {
         Map<String, String> params = new HashMap<>();
-        params.put("id", "1");
+        params.put("id", String.valueOf(id));
         this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -244,7 +252,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                         public void run() {
                             try {
                                 houseDetail = (HouseDetail) ParseJson.jsonObjectToBaseModel(response.getJSONObject(ServerResult.RESULT), HouseDetail.class);
-                                houseDetail.setHelper((CustomerHelper) ParseJson.jsonObjectToBaseModel(response.getJSONObject(ServerResult.HELPER), CustomerHelper.class));
                                 new Handler(getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {

@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import jc.house.models.BaseModel;
+import jc.house.models.CustomerHelper;
 import jc.house.models.HouseDetail;
 import jc.house.models.JCActivity;
 import jc.house.models.News;
@@ -164,4 +165,11 @@ public class JsonParseTest extends AndroidTestCase {
         assertTrue("sets is not empty", sets.size() == 15);
     }
     */
+
+    public void test07() {
+//        boolean flag = ParseJson.isSubclassOfBaseModel(CustomerHelper.class);
+        boolean flag = BaseModel.class.isAssignableFrom(CustomerHelper.class);
+        assertTrue("customerhelper is subclass of basemodel", flag);
+
+    }
 }
