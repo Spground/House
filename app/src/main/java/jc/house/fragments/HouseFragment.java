@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         this.mapBtn.setOnClickListener(this);
         initListView();
 
-        if (DEBUG) {
+        if (PRODUCT) {
             this.dataSet.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
                     "0411-86536589", 112, 125));
             this.dataSet.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
@@ -85,10 +86,13 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
+                if (!PRODUCT) {
+                    intent.putExtra("id", dataSet.get(pos).getId());
+                }
                 startActivity(intent);
-                LogUtils.debug(TAG, "pos is " + position);
+                LogUtils.debug(TAG, "pos is " + pos);
             }
         });
     }
@@ -110,7 +114,17 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.id_map_btn){
-            startActivity(new Intent(getActivity(), MapActivity.class));
+            Intent intent = new Intent(getActivity(), MapActivity.class);
+            if (PRODUCT) {
+                startActivity(intent);
+            } else {
+                ArrayList<House> houses = new ArrayList<>();
+                for (BaseModel model : dataSet) {
+                    houses.add((House)model);
+                }
+                intent.putParcelableArrayListExtra(MapActivity.FLAG_HOUSES,houses);
+            }
+            startActivity(intent);
         }
     }
 

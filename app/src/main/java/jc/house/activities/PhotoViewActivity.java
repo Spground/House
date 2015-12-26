@@ -1,19 +1,13 @@
 package jc.house.activities;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import jc.house.R;
-import jc.house.utils.LogUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -25,6 +19,7 @@ public class PhotoViewActivity extends BaseActivity {
     private PhotoViewAttacher mAttacher;
 
     private String imageUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +33,7 @@ public class PhotoViewActivity extends BaseActivity {
      * init view
      */
     private void initView() {
-        this.photoView = (PhotoView)this.findViewById(R.id.photoView);
+        this.photoView = (PhotoView) this.findViewById(R.id.photoView);
         this.mAttacher = new PhotoViewAttacher(this.photoView);
         this.mAttacher.setZoomable(true);
         this.mAttacher.setMaximumScale(3.0f);
@@ -46,12 +41,12 @@ public class PhotoViewActivity extends BaseActivity {
         this.mAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
+
             }
         });
-        progressDialog.show();
-        LogUtils.debug(TAG, "Image Loading url is " + this.imageUrl);
+        showDialog();
         //show image
-        Picasso.with(this).load(this.imageUrl).into(photoView, new Callback() {
+        Picasso.with(this).load(this.imageUrl).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(photoView, new Callback() {
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();

@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 
+import cz.msebera.android.httpclient.protocol.RequestTargetHost;
+import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.views.TitleBar;
 
@@ -24,7 +26,8 @@ public class BaseActivity extends Activity {
     protected MApplication mApplication;
     protected LinearLayout baseLayout;
     protected RelativeLayout contentLayout;
-    protected AsyncHttpClient mClient = null;
+    public static final boolean DEBUG = Constants.DEBUG;
+    public static final boolean PRODUCT = Constants.PRODUCT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,14 @@ public class BaseActivity extends Activity {
     protected void setTitleBarTitle(String title) {
         this.titleBar.setTitle(title);
         setTitleBarVisible();
+    }
+
+    protected void showDialog() {
+        this.progressDialog.show();
+    }
+
+    protected void hideDialog() {
+        this.progressDialog.hide();
     }
 
     public void setTitleBarVisible() {

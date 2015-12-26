@@ -1,6 +1,7 @@
 package jc.house.utils;
 
 import android.animation.PropertyValuesHolder;
+import android.os.Debug;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -145,7 +146,6 @@ public final class ParseJson {
         if (null == object || null == mClass) {
             return null;
         }
-        Log.v("jsonModel", object.toString());
         BaseModel result = null;
         try {
             result = mClass.newInstance();
@@ -158,10 +158,12 @@ public final class ParseJson {
                         Method method = mClass.getMethod(StringUtils.methodNameBaseFieldName(key), fieldMap.get(key));
                         try {
                             if (null != object.get(key)) {
-                                //TODO bug
-                                method.invoke(result, object.get(key));
-                            } else {
-
+                                if (isSubclassOfBaseModel(fieldMap.get(key))){
+                                    //递归赋值
+                                    method.invoke(result, jsonObjectToBaseModel((JSONObject)(object.get(key)), fieldMap.get(key)));
+                                } else {
+                                    method.invoke(result, object.get(key));
+                                }
                             }
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
@@ -181,6 +183,13 @@ public final class ParseJson {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private static final boolean isSubclassOfBaseModel(Class mClass) {
+        if (mClass.isPrimitive() || !BaseModel.class.isAssignableFrom(mClass)) {
+            return false;
+        }
+        return true;
     }
 
 }

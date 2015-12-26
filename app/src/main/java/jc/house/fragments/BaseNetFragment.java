@@ -25,15 +25,14 @@ import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.adapters.ListAdapter;
-import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
+import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
-import jc.house.utils.ToastUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,10 +41,10 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected XListView xlistView;
     protected AsyncHttpClient client;
     protected boolean isOver;
-    protected static final boolean DEBUG = Constants.DEBUG;
     protected List<BaseModel> dataSet;
     protected ListAdapter adapter;
     private static final String TAG = "BaseNetFragment";
+
     protected BaseNetFragment() {
         super();
         this.client = new AsyncHttpClient();
@@ -90,7 +89,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void onRefresh() {
-        if (!DEBUG) {
+        if (!PRODUCT) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         } else {
             this.xlistView.stopRefresh();
@@ -99,7 +98,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void onLoadMore() {
-        if (!DEBUG) {
+        if (!PRODUCT) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
         } else {
             this.xlistView.stopLoadMore();
@@ -129,8 +128,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             return;
         }
 
-        if(requestType == RequestType.POST) {
-            this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler(){
+        if (requestType == RequestType.POST) {
+            this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -146,7 +145,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 }
             });
         } else {
-            this.client.get(URL, new RequestParams(params), new JsonHttpResponseHandler(){
+            this.client.get(URL, new RequestParams(params), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -158,7 +157,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
                     resetXListView();
-                    ToastUtils.show(getActivity(), "status code is " + statusCode);
                     handleFailure();
                 }
             });
@@ -169,14 +167,14 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result = ServerUtils.parseServerResponse(response);
+            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.ServerResultTypeArray);
             if (result.isSuccess) {
                 handleResponse(result.array, fetchtype);
             } else {
                 handleCode(result.code, "server code");
             }
         } else {
-            ToastUtils.show(getActivity(), "网络请求未成功 status code : " + statusCode);
+            handleFailure();
         }
     }
 
@@ -210,7 +208,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void updateListView(List<BaseModel> dataSet, final FetchType fetchType, final int pageSize) {
-        LogUtils.debug("===TAG===", "updateListView()'s data is  " + dataSet == null? "null":"not null");
         if (null != dataSet && dataSet.size() > 0) {
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.dataSet.clear();
@@ -233,5 +230,10 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected abstract void fetchDataFromServer(final FetchType fetchType);
-    protected abstract void handleResponse(JSONArray array, final FetchType fetchType);
+
+    protected void handleResponse(JSONArray array, final FetchType fetchType) {
+    }
+
+    protected void handleResponse(JSONObject object, final FetchType fetchType) {
+    }
 }

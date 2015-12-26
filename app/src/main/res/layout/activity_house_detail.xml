@@ -81,7 +81,6 @@
                         android:paddingTop="5dp">
 
                         <TextView
-                            android:id="@+id/houseType"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
@@ -91,7 +90,7 @@
                             android:textSize="13sp" />
 
                         <TextView
-                            android:id="@+id/type"
+                            android:id="@+id/houseType"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"
@@ -125,7 +124,7 @@
                             android:textSize="13sp" />
 
                         <TextView
-                            android:id="@+id/force"
+                            android:id="@+id/forceType"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"

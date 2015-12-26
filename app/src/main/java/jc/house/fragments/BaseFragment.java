@@ -10,12 +10,16 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.R;
+import jc.house.global.Constants;
 
 /**
  * Created by hzj on 2015/12/10.
  */
 public class BaseFragment extends Fragment {
     protected View view;
+    protected static final boolean DEBUG = Constants.DEBUG;
+    protected static final boolean PRODUCT = Constants.PRODUCT;
+
     protected void ToastS(String msg) {
         Toast.makeText(this.getActivity(), msg, Toast.LENGTH_SHORT).show();
     }

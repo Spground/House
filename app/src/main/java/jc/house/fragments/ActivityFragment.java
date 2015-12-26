@@ -63,7 +63,7 @@ public class ActivityFragment extends BaseNetFragment {
         this.adapter = new ListAdapter(this.getActivity(),
                 this.dataSet, ModelType.ACTIVITY);
         initListView();
-        if(DEBUG) {
+        if(PRODUCT) {
             this.dataSet.add(new JCActivity(1, "", "金宸•蓝郡一期"));
             this.dataSet.add(new JCActivity(2, "", "连大•文润金宸三期"));
             this.dataSet.add(new JCActivity(3, "", "金宸•蓝郡二期"));
@@ -91,7 +91,7 @@ public class ActivityFragment extends BaseNetFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
-                if (DEBUG) {
+                if (PRODUCT) {
                     if (position == 1) {
                         intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     } else if (position == 2) {

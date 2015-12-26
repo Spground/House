@@ -319,5 +319,6 @@
     <string name="title_activity_user_feedback">UserFeedbackActivity</string>
     <string name="title_activity_about_us">AboutUsActivity</string>
     <string name="title_activity_photo_view">PhotoViewActivity</string>
+    <string name="title_activity_base_net">BaseNetActivity</string>
     <!-- -->
 </resources>
