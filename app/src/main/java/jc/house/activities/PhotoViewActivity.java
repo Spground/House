@@ -8,7 +8,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import jc.house.R;
-import jc.house.utils.LogUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -45,8 +44,7 @@ public class PhotoViewActivity extends BaseActivity {
 
             }
         });
-        progressDialog.show();
-        LogUtils.debug(TAG, "Image Loading url is " + this.imageUrl);
+        showDialog();
         //show image
         Picasso.with(this).load(this.imageUrl).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(photoView, new Callback() {
             @Override

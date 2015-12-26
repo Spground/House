@@ -164,8 +164,6 @@ public final class ParseJson {
                                 } else {
                                     method.invoke(result, object.get(key));
                                 }
-                            } else {
-
                             }
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();

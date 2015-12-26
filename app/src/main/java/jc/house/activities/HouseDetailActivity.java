@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import jc.house.R;
 import jc.house.async.MThreadPool;
 import jc.house.chat.ChatActivity;
 import jc.house.global.Constants;
+import jc.house.global.ServerResultType;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
@@ -45,7 +45,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private static final String TAG = "HouseDetailActivity";
     private static final String URL = Constants.SERVER_URL + "house/detail";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
-    //	private TitleBar titleBar;
     private MViewPager viewPager;
     private List<TextView> textViews;
     private List<ViewPagerTitle> titles;
@@ -67,7 +66,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         setJCContentView(R.layout.activity_house_detail);
         showDialog();
         if (!PRODUCT) {
-            id = this.getIntent().getIntExtra("id",1);
+            id = this.getIntent().getIntExtra("id", 1);
             fetchDataFromServer();
         }
         initViews();
@@ -98,9 +97,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 123.12, 123.23));
                 } else {
                     //TODO 跳转
-                    House house = (House)houseDetail;
                     intent.putExtra("IsSingleMarker", true);
-                    intent.putExtra(MapActivity.FLAG_HOUSE, house);
+                    intent.putExtra(MapActivity.FLAG_HOUSE, (House)houseDetail);
                 }
                 startActivity(intent);
             }
@@ -126,11 +124,11 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             }
         });
 
-        this.tvAddress = (TextView)this.findViewById(R.id.address);
-        this.tvHouseType = (TextView)this.findViewById(R.id.houseType);
-        this.tvForceType = (TextView)this.findViewById(R.id.forceType);
-        this.tvAvgPrice = (TextView)this.findViewById(R.id.avgPrice);
-        this.tvPhone = (TextView)this.findViewById(R.id.phone);
+        this.tvAddress = (TextView) this.findViewById(R.id.address);
+        this.tvHouseType = (TextView) this.findViewById(R.id.houseType);
+        this.tvForceType = (TextView) this.findViewById(R.id.forceType);
+        this.tvAvgPrice = (TextView) this.findViewById(R.id.avgPrice);
+        this.tvPhone = (TextView) this.findViewById(R.id.phone);
     }
 
     private void initViewPager() {
@@ -217,7 +215,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             this.loadImage(houseImageView, this.houseDetail.getUrl());
             hideDialog();
             if (null != houseDetail.getHelper()) {
-                Toast.makeText(this,houseDetail.getHelper().getName() + houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, houseDetail.getHelper().getName() + houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -243,33 +241,23 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     private void parseServerData(int statusCode, final JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            int code;
-            try {
-                code = response.getInt(ServerResult.CODE);
-                if (ServerResult.CODE_SUCCESS == code) {
-                    MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                houseDetail = (HouseDetail) ParseJson.jsonObjectToBaseModel(response.getJSONObject(ServerResult.RESULT), HouseDetail.class);
-                                new Handler(getMainLooper()).post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setServerData();
-                                    }
-                                });
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.ServerResultTypeObject);
+            if (ServerResult.CODE_SUCCESS == result.code) {
+                MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        houseDetail = (HouseDetail) ParseJson.jsonObjectToBaseModel(result.object, HouseDetail.class);
+                        new Handler(getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                setServerData();
                             }
-                        }
-                    });
-                } else {
-                    handleCode(code, TAG);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+                        });
+                    }
+                });
+            } else {
+                handleCode(result.code, TAG);
             }
-
         } else {
             handleFailure();
         }
