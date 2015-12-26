@@ -39,9 +39,10 @@ public final class ParseJson {
         if (null == array || array.length() == 0) {
             return null;
         }
+        Map<String, Class> fieldMap = mapFromClass(clazz);
         for(int i = 0; i < array.length(); i++) {
             JSONObject jsonObject = array.optJSONObject(i);
-            BaseModel modelObj = jsonObjectToBaseModel(jsonObject, clazz);
+            BaseModel modelObj = jsonObjectToBaseModel(jsonObject, clazz, fieldMap);
             modelList.add(modelObj);
         }
         return modelList;
@@ -142,14 +143,13 @@ public final class ParseJson {
         return result;
     }
 
-    public static final BaseModel jsonObjectToBaseModel(JSONObject object, Class<? extends BaseModel> mClass) {
+    public static final BaseModel jsonObjectToBaseModel(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
         if (null == object || null == mClass) {
             return null;
         }
         BaseModel result = null;
         try {
             result = mClass.newInstance();
-            Map<String, Class> fieldMap = mapFromClass(mClass);
             Iterator<String> keys = object.keys();
             while(keys.hasNext()) {
                 String key = keys.next();
@@ -183,6 +183,14 @@ public final class ParseJson {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static final BaseModel jsonObjectToBaseModel(JSONObject object, Class<? extends BaseModel> mClass) {
+        if (null == object || null == mClass) {
+            return null;
+        }
+        Map<String, Class> fieldMap = mapFromClass(mClass);
+        return jsonObjectToBaseModel(object, mClass, fieldMap);
     }
 
     private static final boolean isSubclassOfBaseModel(Class mClass) {

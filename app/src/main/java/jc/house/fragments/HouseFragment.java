@@ -87,12 +87,14 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-                if (!PRODUCT) {
-                    intent.putExtra("id", dataSet.get(pos).getId());
+                if (pos >= 1 && pos <= dataSet.size()) {
+                    Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
+                    if (!PRODUCT) {
+                        intent.putExtra("id", dataSet.get(pos - 1).getId());
+                    }
+                    startActivity(intent);
+                    LogUtils.debug(TAG, "pos is " + pos);
                 }
-                startActivity(intent);
-                LogUtils.debug(TAG, "pos is " + pos);
             }
         });
     }

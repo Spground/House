@@ -66,7 +66,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         setJCContentView(R.layout.activity_house_detail);
         showDialog();
         if (!PRODUCT) {
-            id = this.getIntent().getIntExtra("id", 1);
+//            id = this.getIntent().getIntExtra("id", 1);
+            id = 1; //测试用的
             fetchDataFromServer();
         }
         initViews();
