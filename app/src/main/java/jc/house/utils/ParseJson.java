@@ -34,7 +34,7 @@ public final class ParseJson {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public static List<BaseModel> jsonArray2ModelList(JSONArray array,  Class<? extends BaseModel> clazz) {
+    public static List<? extends BaseModel> jsonArray2ModelList(JSONArray array,  Class<? extends BaseModel> clazz) {
         List<BaseModel> modelList = new ArrayList<>();
         if (null == array || array.length() == 0) {
             return null;
@@ -157,11 +157,13 @@ public final class ParseJson {
                     try {
                         Method method = mClass.getMethod(StringUtils.methodNameBaseFieldName(key), fieldMap.get(key));
                         try {
-                            if (null != object.get(key)) {
+                            if (JSONObject.NULL != object.get(key) && !object.isNull(key)) {
                                 if (isSubclassOfBaseModel(fieldMap.get(key))){
                                     //递归赋值
                                     method.invoke(result, jsonObjectToBaseModel((JSONObject)(object.get(key)), fieldMap.get(key)));
-                                } else {
+                                } else if(isSubclassOfList(fieldMap.get(key))){
+                                    method.invoke(result,jsonArray2ModelList((JSONArray)(object.get(key)), fieldMap.get(key)));
+                                }else {
                                     method.invoke(result, object.get(key));
                                 }
                             }
@@ -195,6 +197,13 @@ public final class ParseJson {
 
     private static final boolean isSubclassOfBaseModel(Class mClass) {
         if (mClass.isPrimitive() || !BaseModel.class.isAssignableFrom(mClass)) {
+            return false;
+        }
+        return true;
+    }
+
+    private static final boolean isSubclassOfList(Class mClass) {
+        if (mClass.isPrimitive() || !List.class.isAssignableFrom(mClass)) {
             return false;
         }
         return true;

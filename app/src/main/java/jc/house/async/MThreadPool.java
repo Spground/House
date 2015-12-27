@@ -64,7 +64,7 @@ public class MThreadPool {
 
         @Override
         public void run() {
-            final List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, mClass);
+            final List<BaseModel> lists = (List<BaseModel>)ParseJson.jsonArray2ModelList(array, mClass);
             LogUtils.debug(TAG, "parsed data set is" + lists.size());
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override

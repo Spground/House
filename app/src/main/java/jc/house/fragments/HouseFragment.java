@@ -91,9 +91,11 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
                     Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
                     if (!PRODUCT) {
                         intent.putExtra("id", dataSet.get(pos - 1).getId());
+                        LogUtils.debug(TAG, "pos is " + pos + "is is " + dataSet.get(pos - 1).getId());
+                    } else {
+                        LogUtils.debug(TAG, "pos is " + pos);
                     }
                     startActivity(intent);
-                    LogUtils.debug(TAG, "pos is " + pos);
                 }
             }
         });
@@ -132,7 +134,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected void handleResponse(JSONArray array, FetchType fetchType) {
-        List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, House.class);
+        List<BaseModel> lists = (List<BaseModel>)ParseJson.jsonArray2ModelList(array, House.class);
         updateListView(lists, fetchType, PAGE_SIZE);
     }
 
