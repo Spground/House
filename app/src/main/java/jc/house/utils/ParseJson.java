@@ -203,10 +203,10 @@ public final class ParseJson {
     }
 
     private static final boolean isSubclassOfList(Class mClass) {
-        if (mClass.isPrimitive() || !List.class.isAssignableFrom(mClass)) {
-            return false;
+        if (!mClass.isPrimitive() && List.class.isAssignableFrom(mClass)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
 }
