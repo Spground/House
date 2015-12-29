@@ -24,7 +24,7 @@ public final class ServerUtils {
             result.code = code;
             result.isSuccess = (ServerResult.CODE_SUCCESS == code);
             if (result.isSuccess) {
-                if (ServerResultType.ServerResultTypeArray == resultType) {
+                if (ServerResultType.Array == resultType) {
                     result.array = response.getJSONArray(ServerResult.RESULT);
                 } else {
                     result.object = response.getJSONObject(ServerResult.RESULT);

@@ -43,7 +43,7 @@ public class MThreadPool {
         return instance;
     }
 
-    public void submitParseDataTask(Object object, ServerResultType resultType,Class<? extends BaseModel> mClass, ParseTask task) {
+    public void submitParseDataTask(Object object, ServerResultType resultType, Class<? extends BaseModel> mClass, ParseTask task) {
         this.executorService.submit(new ParseDataTask(object, resultType, mClass, task));
     }
 
@@ -52,7 +52,7 @@ public class MThreadPool {
         private ServerResultType resultType;
         private Class<? extends BaseModel> mClass;
         private ParseTask task;
-        public ParseDataTask(Object object, ServerResultType resultType,Class<? extends BaseModel> mClass, ParseTask task) {
+        public ParseDataTask(Object object, ServerResultType resultType, Class<? extends BaseModel> mClass, ParseTask task) {
             this.object = object;
             this.mClass = mClass;
             this.resultType = resultType;
@@ -66,29 +66,43 @@ public class MThreadPool {
                     task.onStart();
                 }
             });
-            if (ServerResultType.ServerResultTypeObject == resultType) {
-                final BaseModel model = ParseJson.jsonObj2Model((JSONObject)object, mClass);
-                if (null != model) {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            task.onSuccess(model);
-                        }
-                    });
-                } else {
-
+            if (ServerResultType.Object == resultType) {
+                JSONObject mObject = null;
+                try {
+                    //强制转换有可能出异常
+                    mObject = (JSONObject)object;
+                } catch (Exception e) {
+                    //onFail()方法如果不需要在主线程回调的话
+                    task.onFail(e.getMessage());
+                }
+                if (null != mObject) {
+                    final BaseModel model = ParseJson.jsonObj2Model(mObject, mClass);
+                    if (null != model) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                task.onSuccess(model);
+                            }
+                        });
+                    }
                 }
             } else {
-                final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)object, mClass);
-                if (null != models && models.size() > 0) {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            task.onSuccess(models);
-                        }
-                    });
-                } else {
-
+                JSONArray array = null;
+                try{
+                    array = (JSONArray)object;
+                } catch (Exception e) {
+                    task.onFail(e.getMessage());
+                }
+                if (null != array) {
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)object, mClass);
+                    if (null != models && models.size() > 0) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                task.onSuccess(models);
+                            }
+                        });
+                    }
                 }
             }
         }

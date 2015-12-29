@@ -35,7 +35,7 @@ public final class ParseJson {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public static List<? extends BaseModel> jsonArray2ModelList(JSONArray array, Class<? extends BaseModel> clazz) {
+    public static final List<? extends BaseModel> jsonArray2ModelList(JSONArray array, Class<? extends BaseModel> clazz) {
         List<BaseModel> modelList = new ArrayList<>();
         if (null == array || array.length() == 0) {
             return null;
@@ -61,7 +61,7 @@ public final class ParseJson {
                 String key = keys.next();
                 if (fieldMap.containsKey(key)) {
                     try {
-                        Method method = mClass.getMethod(StringUtils.methodNameBaseFieldName(key), fieldMap.get(key));
+                        Method method = mClass.getMethod(StringUtils.getMethodNameByFieldName(key), fieldMap.get(key));
                         try {
                             if (JSONObject.NULL != object.get(key) && !object.isNull(key)) {
                                 if (isSubclassOfBaseModel(fieldMap.get(key))) {
@@ -81,8 +81,6 @@ public final class ParseJson {
                     } catch (NoSuchMethodException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    //输出没有key值
                 }
             }
         } catch (InstantiationException e) {

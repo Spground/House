@@ -167,7 +167,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.ServerResultTypeArray);
+            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
             if (result.isSuccess) {
                 handleResponse(result.array, fetchtype);
             } else {

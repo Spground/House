@@ -15,7 +15,7 @@ public final class StringUtils {
 		return str.substring(0,length);
 	}
 
-	public static String methodNameBaseFieldName(String fieldName) {
+	public static String getMethodNameByFieldName(String fieldName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("set").append(fieldName.substring(0,1).toUpperCase()).append(fieldName.substring(1));
 		return sb.toString();
