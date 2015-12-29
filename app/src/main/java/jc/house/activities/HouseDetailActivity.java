@@ -247,7 +247,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
             if (ServerResult.CODE_SUCCESS == result.code) {
-                MThreadPool.getInstance().submitParseDataTask(result.object, ServerResultType.Object, HouseDetail.class, new ParseTask(){
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result.object, ServerResultType.Object, HouseDetail.class){
                     @Override
                     public void onSuccess(BaseModel model) {
                         setServerData((HouseDetail)model);

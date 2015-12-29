@@ -43,19 +43,13 @@ public class MThreadPool {
         return instance;
     }
 
-    public void submitParseDataTask(Object object, ServerResultType resultType, Class<? extends BaseModel> mClass, ParseTask task) {
-        this.executorService.submit(new ParseDataTask(object, resultType, mClass, task));
+    public void submitParseDataTask(ParseTask task) {
+        this.executorService.submit(new ParseDataTask(task));
     }
 
     private class ParseDataTask implements Runnable {
-        private Object object;
-        private ServerResultType resultType;
-        private Class<? extends BaseModel> mClass;
         private ParseTask task;
-        public ParseDataTask(Object object, ServerResultType resultType, Class<? extends BaseModel> mClass, ParseTask task) {
-            this.object = object;
-            this.mClass = mClass;
-            this.resultType = resultType;
+        public ParseDataTask(ParseTask task) {
             this.task = task;
         }
         @Override
@@ -66,17 +60,17 @@ public class MThreadPool {
                     task.onStart();
                 }
             });
-            if (ServerResultType.Object == resultType) {
+            if (ServerResultType.Object == task.getResultType()) {
                 JSONObject mObject = null;
                 try {
                     //强制转换有可能出异常
-                    mObject = (JSONObject)object;
+                    mObject = (JSONObject)task.getArgs();
                 } catch (Exception e) {
                     //onFail()方法如果不需要在主线程回调的话
                     task.onFail(e.getMessage());
                 }
                 if (null != mObject) {
-                    final BaseModel model = ParseJson.jsonObj2Model(mObject, mClass);
+                    final BaseModel model = ParseJson.jsonObj2Model(mObject, task.getmClass());
                     if (null != model) {
                         mHandler.post(new Runnable() {
                             @Override
@@ -89,12 +83,12 @@ public class MThreadPool {
             } else {
                 JSONArray array = null;
                 try{
-                    array = (JSONArray)object;
+                    array = (JSONArray)task.getArgs();
                 } catch (Exception e) {
                     task.onFail(e.getMessage());
                 }
                 if (null != array) {
-                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)object, mClass);
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)task.getArgs(), task.getmClass());
                     if (null != models && models.size() > 0) {
                         mHandler.post(new Runnable() {
                             @Override

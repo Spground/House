@@ -101,7 +101,7 @@ public class ActivityFragment extends BaseNetFragment {
 
     @Override
     protected void handleResponse(JSONArray array, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(array, ServerResultType.Array, JCActivity.class, new ParseTask(){
+        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, JCActivity.class){
             @Override
             public void onSuccess(List<? extends BaseModel> models) {
                 updateListView((List<BaseModel>)models, fetchType, PAGE_SIZE);

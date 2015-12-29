@@ -94,7 +94,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void handleResponse(JSONArray array, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(array, ServerResultType.Array, News.class, new ParseTask(){
+        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, News.class){
             @Override
             public void onSuccess(List<? extends BaseModel> models) {
                 updateListView((List<BaseModel>)models, fetchType, PAGE_SIZE);
