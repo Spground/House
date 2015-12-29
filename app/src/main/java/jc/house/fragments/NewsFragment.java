@@ -17,11 +17,12 @@ import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
-import jc.house.async.IParseData;
 import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
+import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
@@ -92,11 +93,11 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(array, News.class, fetchType, new IParseData() {
+    protected void handleResponse(JSONArray array, final FetchType fetchType) {
+        MThreadPool.getInstance().submitParseDataTask(array, ServerResultType.ServerResultTypeArray, News.class, new ParseTask(){
             @Override
-            public void onParseDataTaskCompleted(List<BaseModel> lists, FetchType fetchType) {
-                updateListView(lists, fetchType, PAGE_SIZE);
+            public void onSuccess(List<? extends BaseModel> models) {
+                updateListView((List<BaseModel>)models, fetchType, PAGE_SIZE);
             }
         });
     }

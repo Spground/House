@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import jc.house.global.FetchType;
+import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
@@ -21,11 +23,13 @@ import jc.house.utils.ParseJson;
 public class MThreadPool {
     private static MThreadPool instance = null;
     private ExecutorService executorService = null;
-    private static final int THREAD_NUM = 3;
+    private static final int THREAD_NUM = 2;
     private static final String TAG = "MThreadPool";
+    private Handler mHandler = null;
 
     private MThreadPool() {
         executorService = Executors.newFixedThreadPool(THREAD_NUM);
+        this.mHandler = new Handler(Looper.getMainLooper());
     }
 
     public static MThreadPool getInstance() {
@@ -39,41 +43,55 @@ public class MThreadPool {
         return instance;
     }
 
-    public ExecutorService getExecutorService() {
-        return executorService;
+    public void submitParseDataTask(Object object, ServerResultType resultType,Class<? extends BaseModel> mClass, ParseTask task) {
+        this.executorService.submit(new ParseDataTask(object, resultType, mClass, task));
     }
 
-    public void submitParseDataTask(JSONArray array, Class<? extends BaseModel> mClass,
-                                    FetchType fetchType, IParseData parseData) {
-        this.executorService.submit(new ParseDataThread(array, mClass, fetchType, parseData));
-    }
-
-    private class ParseDataThread implements Runnable {
-        private JSONArray array;
+    private class ParseDataTask implements Runnable {
+        private Object object;
+        private ServerResultType resultType;
         private Class<? extends BaseModel> mClass;
-        private FetchType fetchType;
-        private IParseData parseDataCallback;
-
-        public ParseDataThread(JSONArray array, Class<? extends BaseModel> mClass,
-                               FetchType fetchType, IParseData parseDataCallback) {
-            this.array = array;
+        private ParseTask task;
+        public ParseDataTask(Object object, ServerResultType resultType,Class<? extends BaseModel> mClass, ParseTask task) {
+            this.object = object;
             this.mClass = mClass;
-            this.fetchType = fetchType;
-            this.parseDataCallback = parseDataCallback;
+            this.resultType = resultType;
+            this.task = task;
         }
-
         @Override
         public void run() {
-            final List<BaseModel> lists = (List<BaseModel>)ParseJson.jsonArray2ModelList(array, mClass);
-            LogUtils.debug(TAG, "parsed data set is" + lists.size());
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    parseDataCallback.onParseDataTaskCompleted(lists, fetchType);
+                    task.onStart();
                 }
             });
-        }
+            if (ServerResultType.ServerResultTypeObject == resultType) {
+                final BaseModel model = ParseJson.jsonObj2Model((JSONObject)object, mClass);
+                if (null != model) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            task.onSuccess(model);
+                        }
+                    });
+                } else {
 
+                }
+            } else {
+                final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)object, mClass);
+                if (null != models && models.size() > 0) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            task.onSuccess(models);
+                        }
+                    });
+                } else {
+
+                }
+            }
+        }
     }
 
     /**

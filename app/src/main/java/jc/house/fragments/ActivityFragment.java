@@ -1,9 +1,7 @@
 package jc.house.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,27 +14,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
-import jc.house.async.IParseData;
 import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
+import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
-import jc.house.utils.GeneralUtils;
-import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
-import jc.house.utils.ToastUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +36,7 @@ public class ActivityFragment extends BaseNetFragment {
 
     private String apiURL = Constants.ACTIVITY_URL;
     private final int PAGE_SIZE = 10;
+
     public ActivityFragment() {
         super();
     }
@@ -63,7 +55,7 @@ public class ActivityFragment extends BaseNetFragment {
         this.adapter = new ListAdapter(this.getActivity(),
                 this.dataSet, ModelType.ACTIVITY);
         initListView();
-        if(PRODUCT) {
+        if (PRODUCT) {
             this.dataSet.add(new JCActivity(1, "", "金宸•蓝郡一期"));
             this.dataSet.add(new JCActivity(2, "", "连大•文润金宸三期"));
             this.dataSet.add(new JCActivity(3, "", "金宸•蓝郡二期"));
@@ -71,7 +63,7 @@ public class ActivityFragment extends BaseNetFragment {
             this.dataSet.add(new JCActivity(5, "", "金宸•蓝郡三期"));
         } else {
             //init data set
-            if(HomeActivity.isNetAvailable) {
+            if (HomeActivity.isNetAvailable) {
                 fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             } else {
                 //load cache
@@ -85,7 +77,7 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     protected void initListView() {
         this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
-        this.xlistView = (XListView)view.findViewById(R.id.list);
+        this.xlistView = (XListView) view.findViewById(R.id.list);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,20 +100,12 @@ public class ActivityFragment extends BaseNetFragment {
     }
 
     @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        //parse json
-        MThreadPool.getInstance().submitParseDataTask(array, JCActivity.class, fetchType,
-                new IParseData() {
-                    @Override
-                    public void onParseDataTaskCompleted(List<BaseModel> dataSet, FetchType fetchType) {
-                        updateListView(dataSet, fetchType, PAGE_SIZE);
-                        ToastUtils.show(getActivity(), "picurl is " + Constants.IMAGE_URL +
-                                ((JCActivity) dataSet.get(0)).getPicUrl());
-                        ToastUtils.show(getActivity(), "id is " +
-                                Constants.ACTIVITY_SHOW_URL + ((JCActivity) dataSet.get(0)).id);
-
-
-                    }
+    protected void handleResponse(JSONArray array, final FetchType fetchType) {
+        MThreadPool.getInstance().submitParseDataTask(array, ServerResultType.ServerResultTypeArray, JCActivity.class, new ParseTask(){
+            @Override
+            public void onSuccess(List<? extends BaseModel> models) {
+                updateListView((List<BaseModel>)models, fetchType, PAGE_SIZE);
+            }
         });
     }
 

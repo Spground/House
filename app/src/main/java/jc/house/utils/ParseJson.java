@@ -28,122 +28,28 @@ public final class ParseJson {
 
     /**
      * json对象数组转对应的model对象List(json数组必须是同类)
+     *
      * @param array
      * @param clazz model的class对象
      * @return
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public static List<? extends BaseModel> jsonArray2ModelList(JSONArray array,  Class<? extends BaseModel> clazz) {
+    public static List<? extends BaseModel> jsonArray2ModelList(JSONArray array, Class<? extends BaseModel> clazz) {
         List<BaseModel> modelList = new ArrayList<>();
         if (null == array || array.length() == 0) {
             return null;
         }
         Map<String, Class> fieldMap = mapFromClass(clazz);
-        for(int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.length(); i++) {
             JSONObject jsonObject = array.optJSONObject(i);
-            BaseModel modelObj = jsonObjectToBaseModel(jsonObject, clazz, fieldMap);
+            BaseModel modelObj = jsonObj2Model(jsonObject, clazz, fieldMap);
             modelList.add(modelObj);
         }
         return modelList;
     }
 
-    /**
-     * json对象转model对象
-     * @param jsonObject
-     * @param clazz
-     * @return
-     */
-    public static BaseModel jsonObj2Model(JSONObject jsonObject, Class<? extends BaseModel> clazz) {
-        BaseModel modelObj;
-        try {
-            modelObj = clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            LogUtils.debug("===TAG===", e.toString());
-            return null;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            LogUtils.debug("===TAG===", e.toString());
-            return null;
-        }
-
-        Iterator<String> iterator = jsonObject.keys();
-        while(iterator.hasNext()) {
-            String key = iterator.next();
-            Object value = null;
-            try {
-                value = jsonObject.get(key);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                LogUtils.debug("===TAG===", e.toString());
-            }
-            Field field = null;
-            try {
-                //get current class's field
-                field = clazz.getDeclaredField(key);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-                LogUtils.debug("===TAG===", e.toString());
-            }
-
-            //if field is null, go to find superclass public field
-            if(field == null) {
-                try {
-                    field = clazz.getField(key);
-                    LogUtils.debug("===TAG===",  "find superclass field " + key);
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                    LogUtils.debug("===TAG===", e.toString());
-                }
-            }
-
-           if(field != null) {
-                try {
-                    field.setAccessible(true);
-                    field.set(modelObj, value);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                    LogUtils.debug("===TAG===", e.toString());
-                }
-            }
-        }
-        return modelObj;
-    }
-
-    public static final Set<String> allFieldsInClass(Class mClass) {
-        if (null == mClass) {
-            return null;
-        }
-        Class curClass = mClass;
-        Set<String> result = new HashSet<>();
-        while(curClass != Object.class) {
-            Field[] fields = curClass.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
-                result.add(fields[i].getName());
-            }
-            curClass = curClass.getSuperclass();
-        }
-        return result;
-    }
-
-    private static final Map<String, Class> mapFromClass(Class mClass) {
-        if (null == mClass) {
-            return null;
-        }
-        Map<String, Class> result = new HashMap<>();
-        Class curClass = mClass;
-        while (curClass != Object.class) {
-            Field[] fields = curClass.getDeclaredFields();
-            for(int i = 0; i < fields.length; i++) {
-                result.put(fields[i].getName(), fields[i].getType());
-            }
-            curClass = curClass.getSuperclass();
-        }
-        return result;
-    }
-
-    public static final BaseModel jsonObjectToBaseModel(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
+    private static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
         if (null == object || null == mClass) {
             return null;
         }
@@ -151,19 +57,19 @@ public final class ParseJson {
         try {
             result = mClass.newInstance();
             Iterator<String> keys = object.keys();
-            while(keys.hasNext()) {
+            while (keys.hasNext()) {
                 String key = keys.next();
                 if (fieldMap.containsKey(key)) {
                     try {
                         Method method = mClass.getMethod(StringUtils.methodNameBaseFieldName(key), fieldMap.get(key));
                         try {
                             if (JSONObject.NULL != object.get(key) && !object.isNull(key)) {
-                                if (isSubclassOfBaseModel(fieldMap.get(key))){
+                                if (isSubclassOfBaseModel(fieldMap.get(key))) {
                                     //递归赋值
-                                    method.invoke(result, jsonObjectToBaseModel((JSONObject)(object.get(key)), fieldMap.get(key)));
-                                } else if(isSubclassOfList(fieldMap.get(key))){
-                                    method.invoke(result,jsonArray2ModelList((JSONArray)(object.get(key)), fieldMap.get(key)));
-                                }else {
+                                    method.invoke(result, jsonObj2Model((object.optJSONObject(key)), fieldMap.get(key)));
+                                } else if (isSubclassOfList(fieldMap.get(key))) {
+                                    method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), fieldMap.get(key)));
+                                } else {
                                     method.invoke(result, object.get(key));
                                 }
                             }
@@ -187,12 +93,31 @@ public final class ParseJson {
         return result;
     }
 
-    public static final BaseModel jsonObjectToBaseModel(JSONObject object, Class<? extends BaseModel> mClass) {
+    private static final Map<String, Class> mapFromClass(Class<? extends BaseModel> mClass) {
+        if (null == mClass) {
+            return null;
+        }
+        Map<String, Class> result = new HashMap<>();
+        Class curClass = mClass;
+        while (curClass != Object.class) {
+            Field[] fields = curClass.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                result.put(fields[i].getName(), fields[i].getType());
+            }
+            if (curClass == BaseModel.class) {
+                break;
+            }
+            curClass = curClass.getSuperclass();
+        }
+        return result;
+    }
+
+    public static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass) {
         if (null == object || null == mClass) {
             return null;
         }
         Map<String, Class> fieldMap = mapFromClass(mClass);
-        return jsonObjectToBaseModel(object, mClass, fieldMap);
+        return jsonObj2Model(object, mClass, fieldMap);
     }
 
     private static final boolean isSubclassOfBaseModel(Class mClass) {

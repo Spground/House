@@ -3,7 +3,6 @@ package jc.house.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
@@ -29,14 +28,15 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.chat.ChatActivity;
 import jc.house.global.Constants;
 import jc.house.global.ServerResultType;
+import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
 import jc.house.utils.ServerUtils;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
@@ -205,8 +205,9 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         });
     }
 
-    private void setServerData() {
-        if (null != this.houseDetail) {
+    private void setServerData(HouseDetail model) {
+        if (null != model) {
+            this.houseDetail = model;
             this.tvAddress.setText(this.houseDetail.getAddress());
             this.tvHouseType.setText(this.houseDetail.getHouseType());
             this.tvForceType.setText(this.houseDetail.getForceType());
@@ -246,16 +247,10 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.ServerResultTypeObject);
             if (ServerResult.CODE_SUCCESS == result.code) {
-                MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
+                MThreadPool.getInstance().submitParseDataTask(result.object, ServerResultType.ServerResultTypeObject, HouseDetail.class, new ParseTask(){
                     @Override
-                    public void run() {
-                        houseDetail = (HouseDetail) ParseJson.jsonObjectToBaseModel(result.object, HouseDetail.class);
-                        new Handler(getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                setServerData();
-                            }
-                        });
+                    public void onSuccess(BaseModel model) {
+                        setServerData((HouseDetail)model);
                     }
                 });
             } else {
