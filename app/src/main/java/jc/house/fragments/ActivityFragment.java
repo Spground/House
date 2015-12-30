@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import org.json.JSONArray;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +17,9 @@ import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
-import jc.house.async.MThreadPool;
-import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
-import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
@@ -34,11 +29,14 @@ import jc.house.models.ModelType;
  */
 public class ActivityFragment extends BaseNetFragment {
 
-    private String apiURL = Constants.ACTIVITY_URL;
     private final int PAGE_SIZE = 10;
+    private static final String TAG = "ActivityFragment";
 
     public ActivityFragment() {
         super();
+        this.pageSize = PAGE_SIZE;
+        this.url = Constants.ACTIVITY_URL;
+        this.tag = TAG;
     }
 
     @Override
@@ -67,11 +65,8 @@ public class ActivityFragment extends BaseNetFragment {
                 fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             } else {
                 //load cache
-
             }
-
         }
-
     }
 
     @Override
@@ -100,26 +95,15 @@ public class ActivityFragment extends BaseNetFragment {
     }
 
     @Override
-    protected void handleResponse(JSONArray array, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, JCActivity.class){
-            @Override
-            public void onSuccess(List<? extends BaseModel> models) {
-                updateListView((List<BaseModel>)models, fetchType, PAGE_SIZE);
-            }
-        });
-    }
-
-    @Override
-    public void refresh() {
-        super.refresh();
+    protected Class<? extends BaseModel> getModelClass() {
+        return JCActivity.class;
     }
 
     @Override
     protected void fetchDataFromServer(FetchType fetchtype) {
         Map<String, String> reqParams = new HashMap<>();
-        reqParams.put("pageSize", "10");
-        fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET,
-                apiURL, reqParams);
+        reqParams.put("pageSize", String.valueOf(pageSize));
+        fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET, reqParams);
     }
 
     private List<? extends BaseModel> loadModelDiskCache(int NUMBER) {

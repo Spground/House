@@ -21,9 +21,6 @@ public final class Constants {
 	public static final String FEEDBACK_URL = SERVER_URL + "feedback/feedbacks";
 	public static final String ACTIVITY_URL = SERVER_URL + "activity/activitys";
 	public static final String ACTIVITY_SHOW_URL = SERVER_URL + "activity/show";
-//	public static final int CODE_SUCCESS = 1;
-//	public static final int CODE_FAILED = 0;
-//	public static final int CODE_NO_DATA = 2;
 
 	public static final int[] resActivity = {R.drawable.temp_activity_a, R.drawable.temp_activity_b,
 			R.drawable.temp_activity_c, R.drawable.temp_activity_d, R.drawable.temp_activity_e};

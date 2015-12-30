@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import jc.house.JCListView.XListView;
@@ -28,7 +26,6 @@ import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.ModelType;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,11 +34,13 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     private static final int PAGE_SIZE = 1;
     private static final String TAG = "HouseFragment";
     private static final String URL = Constants.SERVER_URL + "house/houses";
-
     private ImageButton mapBtn;
 
     public HouseFragment() {
         super();
+        this.pageSize = PAGE_SIZE;
+        this.url = URL;
+        this.tag = TAG;
     }
 
     @Override
@@ -103,7 +102,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected Map<String, String> getParams(FetchType fetchType) {
-        Map<String, String> params = super.getParams(fetchType);
+        Map<String, String> params = new HashMap<>();
         if (null != params) {
             params.put("pageSize", String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
@@ -133,13 +132,12 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     }
 
     @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        List<BaseModel> lists = (List<BaseModel>)ParseJson.jsonArray2ModelList(array, House.class);
-        updateListView(lists, fetchType, PAGE_SIZE);
+    protected Class<? extends BaseModel> getModelClass() {
+        return House.class;
     }
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        super.fetchDataFromServer(fetchType, RequestType.POST, URL, getParams(fetchType));
+        super.fetchDataFromServer(fetchType, RequestType.POST, getParams(fetchType));
     }
 }

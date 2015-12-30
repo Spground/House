@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 
 import org.json.JSONArray;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,17 +28,22 @@ import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.utils.LogUtils;
+import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 
 public class NewsFragment extends BaseNetFragment implements CircleView.CircleViewOnClickListener {
     private static final int[] imageReIds = {R.drawable.home01,
             R.drawable.home02, R.drawable.home03};
-//	private static final String[] imageUrls = {"123", "456"};
-	private static final String TAG = "NewsFragment";
+    //	private static final String[] imageUrls = {"123", "456"};
+    private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
     protected String URL = Constants.SERVER_URL + "news2/news";
+
     public NewsFragment() {
         super();
+        this.pageSize = PAGE_SIZE;
+        this.url = URL;
+        this.tag = TAG;
     }
 
     @Override
@@ -93,24 +99,17 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
-    protected void handleResponse(JSONArray array, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, News.class){
-            @Override
-            public void onSuccess(List<? extends BaseModel> models) {
-                updateListView((List<BaseModel>)models, fetchType, PAGE_SIZE);
-            }
-        });
+    protected Class<? extends BaseModel> getModelClass() {
+        return News.class;
     }
 
     @Override
     protected Map<String, String> getParams(FetchType fetchType) {
-        Map<String, String> params = super.getParams(fetchType);
-        if (null != params) {
-            params.put("pageSize", String.valueOf(PAGE_SIZE));
-            if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-                if (dataSet.size() > 0) {
-                    params.put("id", String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
-                }
+        Map<String, String> params = new HashMap<>();
+        params.put("pageSize", String.valueOf(PAGE_SIZE));
+        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+            if (dataSet.size() > 0) {
+                params.put("id", String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
             }
         }
         return params;
@@ -118,7 +117,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        fetchDataFromServer(fetchType, RequestType.POST, URL, getParams(fetchType));
+        fetchDataFromServer(fetchType, RequestType.POST, getParams(fetchType));
     }
 
     @Override

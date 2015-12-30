@@ -48,7 +48,7 @@ public class CircleView extends LinearLayout {
 	private static final int CIRCLE_FLAG = 3;
 	public static final int SCROLL_LEFT = 1;
 	public static final int SCROLL_RIGHT = 2;
-	private int scrollOrientaion;
+	private int scrollOrientation;
 
 	public CircleView(Context context) {
 		super(context);
@@ -77,7 +77,7 @@ public class CircleView extends LinearLayout {
 		this.imageViews = new ArrayList<>();
 		this.animation = new AlphaAnimation(0.8f, 1.0f);
 		this.animation.setDuration(600);
-		this.scrollOrientaion = SCROLL_RIGHT;
+		this.scrollOrientation = SCROLL_RIGHT;
 	}
 	
 	@Override
@@ -115,12 +115,12 @@ public class CircleView extends LinearLayout {
 	
 
 	public int getScrollOrientaion() {
-		return scrollOrientaion;
+		return scrollOrientation;
 	}
 
 	public void setScrollOrientaion(int scrollOrientaion) {
 		if(scrollOrientaion <= SCROLL_RIGHT && scrollOrientaion >= SCROLL_LEFT) {
-			this.scrollOrientaion = scrollOrientaion;
+			this.scrollOrientation = scrollOrientaion;
 		}
 	}
 
@@ -254,7 +254,7 @@ public class CircleView extends LinearLayout {
 	
 	private void circle() {
 		if(autoPlay) {
-			if(SCROLL_RIGHT == this.scrollOrientaion) {
+			if(SCROLL_RIGHT == this.scrollOrientation) {
 				currentIndex = (currentIndex + 1) % num;
 			} else {
 				currentIndex -= 1;
