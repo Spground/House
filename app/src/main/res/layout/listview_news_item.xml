@@ -4,55 +4,54 @@
     android:layout_height="wrap_content"
     android:background="@drawable/listview_selector"
     android:gravity="center"
+    android:orientation="horizontal"
     android:paddingLeft="8dp"
-    android:paddingRight="5dp"
-    android:orientation="horizontal" >
+    android:paddingRight="5dp">
 
     <ImageView
         android:id="@+id/picture"
         android:layout_width="58.5dp"
         android:layout_height="36dp"
         android:padding="1dp"
-        android:src="@drawable/failure_image_red"
         android:scaleType="centerCrop"
-         />
+        android:src="@drawable/failure_image_red" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
-        android:padding="5dp"
         android:layout_marginLeft="2dp"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:minHeight="60dp"
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textColor="@color/font_grey_700"
-            android:text="心系昭通 情献灾区心系昭通 情献灾区心系昭通 情献灾区"
+            android:drawableRight="@drawable/new_tag"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:ellipsize="end"
-            android:textStyle=""
-            android:drawableRight="@drawable/new_tag"
-            android:textSize="@dimen/font_main_size" />
+            android:text="心系昭通 情献灾区心系昭通 情献灾区心系昭通 情献灾区"
+            android:textColor="@color/font_grey_700"
+            android:textSize="@dimen/font_main_size"
+            android:textStyle="" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
-            android:paddingBottom="1dp" >
+            android:paddingBottom="1dp">
 
             <TextView
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/font_grey_600"
                 android:text="管理员"
+                android:textColor="@color/font_grey_600"
                 android:textSize="@dimen/font_very_small_size" />
 
             <TextView

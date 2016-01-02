@@ -42,6 +42,7 @@ public class FeedbackActivity extends BaseNetActivity implements View.OnClickLis
         setJCContentView(R.layout.activity_user_feedback);
         setTitleBarTitle("用户反馈");
         initView();
+        this.setScrollRightBack(true);
         reqParams = new HashMap<>();
     }
 

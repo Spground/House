@@ -13,13 +13,14 @@ import jc.house.utils.StringUtils;
 public class WebActivity extends BaseActivity {
     private WebView webView;
     private static final String FLAG_URL = "url";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_web);
         setTitleBarTitle("Web界面");
         this.progressDialog.show();
-        this.webView = (WebView)this.findViewById(R.id.webView);
+        this.webView = (WebView) this.findViewById(R.id.webView);
         this.webView.getSettings().setBlockNetworkImage(false);
         this.webView.getSettings().setBlockNetworkLoads(false);
         this.webView.getSettings().setJavaScriptEnabled(true);
@@ -44,7 +45,7 @@ public class WebActivity extends BaseActivity {
                 progressDialog.dismiss();
             }
         });
-
+        this.setScrollRightBack(true);
     }
 
 }

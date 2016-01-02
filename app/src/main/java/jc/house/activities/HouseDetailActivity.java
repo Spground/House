@@ -64,8 +64,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_house_detail);
-        showDialog();
         if (!PRODUCT) {
+            showDialog();
             id = this.getIntent().getIntExtra("id", 1);
             if (id % 2 == 0) {
                 id = 1; //测试用的
@@ -74,6 +74,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         }
         initViews();
         initViewPager();
+        this.setScrollRightBack(true);
     }
 
     private void initViews() {

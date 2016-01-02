@@ -3,57 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jc.house.activities.AboutUsActivity"
-    android:orientation="vertical"
     android:background="@color/light_gray"
-    >
+    android:orientation="vertical"
+    tools:context="jc.house.activities.AboutUsActivity">
 
     <LinearLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="36dp"
-        >
+        android:orientation="vertical">
+
         <ImageView
             android:id="@+id/app_icon"
             android:layout_width="76dp"
             android:layout_height="76dp"
-            android:src="@drawable/app"
             android:layout_gravity="center_horizontal"
-            />
+            android:src="@drawable/app" />
+
         <TextView
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="金宸集团App"
-            android:textSize="16sp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            />
+            android:textSize="16sp" />
+
         <TextView
-            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="版本:2.0.1"
-            android:textSize="12sp"
-            android:textColor="@color/gray"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
             android:gravity="center"
-            />
+            android:text="版本:2.0.1"
+            android:textColor="@color/gray"
+            android:textSize="12sp" />
+
         <TextView
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:lineSpacingExtra="2dp"
             android:text="    金宸集团App是一款金宸集团出品的房产应用，主要是用来展示公司动态信息，主要楼盘信息以及最新的活动,同时可以提供用户咨询等服务，以此来提高我们的服务水平！
             "
-            android:lineSpacingExtra="2dp"
-            android:textSize="15sp"
             android:textColor="@color/gray"
-            android:layout_gravity="center_horizontal"
-            android:gravity="left"
-            />
+            android:textSize="15sp" />
 
         <View
             android:layout_width="match_parent"
@@ -63,28 +62,27 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:padding="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:padding="5dp"
             android:text="CopyRight©2015 金宸集团"
-            android:textSize="12sp"
             android:textColor="@color/gray"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_marginTop="2dp"
-            />
+            android:textSize="12sp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:padding="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:padding="10dp"
             android:text="All Rights Reserved"
-            android:textSize="10sp"
             android:textColor="@color/gray"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_marginTop="2dp"
-            />
+            android:textSize="10sp" />
     </LinearLayout>
 </LinearLayout>
