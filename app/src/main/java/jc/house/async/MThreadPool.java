@@ -70,7 +70,7 @@ public class MThreadPool {
                     task.onFail(e.getMessage());
                 }
                 if (null != mObject) {
-                    final BaseModel model = ParseJson.jsonObj2Model(mObject, task.getmClass());
+                    final BaseModel model = ParseJson.jsonObj2Model(mObject, task.getMClass());
                     if (null != model) {
                         mHandler.post(new Runnable() {
                             @Override
@@ -88,7 +88,7 @@ public class MThreadPool {
                     task.onFail(e.getMessage());
                 }
                 if (null != array) {
-                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)task.getArgs(), task.getmClass());
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)task.getArgs(), task.getMClass());
                     if (null != models && models.size() > 0) {
                         mHandler.post(new Runnable() {
                             @Override

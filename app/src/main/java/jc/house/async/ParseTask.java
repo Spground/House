@@ -29,7 +29,7 @@ public class ParseTask extends BaseTask {
         return resultType;
     }
 
-    public Class<? extends BaseModel> getmClass() {
+    public Class<? extends BaseModel> getMClass() {
         return mClass;
     }
 

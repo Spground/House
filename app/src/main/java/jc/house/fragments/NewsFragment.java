@@ -37,7 +37,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     //	private static final String[] imageUrls = {"123", "456"};
     private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
-    protected String URL = Constants.SERVER_URL + "news2/news";
+    protected String URL = Constants.SERVER_URL + "news/news";
 
     public NewsFragment() {
         super();
@@ -80,10 +80,11 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (PRODUCT) {
-                        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.SERVER_URL + "news/mobile&id=12");
                     } else {
-                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) dataSet.get(position - 2)).id);
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.SERVER_URL + "news/mobile&id=" + ((News) dataSet.get(position - 2)).id);
                     }
+                    intent.putExtra(WebActivity.FLAG_TITLE, "新闻详情");
                     startActivity(intent);
                 }
             }

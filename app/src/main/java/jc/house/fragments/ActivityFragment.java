@@ -80,15 +80,16 @@ public class ActivityFragment extends BaseNetFragment {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (PRODUCT) {
                     if (position == 1) {
-                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.SERVER_URL + "news/mobile&id=12");
                     } else if (position == 2) {
-                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                        intent.putExtra(WebActivity.FLAG_URL, "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     } else if (position == 3) {
-                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                        intent.putExtra(WebActivity.FLAG_URL, "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     }
                 } else {
-                    intent.putExtra("url", Constants.ACTIVITY_SHOW_URL + "&id=" + view.getId());
+                    intent.putExtra(WebActivity.FLAG_URL, Constants.ACTIVITY_SHOW_URL + "&id=" + view.getId());
                 }
+                intent.putExtra(WebActivity.FLAG_TITLE, "活动详情");
                 startActivity(intent);
             }
         });
