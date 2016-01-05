@@ -26,8 +26,10 @@ public final class ServerUtils {
             if (result.isSuccess) {
                 if (ServerResultType.Array == resultType) {
                     result.array = response.getJSONArray(ServerResult.RESULT);
+                    result.resultType = ServerResultType.Array;
                 } else {
                     result.object = response.getJSONObject(ServerResult.RESULT);
+                    result.resultType = ServerResultType.Object;
                 }
             }
         } catch (JSONException e) {

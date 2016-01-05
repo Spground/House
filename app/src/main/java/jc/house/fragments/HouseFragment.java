@@ -89,7 +89,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
                 if (pos >= 1 && pos <= dataSet.size()) {
                     Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
                     if (!PRODUCT) {
-                        intent.putExtra("id", dataSet.get(pos - 1).getId());
+                        intent.putExtra(PARAM_ID, dataSet.get(pos - 1).getId());
                         LogUtils.debug(TAG, "pos is " + pos + "is is " + dataSet.get(pos - 1).getId());
                     } else {
                         LogUtils.debug(TAG, "pos is " + pos);
@@ -104,10 +104,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     protected Map<String, String> getParams(FetchType fetchType) {
         Map<String, String> params = new HashMap<>();
         if (null != params) {
-            params.put("pageSize", String.valueOf(PAGE_SIZE));
+            params.put(PARAM_PAGESIZE, String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
                 if (dataSet.size() > 0) {
-                    params.put("id", String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
+                    params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
                 }
             }
         }

@@ -103,7 +103,7 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     protected void fetchDataFromServer(FetchType fetchtype) {
         Map<String, String> reqParams = new HashMap<>();
-        reqParams.put("pageSize", String.valueOf(pageSize));
+        reqParams.put(PARAM_PAGESIZE, String.valueOf(pageSize));
         fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET, reqParams);
     }
 

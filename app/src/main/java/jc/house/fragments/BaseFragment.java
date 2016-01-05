@@ -17,7 +17,6 @@ import jc.house.global.Constants;
  */
 public class BaseFragment extends Fragment {
     protected View view;
-    protected static final boolean DEBUG = Constants.DEBUG;
     protected static final boolean PRODUCT = Constants.PRODUCT;
 
     protected void ToastS(String msg) {

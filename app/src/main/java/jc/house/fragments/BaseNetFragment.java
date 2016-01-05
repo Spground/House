@@ -48,6 +48,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected int pageSize;
     protected String url;
     protected String tag;
+    protected static final String PARAM_PAGESIZE = "pageSize";
+    protected static final String PARAM_ID = "id";
 
     protected BaseNetFragment() {
         super();
@@ -140,7 +142,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
-                    handleResponse(statusCode, response, fetchType);
+                    handleResponse(statusCode, response, fetchType, ServerResultType.Array);
                 }
 
                 @Override
@@ -156,7 +158,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
-                    handleResponse(statusCode, response, fetchType);
+                    handleResponse(statusCode, response, fetchType, ServerResultType.Array);
                 }
 
                 @Override
@@ -171,11 +173,16 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     }
 
-    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype) {
+    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResultType resultType) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+            ServerResult result;
+            result = ServerUtils.parseServerResponse(response, resultType);
             if (result.isSuccess) {
-                handleResponse(result.array, fetchtype);
+                if (ServerResultType.Array == resultType) {
+                    handleResponse(result.array, fetchtype);
+                } else {
+                    handleResponse(result.object, fetchtype);
+                }
             } else {
                 handleCode(result.code, "server code");
             }
@@ -250,5 +257,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void handleResponse(JSONObject object, final FetchType fetchType) {
+
     }
 }
