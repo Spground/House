@@ -79,6 +79,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             default:
                 break;
         }
+        hideDialog();
     }
 
     protected void toastNoMoreData() {
@@ -91,6 +92,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         } else {
             ToastS("服务器连接错误，请重新尝试！");
         }
+        hideDialog();
     }
 
     @Override
@@ -240,6 +242,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             toastNoMoreData();
         }
         resetXListView();
+        hideDialog();
     }
 
     protected Class<? extends BaseModel> getModelClass() {

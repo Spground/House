@@ -71,11 +71,13 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             dataSet.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
         } else {
+            showDialog();
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             this.fetchSlideshows();
         }
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
+        this.xlistView.setPullLoadEnable(false);
     }
 
     @Override
@@ -193,5 +195,11 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             intent.putExtra(WebActivity.FLAG_URL, Constants.SLIDE_MOBILE_URL + this.slideshows.get(index).getId());
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
+        super.updateListView(dataSet, fetchType);
+        this.xlistView.setPullLoadEnable(true);
     }
 }

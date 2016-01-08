@@ -27,7 +27,6 @@ public class WebActivity extends BaseActivity {
         this.webView.getSettings().setJavaScriptEnabled(true);
         Intent intent = this.getIntent();
         String url = intent.getStringExtra(FLAG_URL);
-        ToastL(url);
         String title = intent.getStringExtra(FLAG_TITLE);
         setTitleBarTitle(title);
         if (!StringUtils.strEmpty(url)) {
