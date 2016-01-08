@@ -43,7 +43,7 @@ import jc.house.views.ViewPagerTitle;
 
 public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener {
     private static final String TAG = "HouseDetailActivity";
-    private static final String URL = Constants.SERVER_URL + "house/detail";
+    public static final String HOUSE_DETAIL_URL = Constants.SERVER_URL + "house/detail";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
     private MViewPager viewPager;
     private List<TextView> textViews;
@@ -59,6 +59,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private TextView tvAvgPrice;
     private TextView tvPhone;
     private int id;
+    public static final String FLAG_ID = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         setJCContentView(R.layout.activity_house_detail);
         if (!PRODUCT) {
             showDialog();
-            id = this.getIntent().getIntExtra("id", 1);
+            id = this.getIntent().getIntExtra(FLAG_ID, 1);
             if (id % 2 == 0) {
                 id = 1; //测试用的
             }
@@ -101,7 +102,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 123.12, 123.23));
                 } else {
                     //TODO 跳转
-                    intent.putExtra("IsSingleMarker", true);
+                    intent.putExtra(MapActivity.FLAG_IsSingleMarker, true);
                     intent.putExtra(MapActivity.FLAG_HOUSE, (House)houseDetail);
                 }
                 startActivity(intent);
@@ -228,18 +229,16 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void fetchDataFromServer() {
         Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(id));
-        this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
+        this.client.post(HOUSE_DETAIL_URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 parseServerData(statusCode, response);
-                LogUtils.debug("houseDetail", response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                LogUtils.debug("houseDetail", responseString);
             }
         });
     }
@@ -271,7 +270,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     showOriImg.putExtra("image_url", Constants.IMAGE_URL + houseDetail.getUrl());
                 }
             } else {
-                showOriImg.putExtra("image_url", "http://www.jinchenchina.cn/uploads/allimg/150710/0-150G0124350951.jpg");
+                showOriImg.putExtra("image_url", "");
             }
             startActivity(showOriImg);
             return;

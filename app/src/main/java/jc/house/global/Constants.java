@@ -13,14 +13,17 @@ public final class Constants {
 		public static final String Account = "wujie";
 		public static final String Pwd = "wujie";
 	}
-	//http://192.168.31.195/jchouse/web/index.php?r=feedback/feedbacks
 	private static final String SERVER_ROOT = "http://192.168.9.72/house/";
-//  private static final String SERVER_ROOT = "http://192.168.31.195/jchouse/";
 	public static final String SERVER_URL = SERVER_ROOT + "web/index.php?r=";
 	public static final String IMAGE_URL = SERVER_ROOT + "images_mobile/";
 	public static final String FEEDBACK_URL = SERVER_URL + "feedback/feedbacks";
 	public static final String ACTIVITY_URL = SERVER_URL + "activity/activitys";
-	public static final String ACTIVITY_SHOW_URL = SERVER_URL + "activity/show";
+	public static final String ACTIVITY_SHOW_URL = SERVER_URL + "activity/mobile&id=";
+	public static final String NEWS_URL = SERVER_URL + "news/news";
+	public static final String NEWS_MOBILE_URL = SERVER_URL + "news/mobile&id=";
+	public static final String SLIDE_URL = Constants.SERVER_URL + "slideshow/slides";
+	public static final String SLIDE_MOBILE_URL = SERVER_URL + "slideshow/mobile&id=";
+	public static final String HOUSE_URL = SERVER_URL + "house/houses";
 
 	public static final int[] resActivity = {R.drawable.temp_activity_a, R.drawable.temp_activity_b,
 			R.drawable.temp_activity_c, R.drawable.temp_activity_d, R.drawable.temp_activity_e};

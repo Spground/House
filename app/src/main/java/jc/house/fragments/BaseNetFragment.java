@@ -48,7 +48,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected int pageSize;
     protected String url;
     protected String tag;
-    protected static final String PARAM_PAGESIZE = "pageSize";
+    protected static final String PARAM_PAGE_SIZE = "pageSize";
     protected static final String PARAM_ID = "id";
 
     protected BaseNetFragment() {

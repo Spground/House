@@ -25,7 +25,6 @@ import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.ModelType;
-import jc.house.utils.LogUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,13 +32,12 @@ import jc.house.utils.LogUtils;
 public class HouseFragment extends BaseNetFragment implements View.OnClickListener {
     private static final int PAGE_SIZE = 1;
     private static final String TAG = "HouseFragment";
-    private static final String URL = Constants.SERVER_URL + "house/houses";
     private ImageButton mapBtn;
 
     public HouseFragment() {
         super();
         this.pageSize = PAGE_SIZE;
-        this.url = URL;
+        this.url = Constants.HOUSE_URL;
         this.tag = TAG;
     }
 
@@ -54,25 +52,25 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mapBtn = (ImageButton)this.view.findViewById(R.id.id_map_btn);
+        this.mapBtn = (ImageButton) this.view.findViewById(R.id.id_map_btn);
         this.mapBtn.setOnClickListener(this);
         initListView();
 
         if (PRODUCT) {
             this.dataSet.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 39.80, 116.435));
             this.dataSet.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 39.90, 116.425));
             this.dataSet.add(new House(1, "", "金宸.蓝郡三期", "沙河口区 小户型 板楼 双卫",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 39.70, 116.445));
             this.dataSet.add(new House(1, "", "连大.文润金宸二期", "沙河口 小户型 南北通透 双卫",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 39.90, 116.435));
             this.dataSet.add(new House(1, "", "连大.文润金宸一期", "甘井子区 板楼 南北通透 海景地产",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 38.90, 116.425));
             this.dataSet.add(new House(1, "", "金宸.蓝郡三期", "沙河口 小户型 南北通透 双卫",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 39.90, 117.425));
             this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
-                    "0411-86536589", 112, 125));
+                    "0411-86536589", 39.30, 116.425));
         } else {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         }
@@ -88,12 +86,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 if (pos >= 1 && pos <= dataSet.size()) {
                     Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-                    if (!PRODUCT) {
-                        intent.putExtra(PARAM_ID, dataSet.get(pos - 1).getId());
-                        LogUtils.debug(TAG, "pos is " + pos + "is is " + dataSet.get(pos - 1).getId());
-                    } else {
-                        LogUtils.debug(TAG, "pos is " + pos);
-                    }
+                    intent.putExtra(HouseDetailActivity.FLAG_ID, dataSet.get(pos - 1).getId());
                     startActivity(intent);
                 }
             }
@@ -104,7 +97,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     protected Map<String, String> getParams(FetchType fetchType) {
         Map<String, String> params = new HashMap<>();
         if (null != params) {
-            params.put(PARAM_PAGESIZE, String.valueOf(PAGE_SIZE));
+            params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
             if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
                 if (dataSet.size() > 0) {
                     params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
@@ -116,17 +109,14 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.id_map_btn){
+        if (v.getId() == R.id.id_map_btn) {
             Intent intent = new Intent(getActivity(), MapActivity.class);
-            if (PRODUCT) {
-                startActivity(intent);
-            } else {
-                ArrayList<House> houses = new ArrayList<>();
-                for (BaseModel model : dataSet) {
-                    houses.add((House)model);
-                }
-                intent.putParcelableArrayListExtra(MapActivity.FLAG_HOUSES,houses);
+            ArrayList<House> houses = new ArrayList<>();
+            for (BaseModel model : dataSet) {
+                houses.add((House) model);
             }
+            intent.putParcelableArrayListExtra(MapActivity.FLAG_HOUSES, houses);
+            intent.putExtra(MapActivity.FLAG_IsSingleMarker, false);
             startActivity(intent);
         }
     }

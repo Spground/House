@@ -27,12 +27,13 @@ public class WebActivity extends BaseActivity {
         this.webView.getSettings().setJavaScriptEnabled(true);
         Intent intent = this.getIntent();
         String url = intent.getStringExtra(FLAG_URL);
+        ToastL(url);
         String title = intent.getStringExtra(FLAG_TITLE);
         setTitleBarTitle(title);
         if (!StringUtils.strEmpty(url)) {
             this.webView.loadUrl(url);
         } else {
-            this.webView.loadUrl(Constants.SERVER_URL + "news2/mobile&id=12");
+            this.webView.loadUrl(Constants.SERVER_URL + "news/mobile&id=12");
         }
         this.webView.setWebViewClient(new WebViewClient() {
             @Override

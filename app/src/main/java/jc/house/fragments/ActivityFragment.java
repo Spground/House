@@ -80,14 +80,14 @@ public class ActivityFragment extends BaseNetFragment {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (PRODUCT) {
                     if (position == 1) {
-                        intent.putExtra(WebActivity.FLAG_URL, Constants.SERVER_URL + "news/mobile&id=12");
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.NEWS_MOBILE_URL + "12");
                     } else if (position == 2) {
                         intent.putExtra(WebActivity.FLAG_URL, "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     } else if (position == 3) {
                         intent.putExtra(WebActivity.FLAG_URL, "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     }
                 } else {
-                    intent.putExtra(WebActivity.FLAG_URL, Constants.ACTIVITY_SHOW_URL + "&id=" + view.getId());
+                    intent.putExtra(WebActivity.FLAG_URL, Constants.ACTIVITY_SHOW_URL + view.getId());
                 }
                 intent.putExtra(WebActivity.FLAG_TITLE, "活动详情");
                 startActivity(intent);
@@ -103,7 +103,7 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     protected void fetchDataFromServer(FetchType fetchtype) {
         Map<String, String> reqParams = new HashMap<>();
-        reqParams.put(PARAM_PAGESIZE, String.valueOf(pageSize));
+        reqParams.put(PARAM_PAGE_SIZE, String.valueOf(pageSize));
         fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET, reqParams);
     }
 
