@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/temp_house_a" />
+                android:src="@drawable/jc_default_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"

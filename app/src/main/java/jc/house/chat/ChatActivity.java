@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +28,7 @@ import java.io.File;
 
 import de.greenrobot.event.EventBus;
 import jc.house.R;
+import jc.house.activities.BaseActivity;
 import jc.house.chat.event.NewMessageEvent;
 import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
@@ -67,6 +69,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private TitleBar titleBar;
 
     private String toChatUserName;
+    private String nickName;
 
     private ChatMessageList chatMsgList;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -81,6 +84,8 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         /**this must be called before setContentView() method**/
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chat);
+        this.nickName = getIntent().getStringExtra("nickName");
+        this.nickName = this.nickName == null ? "undefined" : this.nickName;
         init();
         initChatMsgList();
         instance = this;
@@ -88,7 +93,6 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             sendDebugMessage();
             ISFIRST = true;
         }
-
     }
 
     @Override
@@ -126,7 +130,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private void init(){
         this.titleBar = (TitleBar)findViewById(R.id.titlebar);
         this.toChatUserName = getIntent().getStringExtra("toChatUserName");
-        this.titleBar.setTitle(toChatUserName == null ? "会话" : toChatUserName);
+        this.titleBar.setTitle(this.nickName);
         /**chat message ListView init**/
         this.chatMsgList = (ChatMessageList)findViewById(R.id.message_list);
 
@@ -187,13 +191,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      */
     private void sendTxtMessage(String content,String toChatUserName){
         EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
-        //创建一条文本消息
+        /**创建一条文本消息**/
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
         message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false);
         message.setReceipt(toChatUserName);
-        //把消息加入到此会话对象中
+        /**把消息加入到此会话对象中**/
         conversation.addMessage(message);
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
@@ -217,7 +221,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     /**
      * 发送图片消息
-     * @param imagePath
+     * @param imagePath 图片在本机的绝对路径
      */
     protected void sendImageMessage(String imagePath) {
         //不是发送的原图
@@ -288,10 +292,8 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         sendHouseMessage("1", "1", "1", "1", "1");
         chatMsgList.refreshSelectLast();
 
-
-
-
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -463,15 +465,18 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     }
 
+    /**
+     * 对话的消息被点击时
+     * @param message
+     * @return
+     */
     @Override
     public boolean onBubbleClick(EMMessage message) {
-        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
     public void onBubbleLongClick(EMMessage message) {
-        Toast.makeText(this, "long click", Toast.LENGTH_SHORT).show();
     }
 
     @Override
