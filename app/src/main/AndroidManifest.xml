@@ -96,10 +96,10 @@
 
         <activity android:name=".activities.BaseActivity" />
         <activity
-            android:name=".activities.CompanyIntroductionActivity"
+            android:name=".activities.CompanyIntroActivity"
             android:label="@string/title_activity_company_introduction" />
         <activity
-            android:name=".activities.UserFeedbackActivity"
+            android:name=".activities.FeedbackActivity"
             android:label="@string/title_activity_user_feedback" />
         <activity
             android:name=".activities.AboutUsActivity"

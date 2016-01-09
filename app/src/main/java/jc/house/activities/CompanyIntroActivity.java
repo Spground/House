@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import jc.house.R;
 
-public class CompanyIntroductionActivity extends BaseActivity {
+public class CompanyIntroActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

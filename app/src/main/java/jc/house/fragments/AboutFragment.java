@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 
 import jc.house.R;
 import jc.house.activities.AboutUsActivity;
-import jc.house.activities.CompanyIntroductionActivity;
-import jc.house.activities.UserFeedbackActivity;
+import jc.house.activities.FeedbackActivity;
 import jc.house.activities.WebActivity;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.ToastUtils;
@@ -55,7 +54,7 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
                 startActivity(intent);
                 break;
             case R.id.id_user_feedback:
-                startActivity(new Intent(getActivity(), UserFeedbackActivity.class));
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
             case R.id.id_check_update:
                 ToastUtils.show(getActivity(), "您的已经是最新版本!");

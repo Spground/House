@@ -1,5 +1,6 @@
 package jc.house.fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -17,8 +18,8 @@ import jc.house.global.Constants;
  */
 public class BaseFragment extends Fragment {
     protected View view;
-    protected static final boolean DEBUG = Constants.DEBUG;
     protected static final boolean PRODUCT = Constants.PRODUCT;
+    protected ProgressDialog progressDialog;
 
     protected void ToastS(String msg) {
         Toast.makeText(this.getActivity(), msg, Toast.LENGTH_SHORT).show();
@@ -26,6 +27,22 @@ public class BaseFragment extends Fragment {
 
     protected void ToastL(String msg) {
         Toast.makeText(this.getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void showDialog() {
+        if (null == this.progressDialog) {
+            this.progressDialog = new ProgressDialog(this.getActivity());
+            this.progressDialog.setMessage("正在加载中");
+            this.progressDialog.setCanceledOnTouchOutside(true);
+            this.progressDialog.setCancelable(true);
+        }
+        this.progressDialog.show();
+    }
+
+    protected void hideDialog() {
+        if (null != this.progressDialog) {
+            this.progressDialog.hide();
+        }
     }
 
     protected void setHeader() {

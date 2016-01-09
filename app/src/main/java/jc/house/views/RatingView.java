@@ -14,11 +14,11 @@ import jc.house.R;
  */
 public class RatingView extends LinearLayout {
 
-    private int ratingRedNumbers;
+    private int ratingRedNumber;
     private int spacing;
     private static final int RatingRedResID = R.drawable.rating_red;
     private static final int RatingWhiteID = R.drawable.rating_white;
-    private static final int ALL_NUMBERS = 5;
+    private static final int ALL_NUMBER = 5;
     private Context context;
     public RatingView(Context context) {
         super(context);
@@ -37,31 +37,29 @@ public class RatingView extends LinearLayout {
     private void initView(Context context) {
         this.context = context;
         this.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        this.ratingRedNumbers = 0;
+        this.ratingRedNumber = 0;
         this.spacing = 0;
 
     }
 
-    public void setParams(int ratingRedNumbers, int spacing) {
-        if (this.ratingRedNumbers == ratingRedNumbers) {
+    public void setParams(int ratingRedNumber, int spacing) {
+        if (this.ratingRedNumber == ratingRedNumber && ratingRedNumber > 0) {
             return;
         }
-        if (ratingRedNumbers > ALL_NUMBERS) {
-            ratingRedNumbers = ALL_NUMBERS;
+        if (ratingRedNumber > ALL_NUMBER) {
+            ratingRedNumber = ALL_NUMBER;
         }
         this.spacing = spacing <= 0 ? 0 : spacing;
-        this.ratingRedNumbers = ratingRedNumbers < 0 ? 0 : ratingRedNumbers;
+        this.ratingRedNumber = ratingRedNumber < 0 ? 0 : ratingRedNumber;
         this.removeAllViews();
-        int redCount = 0;
-        for (int i = 0; i < ALL_NUMBERS; i++) {
+        for (int i = 0; i < ALL_NUMBER; i++) {
             ImageView imageView = new ImageView(context);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             if (i > 0) {
                 imageView.setPadding(this.spacing, 0, 0, 0);
             }
-            if (redCount < this.ratingRedNumbers) {
+            if (i < this.ratingRedNumber) {
                 imageView.setImageResource(RatingRedResID);
-                redCount++;
             } else {
                 imageView.setImageResource(RatingWhiteID);
             }

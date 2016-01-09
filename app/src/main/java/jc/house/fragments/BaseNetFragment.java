@@ -25,6 +25,8 @@ import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.adapters.ListAdapter;
+import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
 import jc.house.global.ServerResultType;
@@ -43,7 +45,11 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected boolean isOver;
     protected List<BaseModel> dataSet;
     protected ListAdapter adapter;
-    private static final String TAG = "BaseNetFragment";
+    protected int pageSize;
+    protected String url;
+    protected String tag;
+    protected static final String PARAM_PAGE_SIZE = "pageSize";
+    protected static final String PARAM_ID = "id";
 
     protected BaseNetFragment() {
         super();
@@ -73,6 +79,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             default:
                 break;
         }
+        hideDialog();
     }
 
     protected void toastNoMoreData() {
@@ -85,6 +92,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         } else {
             ToastS("服务器连接错误，请重新尝试！");
         }
+        hideDialog();
     }
 
     @Override
@@ -113,28 +121,30 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected Map<String, String> getParams(final FetchType fetchType) {
+        return null;
+    }
+
+    protected boolean isOver(final FetchType fetchType) {
         if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType && this.isOver) {
             resetXListView();
             toastNoMoreData();
-            return null;
+            return true;
         }
-        Map<String, String> params = new HashMap<>();
-        return params;
+        return false;
     }
 
     protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType,
-                                       String URL, Map<String, String> params) {
-        if (null == params) {
+                                       Map<String, String> params) {
+        if (this.isOver(fetchType)) {
             return;
         }
-
         if (requestType == RequestType.POST) {
-            this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
+            this.client.post(url, new RequestParams(params), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
-                    handleResponse(statusCode, response, fetchType);
+                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
+                    handleResponse(statusCode, response, fetchType, ServerResultType.Array);
                 }
 
                 @Override
@@ -145,12 +155,12 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 }
             });
         } else {
-            this.client.get(URL, new RequestParams(params), new JsonHttpResponseHandler() {
+            this.client.get(url, new RequestParams(params), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    LogUtils.debug(TAG, "statusCode is " + statusCode + response.toString());
-                    handleResponse(statusCode, response, fetchType);
+                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
+                    handleResponse(statusCode, response, fetchType, ServerResultType.Array);
                 }
 
                 @Override
@@ -165,11 +175,16 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     }
 
-    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype) {
+    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResultType resultType) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.ServerResultTypeArray);
+            ServerResult result;
+            result = ServerUtils.parseServerResponse(response, resultType);
             if (result.isSuccess) {
-                handleResponse(result.array, fetchtype);
+                if (ServerResultType.Array == resultType) {
+                    handleResponse(result.array, fetchtype);
+                } else {
+                    handleResponse(result.object, fetchtype);
+                }
             } else {
                 handleCode(result.code, "server code");
             }
@@ -207,7 +222,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         });
     }
 
-    protected void updateListView(List<BaseModel> dataSet, final FetchType fetchType, final int pageSize) {
+    protected void updateListView(List<BaseModel> dataSet, final FetchType fetchType) {
         if (null != dataSet && dataSet.size() > 0) {
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.dataSet.clear();
@@ -227,13 +242,24 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             toastNoMoreData();
         }
         resetXListView();
+        hideDialog();
     }
 
+    protected Class<? extends BaseModel> getModelClass() {
+        return BaseModel.class;
+    }
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
     protected void handleResponse(JSONArray array, final FetchType fetchType) {
+        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, getModelClass()) {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models) {
+                updateListView((List<BaseModel>) models, fetchType);
+            }
+        });
     }
 
     protected void handleResponse(JSONObject object, final FetchType fetchType) {
+
     }
 }

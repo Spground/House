@@ -3,7 +3,6 @@ package jc.house.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
@@ -29,21 +28,22 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.chat.ChatActivity;
 import jc.house.global.Constants;
 import jc.house.global.ServerResultType;
+import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
 import jc.house.utils.ServerUtils;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
 public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener {
     private static final String TAG = "HouseDetailActivity";
-    private static final String URL = Constants.SERVER_URL + "house/detail";
+    public static final String HOUSE_DETAIL_URL = Constants.SERVER_URL + "house/detail";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
     private MViewPager viewPager;
     private List<TextView> textViews;
@@ -59,18 +59,23 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private TextView tvAvgPrice;
     private TextView tvPhone;
     private int id;
+    public static final String FLAG_ID = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_house_detail);
-        showDialog();
         if (!PRODUCT) {
-            id = this.getIntent().getIntExtra("id", 1);
+            showDialog();
+            id = this.getIntent().getIntExtra(FLAG_ID, 1);
+            if (id % 2 == 0) {
+                id = 1; //测试用的
+            }
             fetchDataFromServer();
         }
         initViews();
         initViewPager();
+        this.setScrollRightBack(true);
     }
 
     private void initViews() {
@@ -97,7 +102,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 123.12, 123.23));
                 } else {
                     //TODO 跳转
-                    intent.putExtra("IsSingleMarker", true);
+                    intent.putExtra(MapActivity.FLAG_IsSingleMarker, true);
                     intent.putExtra(MapActivity.FLAG_HOUSE, (House)houseDetail);
                 }
                 startActivity(intent);
@@ -202,8 +207,9 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         });
     }
 
-    private void setServerData() {
-        if (null != this.houseDetail) {
+    private void setServerData(HouseDetail model) {
+        if (null != model) {
+            this.houseDetail = model;
             this.tvAddress.setText(this.houseDetail.getAddress());
             this.tvHouseType.setText(this.houseDetail.getHouseType());
             this.tvForceType.setText(this.houseDetail.getForceType());
@@ -223,36 +229,28 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void fetchDataFromServer() {
         Map<String, String> params = new HashMap<>();
         params.put("id", String.valueOf(id));
-        this.client.post(URL, new RequestParams(params), new JsonHttpResponseHandler() {
+        this.client.post(HOUSE_DETAIL_URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 parseServerData(statusCode, response);
-                LogUtils.debug("houseDetail", response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                LogUtils.debug("houseDetail", responseString);
             }
         });
     }
 
     private void parseServerData(int statusCode, final JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.ServerResultTypeObject);
+            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
             if (ServerResult.CODE_SUCCESS == result.code) {
-                MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result.object, ServerResultType.Object, HouseDetail.class){
                     @Override
-                    public void run() {
-                        houseDetail = (HouseDetail) ParseJson.jsonObjectToBaseModel(result.object, HouseDetail.class);
-                        new Handler(getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                setServerData();
-                            }
-                        });
+                    public void onSuccess(BaseModel model) {
+                        setServerData((HouseDetail)model);
                     }
                 });
             } else {
@@ -272,7 +270,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     showOriImg.putExtra("image_url", Constants.IMAGE_URL + houseDetail.getUrl());
                 }
             } else {
-                showOriImg.putExtra("image_url", "http://www.jinchenchina.cn/uploads/allimg/150710/0-150G0124350951.jpg");
+                showOriImg.putExtra("image_url", "");
             }
             startActivity(showOriImg);
             return;

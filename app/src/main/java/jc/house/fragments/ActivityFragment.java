@@ -1,52 +1,42 @@
 package jc.house.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import org.json.JSONArray;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
-import jc.house.async.IParseData;
-import jc.house.async.MThreadPool;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
-import jc.house.utils.GeneralUtils;
-import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
-import jc.house.utils.ToastUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ActivityFragment extends BaseNetFragment {
 
-    private String apiURL = Constants.ACTIVITY_URL;
     private final int PAGE_SIZE = 10;
+    private static final String TAG = "ActivityFragment";
+
     public ActivityFragment() {
         super();
+        this.pageSize = PAGE_SIZE;
+        this.url = Constants.ACTIVITY_URL;
+        this.tag = TAG;
     }
 
     @Override
@@ -63,7 +53,7 @@ public class ActivityFragment extends BaseNetFragment {
         this.adapter = new ListAdapter(this.getActivity(),
                 this.dataSet, ModelType.ACTIVITY);
         initListView();
-        if(PRODUCT) {
+        if (PRODUCT) {
             this.dataSet.add(new JCActivity(1, "", "金宸•蓝郡一期"));
             this.dataSet.add(new JCActivity(2, "", "连大•文润金宸三期"));
             this.dataSet.add(new JCActivity(3, "", "金宸•蓝郡二期"));
@@ -71,21 +61,18 @@ public class ActivityFragment extends BaseNetFragment {
             this.dataSet.add(new JCActivity(5, "", "金宸•蓝郡三期"));
         } else {
             //init data set
-            if(HomeActivity.isNetAvailable) {
+            if (HomeActivity.isNetAvailable) {
                 fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             } else {
                 //load cache
-
             }
-
         }
-
     }
 
     @Override
     protected void initListView() {
         this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
-        this.xlistView = (XListView)view.findViewById(R.id.list);
+        this.xlistView = (XListView) view.findViewById(R.id.list);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,49 +80,31 @@ public class ActivityFragment extends BaseNetFragment {
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 if (PRODUCT) {
                     if (position == 1) {
-                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.NEWS_MOBILE_URL + "12");
                     } else if (position == 2) {
-                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                        intent.putExtra(WebActivity.FLAG_URL, "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     } else if (position == 3) {
-                        intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                        intent.putExtra(WebActivity.FLAG_URL, "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
                     }
                 } else {
-                    intent.putExtra("url", Constants.ACTIVITY_SHOW_URL + "&id=" + view.getId());
+                    intent.putExtra(WebActivity.FLAG_URL, Constants.ACTIVITY_SHOW_URL + view.getId());
                 }
+                intent.putExtra(WebActivity.FLAG_TITLE, "活动详情");
                 startActivity(intent);
             }
         });
     }
 
     @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        //parse json
-        MThreadPool.getInstance().submitParseDataTask(array, JCActivity.class, fetchType,
-                new IParseData() {
-                    @Override
-                    public void onParseDataTaskCompleted(List<BaseModel> dataSet, FetchType fetchType) {
-                        updateListView(dataSet, fetchType, PAGE_SIZE);
-                        ToastUtils.show(getActivity(), "picurl is " + Constants.IMAGE_URL +
-                                ((JCActivity) dataSet.get(0)).getPicUrl());
-                        ToastUtils.show(getActivity(), "id is " +
-                                Constants.ACTIVITY_SHOW_URL + ((JCActivity) dataSet.get(0)).id);
-
-
-                    }
-        });
-    }
-
-    @Override
-    public void refresh() {
-        super.refresh();
+    protected Class<? extends BaseModel> getModelClass() {
+        return JCActivity.class;
     }
 
     @Override
     protected void fetchDataFromServer(FetchType fetchtype) {
         Map<String, String> reqParams = new HashMap<>();
-        reqParams.put("pageSize", "10");
-        fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET,
-                apiURL, reqParams);
+        reqParams.put(PARAM_PAGE_SIZE, String.valueOf(pageSize));
+        fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET, reqParams);
     }
 
     private List<? extends BaseModel> loadModelDiskCache(int NUMBER) {

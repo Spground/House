@@ -1,7 +1,6 @@
 package jc.house.activities;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.widget.ImageView;
 
 import com.loopj.android.http.AsyncHttpClient;

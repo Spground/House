@@ -2,7 +2,7 @@ package jc.house.utils;
 
 public final class StringUtils {
 	public static boolean strEmpty(String str) {
-		if(null == str || str.trim().equals("") || str.trim().length() == 0 || str.equalsIgnoreCase("null")) {
+		if(null == str || str.trim().equals("") || str.trim().length() == 0) {
 			return true;
 		}
 		return false;
@@ -15,7 +15,7 @@ public final class StringUtils {
 		return str.substring(0,length);
 	}
 
-	public static String methodNameBaseFieldName(String fieldName) {
+	public static String getMethodNameByFieldName(String fieldName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("set").append(fieldName.substring(0,1).toUpperCase()).append(fieldName.substring(1));
 		return sb.toString();
