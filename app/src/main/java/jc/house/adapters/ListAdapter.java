@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,32 +22,34 @@ import jc.house.models.House;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
+import jc.house.utils.GeneralUtils;
 import jc.house.views.CircleView;
+import jc.house.views.RatingView;
 
-public class ListAdapter<T extends BaseModel> extends BaseAdapter {
+public class ListAdapter extends BaseAdapter {
 	private Context context;
-	private List<T> lists;
+	private List<? extends BaseModel> dataSet;
 	private ModelType type;
 	private CircleView circleView;
 	private boolean hasCircleView;
-	private DisplayImageOptions options;
+	private static final boolean DEBUG = Constants.DEBUG;
+	private static final boolean PRODUCT = Constants.PRODUCT;
 	
-	public ListAdapter(Context context, List<T> lists, ModelType modelType) {
-		this(context, lists, modelType, null);
+	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType) {
+		this(context, dataSet, modelType, null);
 	}
 	
-	public ListAdapter(Context context, List<T> lists, ModelType modelType, CircleView circleView) {
+	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType, CircleView circleView) {
 		this.context = context;
-		this.lists = lists;
+		this.dataSet = dataSet;
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
-		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.caodi).showImageForEmptyUri(R.drawable.caodi).build();
 	}
 
 	@Override
 	public int getCount() {
-		return this.lists.size() + (this.hasCircleView ? 1 : 0);
+		return this.dataSet.size() + (this.hasCircleView ? 1 : 0);
 	}
 
 	@Override
@@ -54,9 +57,9 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		if(this.hasCircleView && 0 == pos) {
 			return this.circleView;
 		} else if(this.hasCircleView) {
-			return this.lists.get(pos - 1);
+			return this.dataSet.get(pos - 1);
 		} else {
-			return this.lists.get(pos);
+			return this.dataSet.get(pos);
 		}
 	}
 
@@ -66,11 +69,11 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View convertView, ViewGroup parent) {
+	public View getView(final int pos, View convertView, ViewGroup parent) {
 		if(pos == 0 && this.hasCircleView) {
 			convertView = circleView;
 		} else {
-			int mPos = this.hasCircleView ? pos - 1 : pos;
+			final int mPos = this.hasCircleView ? pos - 1 : pos;
 			switch(type) {
 				case CHAT_USER:
 					ViewHolderChatUser viewHolderChatUser;
@@ -85,16 +88,17 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					} else {
 						viewHolderChatUser = (ViewHolderChatUser)convertView.getTag();
 					}
-					ChatUser user = (ChatUser)this.lists.get(mPos);
-					viewHolderChatUser.portrait.setImageResource(R.drawable.user_mao);
+					ChatUser user = (ChatUser)this.dataSet.get(mPos);
+					viewHolderChatUser.portrait.setImageResource(R.drawable.qq);
 					viewHolderChatUser.name.setText(user.getName());
 					viewHolderChatUser.msg.setText(user.getMsg());
 					viewHolderChatUser.time.setText(user.getTime());
 					break;
 				case NEWS:
 					ViewHolderNews viewHolderNews;
-					if(null == convertView) {
-						convertView = LayoutInflater.from(context).inflate(R.layout.news_list_item, parent, false);
+
+					if(null == convertView || null == convertView.getTag()) {
+						convertView = LayoutInflater.from(context).inflate(R.layout.listview_news_item, parent, false);
 						viewHolderNews = new ViewHolderNews();
 						viewHolderNews.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderNews.author = (TextView)convertView.findViewById(R.id.author);
@@ -104,47 +108,74 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 					} else {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
-					News news = (News)this.lists.get(mPos);
-//					viewHolderNews.picture.setImageResource(R.drawable.caodi);
-					viewHolderNews.picture.setImageResource(Integer.valueOf(news.getUrl().trim()));
+					News news = (News)this.dataSet.get(mPos);
+					if (PRODUCT) {
+						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
+					} else {
+						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl());
+					}
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
-					viewHolderNews.date.setText(news.getDate());
+					viewHolderNews.date.setText(news.getTime());
 					break;
 				case HOUSE:
 					ViewHolderHouse viewHolderHouse;
 					if(null == convertView) {
-						convertView = LayoutInflater.from(context).inflate(R.layout.house_list_item, parent, false);
+						convertView = LayoutInflater.from(context).inflate(R.layout.listview_house_item, parent, false);
 						viewHolderHouse = new ViewHolderHouse();
 						viewHolderHouse.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderHouse.name = (TextView)convertView.findViewById(R.id.name);
 						viewHolderHouse.description = (TextView)convertView.findViewById(R.id.description);
 						viewHolderHouse.phone = (TextView)convertView.findViewById(R.id.phone);
+						viewHolderHouse.ratingView = (RatingView)convertView.findViewById(R.id.rating_view);
+						viewHolderHouse.recStars = (TextView)convertView.findViewById(R.id.rec_stars);
+						viewHolderHouse.labelFirst = (TextView)convertView.findViewById(R.id.label_first);
+						viewHolderHouse.labelOther = (TextView)convertView.findViewById(R.id.label_other);
 						convertView.setTag(viewHolderHouse);
 					} else {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
-					House house = (House)this.lists.get(mPos);
-					//loadImage(viewHolderHouse.picture, house.getUrl());
-					viewHolderHouse.picture.setImageResource(Constants.res[(int) (Math.random() * 4)]);
+					House house = (House)this.dataSet.get(mPos);
+					if (PRODUCT) {
+						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
+						viewHolderHouse.ratingView.setParams(5, 3);
+					} else {
+						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl());
+						viewHolderHouse.ratingView.setParams(house.getStars(), 3);
+						viewHolderHouse.recStars.setText("推荐指数" + house.getStars());
+						if (null != house.getLabelsResult()) {
+							viewHolderHouse.labelFirst.setText(house.getLabelsResult()[0]);
+							viewHolderHouse.labelOther.setText(house.getLabelsResult()[1]);
+						}
+					}
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
+					JCActivity activityModel = (JCActivity)this.dataSet.get(mPos);
 					ViewHolderActivity viewHolderActivity;
-					if(null == convertView) {
-						convertView = LayoutInflater.from(context).inflate(R.layout.activities_list_item, parent, false);
+					if(null == convertView || convertView.getTag() == null) {
+						convertView = LayoutInflater.from(context).inflate(R.layout.listview_activity_item, parent, false);
 						viewHolderActivity = new ViewHolderActivity();
 						viewHolderActivity.picture = (ImageView)convertView.findViewById(R.id.picture);
 						viewHolderActivity.title = (TextView)convertView.findViewById(R.id.title);
+						viewHolderActivity.postTime = (TextView)convertView.findViewById(R.id.post_time);
 						convertView.setTag(viewHolderActivity);
 					} else {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
-					JCActivity activity = (JCActivity)this.lists.get(mPos);
-					viewHolderActivity.picture.setImageResource(Constants.res[(int)(Math.random() * 4)]);
-					viewHolderActivity.title.setText(activity.getName());
+
+					if(PRODUCT) {
+						viewHolderActivity.picture.setImageResource(Constants.resActivity[(int) (Math.random() * 5)]);
+						viewHolderActivity.title.setText(activityModel.getTitle());
+						viewHolderActivity.postTime.setText("2012-08-12");
+					} else {
+						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl());
+						viewHolderActivity.title.setText(activityModel.getTitle());
+						convertView.setId(activityModel.id);
+						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
+					}
 					break;
 				default:
 					break;
@@ -153,10 +184,8 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		return convertView;
 	}
 
-	private void loadImage(ImageView imageView, String url) {
-		ImageLoader.getInstance().displayImage(
-				Constants.IMAGE_URL + url,
-				imageView, options);
+	private void loadImageWithPicasso(ImageView imageView, String url) {
+		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
 	}
 	
 	private static final class ViewHolderChatUser {
@@ -178,11 +207,16 @@ public class ListAdapter<T extends BaseModel> extends BaseAdapter {
 		public ImageView picture;
 		public TextView description;
 		public TextView phone;
+		public RatingView ratingView;
+		public TextView recStars;
+		public TextView labelFirst;
+		public TextView labelOther;
 	}
 
 	private static final class ViewHolderActivity {
 		public ImageView picture;
 		public TextView title;
+		public TextView postTime;
 	}
 
 }

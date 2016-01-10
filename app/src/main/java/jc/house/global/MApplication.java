@@ -5,13 +5,20 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.Debug;
+import android.util.DebugUtils;
+
 import com.easemob.chat.EMChat;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
@@ -27,26 +34,30 @@ public class MApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "jcimageloader/cache");
-		ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
-		config.threadPriority(Thread.NORM_PRIORITY - 2)
+		/*
+		File cacheDir = StorageUtils.getCacheDirectory(this);
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this.getApplicationContext())
+				.threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
 				.threadPoolSize(3)
 				.memoryCacheExtraOptions(480, 800)
-				.memoryCache(new UsingFreqLimitedMemoryCache(3 * 1024 * 1024))
-				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+				.memoryCache(new LruMemoryCache(10 * 1024 * 1024))
+				.diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
 				.diskCache(new UnlimitedDiskCache(cacheDir))
 				.diskCacheFileCount(200)
-//				.diskCacheExtraOptions(480, 800, new BitmapProcessor() {
-//					@Override
-//					public Bitmap process(Bitmap bitmap) {
-//						return bitmap;
-//					}
-//				})
-				.diskCacheSize(50 * 1024 * 1024)
+				.diskCacheExtraOptions(480, 800, new BitmapProcessor() {
+					@Override
+					public Bitmap process(Bitmap bitmap) {
+						LogUtils.debug("processBitmap", "保存在本地文件之前");
+						return bitmap;
+					}
+				})
+				.diskCacheSize(100 * 1024 * 1024)
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs();
-		ImageLoader.getInstance().init(config.build());
+				.writeDebugLogs()
+				.build();
+		ImageLoader.getInstance().init(config);
+		*/
 		//初始化环信SDK
 		initHuanXinSDK();
 		EMChat.getInstance().setAppInited();

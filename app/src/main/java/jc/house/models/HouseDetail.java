@@ -11,10 +11,13 @@ public final class HouseDetail extends House {
     private String recReason;
     private String trafficLines;
     private String designIdea;
+    private CustomerHelper helper;
 
-    public HouseDetail(int ID, String url, String name, String intro,
+    public HouseDetail() {}
+
+    public HouseDetail(int id, String url, String name, String intro,
                        String phone, double lat, double lng, String houseType, String forceType, String avgPrice, String address, String recReason, String trafficLines, String designIdea) {
-        super(ID, url, name, intro, phone, lat, lng);
+        super(id, url, name, intro, phone, lat, lng);
         this.houseType = houseType;
         this.forceType = forceType;
         this.avgPrice = avgPrice;
@@ -78,5 +81,13 @@ public final class HouseDetail extends House {
 
     public String getDesignIdea() {
         return designIdea;
+    }
+
+    public CustomerHelper getHelper() {
+        return helper;
+    }
+
+    public void setHelper(CustomerHelper helper) {
+        this.helper = helper;
     }
 }

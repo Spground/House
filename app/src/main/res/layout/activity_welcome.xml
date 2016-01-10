@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/activity_welcome_bg"
+    android:gravity="center"
     tools:context="jc.house.activities.WelcomeActivity">
+
     <ImageView
         android:id="@+id/id_imageview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/welcome"
         android:scaleType="fitXY"
-        />
-</RelativeLayout>
+        android:src="@drawable/guide" />
+</LinearLayout>

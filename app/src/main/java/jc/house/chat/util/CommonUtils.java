@@ -2,6 +2,8 @@ package jc.house.chat.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
@@ -41,7 +43,7 @@ public class CommonUtils {
                 }
                 break;
             case IMAGE: // 图片消息
-                digest = getString(context, R.string.picture);
+                    digest = getString(context, R.string.picture);
                 break;
             case VOICE:// 语音消息
                 digest = getString(context, R.string.voice_prefix);
@@ -49,14 +51,13 @@ public class CommonUtils {
             case VIDEO: // 视频消息
                 digest = getString(context, R.string.video);
                 break;
-            case TXT: // 文本消息
-            if(!message.getBooleanAttribute(Constants.MESSAGE_ATTR_IS_VOICE_CALL,false)){
-                TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                digest = txtBody.getMessage();
-            }else{
-                TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                digest = getString(context, R.string.voice_call) + txtBody.getMessage();
-            }
+            case TXT: // 文本消息 包括house消息
+                if( message.getBooleanAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false))
+                    digest = "[楼盘消息]";
+                else {
+                    TextMessageBody txtBody = (TextMessageBody) message.getBody();
+                    digest = txtBody.getMessage();
+                }
                 break;
             case FILE: //普通文件消息
                 digest = getString(context, R.string.file);
@@ -87,4 +88,35 @@ public class CommonUtils {
         else
             return "";
     }
+
+    /**
+     * 检测Sdcard是否存在
+     *
+     * @return
+     */
+    public static boolean isExitsSdcard() {
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * 检测网络是否可用
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetWorkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+
+        return false;
+    }
+
 }

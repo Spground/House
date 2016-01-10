@@ -11,7 +11,7 @@
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:padding="3dp"
-        android:src="@drawable/user_mao" />
+        android:src="@drawable/qq" />
 
     <RelativeLayout
         android:layout_width="0dp"

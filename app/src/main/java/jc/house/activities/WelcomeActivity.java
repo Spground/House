@@ -7,6 +7,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.Scroller;
 
 import jc.house.R;
 
@@ -21,11 +25,16 @@ public class WelcomeActivity extends Activity {
         }
     } ;
 
+    private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
-        mHandler.sendEmptyMessageDelayed(0x123, 4 * 1000);
+        imageView = (ImageView)findViewById(R.id.id_imageview);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_welcome_image);
+        animation.setFillAfter(true);
+        imageView.startAnimation(animation);
+        mHandler.sendEmptyMessageDelayed(0x123, 3 * 1000);
     }
 }

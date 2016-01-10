@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="32dp"
+        android:layout_height="37dp"
+        android:layout_gravity="center"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/tab_image"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/tab_home_normal" />
+
+        <View
+            android:id="@+id/unread_msg_little_red_dot"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="0.1dp"
+            android:layout_marginTop="0.1dp"
+            android:background="@drawable/jc_unread_tab_item_little_red_dot"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tab_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="主页"
+        android:textSize="12sp" />
+</LinearLayout>

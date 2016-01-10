@@ -1,25 +1,30 @@
 package jc.house.models;
 
 public final class News extends BaseModel{
-	private String url;
+	private String picUrl;
 	private String title;
 	private String author;
-	private String date;
+	private String time;
 
-	public News(int ID, String url, String title, String author, String date) {
-		super(ID);
-		this.url = url;
+	public News() {
+
+	}
+
+	public News(int id, String picUrl, String title, String author, String time) {
+		super(id);
+		this.id = id;
+		this.picUrl = picUrl;
 		this.title = title;
 		this.author = author;
-		this.date = date;
+		this.time = time;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPicUrl() {
+		return picUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPicUrl(String url) {
+		this.picUrl = url;
 	}
 
 	public String getTitle() {
@@ -38,12 +43,12 @@ public final class News extends BaseModel{
 		this.author = author;
 	}
 
-	public String getDate() {
-		return date;
+	public String getTime() {
+		return time;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setTime(String date) {
+		this.time = date;
 	}
 
 }

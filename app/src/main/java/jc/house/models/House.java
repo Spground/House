@@ -1,16 +1,27 @@
 package jc.house.models;
 
-public class House extends BaseModel{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import jc.house.utils.StringUtils;
+
+public class House extends BaseModel implements Parcelable {
 	private String url;
 	private String name;
 	private String intro;
 	private String phone;
+	private int stars;
+	private String labelContent;
 	private double lat;
 	private double lng;
-	
-	public House(int ID, String url, String name, String intro,
+	private String[] labelsResult;
+
+	public House() {}
+
+	public House(int id, String url, String name, String intro,
 			String phone, double lat, double lng) {
-		super(ID);
+		super(id);
+		this.id = id;
 		this.url = url;
 		this.name = name;
 		this.intro = intro;
@@ -18,7 +29,56 @@ public class House extends BaseModel{
 		this.lat = lat;
 		this.lng = lng;
 	}
-	
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(id);
+		dest.writeString(url);
+		dest.writeString(name);
+		dest.writeString(intro);
+		dest.writeString(phone);
+		dest.writeDouble(lat);
+		dest.writeDouble(lng);
+		dest.writeInt(stars);
+		dest.writeString(labelContent);
+	}
+
+	private House(Parcel origin) {
+		this.id = origin.readInt();
+		this.url = origin.readString();
+		this.name = origin.readString();
+		this.intro = origin.readString();
+		this.phone = origin.readString();
+		this.lat = origin.readDouble();
+		this.lng = origin.readDouble();
+		this.stars = origin.readInt();
+		this.labelContent = origin.readString();
+	}
+
+	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
+		@Override
+		public House createFromParcel(Parcel source) {
+			return new House(source);
+		}
+
+		@Override
+		public House[] newArray(int size) {
+			return new House[size];
+		}
+	};
+
+	public String[] getLabelsResult() {
+		if (null == labelsResult) {
+			labelsResult = StringUtils.parseHouseLables(labelContent);
+		}
+		return labelsResult;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -55,5 +115,16 @@ public class House extends BaseModel{
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-	
+	public void setLabelContent(String labelContent) {
+		this.labelContent = labelContent;
+	}
+	public String getLabelContent() {
+		return labelContent;
+	}
+	public void setStars(int stars) {
+		this.stars = stars;
+	}
+	public int getStars() {
+		return stars;
+	}
 }

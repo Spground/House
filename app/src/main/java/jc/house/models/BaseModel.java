@@ -1,18 +1,20 @@
 package jc.house.models;
 
 public class BaseModel {
-	private int ID;
-	
-	public BaseModel(int iD) {
-		ID = iD;
+	public int id;
+
+	public BaseModel() {
+
+	}
+	public BaseModel(int id) {
+		this.id = id;
 	}
 
-	public int getID() {
-		return ID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public int getId() {
+		return id;
 	}
-	
 }

@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -95,7 +96,7 @@ public class XListView extends ListView implements OnScrollListener {
 
 		// init footer view
 		mFooterView = new XListViewFooter(context);
-		mHeaderViewHeight = 90;
+		mHeaderViewHeight = 105;
 	}
 
 	public void setFooterInvisible() {
@@ -135,12 +136,10 @@ public class XListView extends ListView implements OnScrollListener {
 		mEnablePullLoad = enable;
 		if (!mEnablePullLoad) {
 			this.setFooterInvisible();
-//			mFooterView.hide();
 			this.setFooterDividersEnabled(false);
 			mFooterView.setOnClickListener(null);
 		} else {
 			mPullLoading = false;
-//			mFooterView.show();
 			this.mFooterView.setVisibility(View.VISIBLE);
 			this.setFooterDividersEnabled(true);
 			mFooterView.setState(XListViewFooter.STATE_NORMAL);
@@ -209,6 +208,7 @@ public class XListView extends ListView implements OnScrollListener {
 	 */
 	private void resetHeaderHeight() {
 		int height = mHeaderView.getVisiableHeight();
+		Log.i("height is ","" + height);
 		if (height == 0) // not visible.
 			return;
 		// refreshing and header isn't shown fully. do nothing.
@@ -291,8 +291,8 @@ public class XListView extends ListView implements OnScrollListener {
 				// invoke refresh
 				if (mEnablePullRefresh
 						&& mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
-					mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
 					if (mListViewListener != null && !mPullRefreshing && !mPullLoading) {
+						mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
 						mPullRefreshing = true;
 						mListViewListener.onRefresh();
 					}
