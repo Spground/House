@@ -1,15 +1,13 @@
 package jc.house.chat;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -22,13 +20,11 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
-import com.easemob.util.PathUtil;
 
 import java.io.File;
 
 import de.greenrobot.event.EventBus;
 import jc.house.R;
-import jc.house.activities.BaseActivity;
 import jc.house.chat.event.NewMessageEvent;
 import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
@@ -441,8 +437,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             Toast.makeText(this, "手机没有存储卡，不能拍照!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        cameraFile = new File(PathUtil.getInstance().getImagePath(), EMChatManager.getInstance().getCurrentUser()
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//        cameraFile = new File(PathUtil.getInstance().getImagePath(), EMChatManager.getInstance().getCurrentUser()
+//                + System.currentTimeMillis() + ".jpg");
+        /**默认存放在系统的相册目录下的jchouse**/
+        File jchouse = new File(dir.getAbsolutePath() + "/jchouse");
+        jchouse.mkdirs();
+        cameraFile = new File(jchouse, EMChatManager.getInstance().getCurrentUser()
                 + System.currentTimeMillis() + ".jpg");
         cameraFile.getParentFile().mkdirs();
         startActivityForResult(

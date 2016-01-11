@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,8 +22,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
+import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
+import com.easemob.exceptions.EaseMobException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,9 @@ import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
 import jc.house.interfaces.IRefresh;
+import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;
 
 //hzj 2015/10/29 20:15
@@ -66,9 +70,15 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     private IntentFilter filter;
     private MyReceiver mReceiver;
 
+    private final String REGISTER_INFO = Constants.PREFERENCESNAME.RegisterInfo;
+    private final String HUANXINID_KEY = "huanxinid";
+    private final String PWD_KEY = "pwd";
+    private final String DEFAULT_PWD = "123456";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //create shared preferences;
+        this.getSharedPreferences(REGISTER_INFO, 0);
         setContentView(R.layout.activity_home);
         this.currentIndex = 0;
         this.initTabViewItems();
@@ -170,7 +180,21 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
         });
         this.currentIndex = 0;
-        loginHuanXin();
+
+        if(checkRegister()) {
+            SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
+            String huanxinid = prf.getString(HUANXINID_KEY, null);
+            String pwd = prf.getString(PWD_KEY, null);
+            if(huanxinid == null || pwd == null) {
+
+            } else {
+                loginHuanXin(huanxinid, pwd);
+            }
+        } else {
+            String huanxinid = GeneralUtils.getSystemIdentity();
+            String pwd = DEFAULT_PWD;
+            register(huanxinid, pwd);
+        }
     }
 
     @Override
@@ -248,17 +272,17 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     /**
      * 登录环信
      */
-    private void loginHuanXin() {
+    private void loginHuanXin(final String huanxinid, final String pwd) {
 
         /**login huanxin**/
-        EMChatManager.getInstance().login(Constants.ACCOUNT.Account, Constants.ACCOUNT.Pwd, new EMCallBack() {//回调
+        EMChatManager.getInstance().login(huanxinid, pwd, new EMCallBack() {//回调
             @Override
             public void onSuccess() {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         LogUtils.debug(TAG, "登陆聊天服务器成功！");
+                        LogUtils.debug(TAG, "login succeed huanxin id is " + huanxinid + " pwd is " + pwd);
                         //登录成功加载所有的数据库记录到内存
-                        EMGroupManager.getInstance().loadAllGroups();
                         EMChatManager.getInstance().loadAllConversations();
                     }
                 });
@@ -283,6 +307,73 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         Intent intent = new Intent(this, ReceiveNewMessageService.class);
         startService(intent);
         LogUtils.debug(TAG, "ReceiveNewMessageService is starting up...");
+    }
+
+    /**
+     * check isRegister
+     *
+     * @return
+     */
+    private boolean checkRegister() {
+        SharedPreferences prf = this.getSharedPreferences(REGISTER_INFO, 0);
+        String huanxinid = prf.getString(HUANXINID_KEY, null);
+        if (huanxinid == null)
+            return false;
+        else
+            return true;
+    }
+
+    /**
+     * 注册
+     *
+     * @param huanxinid
+     * @param pwd
+     */
+    private void register(final String huanxinid, final String pwd) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EMChatManager.getInstance().createAccountOnServer(huanxinid, pwd);
+                    //write to shared preference if register succeed
+                    SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
+                    SharedPreferences.Editor editor = prf.edit();
+                    editor.putString(HUANXINID_KEY, huanxinid);
+                    editor.putString(PWD_KEY, pwd);
+                    editor.commit();
+                    //login when register succeed
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loginHuanXin(huanxinid, pwd);
+                        }
+                    });
+                } catch (EaseMobException e) {
+                    e.printStackTrace();
+                    //register failed
+                    int errorCode = e.getErrorCode();
+                    //set preferences`s value as null if register failed
+                    SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
+                    SharedPreferences.Editor editor = prf.edit();
+                    if(prf.getString(HUANXINID_KEY, null) != null) {
+                        editor.putString(HUANXINID_KEY, null);
+                        editor.putString(PWD_KEY, null);
+                        editor.commit();
+                    }
+
+                    if (errorCode == EMError.NONETWORK_ERROR) {
+                        ToastUtils.show(getApplicationContext(), "网络异常，请检查网络！");
+                    } else if (errorCode == EMError.USER_ALREADY_EXISTS) {
+                        LogUtils.debug("===HomeActivity===", "用户已存在");
+                    } else if (errorCode == EMError.UNAUTHORIZED) {
+                        LogUtils.debug("===HomeActivity===", "注册失败，无权限");
+                    } else {
+                        LogUtils.debug("===HomeActivity===", "注册失败");
+                    }
+
+                }
+            }
+        }).start();
     }
 
     @Override
