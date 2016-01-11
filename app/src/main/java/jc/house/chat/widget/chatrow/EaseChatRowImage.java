@@ -106,13 +106,12 @@ public class EaseChatRowImage extends EaseChatRow {
         ImageMessageBody body = (ImageMessageBody)this.message.getBody();
         if(this.message.direct == EMMessage.Direct.SEND) {
             //TODO
-            /**优先显示缩略图， 其次在使用本地的全图**/
-            Log.v("===TAG===", "image getThumbnailUrl is :" + body.getThumbnailUrl());
-            url = body.getThumbnailUrl().equals("null") ? ("file:" + body.getLocalUrl())
-                    : body.getThumbnailUrl();
+            /**使用本地的全图, 让picasso自己去压缩显示**/
+            Log.v("===TAG===", "image getLocalUrl is :" + body.getLocalUrl());
+            url = "file:" + body.getLocalUrl();
         } else {
-            /**接收到的图片**/
-            url = imgBody.getRemoteUrl();
+            /**接收到的图片, 显示原图 而非 本地的缩略图**/
+            url = body.getRemoteUrl();
         }
 
         Log.v("===TAG===", "image url is :" + url);

@@ -1,11 +1,14 @@
 package jc.house.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import jc.house.R;
 import jc.house.utils.ToastUtils;
@@ -18,7 +21,6 @@ public class PhotoViewActivity extends BaseActivity {
 
     private PhotoView photoView;
     private PhotoViewAttacher mAttacher;
-
     private String imageUrl;
 
     @Override
@@ -37,7 +39,7 @@ public class PhotoViewActivity extends BaseActivity {
         this.photoView = (PhotoView) this.findViewById(R.id.photoView);
         this.mAttacher = new PhotoViewAttacher(this.photoView);
         this.mAttacher.setZoomable(true);
-        this.mAttacher.setScaleLevels(0.5f, 1.0f, 1.5f);
+        this.mAttacher.setScaleLevels(0.3f, 0.5f, 0.7f);
         this.mAttacher.setMaximumScale(3.0f);
         this.mAttacher.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         this.mAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
@@ -48,20 +50,27 @@ public class PhotoViewActivity extends BaseActivity {
         });
         showDialog();
         //show image
+        /**debug indicators, should be deleted at production**/
+        Picasso.with(this).setIndicatorsEnabled(true);
+        Picasso.with(this).setLoggingEnabled(true);
         Picasso.with(this)
                 .load(this.imageUrl)
-                .placeholder(R.drawable.jc_default_image).error(R.drawable.failure_image_red).into(photoView, new Callback() {
-            @Override
-            public void onSuccess() {
-                progressDialog.dismiss();
-            }
+                .fit()
+                .centerInside()
+                .placeholder(R.drawable.jc_default_image)
+                .error(R.drawable.failure_image_red)
+                .into(photoView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressDialog.dismiss();
+                    }
 
-            @Override
-            public void onError() {
-                progressDialog.dismiss();
-                ToastUtils.show(PhotoViewActivity.this, "oh oh ,查看全图失败");
-            }
-        });
+                    @Override
+                    public void onError() {
+                        progressDialog.dismiss();
+                        ToastUtils.show(PhotoViewActivity.this, "oh oh ,查看全图失败");
+                    }
+                });
         this.mAttacher.update();
     }
 }
