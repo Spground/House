@@ -36,4 +36,9 @@ public final class Constants {
 	public static final int[] resHouse = {R.drawable.temp_house_a, R.drawable.temp_house_b,
 			R.drawable.temp_house_c, R.drawable.temp_house_d};
 
+	public static  class APPINFO {
+		public static String APPVERSION = "1.0";
+		public static String RELEASETIME = "";
+		public static boolean USER_VERSION = true;
+	}
 }

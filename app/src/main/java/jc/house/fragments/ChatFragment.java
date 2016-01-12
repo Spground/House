@@ -107,10 +107,11 @@ public class ChatFragment extends BaseFragment implements IRefresh {
             public void onItemClick(AdapterView<?> parent, View view, int pos,
                                     long id) {
                 /**聊天Activity**/
-                String toChatUserName = ((ConversationListAdapter.ViewHolder) view.getTag()).name.getText().toString();
+                String toChatUserName = ((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid.toString();
+                String nickName = ((ConversationListAdapter.ViewHolder) view.getTag()).name.getText().toString();
                 Intent intent = new Intent();
                 intent.putExtra("toChatUserName", toChatUserName);
-                intent.putExtra("nickName", "nannan");
+                intent.putExtra("nickName", nickName);
                 intent.setClass(getActivity(), ChatActivity.class);
                 startActivity(intent);
             }

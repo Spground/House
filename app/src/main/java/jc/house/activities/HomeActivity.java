@@ -181,20 +181,24 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         });
         this.currentIndex = 0;
 
-        if(checkRegister()) {
-            SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
-            String huanxinid = prf.getString(HUANXINID_KEY, null);
-            String pwd = prf.getString(PWD_KEY, null);
-            if(huanxinid == null || pwd == null) {
+        /**如果是用户版**/
+        if(Constants.APPINFO.USER_VERSION) {
+            if(checkRegister()) {
+                SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
+                String huanxinid = prf.getString(HUANXINID_KEY, null);
+                String pwd = prf.getString(PWD_KEY, null);
+                if(huanxinid == null || pwd == null) {
 
+                } else {
+                    loginHuanXin(huanxinid, pwd);
+                }
             } else {
-                loginHuanXin(huanxinid, pwd);
+                String huanxinid = GeneralUtils.getSystemIdentity();
+                String pwd = DEFAULT_PWD;
+                register(huanxinid, pwd);
             }
-        } else {
-            String huanxinid = GeneralUtils.getSystemIdentity();
-            String pwd = DEFAULT_PWD;
-            register(huanxinid, pwd);
         }
+
     }
 
     @Override

@@ -46,9 +46,9 @@ public class ConversationListAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         //debug模式下返回一个item
-        if(Constants.DEBUG)
+        if(Constants.DEBUG && conversationList != null && conversationList.size() == 0)
             return 1;
-        return conversationList != null ? conversationList.size() : 0;
+        return conversationList != null ? conversationList.size() : (Constants.DEBUG ? 1 : 0);
     }
 
     @Override
@@ -85,11 +85,14 @@ public class ConversationListAdapter extends BaseAdapter {
         // 获取与此用户的会话
         EMConversation conversation = getItem(position);
         // 获取toChatUserName
-        String username = conversation == null ? "admin" :conversation.getUserName();
+        String username = conversation == null ? (!Constants.APPINFO.USER_VERSION ? "admin" : "wujie") :conversation.getUserName();
 
         /**set view**/
         holder.avatar.setImageResource(R.drawable.jc_default_avatar);
-        holder.name.setText(username);
+        //TODO 名字显示 用户版得知道映射规则
+        holder.name.setText(Constants.APPINFO.USER_VERSION ? username : "某用户");
+        holder.huanxinid = username;
+
         if (conversation != null && conversation.getUnreadMsgCount() > 0) {
             // 显示与此用户的消息未读数
             holder.unreadLabel.setText(String.valueOf(conversation.getUnreadMsgCount()));
@@ -141,6 +144,8 @@ public class ConversationListAdapter extends BaseAdapter {
         View msgState;
         /** 整个list中每一行总布局 */
         RelativeLayout list_itease_layout;
+
+        public String huanxinid;
     }
 }
 
