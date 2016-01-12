@@ -7,10 +7,17 @@ import android.content.pm.PackageManager;
 
 import com.easemob.chat.EMChat;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import jc.house.models.CustomerHelper;
 
 public class MApplication extends Application {
+
+	/**huanxinid and name mapping **/
+	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
 
 	@Override
 	public void onCreate() {

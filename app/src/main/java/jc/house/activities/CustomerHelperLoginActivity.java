@@ -10,7 +10,6 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 
 import jc.house.R;
-import jc.house.models.CustomerHelper;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 

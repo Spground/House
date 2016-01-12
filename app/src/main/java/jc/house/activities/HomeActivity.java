@@ -25,11 +25,18 @@ import com.easemob.EMCallBack;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.exceptions.EaseMobException;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import jc.house.R;
+import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.chat.service.ReceiveNewMessageService;
 import jc.house.fragments.AboutFragment;
 import jc.house.fragments.ActivityFragment;
@@ -37,9 +44,15 @@ import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
+import jc.house.global.MApplication;
+import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
+import jc.house.models.BaseModel;
+import jc.house.models.CustomerHelper;
+import jc.house.models.ServerResult;
 import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ServerUtils;
 import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;
 
@@ -73,7 +86,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     private final String REGISTER_INFO = Constants.PREFERENCESNAME.RegisterInfo;
     private final String HUANXINID_KEY = "huanxinid";
     private final String PWD_KEY = "pwd";
-    private final String DEFAULT_PWD = "123456";
+    private final String DEFAULT_PWD = Constants.DEFAULT_PWD;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +101,52 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.initViewPager();
         this.initNetConnectManager();
         startUpReceiveNewMessageService();
+        if(Constants.APPINFO.USER_VERSION)
+            getCustomerHelperNickName();
+    }
+
+    /**
+     * 获取客户名称
+     */
+    private void getCustomerHelperNickName() {
+        LogUtils.debug(TAG, "getCustomerHelperNickName");
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                LogUtils.debug(TAG, "onSuccess");
+                if(!ServerUtils.isConnectServerSuccess(statusCode, response))
+                    return;
+                ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+                if(!result.isSuccess)
+                    return;
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result.array, ServerResultType.Array, CustomerHelper.class) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        super.onSuccess(models);
+                        if(models == null) {
+                            LogUtils.debug(TAG, "models is null");
+                            return;
+                        }
+
+                        LogUtils.debug(TAG, "submitParseDataTask onSuccess");
+                        //populate the customer helper mapping
+                        for(BaseModel model : models) {
+                            CustomerHelper c = (CustomerHelper)model;
+                            ((MApplication)getApplication()).customerHelperNameMapping.put(c.getHxID(), c);
+                            LogUtils.debug(TAG, c.getHxID() + " ====> " + c.getName());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                LogUtils.debug(TAG, statusCode + responseString);
+            }
+        });
     }
 
     @Override

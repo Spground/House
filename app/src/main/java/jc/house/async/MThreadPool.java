@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import jc.house.global.FetchType;
 import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.utils.LogUtils;
@@ -49,9 +48,11 @@ public class MThreadPool {
 
     private class ParseDataTask implements Runnable {
         private ParseTask task;
+
         public ParseDataTask(ParseTask task) {
             this.task = task;
         }
+
         @Override
         public void run() {
             mHandler.post(new Runnable() {

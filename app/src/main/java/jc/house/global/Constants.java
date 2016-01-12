@@ -8,6 +8,7 @@ public final class Constants {
 	public static final boolean DEBUG = true;
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	public static final String MESSAGE_ATTR_IS_HOUSE = "is_house";
+	public static final String DEFAULT_PWD = "123456";
 
 	public static class ACCOUNT{
 		public static final String Account = "wujie";
@@ -30,6 +31,7 @@ public final class Constants {
 	public static final String SLIDE_URL = Constants.SERVER_URL + "slideshow/slides";
 	public static final String SLIDE_MOBILE_URL = SERVER_URL + "slideshow/mobile&id=";
 	public static final String HOUSE_URL = SERVER_URL + "house/houses";
+	public static final String CUSTOMER_HELPER_NAME_URL = SERVER_URL + "helper/helpers";
 
 	public static final int[] resActivity = {R.drawable.temp_activity_a, R.drawable.temp_activity_b,
 			R.drawable.temp_activity_c, R.drawable.temp_activity_d, R.drawable.temp_activity_e};
