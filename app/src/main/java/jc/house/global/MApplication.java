@@ -3,33 +3,21 @@ package jc.house.global;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.os.Debug;
-import android.util.DebugUtils;
 
 import com.easemob.chat.EMChat;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.process.BitmapProcessor;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
-import java.io.File;
-
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import jc.house.chat.service.ReceiveNewMessageService;
-import jc.house.utils.LogUtils;
+import jc.house.models.CustomerHelper;
 
 public class MApplication extends Application {
+
+	/**huanxinid and name mapping **/
+	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
 
 	@Override
 	public void onCreate() {

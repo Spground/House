@@ -129,12 +129,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        fetchDataFromServer(fetchType, RequestType.POST, getParams(fetchType));
-    }
-
-    @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        super.handleResponse(array, fetchType);
+        fetchDataFromServer(fetchType, RequestType.POST);
     }
 
     private void fetchSlideshows() {
@@ -173,7 +168,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
             if (result.isSuccess) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result.array, result.resultType, Slideshow.class) {
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
                         setSlideshows((List<Slideshow>)models);

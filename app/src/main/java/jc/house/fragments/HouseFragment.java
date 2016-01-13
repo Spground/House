@@ -30,7 +30,7 @@ import jc.house.models.ModelType;
  * A simple {@link Fragment} subclass.
  */
 public class HouseFragment extends BaseNetFragment implements View.OnClickListener {
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 6;
     private static final String TAG = "HouseFragment";
     private ImageButton mapBtn;
 
@@ -96,12 +96,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     protected Map<String, String> getParams(FetchType fetchType) {
         Map<String, String> params = new HashMap<>();
-        if (null != params) {
-            params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-            if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-                if (dataSet.size() > 0) {
-                    params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
-                }
+        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+            if (dataSet.size() > 0) {
+                params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
             }
         }
         return params;
@@ -128,6 +126,6 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        super.fetchDataFromServer(fetchType, RequestType.POST, getParams(fetchType));
+        super.fetchDataFromServer(fetchType, RequestType.POST);
     }
 }

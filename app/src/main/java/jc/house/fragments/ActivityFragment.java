@@ -29,7 +29,7 @@ import jc.house.models.ModelType;
  */
 public class ActivityFragment extends BaseNetFragment {
 
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 5;
     private static final String TAG = "ActivityFragment";
 
     public ActivityFragment() {
@@ -101,10 +101,15 @@ public class ActivityFragment extends BaseNetFragment {
     }
 
     @Override
-    protected void fetchDataFromServer(FetchType fetchtype) {
+    protected Map<String, String> getParams(FetchType fetchType) {
         Map<String, String> reqParams = new HashMap<>();
         reqParams.put(PARAM_PAGE_SIZE, String.valueOf(pageSize));
-        fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH, RequestType.GET, reqParams);
+        return reqParams;
+    }
+
+    @Override
+    protected void fetchDataFromServer(FetchType fetchtype) {
+        fetchDataFromServer(fetchtype, RequestType.GET);
     }
 
     private List<? extends BaseModel> loadModelDiskCache(int NUMBER) {

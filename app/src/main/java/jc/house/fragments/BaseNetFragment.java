@@ -60,7 +60,9 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void refresh() {
-        this.xlistView.smoothScrollToPosition(0);
+        if (null != this.xlistView) {
+            this.xlistView.smoothScrollToPosition(0);
+        }
     }
 
     protected void resetXListView() {
@@ -74,12 +76,14 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 LogUtils.debug(tag, "网络请求参数有错误！");
                 break;
             case ServerResult.CODE_NO_DATA:
+                toastNoMoreData();
                 LogUtils.debug(tag, "网络请求连接正常，数据为空！");
                 break;
             default:
                 break;
         }
         hideDialog();
+        resetXListView();
     }
 
     protected void toastNoMoreData() {
@@ -93,6 +97,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             ToastS("服务器连接错误，请重新尝试！");
         }
         hideDialog();
+        resetXListView();
     }
 
     @Override
@@ -133,13 +138,12 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         return false;
     }
 
-    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType,
-                                       Map<String, String> params) {
+    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType) {
         if (this.isOver(fetchType)) {
             return;
         }
         if (requestType == RequestType.POST) {
-            this.client.post(url, new RequestParams(params), new JsonHttpResponseHandler() {
+            this.client.post(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -155,7 +159,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 }
             });
         } else {
-            this.client.get(url, new RequestParams(params), new JsonHttpResponseHandler() {
+            this.client.get(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -180,11 +184,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             ServerResult result;
             result = ServerUtils.parseServerResponse(response, resultType);
             if (result.isSuccess) {
-                if (ServerResultType.Array == resultType) {
-                    handleResponse(result.array, fetchtype);
-                } else {
-                    handleResponse(result.object, fetchtype);
-                }
+                handleResponse(result, fetchtype);
             } else {
                 handleCode(result.code, "server code");
             }
@@ -250,16 +250,12 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
-    protected void handleResponse(JSONArray array, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, getModelClass()) {
+    protected void handleResponse(ServerResult result, final FetchType fetchType) {
+        MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
             @Override
             public void onSuccess(List<? extends BaseModel> models) {
                 updateListView((List<BaseModel>) models, fetchType);
             }
         });
-    }
-
-    protected void handleResponse(JSONObject object, final FetchType fetchType) {
-
     }
 }

@@ -1,10 +1,12 @@
 package jc.house.chat.widget.chatrow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import com.easemob.chat.ImageMessageBody;
 import java.io.File;
 
 import jc.house.R;
+import jc.house.activities.PhotoViewActivity;
 import jc.house.chat.util.ChatImageCache;
 import jc.house.chat.util.ChatImageUtils;
 import jc.house.chat.util.CommonUtils;
@@ -92,9 +95,28 @@ public class EaseChatRowImage extends EaseChatRow {
 
     @Override
     protected void onBubbleClick() {
-        //点击可以查看全图
-        ToastUtils.show(activity, "暂时还不能查看全图");
+        /**消息状态不是成功的直接不能查看全图**/
+        if(this.message.status != EMMessage.Status.SUCCESS) {
+            Log.v("===TAG===", "clicked message is not success");
+            return;
+        }
 
+        Intent showBigImgIntent = new Intent(context, PhotoViewActivity.class);
+        String url;
+        ImageMessageBody body = (ImageMessageBody)this.message.getBody();
+        if(this.message.direct == EMMessage.Direct.SEND) {
+            //TODO
+            /**使用本地的全图, 让picasso自己去压缩显示**/
+            Log.v("===TAG===", "image getLocalUrl is :" + body.getLocalUrl());
+            url = "file:" + body.getLocalUrl();
+        } else {
+            /**接收到的图片, 显示原图 而非 本地的缩略图**/
+            url = body.getRemoteUrl();
+        }
+
+        Log.v("===TAG===", "image url is :" + url);
+        showBigImgIntent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, url);
+        context.startActivity(showBigImgIntent);
     }
 
     /**

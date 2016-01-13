@@ -36,7 +36,6 @@ import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
-import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
@@ -68,9 +67,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (!PRODUCT) {
             showDialog();
             id = this.getIntent().getIntExtra(FLAG_ID, 1);
-            if (id % 2 == 0) {
-                id = 1; //测试用的
-            }
             fetchDataFromServer();
         }
         initViews();
@@ -99,7 +95,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             public void onClick(View v) {
                 Intent intent = new Intent(HouseDetailActivity.this, MapActivity.class);
                 if (PRODUCT) {
-                    intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 123.12, 123.23));
+                    intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 39.70, 116.445));
                 } else {
                     //TODO 跳转
                     intent.putExtra(MapActivity.FLAG_IsSingleMarker, true);
@@ -155,7 +151,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             textView.setTextSize(13.0f);
             textView.setTextColor(Color.rgb(120, 120, 120));
             textView.setBackgroundColor(Color.rgb(250, 250, 250));
-            textView.setText("NBA卫冕冠军库里在新赛季依旧有着高光的发挥，他带领勇士队在新赛季获得16连胜，风头正劲的库里在NBA中的地位就如同梅西在足球界的地位。");
+            textView.setText("");
             textView.setGravity(Gravity.CENTER_VERTICAL);
             textView.setLineSpacing(0, 1.2f);
             textView.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -220,7 +216,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
             this.loadImage(houseImageView, this.houseDetail.getUrl());
             hideDialog();
-            if (null != houseDetail.getHelper()) {
+            if (null != houseDetail.getHelper() && PRODUCT) {
                 Toast.makeText(this, houseDetail.getHelper().getName() + houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -228,7 +224,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     private void fetchDataFromServer() {
         Map<String, String> params = new HashMap<>();
-        params.put("id", String.valueOf(id));
+        params.put(FLAG_ID, String.valueOf(id));
         this.client.post(HOUSE_DETAIL_URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -247,7 +243,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
             if (ServerResult.CODE_SUCCESS == result.code) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result.object, ServerResultType.Object, HouseDetail.class){
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class){
                     @Override
                     public void onSuccess(BaseModel model) {
                         setServerData((HouseDetail)model);

@@ -13,13 +13,18 @@ import android.widget.ImageView;
 import android.widget.Scroller;
 
 import jc.house.R;
+import jc.house.global.Constants;
+import jc.house.models.CustomerHelper;
 
 public class WelcomeActivity extends Activity {
     Handler mHandler = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == 0x123){
-                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                if(Constants.APPINFO.USER_VERSION)
+                    startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                else
+                    startActivity(new Intent(WelcomeActivity.this, CustomerHelperLoginActivity.class));
                 WelcomeActivity.this.finish();
             }
         }
