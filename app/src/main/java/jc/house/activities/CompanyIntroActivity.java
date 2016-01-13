@@ -1,6 +1,7 @@
 package jc.house.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import jc.house.R;
 

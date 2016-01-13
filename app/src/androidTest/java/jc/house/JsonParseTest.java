@@ -73,7 +73,7 @@ public class JsonParseTest extends AndroidTestCase {
         }
 
         LogUtils.debug("===TAG===", jsonArray.toString());
-        List<BaseModel> list = ParseJson.jsonArray2ModelList(jsonArray, JCActivity.class);
+        List<BaseModel> list = (List<BaseModel>)ParseJson.jsonArray2ModelList(jsonArray, JCActivity.class);
         assertNotNull(list);
         LogUtils.debug("===TAG===", "list size is" + list.size());
         LogUtils.debug("===TAG===",  "list is " + list.toString());
@@ -106,7 +106,7 @@ public class JsonParseTest extends AndroidTestCase {
     }
 
     public void test05() {
-        String methodName = StringUtils.methodNameBaseFieldName("name");
+        String methodName = StringUtils.getMethodNameByFieldName("name");
         assertEquals("setName",methodName);
         Class mClass = HouseDetail.class;
         try {
@@ -140,7 +140,7 @@ public class JsonParseTest extends AndroidTestCase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JCActivity activity = (JCActivity)ParseJson.jsonObjectToBaseModel(jsonObject, JCActivity.class);
+        JCActivity activity = (JCActivity)ParseJson.jsonObj2Model(jsonObject, JCActivity.class);
         assertNotNull("activity is not null", activity != null);
         assertTrue("id is 10000", activity.getId() == 10000);
 //        assertTrue("title is JC", activity.getTitle().equals("JC"));
