@@ -77,7 +77,9 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         }
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
-        this.xlistView.setPullLoadEnable(false);
+        if (!PRODUCT) {
+            this.xlistView.setPullLoadEnable(false);
+        }
     }
 
     @Override

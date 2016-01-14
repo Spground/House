@@ -77,6 +77,9 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void initViews() {
         this.houseImageView = (ImageView) findViewById(R.id.house_image_view);
         this.houseImageView.setOnClickListener(this);
+        if (PRODUCT) {
+            houseImageView.setImageResource(R.drawable.failure_image_red);
+        }
         this.mapTextView = (TextView) this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
         this.mapTextView.setText("地图");
         this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
@@ -117,11 +120,13 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     if (null != houseDetail && null != houseDetail.getHelper()) {
                         intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());
                         intent.putExtra("nickName", houseDetail.getHelper().getName());
+                        intent.putExtra(ChatActivity.EXTRA_HOUSE, (House)houseDetail);
+                        startActivity(intent);
                     }
                 } else {
                     intent.putExtra("toChatUserName", "admin");
+                    startActivity(intent);
                 }
-                startActivity(intent);
             }
         });
 
@@ -263,20 +268,18 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             Intent showOriImg = new Intent(this, PhotoViewActivity.class);
             if (!PRODUCT) {
                 if (null != houseDetail) {
-                    showOriImg.putExtra("image_url", Constants.IMAGE_URL + houseDetail.getUrl());
+                    showOriImg.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, Constants.IMAGE_URL + houseDetail.getUrl());
+                    startActivity(showOriImg);
                 }
-            } else {
-                showOriImg.putExtra("image_url", "");
             }
-            startActivity(showOriImg);
-            return;
-        }
-        int index = ((ViewPagerTitle) v).getIndex();
-        if (index != currentIndex) {
-            titles.get(currentIndex).setSelected(false);
-            titles.get(index).setSelected(true);
-            currentIndex = index;
-            viewPager.setCurrentItem(index);
+        } else {
+            int index = ((ViewPagerTitle) v).getIndex();
+            if (index != currentIndex) {
+                titles.get(currentIndex).setSelected(false);
+                titles.get(index).setSelected(true);
+                currentIndex = index;
+                viewPager.setCurrentItem(index);
+            }
         }
     }
 

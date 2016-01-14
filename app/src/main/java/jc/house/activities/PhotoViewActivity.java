@@ -26,7 +26,9 @@ public class PhotoViewActivity extends BaseActivity {
         setJCContentView(R.layout.activity_photo_view);
         setTitleBarTitle("查看原图");
         this.imageUrl = getIntent().getStringExtra(FLAG_IMAGE_URL);
-        initView();
+        if (null != imageUrl) {
+            initView();
+        }
     }
 
     /**

@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.DebugUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +33,7 @@ import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
 import jc.house.global.Constants;
+import jc.house.models.House;
 import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
 
@@ -45,6 +48,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
+    static final int HOUSE_MESSAGE = 4;
 
     /**
      * 发送图片、照相、地图位置
@@ -74,6 +78,10 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     protected MyItemClickListener extendMenuItemClickListener;
 
     private boolean isEventBusRegister = false;
+
+    private boolean canSendHouseDetail = false;
+    private House house;
+    public static final String EXTRA_HOUSE = "house";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,12 +89,17 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chat);
         this.nickName = getIntent().getStringExtra("nickName");
-        this.nickName = this.nickName == null ? "undefined" : this.nickName;
+        this.nickName = this.nickName == null ? "金宸客服" : this.nickName;
+        this.house = (House)(this.getIntent().getParcelableExtra(EXTRA_HOUSE));
+        if (null != house && house.isValid()) {
+            LogUtils.debug(TAG, "house is " + house.toString());
+            canSendHouseDetail = true;
+        }
         init();
         initChatMsgList();
         instance = this;
         if(!ISFIRST) {
-//            sendDebugMessage();
+            sendDebugMessage();
             ISFIRST = true;
         }
     }
@@ -165,6 +178,9 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     protected void registerExtendMenuItem(){
         for(int i = 0; i < itemStrings.length; i++){
             inputMenu.registerExtendMenuItem(itemStrings[i], itemsDrawables[i], itemIds[i], extendMenuItemClickListener);
+        }
+        if (canSendHouseDetail) {
+            inputMenu.registerExtendMenuItem("楼盘", R.drawable.tab_building_selected, HOUSE_MESSAGE, extendMenuItemClickListener);
         }
     }
 
@@ -271,6 +287,14 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         ChatActivity.this.chatMsgList.refresh();
     }
 
+    private void sendHouseMessage() {
+        if (null != house && house.isValid()) {
+            sendHouseMessage(house.getId(), house.getUrl(), house.getName(), house.getLabelContent(), house.getAvgPrice());
+        } else {
+            Toast.makeText(this, "暂时没有房产信息！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * 产品展示的时候调用
      */
@@ -338,6 +362,9 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     break;
                 case ITEM_LOCATION: // 位置
 //                    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+                    break;
+                case HOUSE_MESSAGE:
+                    sendHouseMessage();
                     break;
                 default:
                     break;
