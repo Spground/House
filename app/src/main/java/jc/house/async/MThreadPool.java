@@ -19,7 +19,7 @@ import jc.house.utils.ParseJson;
 public class MThreadPool {
     private static MThreadPool instance = null;
     private ExecutorService executorService = null;
-    private static final int THREAD_NUM = 2;
+    private static final int THREAD_NUM = 3;
     private static final String TAG = "MThreadPool";
     private Handler mHandler = null;
 
@@ -37,6 +37,10 @@ public class MThreadPool {
             }
         }
         return instance;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
     public void submitParseDataTask(ParseTask task) {

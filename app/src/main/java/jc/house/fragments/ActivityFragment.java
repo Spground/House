@@ -19,6 +19,7 @@ import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.MApplication;
 import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
@@ -31,6 +32,7 @@ public class ActivityFragment extends BaseNetFragment {
 
     private final int PAGE_SIZE = 5;
     private static final String TAG = "ActivityFragment";
+    private boolean firstShow;
 
     public ActivityFragment() {
         super();
@@ -50,6 +52,7 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.mApplication = (MApplication)this.getActivity().getApplication();
         this.adapter = new ListAdapter(this.getActivity(),
                 this.dataSet, ModelType.ACTIVITY);
         initListView();
@@ -62,11 +65,13 @@ public class ActivityFragment extends BaseNetFragment {
         } else {
             //init data set
             if (HomeActivity.isNetAvailable) {
-                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+//                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             } else {
                 //load cache
             }
+            loadLocalData();
         }
+        this.firstShow = true;
     }
 
     @Override
@@ -105,6 +110,15 @@ public class ActivityFragment extends BaseNetFragment {
         Map<String, String> reqParams = new HashMap<>();
         reqParams.put(PARAM_PAGE_SIZE, String.valueOf(pageSize));
         return reqParams;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && firstShow) {
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            firstShow = false;
+        }
     }
 
     @Override

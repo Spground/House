@@ -176,7 +176,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      * 注册底部菜单扩展栏item; 覆盖此方法时如果不覆盖已有item，item的id需大于3
      */
     protected void registerExtendMenuItem(){
-        for(int i = 0; i < itemStrings.length; i++){
+        for(int i = 0; i < itemStrings.length && i < 2; i++){
             inputMenu.registerExtendMenuItem(itemStrings[i], itemsDrawables[i], itemIds[i], extendMenuItemClickListener);
         }
         if (canSendHouseDetail) {

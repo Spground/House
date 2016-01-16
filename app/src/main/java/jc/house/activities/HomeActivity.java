@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -101,8 +103,14 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.initViewPager();
         this.initNetConnectManager();
         startUpReceiveNewMessageService();
-        if(Constants.APPINFO.USER_VERSION)
-            getCustomerHelperNickName();
+        if (Constants.APPINFO.USER_VERSION) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getCustomerHelperNickName();
+                }
+            }, 2000);
+        }
     }
 
     /**
@@ -111,30 +119,30 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     private void getCustomerHelperNickName() {
         LogUtils.debug(TAG, "getCustomerHelperNickName");
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler(){
+        client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 LogUtils.debug(TAG, "onSuccess");
-                if(!ServerUtils.isConnectServerSuccess(statusCode, response))
+                if (!ServerUtils.isConnectServerSuccess(statusCode, response))
                     return;
                 ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
-                if(!result.isSuccess)
+                if (!result.isSuccess)
                     return;
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, CustomerHelper.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
                         super.onSuccess(models);
-                        if(models == null) {
+                        if (models == null) {
                             LogUtils.debug(TAG, "models is null");
                             return;
                         }
 
                         LogUtils.debug(TAG, "submitParseDataTask onSuccess");
                         //populate the customer helper mapping
-                        for(BaseModel model : models) {
-                            CustomerHelper c = (CustomerHelper)model;
-                            ((MApplication)getApplication()).customerHelperNameMapping.put(c.getHxID(), c);
+                        for (BaseModel model : models) {
+                            CustomerHelper c = (CustomerHelper) model;
+                            ((MApplication) getApplication()).customerHelperNameMapping.put(c.getHxID(), c);
                             LogUtils.debug(TAG, c.getHxID() + " ====> " + c.getName());
                         }
                     }
@@ -242,12 +250,12 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.currentIndex = 0;
 
         /**如果是用户版**/
-        if(Constants.APPINFO.USER_VERSION) {
-            if(checkRegister()) {
+        if (Constants.APPINFO.USER_VERSION) {
+            if (checkRegister()) {
                 SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
                 String huanxinid = prf.getString(HUANXINID_KEY, null);
                 String pwd = prf.getString(PWD_KEY, null);
-                if(huanxinid == null || pwd == null) {
+                if (huanxinid == null || pwd == null) {
 
                 } else {
                     loginHuanXin(huanxinid, pwd);
@@ -394,7 +402,52 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * @param pwd
      */
     private void register(final String huanxinid, final String pwd) {
-        new Thread(new Runnable() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    EMChatManager.getInstance().createAccountOnServer(huanxinid, pwd);
+//                    //write to shared preference if register succeed
+//                    SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
+//                    SharedPreferences.Editor editor = prf.edit();
+//                    editor.putString(HUANXINID_KEY, huanxinid);
+//                    editor.putString(PWD_KEY, pwd);
+//                    editor.commit();
+//                    //login when register succeed
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            loginHuanXin(huanxinid, pwd);
+//                        }
+//                    });
+//                } catch (EaseMobException e) {
+//                    e.printStackTrace();
+//                    //register failed
+//                    int errorCode = e.getErrorCode();
+//                    //set preferences`s value as null if register failed
+//                    SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
+//                    SharedPreferences.Editor editor = prf.edit();
+//                    if(prf.getString(HUANXINID_KEY, null) != null) {
+//                        editor.putString(HUANXINID_KEY, null);
+//                        editor.putString(PWD_KEY, null);
+//                        editor.commit();
+//                    }
+//
+//                    if (errorCode == EMError.NONETWORK_ERROR) {
+//                        ToastUtils.show(getApplicationContext(), "网络异常，请检查网络！");
+//                    } else if (errorCode == EMError.USER_ALREADY_EXISTS) {
+//                        LogUtils.debug("===HomeActivity===", "用户已存在");
+//                    } else if (errorCode == EMError.UNAUTHORIZED) {
+//                        LogUtils.debug("===HomeActivity===", "注册失败，无权限");
+//                    } else {
+//                        LogUtils.debug("===HomeActivity===", "注册失败");
+//                    }
+//
+//                }
+//            }
+//        }).start();
+
+        MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -419,7 +472,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     //set preferences`s value as null if register failed
                     SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
                     SharedPreferences.Editor editor = prf.edit();
-                    if(prf.getString(HUANXINID_KEY, null) != null) {
+                    if (prf.getString(HUANXINID_KEY, null) != null) {
                         editor.putString(HUANXINID_KEY, null);
                         editor.putString(PWD_KEY, null);
                         editor.commit();
@@ -434,10 +487,9 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     } else {
                         LogUtils.debug("===HomeActivity===", "注册失败");
                     }
-
                 }
             }
-        }).start();
+        });
     }
 
     @Override

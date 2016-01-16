@@ -21,10 +21,12 @@ import jc.house.activities.MapActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.MApplication;
 import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.ModelType;
+import jc.house.utils.LogUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +35,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     private static final int PAGE_SIZE = 6;
     private static final String TAG = "HouseFragment";
     private ImageButton mapBtn;
+    private boolean firstShow;
 
     public HouseFragment() {
         super();
@@ -52,6 +55,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.mApplication = (MApplication)this.getActivity().getApplication();
         this.mapBtn = (ImageButton) this.view.findViewById(R.id.id_map_btn);
         this.mapBtn.setOnClickListener(this);
         initListView();
@@ -72,8 +76,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
                     "0411-86536589", 39.30, 116.425));
         } else {
-            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+//            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            loadLocalData();
         }
+        this.firstShow = true;
     }
 
     @Override
@@ -116,6 +122,21 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             intent.putParcelableArrayListExtra(MapActivity.FLAG_HOUSES, houses);
             intent.putExtra(MapActivity.FLAG_IsSingleMarker, false);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && firstShow) {
+            LogUtils.debug("it is true");
+            if (!hasLocalRes) {
+                showDialog();
+            }
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            firstShow = false;
+        } else {
+            LogUtils.debug("It is false");
         }
     }
 

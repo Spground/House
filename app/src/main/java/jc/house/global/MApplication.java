@@ -3,6 +3,7 @@ package jc.house.global;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import com.easemob.chat.EMChat;
@@ -12,43 +13,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import jc.house.async.MThreadPool;
+import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
+import jc.house.utils.StringUtils;
 
 public class MApplication extends Application {
 
 	/**huanxinid and name mapping **/
 	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
+	public static final  String SP = "JC_HOUSE";
+	private SharedPreferences sp;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		/*
-		File cacheDir = StorageUtils.getCacheDirectory(this);
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this.getApplicationContext())
-				.threadPriority(Thread.NORM_PRIORITY - 2)
-				.denyCacheImageMultipleSizesInMemory()
-				.threadPoolSize(3)
-				.memoryCacheExtraOptions(480, 800)
-				.memoryCache(new LruMemoryCache(10 * 1024 * 1024))
-				.diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
-				.diskCache(new UnlimitedDiskCache(cacheDir))
-				.diskCacheFileCount(200)
-				.diskCacheExtraOptions(480, 800, new BitmapProcessor() {
-					@Override
-					public Bitmap process(Bitmap bitmap) {
-						LogUtils.debug("processBitmap", "保存在本地文件之前");
-						return bitmap;
-					}
-				})
-				.diskCacheSize(100 * 1024 * 1024)
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs()
-				.build();
-		ImageLoader.getInstance().init(config);
-		*/
 		//初始化环信SDK
 		initHuanXinSDK();
 		EMChat.getInstance().setAppInited();
+		this.sp = this.getSharedPreferences(SP, MODE_PRIVATE);
 	}
 
 	/**
@@ -95,6 +78,23 @@ public class MApplication extends Application {
 		}
 		/**init huanxing SDK**/
 		EMChat.getInstance().init(getApplicationContext());
+	}
+
+	public void saveJsonString(final String content, final Class<? extends BaseModel> cls) {
+		if (!StringUtils.strEmpty(content)) {
+			MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
+				@Override
+				public void run() {
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putString(cls.toString(), content);
+					editor.apply();
+				}
+			});
+		}
+	}
+
+	public String getJsonString(Class<? extends BaseModel> cls) {
+		return sp.getString(cls.toString(), null);
 	}
 
 }

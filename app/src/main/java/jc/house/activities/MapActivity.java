@@ -44,6 +44,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         if (isSingleMarker) {
             House house = intent.getParcelableExtra(FLAG_HOUSE);
             setMapViewData(house);
+            this.mapView.getMap().setCenter(new LatLng(house.getLat(), house.getLng()));
         } else {
             List<House> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
             setMapViewDatas(houses);

@@ -64,14 +64,15 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_house_detail);
-        if (!PRODUCT) {
-            showDialog();
-            id = this.getIntent().getIntExtra(FLAG_ID, 1);
-            fetchDataFromServer();
-        }
         initViews();
         initViewPager();
         this.setScrollRightBack(true);
+        if (!PRODUCT) {
+            showDialog();
+            id = this.getIntent().getIntExtra(FLAG_ID, 1);
+            hideViews();
+            fetchDataFromServer();
+        }
     }
 
     private void initViews() {
@@ -135,6 +136,24 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.tvForceType = (TextView) this.findViewById(R.id.forceType);
         this.tvAvgPrice = (TextView) this.findViewById(R.id.avgPrice);
         this.tvPhone = (TextView) this.findViewById(R.id.phone);
+    }
+
+    private void hideViews() {
+        this.tvAddress.setVisibility(View.GONE);
+        this.tvHouseType.setVisibility(View.GONE);
+        this.tvForceType.setVisibility(View.GONE);
+        this.tvAvgPrice.setVisibility(View.GONE);
+        this.tvPhone.setVisibility(View.GONE);
+        this.viewPager.setVisibility(View.GONE);
+    }
+
+    private void showViews() {
+        this.tvAddress.setVisibility(View.VISIBLE);
+        this.tvHouseType.setVisibility(View.VISIBLE);
+        this.tvForceType.setVisibility(View.VISIBLE);
+        this.tvAvgPrice.setVisibility(View.VISIBLE);
+        this.tvPhone.setVisibility(View.VISIBLE);
+        this.viewPager.setVisibility(View.VISIBLE);
     }
 
     private void initViewPager() {
@@ -221,6 +240,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
             this.loadImage(houseImageView, this.houseDetail.getUrl());
             hideDialog();
+            showViews();
             if (null != houseDetail.getHelper() && PRODUCT) {
                 Toast.makeText(this, houseDetail.getHelper().getName() + houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
             }

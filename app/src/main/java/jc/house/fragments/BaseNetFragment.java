@@ -9,6 +9,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
+import jc.house.utils.StringUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +52,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected String tag;
     protected static final String PARAM_PAGE_SIZE = "pageSize";
     protected static final String PARAM_ID = "id";
+    protected boolean hasLocalRes;
 
     protected BaseNetFragment() {
         super();
@@ -121,7 +124,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected void initListView() {
         this.xlistView.setAdapter(adapter);
         this.xlistView.setXListViewListener(this);
-        this.xlistView.setPullLoadEnable(true);
+        this.xlistView.setPullLoadEnable(false);
         this.xlistView.setPullRefreshEnable(false);
     }
 
@@ -227,6 +230,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.dataSet.clear();
                 this.isOver = false;
+                this.xlistView.setPullLoadEnable(true);
             } else {
                 if (dataSet.size() < pageSize) {
                     this.isOver = true;
@@ -250,12 +254,35 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
-    protected void handleResponse(ServerResult result, final FetchType fetchType) {
+    protected void handleResponse(final ServerResult result, final FetchType fetchType) {
         MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
             @Override
             public void onSuccess(List<? extends BaseModel> models) {
                 updateListView((List<BaseModel>) models, fetchType);
+                if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                    saveToLocal(result.array.toString());
+                }
             }
         });
+    }
+
+    protected void loadLocalData() {
+        String content = mApplication.getJsonString(this.getModelClass());
+        if (!StringUtils.strEmpty(content)) {
+            LogUtils.debug(tag, "load data from local + " + this.getModelClass().toString());
+            ServerResult result = new ServerResult();
+            try {
+                result.array = new JSONArray(content);
+                result.resultType = ServerResultType.Array;
+                handleResponse(result, FetchType.FETCH_TYPE_REFRESH);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            hasLocalRes = true;
+        }
+    }
+
+    protected void saveToLocal(String content) {
+        this.mApplication.saveJsonString(content, this.getModelClass());
     }
 }
