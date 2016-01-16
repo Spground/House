@@ -104,9 +104,7 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
         Log.d("CalculatorActivity", "----------->>" + loanTime);
 
         double interestRate = Double.parseDouble(interestRates)/100;
-        String rateDiscounts = (String)rateDiscoutSpinner.getSelectedItem();
-        double rateDiscount = Double.parseDouble(rateDiscounts)/10;
-        interestRate = interestRate*rateDiscount;//在当前的年利率上打折
+        String rateDiscount = (String)rateDiscoutSpinner.getSelectedItem();
         double totalPrice = unitPrice*area;//总的房价
         double totalLoanMoney = totalPrice*(10-firstPay)/10;
         double repaymentPerMon=0.d;//
