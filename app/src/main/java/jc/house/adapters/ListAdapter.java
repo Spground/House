@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class ListAdapter extends BaseAdapter {
 	private ModelType type;
 	private CircleView circleView;
 	private boolean hasCircleView;
-	private DisplayImageOptions options;
 	private static final boolean DEBUG = Constants.DEBUG;
+	private static final boolean PRODUCT = Constants.PRODUCT;
 	
 	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType) {
 		this(context, dataSet, modelType, null);
@@ -44,7 +45,6 @@ public class ListAdapter extends BaseAdapter {
 		this.type = modelType;
 		this.circleView = circleView;
 		this.hasCircleView = (null != this.circleView);
-		this.options = new DisplayImageOptions.Builder().showImageOnFail(R.drawable.failure_image).showImageForEmptyUri(R.drawable.failure_image).build();
 	}
 
 	@Override
@@ -109,10 +109,10 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.dataSet.get(mPos);
-					if (DEBUG) {
+					if (PRODUCT) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
-						loadImage(viewHolderNews.picture, news.getPicUrl());
+						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl());
 					}
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
@@ -128,19 +128,28 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderHouse.description = (TextView)convertView.findViewById(R.id.description);
 						viewHolderHouse.phone = (TextView)convertView.findViewById(R.id.phone);
 						viewHolderHouse.ratingView = (RatingView)convertView.findViewById(R.id.rating_view);
+						viewHolderHouse.recStars = (TextView)convertView.findViewById(R.id.rec_stars);
+						viewHolderHouse.labelFirst = (TextView)convertView.findViewById(R.id.label_first);
+						viewHolderHouse.labelOther = (TextView)convertView.findViewById(R.id.label_other);
 						convertView.setTag(viewHolderHouse);
 					} else {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.dataSet.get(mPos);
-					if (DEBUG) {
+					if (PRODUCT) {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
+						viewHolderHouse.ratingView.setParams(5, 3);
 					} else {
-						loadImage(viewHolderHouse.picture, house.getUrl());
+						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl());
+						viewHolderHouse.ratingView.setParams(house.getStars(), 3);
+						viewHolderHouse.recStars.setText("推荐指数" + house.getStars());
+						if (null != house.getLabelsResult()) {
+							viewHolderHouse.labelFirst.setText(house.getLabelsResult()[0]);
+							viewHolderHouse.labelOther.setText(house.getLabelsResult()[1]);
+						}
 					}
 					viewHolderHouse.name.setText(house.getName());
 					viewHolderHouse.description.setText(house.getIntro());
-					viewHolderHouse.ratingView.setParams(3, 3);
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
@@ -157,12 +166,12 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
 
-					if(DEBUG) {
+					if(PRODUCT) {
 						viewHolderActivity.picture.setImageResource(Constants.resActivity[(int) (Math.random() * 5)]);
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						viewHolderActivity.postTime.setText("2012-08-12");
 					} else {
-						loadImage(viewHolderActivity.picture, activityModel.getPicUrl());
+						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl());
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						convertView.setId(activityModel.id);
 						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
@@ -175,10 +184,8 @@ public class ListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void loadImage(ImageView imageView, String url) {
-		ImageLoader.getInstance().displayImage(
-				Constants.IMAGE_URL + url,
-				imageView, options);
+	private void loadImageWithPicasso(ImageView imageView, String url) {
+		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
 	}
 	
 	private static final class ViewHolderChatUser {
@@ -201,6 +208,9 @@ public class ListAdapter extends BaseAdapter {
 		public TextView description;
 		public TextView phone;
 		public RatingView ratingView;
+		public TextView recStars;
+		public TextView labelFirst;
+		public TextView labelOther;
 	}
 
 	private static final class ViewHolderActivity {

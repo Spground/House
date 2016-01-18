@@ -3,14 +3,12 @@ package jc.house.async;
 import android.os.Handler;
 import android.os.Looper;
 
-import org.json.JSONArray;
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import jc.house.global.FetchType;
+import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
@@ -23,9 +21,11 @@ public class MThreadPool {
     private ExecutorService executorService = null;
     private static final int THREAD_NUM = 3;
     private static final String TAG = "MThreadPool";
+    private Handler mHandler = null;
 
     private MThreadPool() {
         executorService = Executors.newFixedThreadPool(THREAD_NUM);
+        this.mHandler = new Handler(Looper.getMainLooper());
     }
 
     public static MThreadPool getInstance() {
@@ -39,37 +39,55 @@ public class MThreadPool {
         return instance;
     }
 
-    public void submitParseDataTask(JSONArray array, Class<? extends BaseModel> mClass,
-                                    FetchType fetchType, IParseData parseData) {
-        this.executorService.submit(new ParseDataThread(array, mClass, fetchType, parseData));
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
-    private class ParseDataThread implements Runnable {
-        private JSONArray array;
-        private Class<? extends BaseModel> mClass;
-        private FetchType fetchType;
-        private IParseData parseDataCallback;
+    public void submitParseDataTask(ParseTask task) {
+        this.executorService.submit(new ParseDataTask(task));
+    }
 
-        public ParseDataThread(JSONArray array, Class<? extends BaseModel> mClass,
-                               FetchType fetchType, IParseData parseDataCallback) {
-            this.array = array;
-            this.mClass = mClass;
-            this.fetchType = fetchType;
-            this.parseDataCallback = parseDataCallback;
+    private class ParseDataTask implements Runnable {
+        private ParseTask task;
+
+        public ParseDataTask(ParseTask task) {
+            this.task = task;
         }
 
         @Override
         public void run() {
-            final List<BaseModel> lists = ParseJson.jsonArray2ModelList(array, mClass);
-            LogUtils.debug(TAG, "parsed data set is" + lists.size());
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+            mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    parseDataCallback.onParseDataTaskCompleted(lists, fetchType);
+                    task.onStart();
                 }
             });
+            if (ServerResultType.Object == task.getResultType()) {
+                if (null != task.getResult()) {
+                    final BaseModel model = ParseJson.jsonObj2Model(task.getResult().object, task.getMClass());
+                    if (null != model) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                task.onSuccess(model);
+                            }
+                        });
+                    }
+                }
+            } else {
+                if (null != task.getResult()) {
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(task.getResult().array, task.getMClass());
+                    if (null != models && models.size() > 0) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                task.onSuccess(models);
+                            }
+                        });
+                    }
+                }
+            }
         }
-
     }
 
     /**

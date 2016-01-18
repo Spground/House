@@ -3,13 +3,19 @@ package jc.house.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import jc.house.utils.StringUtils;
+
 public class House extends BaseModel implements Parcelable {
 	private String url;
 	private String name;
 	private String intro;
 	private String phone;
+	private int stars;
+	private String labelContent;
 	private double lat;
 	private double lng;
+	protected String avgPrice;
+	private String[] labelsResult;
 
 	public House() {}
 
@@ -39,6 +45,9 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeString(phone);
 		dest.writeDouble(lat);
 		dest.writeDouble(lng);
+		dest.writeInt(stars);
+		dest.writeString(labelContent);
+		dest.writeString(avgPrice);
 	}
 
 	private House(Parcel origin) {
@@ -49,6 +58,9 @@ public class House extends BaseModel implements Parcelable {
 		this.phone = origin.readString();
 		this.lat = origin.readDouble();
 		this.lng = origin.readDouble();
+		this.stars = origin.readInt();
+		this.labelContent = origin.readString();
+		this.avgPrice = origin.readString();
 	}
 
 	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
@@ -62,6 +74,37 @@ public class House extends BaseModel implements Parcelable {
 			return new House[size];
 		}
 	};
+
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(name + "-").append(url + "-").append(id + "-").append(lat + "-").append(labelContent + "-").append(avgPrice);
+		return stringBuilder.toString();
+	}
+
+	public boolean isValid() {
+		return (null != name) && (null != labelContent) && (null != url) && (null != intro) && (null != avgPrice);
+	}
+
+	public String[] getLabelsResult() {
+		if (null == labelsResult) {
+			labelsResult = StringUtils.parseHouseLables(labelContent);
+		}
+		return labelsResult;
+	}
+
+	public String getLabelString() {
+		if (null != this.getLabelsResult()) {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < labelsResult.length; i++) {
+				sb.append(labelsResult[i]);
+				if (i == 0) {
+					sb.append("  ");
+				}
+			}
+			return sb.toString();
+		}
+		return null;
+	}
 
 	public String getUrl() {
 		return url;
@@ -99,5 +142,24 @@ public class House extends BaseModel implements Parcelable {
 	public void setLng(double lng) {
 		this.lng = lng;
 	}
-	
+	public void setLabelContent(String labelContent) {
+		this.labelContent = labelContent;
+	}
+	public String getLabelContent() {
+		return labelContent;
+	}
+	public void setStars(int stars) {
+		this.stars = stars;
+	}
+	public int getStars() {
+		return stars;
+	}
+
+	public String getAvgPrice() {
+		return avgPrice;
+	}
+
+	public void setAvgPrice(String avgPrice) {
+		this.avgPrice = avgPrice;
+	}
 }

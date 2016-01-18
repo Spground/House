@@ -40,18 +40,15 @@ public class IndicatorView extends LinearLayout {
 		this.spacing = 5;
 		this.selectedIndex = 0;
 		this.context = context;
-		this.imageViews = new ArrayList<ImageView>();
+		this.imageViews = new ArrayList<>();
 		this.setGravity(Gravity.CENTER);
 	}
 
-	public int getNum() {
-		return num;
-	}
-
-	public void setNum(int num) {
+	public synchronized void setNum(int num) {
 		if (num > 0) {
 			this.imageViews.clear();
-			this.num = num;
+			this.removeAllViews();
+			this.num = 0;
 			for (int i = 0; i < num; i++) {
 				ImageView imageView = new ImageView(this.context);
 				imageView.setLayoutParams(new LayoutParams(
@@ -65,42 +62,27 @@ public class IndicatorView extends LinearLayout {
 				imageViews.add(imageView);
 				this.addView(imageView);
 			}
+			this.num = num;
 		}
-	}
-
-	public int getSelectedIndex() {
-		return selectedIndex;
 	}
 
 	public void setSelectedIndex(int selectedIndex) {
 		if (this.selectedIndex != selectedIndex && selectedIndex < this.num
 				&& selectedIndex >= 0) {
-			((ImageView) (imageViews.get(this.selectedIndex)))
+			(imageViews.get(this.selectedIndex))
 					.setImageResource(this.normalResId);
-			((ImageView) (imageViews.get(selectedIndex)))
+			(imageViews.get(selectedIndex))
 					.setImageResource(this.selectedResId);
 			this.selectedIndex = selectedIndex;
 		}
-	}
-
-	public int getNormalResId() {
-		return normalResId;
 	}
 
 	public void setNormalResId(int normalResId) {
 		this.normalResId = normalResId;
 	}
 
-	public int getSelectedResId() {
-		return selectedResId;
-	}
-
 	public void setSelectedResId(int selectedResId) {
 		this.selectedResId = selectedResId;
-	}
-
-	public int getSpacing() {
-		return spacing;
 	}
 
 	public void setSpacing(int spacing) {

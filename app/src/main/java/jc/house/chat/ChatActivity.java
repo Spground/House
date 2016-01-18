@@ -1,15 +1,16 @@
 package jc.house.chat;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.DebugUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +22,6 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
-import com.easemob.util.PathUtil;
 
 import java.io.File;
 
@@ -32,8 +32,9 @@ import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
+import jc.house.global.Constants;
+import jc.house.models.House;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ToastUtils;
 import jc.house.views.TitleBar;
 
 
@@ -42,10 +43,12 @@ import jc.house.views.TitleBar;
  */
 public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener,
         ChatMessageList.MessageListItemClickListener {
+    public static boolean ISFIRST = false;
     public static final String TAG = "ChatActivity";
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
+    static final int HOUSE_MESSAGE = 4;
 
     /**
      * 发送图片、照相、地图位置
@@ -66,26 +69,39 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private TitleBar titleBar;
 
     private String toChatUserName;
+    private String nickName;
 
     private ChatMessageList chatMsgList;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private LocalBroadcastManager broadcastManager;
-    private BroadcastReceiver broadcastReceiver;
 
     private ChatInputMenu inputMenu;
     protected MyItemClickListener extendMenuItemClickListener;
 
     private boolean isEventBusRegister = false;
+
+    private boolean canSendHouseDetail = false;
+    private House house;
+    public static final String EXTRA_HOUSE = "house";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /**this must be called before setContentView() method**/
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chat);
+        this.nickName = getIntent().getStringExtra("nickName");
+        this.nickName = this.nickName == null ? "金宸客服" : this.nickName;
+        this.house = (House)(this.getIntent().getParcelableExtra(EXTRA_HOUSE));
+        if (null != house && house.isValid()) {
+            LogUtils.debug(TAG, "house is " + house.toString());
+            canSendHouseDetail = true;
+        }
         init();
         initChatMsgList();
         instance = this;
+        if(!ISFIRST) {
+            sendDebugMessage();
+            ISFIRST = true;
+        }
     }
 
     @Override
@@ -122,9 +138,8 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      */
     private void init(){
         this.titleBar = (TitleBar)findViewById(R.id.titlebar);
-        this.titleBar.setTitle("会话");
         this.toChatUserName = getIntent().getStringExtra("toChatUserName");
-
+        this.titleBar.setTitle(this.nickName);
         /**chat message ListView init**/
         this.chatMsgList = (ChatMessageList)findViewById(R.id.message_list);
 
@@ -145,21 +160,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onSendMessage(String content) {
                 // 发送文本消息
-                sendTxtMessage(content,toChatUserName);
+                sendTxtMessage(content, toChatUserName);
             }
 
             //发送语音
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
                 Toast.makeText(ChatActivity.this, "按住说话", Toast.LENGTH_SHORT).show();
-//                return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
-//
-//                    @Override
-//                    public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
-//                        // 发送语音消息
-//                        sendVoiceMessage(voiceFilePath, voiceTimeLength);
-//                    }
-//                });
                 return false;
             }
         });
@@ -169,8 +176,11 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      * 注册底部菜单扩展栏item; 覆盖此方法时如果不覆盖已有item，item的id需大于3
      */
     protected void registerExtendMenuItem(){
-        for(int i = 0; i < itemStrings.length; i++){
+        for(int i = 0; i < itemStrings.length && i < 2; i++){
             inputMenu.registerExtendMenuItem(itemStrings[i], itemsDrawables[i], itemIds[i], extendMenuItemClickListener);
+        }
+        if (canSendHouseDetail) {
+            inputMenu.registerExtendMenuItem("楼盘", R.drawable.tab_building_selected, HOUSE_MESSAGE, extendMenuItemClickListener);
         }
     }
 
@@ -193,12 +203,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      */
     private void sendTxtMessage(String content,String toChatUserName){
         EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
-        //创建一条文本消息
+        /**创建一条文本消息**/
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
+        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false);
         message.setReceipt(toChatUserName);
-        //把消息加入到此会话对象中
+        /**把消息加入到此会话对象中**/
         conversation.addMessage(message);
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
@@ -222,7 +233,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     /**
      * 发送图片消息
-     * @param imagePath
+     * @param imagePath 图片在本机的绝对路径
      */
     protected void sendImageMessage(String imagePath) {
         //不是发送的原图
@@ -231,6 +242,77 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         ChatActivity.this.chatMsgList.refresh();
     }
 
+    /**
+     *
+     * @param imgUrl
+     * @param houseName
+     * @param tag
+     * @param price
+     */
+    protected void sendHouseMessage(int id, String imgUrl, String houseName, String tag, String price) {
+        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
+        //创建一条house消息
+        final EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, true);
+        message.setAttribute("id", id);
+        message.setAttribute("img_url", imgUrl);
+        message.setAttribute("house_name", houseName);
+        message.setAttribute("tag", tag);
+        message.setAttribute("price", price);
+        TextMessageBody txtBody = new TextMessageBody("[楼盘消息]");
+        message.addBody(txtBody);
+        message.setReceipt(toChatUserName);
+        conversation.addMessage(message);
+        EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                LogUtils.debug(TAG, "发送成功！");
+                /**refresh chatMsgList**/
+                message.status = EMMessage.Status.SUCCESS;
+                ChatActivity.this.chatMsgList.refresh();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                message.status = EMMessage.Status.FAIL;
+                LogUtils.debug(TAG, "发送失败！");
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+                message.status = EMMessage.Status.INPROGRESS;
+                LogUtils.debug(TAG, "正在发送！");
+            }
+        });
+        ChatActivity.this.chatMsgList.refresh();
+    }
+
+    private void sendHouseMessage() {
+        if (null != house && house.isValid()) {
+            sendHouseMessage(house.getId(), house.getUrl(), house.getName(), house.getLabelContent(), house.getAvgPrice());
+        } else {
+            Toast.makeText(this, "暂时没有房产信息！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 产品展示的时候调用
+     */
+    private void sendDebugMessage() {
+        if(!Constants.DEBUG) return;
+        sendTxtMessage("您好,请问有什么可以帮到您？", toChatUserName);
+        sendTxtMessage("[:3d:]", toChatUserName);
+
+        EMMessage imgMsg = EMMessage.createSendMessage(EMMessage.Type.IMAGE);
+        imgMsg.direct = EMMessage.Direct.SEND;
+        imgMsg.setTo("admin");
+        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
+        conversation.addMessage(imgMsg);
+
+        sendHouseMessage(1, "1", "1", "1", "1");
+        chatMsgList.refreshSelectLast();
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -280,6 +362,9 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     break;
                 case ITEM_LOCATION: // 位置
 //                    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+                    break;
+                case HOUSE_MESSAGE:
+                    sendHouseMessage();
                     break;
                 default:
                     break;
@@ -379,8 +464,13 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
             Toast.makeText(this, "手机没有存储卡，不能拍照!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        cameraFile = new File(PathUtil.getInstance().getImagePath(), EMChatManager.getInstance().getCurrentUser()
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//        cameraFile = new File(PathUtil.getInstance().getImagePath(), EMChatManager.getInstance().getCurrentUser()
+//                + System.currentTimeMillis() + ".jpg");
+        /**默认存放在系统的相册目录下的jchouse**/
+        File jchouse = new File(dir.getAbsolutePath() + "/jchouse");
+        jchouse.mkdirs();
+        cameraFile = new File(jchouse, EMChatManager.getInstance().getCurrentUser()
                 + System.currentTimeMillis() + ".jpg");
         cameraFile.getParentFile().mkdirs();
         startActivityForResult(
@@ -392,7 +482,10 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         //swipe refresh goes here
         Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
+        sendHouseMessage(1, "1", "1", "1", "1");
+        chatMsgList.refreshSelectLast();
         this.swipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
@@ -400,15 +493,18 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     }
 
+    /**
+     * 对话的消息被点击时
+     * @param message
+     * @return
+     */
     @Override
     public boolean onBubbleClick(EMMessage message) {
-        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
     public void onBubbleLongClick(EMMessage message) {
-        Toast.makeText(this, "long click", Toast.LENGTH_SHORT).show();
     }
 
     @Override

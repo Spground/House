@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -11,12 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-
+import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.views.TitleBar;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements View.OnTouchListener {
 
     protected ProgressDialog progressDialog;
     protected TitleBar titleBar;
@@ -24,7 +25,13 @@ public class BaseActivity extends Activity {
     protected MApplication mApplication;
     protected LinearLayout baseLayout;
     protected RelativeLayout contentLayout;
-    protected AsyncHttpClient mClient = null;
+    private boolean isScrollRightBack;
+    public static final boolean PRODUCT = Constants.PRODUCT;
+    private float xPre = 0;
+    private static final float MIN_DISTANCE = 150;
+    private static final float MIN_SPEED = 200;
+    private static final float LEFT_SPACE = 240;
+    private VelocityTracker velocityTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,8 @@ public class BaseActivity extends Activity {
         this.progressDialog.setCancelable(true);
         this.progressDialog.setCanceledOnTouchOutside(true);
         this.mInflater = this.getLayoutInflater();
-        this.mApplication = (MApplication)this.getApplication();
+        this.isScrollRightBack = false;
+        this.mApplication = (MApplication) this.getApplication();
         this.titleBar = new TitleBar(this);
         this.titleBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         this.baseLayout = new LinearLayout(this);
@@ -68,6 +76,14 @@ public class BaseActivity extends Activity {
         setTitleBarVisible();
     }
 
+    protected void showDialog() {
+        this.progressDialog.show();
+    }
+
+    protected void hideDialog() {
+        this.progressDialog.hide();
+    }
+
     public void setTitleBarVisible() {
         this.titleBar.setVisibility(View.VISIBLE);
     }
@@ -80,7 +96,76 @@ public class BaseActivity extends Activity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
     protected void ToastL(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    protected final void setScrollRightBack(boolean flag) {
+        if (this.isScrollRightBack != flag) {
+            this.contentLayout.setOnTouchListener(flag ? this : null);
+//            this.contentLayout.getParent().requestDisallowInterceptTouchEvent(true);
+            this.isScrollRightBack = flag;
+        }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        createVelocityTracker(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                xPre = event.getRawX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float xCur = event.getRawX();
+                handleMove(xCur);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+            default:
+                xPre = 0;
+                recycleVelocityTracker();
+                break;
+        }
+        return true;
+    }
+
+    private void handleMove(float xCur) {
+        if (xPre <= LEFT_SPACE && (xCur - xPre) > MIN_DISTANCE && this.getVel() > MIN_SPEED) {
+            this.finish();
+        }
+    }
+
+    private void createVelocityTracker(MotionEvent event) {
+        if (null == this.velocityTracker) {
+            this.velocityTracker = VelocityTracker.obtain();
+        }
+        this.velocityTracker.clear();
+        this.velocityTracker.addMovement(event);
+    }
+
+    private void recycleVelocityTracker() {
+        this.velocityTracker.recycle();
+        this.velocityTracker = null;
+    }
+
+    private float getVel() {
+        if (null != this.velocityTracker) {
+            this.velocityTracker.computeCurrentVelocity(1000);
+            return this.velocityTracker.getXVelocity();
+        }
+        return -1;
+    }
+
+    /*
+    * <T extends View> 规范参数
+    * T 返回值
+    * */
+    protected <T extends View> T $(int id) {
+        return (T) this.findViewById(id);
     }
 }

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 
+import jc.house.global.ServerResultType;
 import jc.house.models.ServerResult;
 
 /**
@@ -16,14 +17,20 @@ public final class ServerUtils {
         return (statusCode == HttpURLConnection.HTTP_OK && null != response);
     }
 
-    public static ServerResult parseServerResponse(JSONObject response) {
+    public static ServerResult parseServerResponse(JSONObject response, ServerResultType resultType) {
         ServerResult result = new ServerResult();
         try {
             int code = response.getInt(ServerResult.CODE);
             result.code = code;
             result.isSuccess = (ServerResult.CODE_SUCCESS == code);
             if (result.isSuccess) {
-                result.array = response.getJSONArray(ServerResult.RESULT);
+                if (ServerResultType.Array == resultType) {
+                    result.array = response.getJSONArray(ServerResult.RESULT);
+                    result.resultType = ServerResultType.Array;
+                } else {
+                    result.object = response.getJSONObject(ServerResult.RESULT);
+                    result.resultType = ServerResultType.Object;
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

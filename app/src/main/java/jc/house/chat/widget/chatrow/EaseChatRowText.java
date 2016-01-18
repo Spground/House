@@ -15,6 +15,7 @@ import com.easemob.exceptions.EaseMobException;
 
 import jc.house.R;
 import jc.house.chat.util.EmojiUtils;
+import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
 
 public class EaseChatRowText extends EaseChatRow{

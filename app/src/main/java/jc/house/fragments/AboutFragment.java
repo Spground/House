@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 
 import jc.house.R;
 import jc.house.activities.AboutUsActivity;
+
 import jc.house.activities.CalculatorActivity;
-import jc.house.activities.CompanyIntroductionActivity;
-import jc.house.activities.UserFeedbackActivity;
+import jc.house.activities.FeedbackActivity;
 import jc.house.activities.WebActivity;
 import jc.house.interfaces.IRefresh;
 import jc.house.utils.ToastUtils;
@@ -53,11 +53,11 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
         switch (v.getId()) {
             case R.id.id_company_introduction:
                 Intent intent = new Intent(getActivity(), WebActivity.class);
-                intent.putExtra("url", "http://fangchanxiaozha.flzhan.com/index.html?rd=0.855881774565205");
+                intent.putExtra("url", "http://202.118.67.200:10717/house/web/index.php?r=introduction%2Fview");
                 startActivity(intent);
                 break;
             case R.id.id_user_feedback:
-                startActivity(new Intent(getActivity(), UserFeedbackActivity.class));
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
             case R.id.id_check_update:
                 ToastUtils.show(getActivity(), "您的已经是最新版本!");

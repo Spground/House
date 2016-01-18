@@ -6,11 +6,12 @@ package jc.house.models;
 public final class HouseDetail extends House {
     private String houseType;
     private String forceType;
-    private String avgPrice;
+//    private String avgPrice;
     private String address;
     private String recReason;
     private String trafficLines;
     private String designIdea;
+    private CustomerHelper helper;
 
     public HouseDetail() {}
 
@@ -40,14 +41,6 @@ public final class HouseDetail extends House {
 
     public String getForceType() {
         return forceType;
-    }
-
-    public void setAvgPrice(String avgPrice) {
-        this.avgPrice = avgPrice;
-    }
-
-    public String getAvgPrice() {
-        return avgPrice;
     }
 
     public void setAddress(String address) {
@@ -80,5 +73,13 @@ public final class HouseDetail extends House {
 
     public String getDesignIdea() {
         return designIdea;
+    }
+
+    public CustomerHelper getHelper() {
+        return helper;
+    }
+
+    public void setHelper(CustomerHelper helper) {
+        this.helper = helper;
     }
 }

@@ -3,116 +3,101 @@
     android:layout_width="match_parent"
     android:layout_height="140dp"
     android:background="@drawable/listview_selector"
+    android:descendantFocusability="blocksDescendants"
     android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:orientation="vertical"
-    android:descendantFocusability="blocksDescendants"
-    >
+    android:paddingTop="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="horizontal"
-        >
-            <ImageView
-                android:id="@+id/picture"
-                android:layout_width="110dp"
-                android:layout_height="80dp"
-                android:layout_margin="4dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/failure_image_red" />
+        android:orientation="horizontal">
 
-            <LinearLayout
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            android:layout_margin="4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/failure_image_red" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:layout_marginLeft="3dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="84dp"
-                android:layout_marginLeft="3dp"
-                android:orientation="vertical" >
+                android:layout_height="wrap_content"
+                android:paddingTop="1dp"
+                android:text="楼盘名称"
+                android:textColor="#555555"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="1dp"
-                    android:text="楼盘名称"
-                    android:textColor="#555555"
-                    android:textSize="14sp" />
+            <jc.house.views.RatingView
+                android:id="@+id/rating_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></jc.house.views.RatingView>
 
-                <jc.house.views.RatingView
-                    android:id="@+id/rating_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></jc.house.views.RatingView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="left"
-                    android:text="推荐指数4.5"
-                    android:textSize="9sp"
-                    android:gravity="left|center"
-                    android:textColor="@color/grey"
-                    android:visibility="visible"
-                     />
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textColor="#777777"
-                    android:gravity="left|center_vertical"
-                    android:textSize="11sp"
-                    android:text="沙河口 小户型 南北通透 双卫" />
+            <TextView
+                android:id="@+id/rec_stars"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="left"
+                android:layout_weight="0.5"
+                android:gravity="left|center"
+                android:text="推荐指数4.5"
+                android:textColor="@color/grey"
+                android:textSize="9sp"
+                android:visibility="visible" />
 
-                <TextView
-                    android:id="@+id/phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="1dp"
-                    android:autoLink="phone"
-                    android:textColor="@android:color/holo_red_light"
-                    android:text="0411-87879911"/>
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:text="沙河口 小户型 南北通透 双卫"
+                android:textColor="#777777"
+                android:textSize="11sp" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="1dp"
+                android:text="0411-87879911"
+                android:textColor="@android:color/holo_red_light" />
+
         </LinearLayout>
+    </LinearLayout>
 
-    <!-- top huxing-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:orientation="horizontal"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
+            android:id="@+id/label_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="热门户型"
-            android:textSize="11sp"
             android:layout_marginLeft="5dp"
-            />
+            android:text="热门户型"
+            android:textSize="11sp" />
+
         <TextView
+            android:id="@+id/label_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:text="2室2厅"
             android:layout_marginLeft="8dp"
+            android:text="2室2厅   建筑面积85.0m²   94万起"
             android:textColor="@color/gray"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:layout_marginLeft="8dp"
-            android:text="建筑面积85.0m²"
-            android:textColor="@color/gray"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:layout_marginLeft="8dp"
-            android:text="94万起"
-            android:textColor="@color/gray"
-            />
+            android:textSize="10sp" />
     </LinearLayout>
 </LinearLayout>

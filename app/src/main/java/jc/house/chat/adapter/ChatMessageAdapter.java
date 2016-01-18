@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
@@ -14,7 +15,10 @@ import com.easemob.chat.EMMessage;
 
 import java.util.List;
 
+import jc.house.chat.util.CommonUtils;
+import jc.house.chat.widget.chatrow.EaseChatRowHouse;
 import jc.house.chat.widget.chatrow.EaseChatRowImage;
+import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
 import jc.house.chat.widget.ChatMessageList;
 import jc.house.chat.widget.chatrow.EaseChatRow;
@@ -82,6 +86,7 @@ public class ChatMessageAdapter extends BaseAdapter {
         this.chatUserName = chatUserName;
         this.chatMsgListView = chatMsgListView;
         this.conversation =  EMChatManager.getInstance().getConversation(chatUserName);
+//        this.conversation.clear();
     }
 
     @Override
@@ -109,11 +114,12 @@ public class ChatMessageAdapter extends BaseAdapter {
 
         //只有满足 convertChatRow不为空 且消息类型 和 视图的类型一致 且 消息的方向和视图的方向一致
         //才复用convertChatRow，否则重创建
-        if(!(convertChatRow != null
-                && convertChatRow.getMessageDirect() == message.direct
-                && convertChatRow.getMessageType() == message.getType()))
-            convertView = createChatRow(context, message, position);
-
+//        if(!(convertChatRow != null
+//                && convertChatRow.getMessageDirect() == message.direct
+//                && convertChatRow.getMessageType() == message.getType())) {
+//            convertView = createChatRow(context, message, position);
+//        }
+        convertView = createChatRow(context, message, position);
       //缓存的view的message很可能不是当前item的，传入当前message和position更新ui
         ((EaseChatRow)convertView).setUpView(message, position, itemClickListener);
         return convertView;
@@ -152,10 +158,16 @@ public class ChatMessageAdapter extends BaseAdapter {
     /**
      * create a ChatRow for every message
      */
-    private EaseChatRow createChatRow(Context context ,EMMessage message, int position){
+    private EaseChatRow createChatRow(Context context, EMMessage message, int position){
         //TXT消息
-        if(message.getType().equals(EMMessage.Type.TXT))
-            return new EaseChatRowText(context, message, position, this);
+        if(message.getType().equals(EMMessage.Type.TXT )) {
+            boolean isHouse = message.getBooleanAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false);
+            if(isHouse)
+                return new EaseChatRowHouse(context, message, position, this);
+            else
+                return new EaseChatRowText(context, message, position, this);
+        }
+
         if(message.getType().equals(EMMessage.Type.IMAGE))
             return new EaseChatRowImage(context, message, position, this);
         return null;

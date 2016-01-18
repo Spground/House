@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -24,9 +23,9 @@ import jc.house.R;
 import jc.house.global.Constants;
 import jc.house.utils.LogUtils;
 
-public class UserFeedbackActivity extends BaseActivity implements View.OnClickListener,
+public class FeedbackActivity extends BaseNetActivity implements View.OnClickListener,
         DialogInterface.OnClickListener {
-    private static final String TAG = "UserFeedbackActivity";
+    private static final String TAG = "FeedbackActivity";
 
     private EditText mEditText;
     private Button mButton;
@@ -41,10 +40,9 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_user_feedback);
-        mClient = new AsyncHttpClient();
-        mClient.setConnectTimeout(5 * 1000);
         setTitleBarTitle("用户反馈");
         initView();
+        this.setScrollRightBack(true);
         reqParams = new HashMap<>();
     }
 
@@ -58,7 +56,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         this.progressDialog.setMessage("正在提交，请稍后...");
         alertDialog = new AlertDialog.Builder(this).
                 setMessage("提交反馈成功,谢谢您的反馈!")
-                .setNeutralButton("知道了", UserFeedbackActivity.this)
+                .setNeutralButton("知道了", FeedbackActivity.this)
                 .setCancelable(false)
                 .create();
     }
@@ -80,7 +78,7 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
         reqParams.clear();
         reqParams.put("content", feedbackContent);
         LogUtils.debug(TAG, "start network request");
-        mClient.post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
+        this.client.post(Constants.FEEDBACK_URL, new RequestParams(reqParams), new JsonHttpResponseHandler() {
             //the callback will happens UI thread
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -117,16 +115,16 @@ public class UserFeedbackActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        UserFeedbackActivity.this.finish();
+        FeedbackActivity.this.finish();
     }
 
     private void showDlg(){
-        if(this.progressDialog != null && this.progressDialog.isShowing() == false)
+        if(!this.progressDialog.isShowing())
             this.progressDialog.show();
     }
 
     private void cancelDlg(){
-        if(this.progressDialog != null && this.progressDialog.isShowing() == true)
+        if(this.progressDialog.isShowing())
             this.progressDialog.hide();
     }
 

@@ -8,47 +8,67 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import org.json.JSONArray;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
-import jc.house.async.IParseData;
 import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.MApplication;
 import jc.house.global.RequestType;
+import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
+import jc.house.models.ServerResult;
+import jc.house.models.Slideshow;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ServerUtils;
+import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 
 public class NewsFragment extends BaseNetFragment implements CircleView.CircleViewOnClickListener {
     private static final int[] imageReIds = {R.drawable.home01,
             R.drawable.home02, R.drawable.home03};
-//	private static final String[] imageUrls = {"123", "456"};
-	private static final String TAG = "NewsFragment";
+    private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
-    protected String URL = Constants.SERVER_URL + "news2/news";
+    private static final String SLIDE_PAGE_SIZE = "3";
+    private CircleView circleView;
+    private boolean loadSlideSuccess;
+    private List<Slideshow> slideshows;
+
     public NewsFragment() {
         super();
+        this.pageSize = PAGE_SIZE;
+        this.url = Constants.NEWS_URL;
+        this.tag = TAG;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CircleView circleView = new CircleView(this.getActivity());
+        this.mApplication = (MApplication)this.getActivity().getApplication();
+        circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
         circleView.setTimeInterval(3.6f);
-        circleView.setImageReIds(imageReIds);
         circleView.setOnCircleViewItemClickListener(this);
-
-        if (DEBUG) {
+        this.loadSlideSuccess = false;
+        if (PRODUCT) {
+            circleView.setImageReIds(imageReIds);
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_jianzhu, "创新营销 挑战逆境 创回款年度新", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
@@ -56,10 +76,16 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             dataSet.add(new News(1, "" + R.drawable.temp_xiaofang, "大连金宸集团举办2013年消防知识宣传培训活动", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
         } else {
+            showDialog();
+            loadLocalData();
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            this.fetchSlideshows();
         }
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
+        if (!PRODUCT) {
+            this.xlistView.setPullLoadEnable(false);
+        }
     }
 
     @Override
@@ -72,11 +98,12 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 LogUtils.debug(TAG, "position is " + position);
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
-                    if (DEBUG) {
-                        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
+                    if (PRODUCT) {
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.NEWS_MOBILE_URL + "12");
                     } else {
-                        intent.putExtra("url", Constants.SERVER_URL + "news2/mobile&id=" + ((News) dataSet.get(position - 2)).id);
+                        intent.putExtra(WebActivity.FLAG_URL, Constants.NEWS_MOBILE_URL + ((News) dataSet.get(position - 2)).id);
                     }
+                    intent.putExtra(WebActivity.FLAG_TITLE, "新闻详情");
                     startActivity(intent);
                 }
             }
@@ -92,24 +119,17 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(array, News.class, fetchType, new IParseData() {
-            @Override
-            public void onParseDataTaskCompleted(List<BaseModel> lists, FetchType fetchType) {
-                updateListView(lists, fetchType, PAGE_SIZE);
-            }
-        });
+    protected Class<? extends BaseModel> getModelClass() {
+        return News.class;
     }
 
     @Override
     protected Map<String, String> getParams(FetchType fetchType) {
-        Map<String, String> params = super.getParams(fetchType);
-        if (null != params) {
-            params.put("pageSize", String.valueOf(PAGE_SIZE));
-            if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-                if (dataSet.size() > 0) {
-                    params.put("id", String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
-                }
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+            if (dataSet.size() > 0) {
+                params.put(PARAM_ID, String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
             }
         }
         return params;
@@ -117,13 +137,93 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        fetchDataFromServer(fetchType, RequestType.POST, URL, getParams(fetchType));
+        fetchDataFromServer(fetchType, RequestType.POST);
+    }
+
+    private void fetchSlideshows() {
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_PAGE_SIZE, SLIDE_PAGE_SIZE);
+        this.client.post(Constants.SLIDE_URL, new RequestParams(params), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                LogUtils.debug(TAG, response.toString());
+                handleSlideshows(statusCode, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                LogUtils.debug(TAG, responseString.toString());
+            }
+        });
+    }
+
+    private void setSlideshows(List<Slideshow> models) {
+        if (null != models && models.size() > 0) {
+            String[] urls = new String[models.size()];
+            int i = 0;
+            for (Slideshow slide : models) {
+                urls[i++] = slide.getPicUrl();
+            }
+            circleView.setImageUrls(urls);
+            this.slideshows = models;
+            this.loadSlideSuccess = true;
+        }
+    }
+
+    private void handleSlideshows(int statusCode, JSONObject response) {
+        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
+            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+            if (result.isSuccess) {
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        setSlideshows((List<Slideshow>)models);
+                        mApplication.saveJsonString(result.array.toString(), Slideshow.class);
+                    }
+                });
+            } else {
+                circleView.setImageReIds(imageReIds);
+            }
+        } else {
+            circleView.setImageReIds(imageReIds);
+        }
     }
 
     @Override
     public void onCircleViewItemClick(View v, int index) {
-        Intent intent = new Intent(getActivity(), WebActivity.class);
-        intent.putExtra("url", "http://mp.weixin.qq.com/s?__biz=MzI4NzA2MjkwMw==&mid=433484939&idx=1&sn=15443d235a498a1257ab5e941590db0b&scene=23&srcid=1208j8pMKKfumqwJxxyDQQe2#rd");
-        startActivity(intent);
+        if (this.loadSlideSuccess && index < this.slideshows.size()) {
+            Intent intent = new Intent(getActivity(), WebActivity.class);
+            intent.putExtra(WebActivity.FLAG_TITLE, "详情");
+            intent.putExtra(WebActivity.FLAG_URL, Constants.SLIDE_MOBILE_URL + this.slideshows.get(index).getId());
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
+        super.updateListView(dataSet, fetchType);
+    }
+
+    @Override
+    protected void loadLocalData() {
+        super.loadLocalData();
+        String slides = mApplication.getJsonString(Slideshow.class);
+        if (!StringUtils.strEmpty(slides)) {
+            ServerResult result = new ServerResult();
+            try {
+                result.array = new JSONArray(slides);
+                result.resultType = ServerResultType.Array;
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        setSlideshows((List<Slideshow>)models);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

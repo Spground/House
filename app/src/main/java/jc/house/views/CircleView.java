@@ -1,8 +1,7 @@
 package jc.house.views;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
+import android.os.CountDownTimer;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -16,20 +15,23 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import jc.house.R;
+import jc.house.global.Constants;
 
 public class CircleView extends LinearLayout {
 
 	public interface CircleViewOnClickListener {
 		void onCircleViewItemClick(View v, int index);
+	}
+
+	public enum SCROLL_ORIENTATION {
+		RIGHT,
+		LEFT
 	}
 
 	private boolean autoPlay;
@@ -42,13 +44,11 @@ public class CircleView extends LinearLayout {
 	private Context context;
 	private int currentIndex;
 	private int num;
-	private MyHandler mHandler;
 	private CircleViewOnClickListener circleClickListener;
 	private Animation animation;
-	private static final int CIRCLE_FLAG = 3;
-	public static final int SCROLL_LEFT = 1;
-	public static final int SCROLL_RIGHT = 2;
-	private int scrollOrientaion;
+	private SCROLL_ORIENTATION orientation;
+	private TimerCircle timer;
+	private boolean first;
 
 	public CircleView(Context context) {
 		super(context);
@@ -70,6 +70,8 @@ public class CircleView extends LinearLayout {
 		this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
 		this.indicatorView = (IndicatorView) this
 				.findViewById(R.id.indicatorView);
+		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
+		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.autoPlay = true;
 		this.timeInterval = 0;
 		this.num = 0;
@@ -77,25 +79,12 @@ public class CircleView extends LinearLayout {
 		this.imageViews = new ArrayList<>();
 		this.animation = new AlphaAnimation(0.8f, 1.0f);
 		this.animation.setDuration(600);
-		this.scrollOrientaion = SCROLL_RIGHT;
-	}
-	
-	@Override
-	public boolean performClick() {
-		return super.performClick();
-	}
-	
-
-	public boolean isAutoPlay() {
-		return autoPlay;
+		this.orientation = SCROLL_ORIENTATION.RIGHT;
+		this.first = true;
 	}
 
 	public void setAutoPlay(boolean autoPlay) {
 		this.autoPlay = autoPlay;
-	}
-
-	public float getTimeInterval() {
-		return timeInterval;
 	}
 
 	public void setTimeInterval(float timeInterval) {
@@ -104,94 +93,93 @@ public class CircleView extends LinearLayout {
 		}
 	}
 
-	public int[] getImageReIds() {
-		return imageReIds;
-	}
-
 	public void setOnCircleViewItemClickListener(
 			CircleViewOnClickListener circleClickListener) {
 		this.circleClickListener = circleClickListener;
 	}
-	
 
-	public int getScrollOrientaion() {
-		return scrollOrientaion;
-	}
-
-	public void setScrollOrientaion(int scrollOrientaion) {
-		if(scrollOrientaion <= SCROLL_RIGHT && scrollOrientaion >= SCROLL_LEFT) {
-			this.scrollOrientaion = scrollOrientaion;
-		}
+	public void setOrientation(SCROLL_ORIENTATION orientation) {
+		this.orientation = orientation;
 	}
 
 	public void setImageReIds(int[] imageReIds) {
-		if (null != imageReIds && imageReIds.length > 0) {
-			this.imageReIds = imageReIds;
-			this.num = imageReIds.length;
-			addImageViews(true);
+		synchronized (this) {
+			if (null != imageReIds && imageReIds.length > 0 && first) {
+				if (first) {
+					this.imageReIds = imageReIds;
+					this.num = imageReIds.length;
+				}
+				addImageViews(true);
+			}
 		}
 	}
 
-	public String[] getImageUrls() {
-		return imageUrls;
-	}
-
 	public void setImageUrls(String[] imageUrls) {
-		if (null != imageUrls && imageUrls.length > 0) {
-			this.imageUrls = imageUrls;
-			this.num = imageUrls.length;
-			this.addImageViews(false);
+		synchronized (this) {
+			if (null != imageUrls && imageUrls.length > 0) {
+				if (first) {
+					this.imageUrls = imageUrls;
+					this.num = imageUrls.length;
+				}
+				this.addImageViews(false);
+			}
 		}
 	}
 
 	private void addImageViews(boolean isLocalRes) {
-		for (int i = 0; i < num; i++) {
-			ImageView imageView = new ImageView(this.context);
-			imageView.setLayoutParams(new LayoutParams(
-					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			imageView.setScaleType(ScaleType.CENTER_CROP);
-			if (isLocalRes) {
-				imageView.setImageDrawable(this.getResources().getDrawable(
-						imageReIds[i]));
-			} else {
-				ImageLoader.getInstance().displayImage(
-						"http://avatar.csdn.net/E/8/F/1_hyr83960944.jpg",
-						imageView);
+		if (this.first) {
+			this.imageViews.clear();
+			if (null != timer) {
+				timer.cancel();
 			}
-			imageView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					if (null != circleClickListener) {
-						circleClickListener.onCircleViewItemClick(v, currentIndex);
-					}
+			for (int i = 0; i < num; i++) {
+				ImageView imageView = new ImageView(this.context);
+				imageView.setLayoutParams(new LayoutParams(
+						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+				imageView.setScaleType(ScaleType.CENTER_CROP);
+				if (isLocalRes) {
+					imageView.setImageResource(imageReIds[i]);
+				} else {
+					loadImage(imageView, imageUrls[i]);
 				}
+				imageView.setOnClickListener(new OnClickListener() {
 
-			});
-			this.imageViews.add(imageView);
-		}
-		this.viewPager.setAdapter(new CirclePagerAdapter());
-		this.viewPager
-				.addOnPageChangeListener(new CircleOnPageChangeListener());
-		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
-		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
-		this.indicatorView.setNum(num);
-		if (this.autoPlay && null == this.mHandler && num > 1
-				&& this.timeInterval > 0) {
-			this.mHandler = new MyHandler(this);
-			new Timer()
-					.schedule(new TimerTask() {
-
-						@Override
-						public void run() {
-							Message msg = new Message();
-							msg.what = CIRCLE_FLAG;
-							mHandler.sendMessage(msg);
+					@Override
+					public void onClick(View v) {
+						if (null != circleClickListener) {
+							circleClickListener.onCircleViewItemClick(v, currentIndex);
 						}
+					}
 
-					}, (long) this.timeInterval * 1000,
-							(long) this.timeInterval * 1000);
+				});
+				this.imageViews.add(imageView);
+			}
+			this.indicatorView.setNum(num);
+			this.viewPager.setAdapter(new CirclePagerAdapter());
+			this.viewPager
+					.addOnPageChangeListener(new CircleOnPageChangeListener());
+			if (this.autoPlay && num > 1) {
+				if (null == timer) {
+					timer = new TimerCircle(System.currentTimeMillis() / 1000 + (long) timeInterval * 1000, (long) timeInterval * 1000, this);
+				}
+				timer.start();
+			}
+			first = false;
+		} else {
+			if (isLocalRes) {
+				for (int i = 0; i < num && i < this.imageReIds.length; i++) {
+					this.imageViews.get(i).setImageResource(this.imageReIds[i]);
+				}
+			} else {
+				for (int i = 0; i < num && i < this.imageUrls.length; i++) {
+					this.loadImage(this.imageViews.get(i), this.imageUrls[i]);
+				}
+			}
 		}
+	}
+
+	private void loadImage(ImageView imageView, String url) {
+		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.home02).error(R.drawable.home02).into(imageView);
 	}
 
 	private class CircleOnPageChangeListener implements OnPageChangeListener {
@@ -234,12 +222,13 @@ public class CircleView extends LinearLayout {
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView(imageViews.get(position));
+			if (position < imageViews.size()) {
+				container.removeView(imageViews.get(position));
+			}
 		}
 
 	}
 	
-
 	private void setCurrentIndex(int index) {
 		if (index >= 0 && index < num) {
 			this.viewPager.setCurrentItem(index);
@@ -254,7 +243,7 @@ public class CircleView extends LinearLayout {
 	
 	private void circle() {
 		if(autoPlay) {
-			if(SCROLL_RIGHT == this.scrollOrientaion) {
+			if(SCROLL_ORIENTATION.RIGHT == this.orientation) {
 				currentIndex = (currentIndex + 1) % num;
 			} else {
 				currentIndex -= 1;
@@ -267,27 +256,21 @@ public class CircleView extends LinearLayout {
 		}
 	}
 
-	private static final class MyHandler extends Handler {
-		private WeakReference<CircleView> weakCircleView;
-
-		public MyHandler(CircleView view) {
-			this.weakCircleView = new WeakReference<>(view);
+	class TimerCircle extends CountDownTimer {
+		private CircleView circleView;
+		public TimerCircle(long millisInFuture, long countDownInterval, CircleView circleView) {
+			super(millisInFuture, countDownInterval);
+			this.circleView = circleView;
 		}
 
 		@Override
-		public void handleMessage(Message msg) {
-			CircleView circleView = this.weakCircleView.get();
-			if (null != circleView) {
-				switch (msg.what) {
-					case CIRCLE_FLAG:
-						if(circleView.autoPlay) {
-							circleView.circle();
-						}
-						break;
-					default:
-						break;
-				}
-			}
+		public void onTick(long millisUntilFinished) {
+			circleView.circle();
+		}
+
+		@Override
+		public void onFinish() {
+
 		}
 	}
 

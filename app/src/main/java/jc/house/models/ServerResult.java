@@ -1,6 +1,9 @@
 package jc.house.models;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import jc.house.global.ServerResultType;
 
 /**
  * Created by hzj on 2015/12/10.
@@ -14,6 +17,8 @@ public class ServerResult {
     public int code;
     public boolean isSuccess;
     public JSONArray array;
+    public JSONObject object;
+    public ServerResultType resultType;
 
     public ServerResult() {
         code = -1;

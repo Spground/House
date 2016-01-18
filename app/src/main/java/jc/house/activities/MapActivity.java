@@ -3,8 +3,6 @@ package jc.house.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
-import android.view.accessibility.AccessibilityManager;
-import android.widget.Toast;
 
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
 import com.tencent.mapsdk.raster.model.LatLng;
@@ -13,65 +11,82 @@ import com.tencent.mapsdk.raster.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.map.MapView;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import jc.house.R;
 import jc.house.models.House;
-import jc.house.utils.ToastUtils;
 import jc.house.views.TitleBar;
 
 public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
 
     private MapView mapView;
     private boolean isSingleMarker = true;
-    private static final String IsSingleMarker = "isSingleMarker";
+    public static final String FLAG_IsSingleMarker = "isSingleMarker";
     public static final String FLAG_HOUSE = "house";
     public static final String FLAG_HOUSES = "houses";
+    private Map<String, House> mapHouses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_map);
-        TitleBar titleBar = (TitleBar)this.findViewById(R.id.titlebar);
+        TitleBar titleBar = (TitleBar) this.findViewById(R.id.titlebar);
         titleBar.setTitle("地图详情");
         this.mapView = (MapView) this.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
-        this.initMapView();
+        this.mapView.getMap().setZoom(16);
         Intent intent = this.getIntent();
-        isSingleMarker = intent.getBooleanExtra(IsSingleMarker, true);
+        isSingleMarker = intent.getBooleanExtra(FLAG_IsSingleMarker, true);
         if (isSingleMarker) {
             House house = intent.getParcelableExtra(FLAG_HOUSE);
             setMapViewData(house);
+            this.mapView.getMap().setCenter(new LatLng(house.getLat(), house.getLng()));
         } else {
             List<House> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
             setMapViewDatas(houses);
+            LatLng center = getCenterPoint();
+            if (null != center) {
+                this.mapView.getMap().setCenter(center);
+            }
         }
     }
 
     private void setMapViewData(House house) {
-
+        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(house.getLat(), house.getLng())).title(house.getName() + "\n" + house.getIntro()).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
+        marker.setDraggable(true);
+        marker.showInfoWindow();
+        if (this.isSingleMarker) {
+            this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    finish();
+                }
+            });
+        } else {
+            mapHouses.put(marker.getTitle(), house);
+            this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent intent = new Intent(MapActivity.this, HouseDetailActivity.class);
+                    House item = mapHouses.get(marker.getTitle());
+                    if (null != item) {
+                        intent.putExtra(HouseDetailActivity.FLAG_ID, item.id);
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
     }
 
     private void setMapViewDatas(List<House> houses) {
-
-    }
-
-    private void initMapView() {
-        this.mapView.getMap().setZoom(16);
-        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(39.899201, 116.424866)).title("大北京").anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
-        marker.setDraggable(true);
-        marker.showInfoWindow();
-        Marker marker2 = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(39.909201, 116.436866)).title("大北京").anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
-        marker2.setDraggable(true);
-        marker2.showInfoWindow();
-        this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(MapActivity.this, "It's mapView info window", Toast.LENGTH_SHORT).show();
-            }
-        });
-        this.mapView.getMap().setCenter(new LatLng(39.90, 116.425));
+        this.mapHouses = new HashMap<>();
+        for (House house : houses) {
+            setMapViewData(house);
+        }
     }
 
     @Override
@@ -96,6 +111,21 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     protected void onPause() {
         mapView.onPause();
         super.onPause();
+    }
+
+    private LatLng getCenterPoint() {
+        if (!isSingleMarker && mapHouses.size() > 0) {
+            double latAll = 0;
+            double lngAll = 0;
+            Iterator iterator = (mapHouses.entrySet().iterator());
+            while(iterator.hasNext()) {
+                Map.Entry<String, House> entry = (Map.Entry<String, House>)iterator.next();
+                latAll += entry.getValue().getLat();
+                lngAll += entry.getValue().getLng();
+            }
+            return new LatLng(latAll / mapHouses.size(), lngAll / mapHouses.size());
+        }
+        return null;
     }
 
     @Override
