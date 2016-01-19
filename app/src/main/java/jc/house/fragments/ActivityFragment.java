@@ -65,7 +65,7 @@ public class ActivityFragment extends BaseNetFragment {
         } else {
             //init data set
             if (HomeActivity.isNetAvailable) {
-//                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             } else {
                 //load cache
             }
@@ -124,10 +124,5 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     protected void fetchDataFromServer(FetchType fetchtype) {
         fetchDataFromServer(fetchtype, RequestType.GET);
-    }
-
-    private List<? extends BaseModel> loadModelDiskCache(int NUMBER) {
-        // if network is unavailable, get cached model byte stream from disk
-        return null;
     }
 }

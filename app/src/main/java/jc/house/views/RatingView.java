@@ -7,6 +7,10 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jc.house.R;
 
 /**
@@ -20,6 +24,7 @@ public class RatingView extends LinearLayout {
     private static final int RatingWhiteID = R.drawable.rating_white;
     private static final int ALL_NUMBER = 5;
     private Context context;
+    private List<ImageView> imageViews;
     public RatingView(Context context) {
         super(context);
         initView(context);
@@ -39,7 +44,7 @@ public class RatingView extends LinearLayout {
         this.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         this.ratingRedNumber = 0;
         this.spacing = 0;
-
+        this.imageViews = new ArrayList<>();
     }
 
     public void setParams(int ratingRedNumber, int spacing) {

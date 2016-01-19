@@ -202,11 +202,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
-    protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
-        super.updateListView(dataSet, fetchType);
-    }
-
-    @Override
     protected void loadLocalData() {
         super.loadLocalData();
         String slides = mApplication.getJsonString(Slideshow.class);

@@ -50,7 +50,6 @@ public class JsonParseTest extends AndroidTestCase {
         LogUtils.debug("===TAG===", modelInstance.getPostTime()  + "");
     }
 
-<<<<<<< HEAD
     public void test02() {
         int i = 3;
         JSONArray jsonArray;
@@ -80,8 +79,6 @@ public class JsonParseTest extends AndroidTestCase {
         LogUtils.debug("===TAG===",  "list is " + list.toString());
     }
 
-=======
->>>>>>> 45895eb95654ad81a5c4bcf7498213b870611aa1
     public void test03() {
         Class mClass = News.class;
         Field[] fields = mClass.getFields();
@@ -108,7 +105,6 @@ public class JsonParseTest extends AndroidTestCase {
         assertEquals(10000, modelInstance.id);
     }
 
-<<<<<<< HEAD
     public void test05() {
         String methodName = StringUtils.getMethodNameByFieldName("name");
         assertEquals("setName",methodName);
@@ -170,8 +166,6 @@ public class JsonParseTest extends AndroidTestCase {
     }
     */
 
-=======
->>>>>>> 45895eb95654ad81a5c4bcf7498213b870611aa1
     public void test07() {
 //        boolean flag = ParseJson.isSubclassOfBaseModel(CustomerHelper.class);
         boolean flag = BaseModel.class.isAssignableFrom(CustomerHelper.class);

@@ -76,7 +76,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
                     "0411-86536589", 39.30, 116.425));
         } else {
-//            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             loadLocalData();
         }
         this.firstShow = true;
