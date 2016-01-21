@@ -50,7 +50,7 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeString(avgPrice);
 	}
 
-	private House(Parcel origin) {
+	protected House(Parcel origin) {
 		this.id = origin.readInt();
 		this.url = origin.readString();
 		this.name = origin.readString();

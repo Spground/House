@@ -43,7 +43,7 @@ public class EaseChatRowHouse extends EaseChatRow {
     @Override
     protected void onBubbleClick() {
         Intent intent = new Intent(context, HouseDetailActivity.class);
-        intent.putExtra(HouseDetailActivity.FLAG_ID, message.getIntAttribute(HouseDetailActivity.FLAG_ID, 1));
+        intent.putExtra(HouseDetailActivity.FLAG_ID, message.getIntAttribute(HouseDetailActivity.FLAG_ID, -1));
         context.startActivity(intent);
     }
 }
