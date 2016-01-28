@@ -4,29 +4,28 @@ import java.util.List;
 
 import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
+import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 
 /**
  * Created by hzj on 2015/12/29.
  */
 public class ParseTask extends BaseTask {
-    private Object args;
-    private ServerResultType resultType;
+    private ServerResult result;
     private Class<? extends BaseModel> mClass;
     private static final String TAG = "ParseTask";
 
-    public ParseTask(Object args, ServerResultType resultType, Class<? extends BaseModel> mClass) {
-        this.args = args;
-        this.resultType = resultType;
+    public ParseTask(ServerResult result, Class<? extends BaseModel> mClass) {
+        this.result = result;
         this.mClass = mClass;
     }
 
-    public Object getArgs() {
-        return args;
+    public ServerResultType getResultType() {
+        return result.resultType;
     }
 
-    public ServerResultType getResultType() {
-        return resultType;
+    public ServerResult getResult() {
+        return result;
     }
 
     public Class<? extends BaseModel> getMClass() {

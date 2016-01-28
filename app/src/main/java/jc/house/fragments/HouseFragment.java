@@ -21,18 +21,21 @@ import jc.house.activities.MapActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.MApplication;
 import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.ModelType;
+import jc.house.utils.LogUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HouseFragment extends BaseNetFragment implements View.OnClickListener {
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 6;
     private static final String TAG = "HouseFragment";
     private ImageButton mapBtn;
+    private boolean firstShow;
 
     public HouseFragment() {
         super();
@@ -52,6 +55,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.mApplication = (MApplication)this.getActivity().getApplication();
         this.mapBtn = (ImageButton) this.view.findViewById(R.id.id_map_btn);
         this.mapBtn.setOnClickListener(this);
         initListView();
@@ -72,8 +76,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
                     "0411-86536589", 39.30, 116.425));
         } else {
-            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+//            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            loadLocalData();
         }
+        this.firstShow = true;
     }
 
     @Override
@@ -96,12 +102,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     protected Map<String, String> getParams(FetchType fetchType) {
         Map<String, String> params = new HashMap<>();
-        if (null != params) {
-            params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-            if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-                if (dataSet.size() > 0) {
-                    params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
-                }
+        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+            if (dataSet.size() > 0) {
+                params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
             }
         }
         return params;
@@ -122,12 +126,27 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && firstShow) {
+            LogUtils.debug("it is true");
+            if (!hasLocalRes) {
+                showDialog();
+            }
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            firstShow = false;
+        } else {
+            LogUtils.debug("It is false");
+        }
+    }
+
+    @Override
     protected Class<? extends BaseModel> getModelClass() {
         return House.class;
     }
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        super.fetchDataFromServer(fetchType, RequestType.POST, getParams(fetchType));
+        super.fetchDataFromServer(fetchType, RequestType.POST);
     }
 }

@@ -114,7 +114,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="jc.house.activities.BaseActivity" />
         </activity>
+
+        <activity android:name=".activities.CalculatorActivity" >
+        </activity>
+
         <activity android:name=".activities.CustomerHelperLoginActivity"></activity>
+
     </application>
 
 </manifest>

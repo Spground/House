@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
@@ -85,6 +86,7 @@ public class ChatMessageAdapter extends BaseAdapter {
         this.chatUserName = chatUserName;
         this.chatMsgListView = chatMsgListView;
         this.conversation =  EMChatManager.getInstance().getConversation(chatUserName);
+//        this.conversation.clear();
     }
 
     @Override

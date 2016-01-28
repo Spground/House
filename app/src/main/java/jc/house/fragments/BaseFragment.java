@@ -12,6 +12,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import jc.house.R;
 import jc.house.global.Constants;
+import jc.house.global.MApplication;
 
 /**
  * Created by hzj on 2015/12/10.
@@ -20,6 +21,7 @@ public class BaseFragment extends Fragment {
     protected View view;
     protected static final boolean PRODUCT = Constants.PRODUCT;
     protected ProgressDialog progressDialog;
+    protected MApplication mApplication;
 
     protected void ToastS(String msg) {
         Toast.makeText(this.getActivity(), msg, Toast.LENGTH_SHORT).show();

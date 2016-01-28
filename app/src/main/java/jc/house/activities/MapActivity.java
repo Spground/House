@@ -12,11 +12,11 @@ import com.tencent.tencentmap.mapsdk.map.MapView;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import jc.house.R;
-import jc.house.global.Constants;
 import jc.house.models.House;
 import jc.house.views.TitleBar;
 
@@ -27,7 +27,6 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     public static final String FLAG_IsSingleMarker = "isSingleMarker";
     public static final String FLAG_HOUSE = "house";
     public static final String FLAG_HOUSES = "houses";
-    private static final boolean PRODUCT = Constants.PRODUCT;
     private Map<String, House> mapHouses;
 
     @Override
@@ -45,9 +44,14 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         if (isSingleMarker) {
             House house = intent.getParcelableExtra(FLAG_HOUSE);
             setMapViewData(house);
+            this.mapView.getMap().setCenter(new LatLng(house.getLat(), house.getLng()));
         } else {
             List<House> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
             setMapViewDatas(houses);
+            LatLng center = getCenterPoint();
+            if (null != center) {
+                this.mapView.getMap().setCenter(center);
+            }
         }
     }
 
@@ -59,9 +63,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
             this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(MapActivity.this, HouseDetailActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    finish();
                 }
             });
         } else {
@@ -72,7 +74,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
                     Intent intent = new Intent(MapActivity.this, HouseDetailActivity.class);
                     House item = mapHouses.get(marker.getTitle());
                     if (null != item) {
-                        intent.putExtra("id", String.valueOf(item.getId()));
+                        intent.putExtra(HouseDetailActivity.FLAG_ID, item.id);
                         startActivity(intent);
                     }
                 }
@@ -109,6 +111,21 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     protected void onPause() {
         mapView.onPause();
         super.onPause();
+    }
+
+    private LatLng getCenterPoint() {
+        if (!isSingleMarker && mapHouses.size() > 0) {
+            double latAll = 0;
+            double lngAll = 0;
+            Iterator iterator = (mapHouses.entrySet().iterator());
+            while(iterator.hasNext()) {
+                Map.Entry<String, House> entry = (Map.Entry<String, House>)iterator.next();
+                latAll += entry.getValue().getLat();
+                lngAll += entry.getValue().getLng();
+            }
+            return new LatLng(latAll / mapHouses.size(), lngAll / mapHouses.size());
+        }
+        return null;
     }
 
     @Override

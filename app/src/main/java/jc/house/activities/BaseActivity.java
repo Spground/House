@@ -160,4 +160,12 @@ public class BaseActivity extends Activity implements View.OnTouchListener {
         }
         return -1;
     }
+
+    /*
+    * <T extends View> 规范参数
+    * T 返回值
+    * */
+    protected <T extends View> T $(int id) {
+        return (T) this.findViewById(id);
+    }
 }

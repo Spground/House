@@ -1,13 +1,14 @@
 package jc.house.models;
 
-public final class News extends BaseModel{
+import java.io.Serializable;
+
+public final class News extends BaseModel implements Serializable{
 	private String picUrl;
 	private String title;
 	private String author;
 	private String time;
 
 	public News() {
-
 	}
 
 	public News(int id, String picUrl, String title, String author, String time) {
