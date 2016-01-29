@@ -70,8 +70,6 @@ public class CircleView extends LinearLayout {
 		this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
 		this.indicatorView = (IndicatorView) this
 				.findViewById(R.id.indicatorView);
-		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
-		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.autoPlay = true;
 		this.timeInterval = 0;
 		this.num = 0;
@@ -127,11 +125,11 @@ public class CircleView extends LinearLayout {
 	}
 
 	private void addImageViews(boolean isLocalRes) {
+		if (null != timer) {
+			timer.cancel();
+		}
 		if (this.first) {
 			this.imageViews.clear();
-			if (null != timer) {
-				timer.cancel();
-			}
 			for (int i = 0; i < num; i++) {
 				ImageView imageView = new ImageView(this.context);
 				imageView.setLayoutParams(new LayoutParams(
@@ -175,6 +173,7 @@ public class CircleView extends LinearLayout {
 					this.loadImage(this.imageViews.get(i), this.imageUrls[i]);
 				}
 			}
+			timer.start();
 		}
 	}
 

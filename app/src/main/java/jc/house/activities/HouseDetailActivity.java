@@ -37,6 +37,7 @@ import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
 import jc.house.utils.ServerUtils;
+import jc.house.utils.StringUtils;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
@@ -57,8 +58,13 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private TextView tvForceType;
     private TextView tvAvgPrice;
     private TextView tvPhone;
-    private int id;
+    private int id = -1;
     public static final String FLAG_ID = "id";
+    public static final String FLAG_HOUSE_DETAIL = "HouseDetail";
+    public static final String FLAG_HELPER_ID = "HelperID";
+    public static final String FLAG_HELPER_NAME = "HelperName";
+    private String hxID;
+    private String nickName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +74,17 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         initViewPager();
         this.setScrollRightBack(true);
         if (!PRODUCT) {
-            showDialog();
-            id = this.getIntent().getIntExtra(FLAG_ID, 1);
-            hideViews();
-            fetchDataFromServer();
+            id = this.getIntent().getIntExtra(FLAG_ID, -1);
+            if (id >= 0) {
+                showDialog();
+                hideViews();
+                fetchDataFromServer();
+            } else {
+                houseDetail = this.getIntent().getParcelableExtra(FLAG_HOUSE_DETAIL);
+                this.hxID = this.getIntent().getStringExtra(FLAG_HELPER_ID);
+                this.nickName = this.getIntent().getStringExtra(FLAG_HELPER_NAME);
+                setServerData(houseDetail);
+            }
         }
     }
 
@@ -118,10 +131,15 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 //跳转到聊天页面
                 Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
                 if (!PRODUCT) {
-                    if (null != houseDetail && null != houseDetail.getHelper()) {
+                    if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
                         intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());
                         intent.putExtra("nickName", houseDetail.getHelper().getName());
                         intent.putExtra(ChatActivity.EXTRA_HOUSE, (House)houseDetail);
+                        startActivity(intent);
+                    } else if (!StringUtils.strEmpty(hxID) && !StringUtils.strEmpty(nickName)) {
+                        intent.putExtra("toChatUserName", hxID);
+                        intent.putExtra("nickName", nickName);
+                        intent.putExtra(ChatActivity.EXTRA_HOUSE, houseDetail);
                         startActivity(intent);
                     }
                 } else {

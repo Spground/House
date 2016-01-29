@@ -25,6 +25,7 @@ import jc.house.global.MApplication;
 import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
+import jc.house.models.HouseDetail;
 import jc.house.models.ModelType;
 import jc.house.utils.LogUtils;
 
@@ -76,7 +77,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
                     "0411-86536589", 39.30, 116.425));
         } else {
-//            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             loadLocalData();
         }
         this.firstShow = true;
@@ -92,7 +93,13 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 if (pos >= 1 && pos <= dataSet.size()) {
                     Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-                    intent.putExtra(HouseDetailActivity.FLAG_ID, dataSet.get(pos - 1).getId());
+//                    intent.putExtra(HouseDetailActivity.FLAG_ID, dataSet.get(pos - 1).getId());
+                    HouseDetail house = (HouseDetail)(dataSet.get(pos - 1));
+                    intent.putExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL, house);
+                    if (null != house.getHelper()) {
+                        intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, house.getHelper().getName());
+                        intent.putExtra(HouseDetailActivity.FLAG_HELPER_ID, house.getHelper().getHxID());
+                    }
                     startActivity(intent);
                 }
             }
@@ -142,7 +149,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected Class<? extends BaseModel> getModelClass() {
-        return House.class;
+        return HouseDetail.class;
     }
 
     @Override

@@ -23,4 +23,8 @@ public class ServerResult {
     public ServerResult() {
         code = -1;
     }
+
+    public boolean isArrayType() {
+        return resultType == ServerResultType.Array;
+    }
 }

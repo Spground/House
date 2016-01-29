@@ -255,15 +255,24 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
     protected void handleResponse(final ServerResult result, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-            @Override
-            public void onSuccess(List<? extends BaseModel> models) {
-                updateListView((List<BaseModel>) models, fetchType);
-                if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                    saveToLocal(result.array.toString());
+        if (result.isArrayType()) {
+            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                @Override
+                public void onSuccess(List<? extends BaseModel> models) {
+                    updateListView((List<BaseModel>) models, fetchType);
+                    if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                        saveToLocal(result.array.toString());
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                @Override
+                public void onSuccess(BaseModel model) {
+                    super.onSuccess(model);
+                }
+            });
+        }
     }
 
     protected void loadLocalData() {
@@ -274,7 +283,12 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             try {
                 result.array = new JSONArray(content);
                 result.resultType = ServerResultType.Array;
-                handleResponse(result, FetchType.FETCH_TYPE_REFRESH);
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }

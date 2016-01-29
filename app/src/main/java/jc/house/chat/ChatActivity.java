@@ -34,6 +34,7 @@ import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
 import jc.house.global.Constants;
 import jc.house.models.House;
+import jc.house.models.HouseDetail;
 import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
 
@@ -43,7 +44,7 @@ import jc.house.views.TitleBar;
  */
 public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener,
         ChatMessageList.MessageListItemClickListener {
-    public static boolean ISFIRST = false;
+    private boolean ISFIRST = false;
     public static final String TAG = "ChatActivity";
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
@@ -80,7 +81,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private boolean isEventBusRegister = false;
 
     private boolean canSendHouseDetail = false;
-    private House house;
+    private HouseDetail house;
     public static final String EXTRA_HOUSE = "house";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         setContentView(R.layout.activity_chat);
         this.nickName = getIntent().getStringExtra("nickName");
         this.nickName = this.nickName == null ? "金宸客服" : this.nickName;
-        this.house = (House)(this.getIntent().getParcelableExtra(EXTRA_HOUSE));
+        this.house = (HouseDetail)(this.getIntent().getParcelableExtra(EXTRA_HOUSE));
         if (null != house && house.isValid()) {
             LogUtils.debug(TAG, "house is " + house.toString());
             canSendHouseDetail = true;
@@ -299,17 +300,16 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      * 产品展示的时候调用
      */
     private void sendDebugMessage() {
-        if(!Constants.DEBUG) return;
-        sendTxtMessage("您好,请问有什么可以帮到您？", toChatUserName);
-        sendTxtMessage("[:3d:]", toChatUserName);
+        sendTxtMessage("顾客您好,请问有什么可以帮忙吗？", toChatUserName);
 
-        EMMessage imgMsg = EMMessage.createSendMessage(EMMessage.Type.IMAGE);
-        imgMsg.direct = EMMessage.Direct.SEND;
-        imgMsg.setTo("admin");
-        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
-        conversation.addMessage(imgMsg);
+//        sendTxtMessage("[:3d:]", toChatUserName);
+//        EMMessage imgMsg = EMMessage.createSendMessage(EMMessage.Type.IMAGE);
+//        imgMsg.direct = EMMessage.Direct.SEND;
+//        imgMsg.setTo("admin");
+//        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
+//        conversation.addMessage(imgMsg);
+//        sendHouseMessage(1, "1", "1", "1", "1");
 
-        sendHouseMessage(1, "1", "1", "1", "1");
         chatMsgList.refreshSelectLast();
 
     }
@@ -481,8 +481,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         //swipe refresh goes here
-        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
-        sendHouseMessage(1, "1", "1", "1", "1");
+//        sendHouseMessage(1, "1", "1", "1", "1");
         chatMsgList.refreshSelectLast();
         this.swipeRefreshLayout.setRefreshing(false);
 

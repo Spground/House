@@ -44,7 +44,6 @@ public class TabViewItem extends LinearLayout {
 		this.setBackgroundColor(Color.rgb(231, 231, 231));
 		this.textView.setTextColor(normalTextColor);
 		this.selected = false;
-		this.imageView.setImageResource(this.normalResId);
 		this.index = 0;
 	}
 
@@ -81,46 +80,6 @@ public class TabViewItem extends LinearLayout {
 
 	public void setNormalResId(int normalResId) {
 		this.normalResId = normalResId;
-	}
-
-	public void setColorSelectedRate(float rate) {
-		if (rate > 0 && rate < 1) {
-			this.imageView.setAlpha(1 - rate);
-			this.textView
-					.setTextColor(Color.rgb(
-							Color.red(selectedTextColor)
-									- (int) (rate * (Color
-											.red(selectedTextColor) - Color
-											.red(normalTextColor))),
-							Color.green(selectedTextColor)
-									- (int) (rate * (Color
-											.green(selectedTextColor) - Color
-											.green(normalTextColor))),
-							Color.blue(selectedTextColor)
-									- (int) (rate * (Color
-											.blue(selectedTextColor) - Color
-											.blue(normalTextColor)))));
-		}
-	}
-
-	public void setColorNormalRate(float rate) {
-		if (rate > 0 && rate < 1) {
-			this.imageView.setAlpha(rate);
-			this.textView
-					.setTextColor(Color.rgb(
-							Color.red(normalTextColor)
-									+ (int) (rate * (Color
-											.red(selectedTextColor) - Color
-											.red(normalTextColor))),
-							Color.green(normalTextColor)
-									+ (int) (rate * (Color
-											.green(selectedTextColor) - Color
-											.green(normalTextColor))),
-							Color.blue(normalTextColor)
-									+ (int) (rate * (Color
-											.blue(selectedTextColor) - Color
-											.blue(normalTextColor)))));
-		}
 	}
 
 	/**

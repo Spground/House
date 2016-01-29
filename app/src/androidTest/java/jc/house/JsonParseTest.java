@@ -50,7 +50,6 @@ public class JsonParseTest extends AndroidTestCase {
         LogUtils.debug("===TAG===", modelInstance.getPostTime()  + "");
     }
 
-
     public void test02() {
         int i = 3;
         JSONArray jsonArray;
@@ -80,7 +79,6 @@ public class JsonParseTest extends AndroidTestCase {
         LogUtils.debug("===TAG===",  "list is " + list.toString());
     }
 
-
     public void test03() {
         Class mClass = News.class;
         Field[] fields = mClass.getFields();
@@ -106,7 +104,6 @@ public class JsonParseTest extends AndroidTestCase {
         assertNotNull(modelInstance);
         assertEquals(10000, modelInstance.id);
     }
-
 
     public void test05() {
         String methodName = StringUtils.getMethodNameByFieldName("name");
@@ -168,7 +165,6 @@ public class JsonParseTest extends AndroidTestCase {
         assertTrue("sets is not empty", sets.size() == 15);
     }
     */
-
 
     public void test07() {
 //        boolean flag = ParseJson.isSubclassOfBaseModel(CustomerHelper.class);
