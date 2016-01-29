@@ -155,6 +155,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 LogUtils.debug(TAG, responseString.toString());
+                circleView.setImageReIds(imageReIds);
             }
         });
     }
@@ -172,6 +173,11 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         }
     }
 
+    private void setDefaultCircleView() {
+        this.circleView.setImageReIds(imageReIds);
+        this.circleView.setOnCircleViewItemClickListener(null);
+    }
+
     private void handleSlideshows(int statusCode, JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
@@ -184,10 +190,10 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                     }
                 });
             } else {
-                circleView.setImageReIds(imageReIds);
+                setDefaultCircleView();
             }
         } else {
-            circleView.setImageReIds(imageReIds);
+            setDefaultCircleView();
         }
     }
 
@@ -219,6 +225,8 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            setDefaultCircleView();
         }
     }
 }

@@ -134,7 +134,7 @@ public class CircleView extends LinearLayout {
 				ImageView imageView = new ImageView(this.context);
 				imageView.setLayoutParams(new LayoutParams(
 						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-				imageView.setScaleType(ScaleType.CENTER_CROP);
+				imageView.setScaleType(ScaleType.FIT_XY);
 				if (isLocalRes) {
 					imageView.setImageResource(imageReIds[i]);
 				} else {
@@ -178,7 +178,7 @@ public class CircleView extends LinearLayout {
 	}
 
 	private void loadImage(ImageView imageView, String url) {
-		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.home02).error(R.drawable.home02).into(imageView);
+		Picasso.with(context).load(Constants.IMAGE_URL_ORIGIN + url).placeholder(R.drawable.home02).error(R.drawable.home02).into(imageView);
 	}
 
 	private class CircleOnPageChangeListener implements OnPageChangeListener {

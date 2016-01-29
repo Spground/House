@@ -266,6 +266,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 }
             });
         } else {
+            //暂时没有用到
             MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
                 @Override
                 public void onSuccess(BaseModel model) {

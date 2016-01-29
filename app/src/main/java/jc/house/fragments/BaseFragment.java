@@ -52,7 +52,7 @@ public class BaseFragment extends Fragment {
         StoreHouseHeader header = new StoreHouseHeader(getContext());
         header.setPadding(0, 20, 0, 20);
         header.initWithString("JIN CHEN");
-        header.setTextColor(Color.RED);
+        header.setTextColor(R.color.red_jc);
         ptrFrameLayout.setDurationToCloseHeader(1500);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);

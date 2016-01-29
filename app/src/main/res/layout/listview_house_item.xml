@@ -73,7 +73,7 @@
                 android:autoLink="phone"
                 android:padding="1dp"
                 android:text="0411-87879911"
-                android:textColor="@android:color/holo_red_light" />
+                android:textColor="@color/red_jc" />
 
         </LinearLayout>
     </LinearLayout>

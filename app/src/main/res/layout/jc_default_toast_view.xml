@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="64dp"
-    android:paddingRight="25dp"
-    android:paddingLeft="25dp"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp"
     android:background="@drawable/jc_default_toast_view_bg"
     android:gravity="center_vertical"
-    >
+    android:minWidth="64dp"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp"
+    android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/toast_image"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/toast_info"
-        />
+        android:src="@drawable/toast_info" />
 
     <TextView
         android:id="@+id/toast_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|center"
+        android:gravity="center"
         android:text="Message"
-        android:textColor="@color/white"
-        />
+        android:textColor="@color/white" />
 
 </LinearLayout>
