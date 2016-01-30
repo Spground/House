@@ -67,6 +67,10 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         circleView.setTimeInterval(3.6f);
         circleView.setOnCircleViewItemClickListener(this);
         this.loadSlideSuccess = false;
+        initListView();
+        if (!PRODUCT) {
+            this.xlistView.setPullLoadEnable(false);
+        }
         if (PRODUCT) {
             circleView.setImageReIds(imageReIds);
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
@@ -81,15 +85,11 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             this.fetchSlideshows();
         }
-        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
-        initListView();
-        if (!PRODUCT) {
-            this.xlistView.setPullLoadEnable(false);
-        }
     }
 
     @Override
     protected void initListView() {
+        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         this.xlistView = (XListView) view.findViewById(R.id.list);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,7 +155,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 LogUtils.debug(TAG, responseString.toString());
-                circleView.setImageReIds(imageReIds);
+//                circleView.setImageReIds(imageReIds);
             }
         });
     }

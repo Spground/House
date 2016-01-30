@@ -2,6 +2,7 @@ package jc.house.views;
 
 import jc.house.R;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ public class TabViewItem extends LinearLayout {
 	private int normalResId, selectedResId;
 	private int index;
 	private final int normalTextColor = Color.rgb(99, 99, 99);
-	private final int selectedTextColor = Color.rgb(180, 0, 0);
+	private final int selectedTextColor = Color.rgb(255, 0 , 0);
 
 	public TabViewItem(Context context) {
 		super(context);

@@ -3,6 +3,7 @@ package jc.house.fragments;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -279,7 +280,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected void loadLocalData() {
         String content = mApplication.getJsonString(this.getModelClass());
         if (!StringUtils.strEmpty(content)) {
-            LogUtils.debug(tag, "load data from local + " + this.getModelClass().toString());
+            LogUtils.debug(tag, "load data from local + " + content + this.getModelClass().toString());
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(content);
@@ -290,10 +291,10 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                         updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
                     }
                 });
+                hasLocalRes = true;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            hasLocalRes = true;
         }
     }
 

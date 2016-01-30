@@ -53,8 +53,8 @@ public class ActivityFragment extends BaseNetFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.mApplication = (MApplication)this.getActivity().getApplication();
-        this.adapter = new ListAdapter(this.getActivity(),
-                this.dataSet, ModelType.ACTIVITY);
+//        this.adapter = new ListAdapter(this.getActivity(),
+//                this.dataSet, ModelType.ACTIVITY);
         initListView();
         if (PRODUCT) {
             this.dataSet.add(new JCActivity(1, "", "金宸•蓝郡一期"));
@@ -64,11 +64,12 @@ public class ActivityFragment extends BaseNetFragment {
             this.dataSet.add(new JCActivity(5, "", "金宸•蓝郡三期"));
         } else {
             //init data set
-            if (HomeActivity.isNetAvailable) {
-                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
-            } else {
+//            if (HomeActivity.isNetAvailable) {
+//                fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+//            } else {
                 //load cache
-            }
+//            }
+            showDialog();
             loadLocalData();
         }
         this.firstShow = true;
