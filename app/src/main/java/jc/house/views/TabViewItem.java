@@ -87,12 +87,10 @@ public class TabViewItem extends LinearLayout {
 	 * set little red dot visible
 	 */
 	public void lightLittleRedDot(){
-		if(this.littleRedDotView != null || this.littleRedDotView.getVisibility() == View.INVISIBLE)
-			this.littleRedDotView.setVisibility(View.VISIBLE);
+		this.littleRedDotView.setVisibility(View.VISIBLE);
 	}
 
 	public void unlightLittleRedDot(){
-		if(this.littleRedDotView != null || this.littleRedDotView.getVisibility() == View.VISIBLE)
-			this.littleRedDotView.setVisibility(View.INVISIBLE);
+		this.littleRedDotView.setVisibility(View.INVISIBLE);
 	}
 }

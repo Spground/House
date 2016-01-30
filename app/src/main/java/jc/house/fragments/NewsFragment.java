@@ -36,6 +36,7 @@ import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.models.ServerResult;
 import jc.house.models.Slideshow;
+import jc.house.utils.ListUtils;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
@@ -61,7 +62,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mApplication = (MApplication)this.getActivity().getApplication();
+        this.mApplication = (MApplication) this.getActivity().getApplication();
         circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
         circleView.setTimeInterval(3.6f);
@@ -155,22 +156,22 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 LogUtils.debug(TAG, responseString.toString());
-//                circleView.setImageReIds(imageReIds);
             }
         });
     }
 
     private void setSlideshows(List<Slideshow> models) {
-        if (null != models && models.size() > 0) {
-            String[] urls = new String[models.size()];
-            int i = 0;
-            for (Slideshow slide : models) {
-                urls[i++] = slide.getPicUrl();
-            }
-            circleView.setImageUrls(urls);
-            this.slideshows = models;
-            this.loadSlideSuccess = true;
+        if (ListUtils.listEmpty(models)) {
+            return;
         }
+        String[] urls = new String[models.size()];
+        int i = 0;
+        for (Slideshow slide : models) {
+            urls[i++] = slide.getPicUrl();
+        }
+        circleView.setImageUrls(urls);
+        this.slideshows = models;
+        this.loadSlideSuccess = true;
     }
 
     private void setDefaultCircleView() {
@@ -185,7 +186,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
-                        setSlideshows((List<Slideshow>)models);
+                        setSlideshows((List<Slideshow>) models);
                         mApplication.saveJsonString(result.array.toString(), Slideshow.class);
                     }
                 });
@@ -211,7 +212,9 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     protected void loadLocalData() {
         super.loadLocalData();
         String slides = mApplication.getJsonString(Slideshow.class);
-        if (!StringUtils.strEmpty(slides)) {
+        if (StringUtils.strEmpty(slides)) {
+            this.setDefaultCircleView();
+        } else {
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(slides);
@@ -219,14 +222,12 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
-                        setSlideshows((List<Slideshow>)models);
+                        setSlideshows((List<Slideshow>) models);
                     }
                 });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            setDefaultCircleView();
         }
     }
 }
