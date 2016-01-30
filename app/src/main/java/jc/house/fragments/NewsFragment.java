@@ -69,8 +69,8 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         circleView.setOnCircleViewItemClickListener(this);
         this.loadSlideSuccess = false;
         initListView();
-        if (!PRODUCT) {
-            this.xlistView.setPullLoadEnable(false);
+        if (PRODUCT) {
+            this.xlistView.setPullLoadEnable(true);
         }
         if (PRODUCT) {
             circleView.setImageReIds(imageReIds);
@@ -96,7 +96,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LogUtils.debug(TAG, "position is " + position);
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (PRODUCT) {
@@ -107,6 +106,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                     intent.putExtra(WebActivity.FLAG_TITLE, "新闻详情");
                     startActivity(intent);
                 }
+                LogUtils.debug(TAG, "Click position is " + position);
             }
         });
     }
