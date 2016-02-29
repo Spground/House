@@ -35,8 +35,8 @@ public class IndicatorView extends LinearLayout {
 	}
 	
 	private void initView(Context context) {
-		this.normalResId = R.drawable.ic_launcher;
-		this.selectedResId = R.drawable.ic_launcher;
+		this.normalResId = R.drawable.indicator_normal;
+		this.selectedResId = R.drawable.indicator_selected;
 		this.spacing = 5;
 		this.selectedIndex = 0;
 		this.context = context;

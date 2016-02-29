@@ -12,6 +12,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import jc.house.async.MThreadPool;
 import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
+import jc.house.global.MApplication;
 import jc.house.global.RequestType;
 import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
@@ -36,6 +38,7 @@ import jc.house.models.ServerResult;
 import jc.house.models.Slideshow;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
+import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 
 public class NewsFragment extends BaseNetFragment implements CircleView.CircleViewOnClickListener {
@@ -43,6 +46,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             R.drawable.home02, R.drawable.home03};
     private static final String TAG = "NewsFragment";
     private static final int PAGE_SIZE = 8;
+    private static final String SLIDE_PAGE_SIZE = "3";
     private CircleView circleView;
     private boolean loadSlideSuccess;
     private List<Slideshow> slideshows;
@@ -57,9 +61,10 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.mApplication = (MApplication)this.getActivity().getApplication();
         circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
-        circleView.setTimeInterval(2);
+        circleView.setTimeInterval(3.6f);
         circleView.setOnCircleViewItemClickListener(this);
         this.loadSlideSuccess = false;
         if (PRODUCT) {
@@ -72,12 +77,15 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
         } else {
             showDialog();
+            loadLocalData();
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             this.fetchSlideshows();
         }
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
-        this.xlistView.setPullLoadEnable(false);
+        if (!PRODUCT) {
+            this.xlistView.setPullLoadEnable(false);
+        }
     }
 
     @Override
@@ -129,17 +137,12 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
-        fetchDataFromServer(fetchType, RequestType.POST, getParams(fetchType));
-    }
-
-    @Override
-    protected void handleResponse(JSONArray array, FetchType fetchType) {
-        super.handleResponse(array, fetchType);
+        fetchDataFromServer(fetchType, RequestType.POST);
     }
 
     private void fetchSlideshows() {
         Map<String, String> params = new HashMap<>();
-        params.put(PARAM_PAGE_SIZE, "3");
+        params.put(PARAM_PAGE_SIZE, SLIDE_PAGE_SIZE);
         this.client.post(Constants.SLIDE_URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -171,12 +174,13 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     private void handleSlideshows(int statusCode, JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
             if (result.isSuccess) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result.array, result.resultType, Slideshow.class) {
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
                         setSlideshows((List<Slideshow>)models);
+                        mApplication.saveJsonString(result.array.toString(), Slideshow.class);
                     }
                 });
             } else {
@@ -189,7 +193,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     public void onCircleViewItemClick(View v, int index) {
-        if (this.loadSlideSuccess) {
+        if (this.loadSlideSuccess && index < this.slideshows.size()) {
             Intent intent = new Intent(getActivity(), WebActivity.class);
             intent.putExtra(WebActivity.FLAG_TITLE, "详情");
             intent.putExtra(WebActivity.FLAG_URL, Constants.SLIDE_MOBILE_URL + this.slideshows.get(index).getId());
@@ -198,8 +202,23 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
-    protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
-        super.updateListView(dataSet, fetchType);
-        this.xlistView.setPullLoadEnable(true);
+    protected void loadLocalData() {
+        super.loadLocalData();
+        String slides = mApplication.getJsonString(Slideshow.class);
+        if (!StringUtils.strEmpty(slides)) {
+            ServerResult result = new ServerResult();
+            try {
+                result.array = new JSONArray(slides);
+                result.resultType = ServerResultType.Array;
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        setSlideshows((List<Slideshow>)models);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

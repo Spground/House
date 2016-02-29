@@ -9,6 +9,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
+import jc.house.utils.StringUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +52,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected String tag;
     protected static final String PARAM_PAGE_SIZE = "pageSize";
     protected static final String PARAM_ID = "id";
+    protected boolean hasLocalRes;
 
     protected BaseNetFragment() {
         super();
@@ -60,7 +63,9 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void refresh() {
-        this.xlistView.smoothScrollToPosition(0);
+        if (null != this.xlistView) {
+            this.xlistView.smoothScrollToPosition(0);
+        }
     }
 
     protected void resetXListView() {
@@ -74,12 +79,14 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 LogUtils.debug(tag, "网络请求参数有错误！");
                 break;
             case ServerResult.CODE_NO_DATA:
+                toastNoMoreData();
                 LogUtils.debug(tag, "网络请求连接正常，数据为空！");
                 break;
             default:
                 break;
         }
         hideDialog();
+        resetXListView();
     }
 
     protected void toastNoMoreData() {
@@ -93,6 +100,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             ToastS("服务器连接错误，请重新尝试！");
         }
         hideDialog();
+        resetXListView();
     }
 
     @Override
@@ -116,7 +124,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected void initListView() {
         this.xlistView.setAdapter(adapter);
         this.xlistView.setXListViewListener(this);
-        this.xlistView.setPullLoadEnable(true);
+        this.xlistView.setPullLoadEnable(false);
         this.xlistView.setPullRefreshEnable(false);
     }
 
@@ -133,13 +141,12 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         return false;
     }
 
-    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType,
-                                       Map<String, String> params) {
+    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType) {
         if (this.isOver(fetchType)) {
             return;
         }
         if (requestType == RequestType.POST) {
-            this.client.post(url, new RequestParams(params), new JsonHttpResponseHandler() {
+            this.client.post(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -155,7 +162,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 }
             });
         } else {
-            this.client.get(url, new RequestParams(params), new JsonHttpResponseHandler() {
+            this.client.get(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -180,11 +187,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             ServerResult result;
             result = ServerUtils.parseServerResponse(response, resultType);
             if (result.isSuccess) {
-                if (ServerResultType.Array == resultType) {
-                    handleResponse(result.array, fetchtype);
-                } else {
-                    handleResponse(result.object, fetchtype);
-                }
+                handleResponse(result, fetchtype);
             } else {
                 handleCode(result.code, "server code");
             }
@@ -227,6 +230,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.dataSet.clear();
                 this.isOver = false;
+                this.xlistView.setPullLoadEnable(true);
             } else {
                 if (dataSet.size() < pageSize) {
                     this.isOver = true;
@@ -250,16 +254,49 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
-    protected void handleResponse(JSONArray array, final FetchType fetchType) {
-        MThreadPool.getInstance().submitParseDataTask(new ParseTask(array, ServerResultType.Array, getModelClass()) {
-            @Override
-            public void onSuccess(List<? extends BaseModel> models) {
-                updateListView((List<BaseModel>) models, fetchType);
-            }
-        });
+    protected void handleResponse(final ServerResult result, final FetchType fetchType) {
+        if (result.isArrayType()) {
+            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                @Override
+                public void onSuccess(List<? extends BaseModel> models) {
+                    updateListView((List<BaseModel>) models, fetchType);
+                    if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                        saveToLocal(result.array.toString());
+                    }
+                }
+            });
+        } else {
+            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                @Override
+                public void onSuccess(BaseModel model) {
+                    super.onSuccess(model);
+                }
+            });
+        }
     }
 
-    protected void handleResponse(JSONObject object, final FetchType fetchType) {
+    protected void loadLocalData() {
+        String content = mApplication.getJsonString(this.getModelClass());
+        if (!StringUtils.strEmpty(content)) {
+            LogUtils.debug(tag, "load data from local + " + this.getModelClass().toString());
+            ServerResult result = new ServerResult();
+            try {
+                result.array = new JSONArray(content);
+                result.resultType = ServerResultType.Array;
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            hasLocalRes = true;
+        }
+    }
 
+    protected void saveToLocal(String content) {
+        this.mApplication.saveJsonString(content, this.getModelClass());
     }
 }

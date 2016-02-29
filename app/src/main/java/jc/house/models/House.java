@@ -14,6 +14,7 @@ public class House extends BaseModel implements Parcelable {
 	private String labelContent;
 	private double lat;
 	private double lng;
+	protected String avgPrice;
 	private String[] labelsResult;
 
 	public House() {}
@@ -46,9 +47,10 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeDouble(lng);
 		dest.writeInt(stars);
 		dest.writeString(labelContent);
+		dest.writeString(avgPrice);
 	}
 
-	private House(Parcel origin) {
+	protected House(Parcel origin) {
 		this.id = origin.readInt();
 		this.url = origin.readString();
 		this.name = origin.readString();
@@ -58,6 +60,7 @@ public class House extends BaseModel implements Parcelable {
 		this.lng = origin.readDouble();
 		this.stars = origin.readInt();
 		this.labelContent = origin.readString();
+		this.avgPrice = origin.readString();
 	}
 
 	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
@@ -72,11 +75,35 @@ public class House extends BaseModel implements Parcelable {
 		}
 	};
 
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(name + "-").append(url + "-").append(id + "-").append(lat + "-").append(labelContent + "-").append(avgPrice);
+		return stringBuilder.toString();
+	}
+
+	public boolean isValid() {
+		return (null != name) && (null != labelContent) && (null != url) && (null != intro) && (null != avgPrice);
+	}
+
 	public String[] getLabelsResult() {
 		if (null == labelsResult) {
 			labelsResult = StringUtils.parseHouseLables(labelContent);
 		}
 		return labelsResult;
+	}
+
+	public String getLabelString() {
+		if (null != this.getLabelsResult()) {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < labelsResult.length; i++) {
+				sb.append(labelsResult[i]);
+				if (i == 0) {
+					sb.append("  ");
+				}
+			}
+			return sb.toString();
+		}
+		return null;
 	}
 
 	public String getUrl() {
@@ -126,5 +153,13 @@ public class House extends BaseModel implements Parcelable {
 	}
 	public int getStars() {
 		return stars;
+	}
+
+	public String getAvgPrice() {
+		return avgPrice;
+	}
+
+	public void setAvgPrice(String avgPrice) {
+		this.avgPrice = avgPrice;
 	}
 }

@@ -36,8 +36,7 @@
             android:maxLines="2"
             android:text="心系昭通 情献灾区心系昭通 情献灾区心系昭通 情献灾区"
             android:textColor="@color/font_grey_700"
-            android:textSize="@dimen/font_main_size"
-            android:textStyle="" />
+            android:textSize="@dimen/font_main_size" />
 
         <RelativeLayout
             android:layout_width="match_parent"

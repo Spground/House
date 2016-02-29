@@ -1,12 +1,14 @@
 package jc.house.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by hzj on 2015/11/9.
  */
 public final class HouseDetail extends House {
     private String houseType;
     private String forceType;
-    private String avgPrice;
     private String address;
     private String recReason;
     private String trafficLines;
@@ -41,14 +43,6 @@ public final class HouseDetail extends House {
 
     public String getForceType() {
         return forceType;
-    }
-
-    public void setAvgPrice(String avgPrice) {
-        this.avgPrice = avgPrice;
-    }
-
-    public String getAvgPrice() {
-        return avgPrice;
     }
 
     public void setAddress(String address) {
@@ -90,4 +84,37 @@ public final class HouseDetail extends House {
     public void setHelper(CustomerHelper helper) {
         this.helper = helper;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(houseType);
+        dest.writeString(forceType);
+        dest.writeString(address);
+        dest.writeString(recReason);
+        dest.writeString(trafficLines);
+        dest.writeString(designIdea);
+    }
+
+    private HouseDetail(Parcel origin) {
+        super(origin);
+        this.houseType = origin.readString();
+        this.forceType = origin.readString();
+        this.address = origin.readString();
+        this.recReason = origin.readString();
+        this.trafficLines = origin.readString();
+        this.designIdea = origin.readString();
+    }
+
+    public static final Parcelable.Creator<HouseDetail> CREATOR = new Parcelable.Creator<HouseDetail>() {
+        @Override
+        public HouseDetail createFromParcel(Parcel source) {
+            return new HouseDetail(source);
+        }
+
+        @Override
+        public HouseDetail[] newArray(int size) {
+            return new HouseDetail[size];
+        }
+    };
 }

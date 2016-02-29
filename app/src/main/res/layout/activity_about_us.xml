@@ -49,7 +49,7 @@
             android:layout_marginTop="10dp"
             android:gravity="left"
             android:lineSpacingExtra="2dp"
-            android:text="    金宸集团App是一款金宸集团出品的房产应用，主要是用来展示公司动态信息，主要楼盘信息以及最新的活动,同时可以提供用户咨询等服务，以此来提高我们的服务水平！
+            android:text="    金宸集团App是一款金宸集团出品的房产应用，主要是用来展示公司动态信息，楼盘信息以及最新的活动信息，同时可以提供用户咨询等服务，以此来提高我们的服务水平！
             "
             android:textColor="@color/gray"
             android:textSize="15sp" />

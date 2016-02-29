@@ -3,9 +3,6 @@ package jc.house.async;
 import android.os.Handler;
 import android.os.Looper;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +19,7 @@ import jc.house.utils.ParseJson;
 public class MThreadPool {
     private static MThreadPool instance = null;
     private ExecutorService executorService = null;
-    private static final int THREAD_NUM = 2;
+    private static final int THREAD_NUM = 3;
     private static final String TAG = "MThreadPool";
     private Handler mHandler = null;
 
@@ -40,6 +37,10 @@ public class MThreadPool {
             }
         }
         return instance;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
     public void submitParseDataTask(ParseTask task) {
@@ -62,16 +63,8 @@ public class MThreadPool {
                 }
             });
             if (ServerResultType.Object == task.getResultType()) {
-                JSONObject mObject = null;
-                try {
-                    //强制转换有可能出异常
-                    mObject = (JSONObject)task.getArgs();
-                } catch (Exception e) {
-                    //onFail()方法如果不需要在主线程回调的话
-                    task.onFail(e.getMessage());
-                }
-                if (null != mObject) {
-                    final BaseModel model = ParseJson.jsonObj2Model(mObject, task.getMClass());
+                if (null != task.getResult()) {
+                    final BaseModel model = ParseJson.jsonObj2Model(task.getResult().object, task.getMClass());
                     if (null != model) {
                         mHandler.post(new Runnable() {
                             @Override
@@ -82,14 +75,8 @@ public class MThreadPool {
                     }
                 }
             } else {
-                JSONArray array = null;
-                try{
-                    array = (JSONArray)task.getArgs();
-                } catch (Exception e) {
-                    task.onFail(e.getMessage());
-                }
-                if (null != array) {
-                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList((JSONArray)task.getArgs(), task.getMClass());
+                if (null != task.getResult()) {
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(task.getResult().array, task.getMClass());
                     if (null != models && models.size() > 0) {
                         mHandler.post(new Runnable() {
                             @Override

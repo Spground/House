@@ -48,6 +48,7 @@ public class CircleView extends LinearLayout {
 	private Animation animation;
 	private SCROLL_ORIENTATION orientation;
 	private TimerCircle timer;
+	private boolean first;
 
 	public CircleView(Context context) {
 		super(context);
@@ -69,8 +70,6 @@ public class CircleView extends LinearLayout {
 		this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
 		this.indicatorView = (IndicatorView) this
 				.findViewById(R.id.indicatorView);
-		this.indicatorView.setNormalResId(R.drawable.indicator_normal);
-		this.indicatorView.setSelectedResId(R.drawable.indicator_selected);
 		this.autoPlay = true;
 		this.timeInterval = 0;
 		this.num = 0;
@@ -79,6 +78,7 @@ public class CircleView extends LinearLayout {
 		this.animation = new AlphaAnimation(0.8f, 1.0f);
 		this.animation.setDuration(600);
 		this.orientation = SCROLL_ORIENTATION.RIGHT;
+		this.first = true;
 	}
 
 	public void setAutoPlay(boolean autoPlay) {
@@ -102,9 +102,11 @@ public class CircleView extends LinearLayout {
 
 	public void setImageReIds(int[] imageReIds) {
 		synchronized (this) {
-			if (null != imageReIds && imageReIds.length > 0) {
-				this.imageReIds = imageReIds;
-				this.num = imageReIds.length;
+			if (null != imageReIds && imageReIds.length > 0 && first) {
+				if (first) {
+					this.imageReIds = imageReIds;
+					this.num = imageReIds.length;
+				}
 				addImageViews(true);
 			}
 		}
@@ -113,48 +115,63 @@ public class CircleView extends LinearLayout {
 	public void setImageUrls(String[] imageUrls) {
 		synchronized (this) {
 			if (null != imageUrls && imageUrls.length > 0) {
-				this.imageUrls = imageUrls;
-				this.num = imageUrls.length;
+				if (first) {
+					this.imageUrls = imageUrls;
+					this.num = imageUrls.length;
+				}
 				this.addImageViews(false);
 			}
 		}
 	}
 
 	private void addImageViews(boolean isLocalRes) {
-		this.imageViews.clear();
 		if (null != timer) {
 			timer.cancel();
 		}
-		for (int i = 0; i < num; i++) {
-			ImageView imageView = new ImageView(this.context);
-			imageView.setLayoutParams(new LayoutParams(
-					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			imageView.setScaleType(ScaleType.CENTER_CROP);
-			if (isLocalRes) {
-				imageView.setImageDrawable(this.getResources().getDrawable(
-						imageReIds[i]));
-			} else {
-				loadImage(imageView, imageUrls[i]);
-			}
-			imageView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					if (null != circleClickListener) {
-						circleClickListener.onCircleViewItemClick(v, currentIndex);
-					}
+		if (this.first) {
+			this.imageViews.clear();
+			for (int i = 0; i < num; i++) {
+				ImageView imageView = new ImageView(this.context);
+				imageView.setLayoutParams(new LayoutParams(
+						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+				imageView.setScaleType(ScaleType.CENTER_CROP);
+				if (isLocalRes) {
+					imageView.setImageResource(imageReIds[i]);
+				} else {
+					loadImage(imageView, imageUrls[i]);
 				}
+				imageView.setOnClickListener(new OnClickListener() {
 
-			});
-			this.imageViews.add(imageView);
-		}
-		this.indicatorView.setNum(num);
-		this.viewPager.setAdapter(new CirclePagerAdapter());
-		this.viewPager
-				.addOnPageChangeListener(new CircleOnPageChangeListener());
-		if (this.autoPlay && num > 1) {
-			if (null == timer) {
-				timer = new TimerCircle(System.currentTimeMillis() / 1000 + (long) timeInterval * 1000, (long) timeInterval * 1000, this);
+					@Override
+					public void onClick(View v) {
+						if (null != circleClickListener) {
+							circleClickListener.onCircleViewItemClick(v, currentIndex);
+						}
+					}
+
+				});
+				this.imageViews.add(imageView);
+			}
+			this.indicatorView.setNum(num);
+			this.viewPager.setAdapter(new CirclePagerAdapter());
+			this.viewPager
+					.addOnPageChangeListener(new CircleOnPageChangeListener());
+			if (this.autoPlay && num > 1) {
+				if (null == timer) {
+					timer = new TimerCircle(System.currentTimeMillis() / 1000 + (long) timeInterval * 1000, (long) timeInterval * 1000, this);
+				}
+				timer.start();
+			}
+			first = false;
+		} else {
+			if (isLocalRes) {
+				for (int i = 0; i < num && i < this.imageReIds.length; i++) {
+					this.imageViews.get(i).setImageResource(this.imageReIds[i]);
+				}
+			} else {
+				for (int i = 0; i < num && i < this.imageUrls.length; i++) {
+					this.loadImage(this.imageViews.get(i), this.imageUrls[i]);
+				}
 			}
 			timer.start();
 		}
