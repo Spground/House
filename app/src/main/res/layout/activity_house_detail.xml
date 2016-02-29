@@ -267,7 +267,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="推荐理由"
+                        android:text="项目介绍"
                         android:textSize="14sp" />
 
                     <jc.house.views.ViewPagerTitle
@@ -278,7 +278,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="行车路线"
+                        android:text="综合配套"
                         android:textSize="14sp" />
 
                     <jc.house.views.ViewPagerTitle

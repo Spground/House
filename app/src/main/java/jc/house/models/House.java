@@ -100,7 +100,6 @@ public class House extends BaseModel implements Parcelable {
 
 	public String[] getImageUrls() {
 		if (null == imageUrls) {
-//			imageUrls = StringUtils.parseHouseImageUrls(url);
 			if (!StringUtils.strEmpty(hxUrl) && !hxUrl.equalsIgnoreCase("null")) {
 				imageUrls = new String[2];
 				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;

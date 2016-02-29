@@ -41,7 +41,7 @@ public final class StringUtils {
 		return result;
 	}
 
-	public static final String[] parseHouseImageUrls(String imageUrl) {
+	public static final String[] parseImageUrls(String imageUrl) {
 		if (strEmpty(imageUrl)) {
 			return null;
 		}
@@ -51,4 +51,6 @@ public final class StringUtils {
 		}
 		return result;
 	}
+
+
 }

@@ -43,8 +43,12 @@ import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
 public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener,CircleView.CircleViewOnClickListener {
-    private static final String TAG = "HouseDetailActivity";
     public static final String HOUSE_DETAIL_URL = Constants.SERVER_URL + "house/detail";
+    public static final String FLAG_ID = "id";
+    public static final String FLAG_HOUSE_DETAIL = "HouseDetail";
+    public static final String FLAG_HELPER_ID = "HelperID";
+    public static final String FLAG_HELPER_NAME = "HelperName";
+    private static final String TAG = "HouseDetailActivity";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
     private MViewPager viewPager;
     private List<TextView> textViews;
@@ -60,10 +64,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private TextView tvAvgPrice;
     private TextView tvPhone;
     private int id = -1;
-    public static final String FLAG_ID = "id";
-    public static final String FLAG_HOUSE_DETAIL = "HouseDetail";
-    public static final String FLAG_HELPER_ID = "HelperID";
-    public static final String FLAG_HELPER_NAME = "HelperName";
     private String hxID;
     private String nickName;
 
@@ -280,7 +280,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void parseServerData(int statusCode, final JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
-            if (ServerResult.CODE_SUCCESS == result.code) {
+            if (result.isSuccess) {
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class){
                     @Override
                     public void onSuccess(BaseModel model) {
