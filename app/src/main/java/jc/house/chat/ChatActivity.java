@@ -259,7 +259,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         message.setAttribute("img_url", imgUrl);
         message.setAttribute("house_name", houseName);
         message.setAttribute("tag", tag);
-        message.setAttribute("price", price);
+        message.setAttribute("avgprice", price);
         TextMessageBody txtBody = new TextMessageBody("[楼盘消息]");
         message.addBody(txtBody);
         message.setReceipt(toChatUserName);

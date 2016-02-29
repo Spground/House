@@ -20,6 +20,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
+import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
@@ -67,6 +69,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private String hxID;
     private String nickName;
 
+    private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +80,16 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (!PRODUCT) {
             id = this.getIntent().getIntExtra(FLAG_ID, -1);
             if (id >= 0) {
-                showDialog();
-                hideViews();
-                fetchDataFromServer();
+                //getCache first
+                this.houseDetail = getCache(id);
+                if(this.houseDetail != null)
+                    setServerData(houseDetail);
+                else {
+                    //cache miss
+                    showDialog();
+                    hideViews();
+                    fetchDataFromServer();
+                }
             } else {
                 houseDetail = this.getIntent().getParcelableExtra(FLAG_HOUSE_DETAIL);
                 this.hxID = this.getIntent().getStringExtra(FLAG_HELPER_ID);
@@ -87,6 +97,27 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 setServerData(houseDetail);
             }
         }
+    }
+
+    /**
+     * 取缓存houseDetail
+     * @param id
+     * @return
+     */
+    private HouseDetail getCache(int id) {
+        LogUtils.debug("===HouseDetailActivity===", "getCache id is " + id);
+        return (houseDetailCache.get(id)).get();
+    }
+
+    /**
+     * 缓存HouseDetail
+     * @param id
+     * @param houseDetail
+     */
+    private void putCache(int id, HouseDetail houseDetail) {
+        WeakReference<HouseDetail> item = new WeakReference<>(houseDetail);
+        houseDetailCache.put(id, item);
+        LogUtils.debug("===HouseDetailActivity===", "putCache id is " + id);
     }
 
     private void initViews() {
@@ -131,7 +162,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
                         intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());
                         intent.putExtra("nickName", houseDetail.getHelper().getName());
-                        intent.putExtra(ChatActivity.EXTRA_HOUSE, (House)houseDetail);
+                        intent.putExtra(ChatActivity.EXTRA_HOUSE, houseDetail);
                         startActivity(intent);
                     } else if (!StringUtils.strEmpty(hxID) && !StringUtils.strEmpty(nickName)) {
                         intent.putExtra("toChatUserName", hxID);
@@ -245,6 +276,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void setServerData(HouseDetail model) {
         if (null != model) {
             this.houseDetail = model;
+            //cache housedetail
+            putCache(model.getId(), model);
             hideDialog();
             showViews();
             this.tvAddress.setText(this.houseDetail.getAddress());
@@ -255,6 +288,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             this.textViews.get(0).setText(this.houseDetail.getRecReason());
             this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
             this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
+            LogUtils.debug("===HOUSE_DETAIL 0===", houseDetail.getImageUrls()[0]);
             this.circleView.setImageUrls(houseDetail.getImageUrls());
             this.circleView.setOnCircleViewItemClickListener(this);
         }
