@@ -2,6 +2,7 @@ package jc.house.views;
 
 import jc.house.R;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ public class TabViewItem extends LinearLayout {
 	private int normalResId, selectedResId;
 	private int index;
 	private final int normalTextColor = Color.rgb(99, 99, 99);
-	private final int selectedTextColor = Color.rgb(229, 1, 19);
+	private final int selectedTextColor = Color.rgb(255, 0 , 0);
 
 	public TabViewItem(Context context) {
 		super(context);
@@ -86,12 +87,10 @@ public class TabViewItem extends LinearLayout {
 	 * set little red dot visible
 	 */
 	public void lightLittleRedDot(){
-		if(this.littleRedDotView != null || this.littleRedDotView.getVisibility() == View.INVISIBLE)
-			this.littleRedDotView.setVisibility(View.VISIBLE);
+		this.littleRedDotView.setVisibility(View.VISIBLE);
 	}
 
 	public void unlightLittleRedDot(){
-		if(this.littleRedDotView != null || this.littleRedDotView.getVisibility() == View.VISIBLE)
-			this.littleRedDotView.setVisibility(View.INVISIBLE);
+		this.littleRedDotView.setVisibility(View.INVISIBLE);
 	}
 }

@@ -14,12 +14,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/house_image_view"
+            <!--<ImageView-->
+                <!--android:id="@+id/house_image_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="156dp"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:src="@drawable/jc_default_image" />-->
+
+            <jc.house.views.CircleView
+                android:id="@+id/house_circle_view"
                 android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/jc_default_image" />
+                android:layout_height="wrap_content"></jc.house.views.CircleView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -289,7 +294,7 @@
                 </LinearLayout>
 
                 <jc.house.views.MViewPager
-                    android:id="@+id/viewpager"
+                    android:id="@+id/house_detail_viewpager"
                     android:layout_width="match_parent"
                     android:layout_height="127dp"
                     android:layout_gravity="center"

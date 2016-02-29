@@ -33,7 +33,7 @@ public class WebActivity extends BaseActivity {
         if (!StringUtils.strEmpty(url)) {
             this.webView.loadUrl(url);
         } else {
-            this.webView.loadUrl(Constants.SERVER_URL + "news/mobile&id=12");
+//            this.webView.loadUrl(Constants.SERVER_URL + "news/mobile&id=12");
         }
         this.webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -57,9 +57,8 @@ public class WebActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN && this.webView.canGoBack()) {
             this.webView.goBack();
             return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
         }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

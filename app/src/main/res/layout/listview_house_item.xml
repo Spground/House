@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/listview_selector"
     android:descendantFocusability="blocksDescendants"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="3dp"
     android:paddingRight="5dp"
-    android:paddingTop="10dp">
+    android:paddingTop="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -26,7 +29,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="84dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_marginLeft="3dp"
             android:orientation="vertical">
 
@@ -53,6 +57,8 @@
                 android:gravity="left|center"
                 android:text="推荐指数4.5"
                 android:textColor="@color/grey"
+                android:paddingTop="1dp"
+                android:paddingBottom="2dp"
                 android:textSize="9sp"
                 android:visibility="visible" />
 
@@ -62,7 +68,9 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="left|center_vertical"
+                android:maxLines="2"
                 android:text="沙河口 小户型 南北通透 双卫"
+                android:paddingBottom="2dp"
                 android:textColor="#777777"
                 android:textSize="11sp" />
 
@@ -73,7 +81,7 @@
                 android:autoLink="phone"
                 android:padding="1dp"
                 android:text="0411-87879911"
-                android:textColor="@android:color/holo_red_light" />
+                android:textColor="@color/red_jc" />
 
         </LinearLayout>
     </LinearLayout>

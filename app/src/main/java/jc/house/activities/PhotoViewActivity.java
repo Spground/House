@@ -8,6 +8,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import jc.house.R;
+import jc.house.global.Constants;
 import jc.house.utils.ToastUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -50,8 +51,8 @@ public class PhotoViewActivity extends BaseActivity {
         showDialog();
         //show image
         /**debug indicators, should be deleted at production**/
-        Picasso.with(this).setIndicatorsEnabled(true);
-        Picasso.with(this).setLoggingEnabled(true);
+        Picasso.with(this).setIndicatorsEnabled(Constants.PRODUCT);
+        Picasso.with(this).setLoggingEnabled(Constants.DEBUG);
         Picasso.with(this)
                 .load(this.imageUrl)
                 .fit()

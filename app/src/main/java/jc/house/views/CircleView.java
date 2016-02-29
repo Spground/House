@@ -71,7 +71,7 @@ public class CircleView extends LinearLayout {
 		this.indicatorView = (IndicatorView) this
 				.findViewById(R.id.indicatorView);
 		this.autoPlay = true;
-		this.timeInterval = 0;
+		this.timeInterval = 3.0f;
 		this.num = 0;
 		this.context = context;
 		this.imageViews = new ArrayList<>();
@@ -88,6 +88,8 @@ public class CircleView extends LinearLayout {
 	public void setTimeInterval(float timeInterval) {
 		if (timeInterval > 0) {
 			this.timeInterval = timeInterval;
+		} else {
+			throw new IllegalStateException("timeInterval should be > 0");
 		}
 	}
 
@@ -134,7 +136,7 @@ public class CircleView extends LinearLayout {
 				ImageView imageView = new ImageView(this.context);
 				imageView.setLayoutParams(new LayoutParams(
 						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-				imageView.setScaleType(ScaleType.CENTER_CROP);
+				imageView.setScaleType(ScaleType.FIT_XY);
 				if (isLocalRes) {
 					imageView.setImageResource(imageReIds[i]);
 				} else {
@@ -152,7 +154,9 @@ public class CircleView extends LinearLayout {
 				});
 				this.imageViews.add(imageView);
 			}
-			this.indicatorView.setNum(num);
+			if (num > 1) {
+				this.indicatorView.setNum(num);
+			}
 			this.viewPager.setAdapter(new CirclePagerAdapter());
 			this.viewPager
 					.addOnPageChangeListener(new CircleOnPageChangeListener());
@@ -165,12 +169,16 @@ public class CircleView extends LinearLayout {
 			first = false;
 		} else {
 			if (isLocalRes) {
-				for (int i = 0; i < num && i < this.imageReIds.length; i++) {
-					this.imageViews.get(i).setImageResource(this.imageReIds[i]);
+				if (null != imageReIds) {
+					for (int i = 0; i < num && i < this.imageReIds.length; i++) {
+						this.imageViews.get(i).setImageResource(this.imageReIds[i]);
+					}
 				}
 			} else {
-				for (int i = 0; i < num && i < this.imageUrls.length; i++) {
-					this.loadImage(this.imageViews.get(i), this.imageUrls[i]);
+				if (null != imageUrls) {
+					for (int i = 0; i < num && i < this.imageUrls.length; i++) {
+						this.loadImage(this.imageViews.get(i), this.imageUrls[i]);
+					}
 				}
 			}
 			timer.start();
@@ -178,7 +186,7 @@ public class CircleView extends LinearLayout {
 	}
 
 	private void loadImage(ImageView imageView, String url) {
-		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.home02).error(R.drawable.home02).into(imageView);
+		Picasso.with(context).load(url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
 	}
 
 	private class CircleOnPageChangeListener implements OnPageChangeListener {

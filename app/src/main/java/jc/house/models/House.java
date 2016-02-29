@@ -3,10 +3,13 @@ package jc.house.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import jc.house.global.Constants;
 import jc.house.utils.StringUtils;
 
 public class House extends BaseModel implements Parcelable {
+	public static final int MAX_INTRO_LENGTH = 25;
 	private String url;
+	private String hxUrl;
 	private String name;
 	private String intro;
 	private String phone;
@@ -16,6 +19,7 @@ public class House extends BaseModel implements Parcelable {
 	private double lng;
 	protected String avgPrice;
 	private String[] labelsResult;
+	private String[] imageUrls;
 
 	public House() {}
 
@@ -48,6 +52,7 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeInt(stars);
 		dest.writeString(labelContent);
 		dest.writeString(avgPrice);
+		dest.writeString(hxUrl);
 	}
 
 	protected House(Parcel origin) {
@@ -61,6 +66,7 @@ public class House extends BaseModel implements Parcelable {
 		this.stars = origin.readInt();
 		this.labelContent = origin.readString();
 		this.avgPrice = origin.readString();
+		this.hxUrl = origin.readString();
 	}
 
 	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
@@ -92,6 +98,21 @@ public class House extends BaseModel implements Parcelable {
 		return labelsResult;
 	}
 
+	public String[] getImageUrls() {
+		if (null == imageUrls) {
+//			imageUrls = StringUtils.parseHouseImageUrls(url);
+			if (!StringUtils.strEmpty(hxUrl) && !hxUrl.equalsIgnoreCase("null")) {
+				imageUrls = new String[2];
+				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
+				imageUrls[1] = Constants.IMAGE_URL_ORIGIN + hxUrl;
+			} else {
+				imageUrls = new String[1];
+				imageUrls[0] = url;
+			}
+		}
+		return imageUrls;
+	}
+
 	public String getLabelString() {
 		if (null != this.getLabelsResult()) {
 			StringBuilder sb = new StringBuilder();
@@ -112,6 +133,11 @@ public class House extends BaseModel implements Parcelable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public void setHxUrl(String hxUrl) {
+		this.hxUrl = hxUrl;
+	}
+
 	public String getName() {
 		return name;
 	}

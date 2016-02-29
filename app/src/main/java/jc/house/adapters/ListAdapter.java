@@ -23,6 +23,7 @@ import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.utils.GeneralUtils;
+import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 import jc.house.views.RatingView;
 
@@ -149,7 +150,7 @@ public class ListAdapter extends BaseAdapter {
 						}
 					}
 					viewHolderHouse.name.setText(house.getName());
-					viewHolderHouse.description.setText(house.getIntro());
+					viewHolderHouse.description.setText(StringUtils.subStr(house.getIntro(), House.MAX_INTRO_LENGTH));
 					viewHolderHouse.phone.setText(house.getPhone());
 					break;
 				case ACTIVITY:
@@ -169,7 +170,7 @@ public class ListAdapter extends BaseAdapter {
 					if(PRODUCT) {
 						viewHolderActivity.picture.setImageResource(Constants.resActivity[(int) (Math.random() * 5)]);
 						viewHolderActivity.title.setText(activityModel.getTitle());
-						viewHolderActivity.postTime.setText("2012-08-12");
+						viewHolderActivity.postTime.setText("");
 					} else {
 						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl());
 						viewHolderActivity.title.setText(activityModel.getTitle());
@@ -185,7 +186,7 @@ public class ListAdapter extends BaseAdapter {
 	}
 
 	private void loadImageWithPicasso(ImageView imageView, String url) {
-		Picasso.with(context).load(Constants.IMAGE_URL + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
+		Picasso.with(context).load(Constants.IMAGE_URL_ORIGIN + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
 	}
 	
 	private static final class ViewHolderChatUser {

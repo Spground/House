@@ -23,6 +23,7 @@ public final class Constants {
 	private static final String SERVER_ROOT = "http://202.118.67.200:10717/house/";
 	public static final String SERVER_URL = SERVER_ROOT + "web/index.php?r=";
 	public static final String IMAGE_URL = SERVER_ROOT + "images_mobile/";
+	public static final String IMAGE_URL_ORIGIN = SERVER_ROOT + "images/";
 	public static final String FEEDBACK_URL = SERVER_URL + "feedback/feedbacks";
 	public static final String ACTIVITY_URL = SERVER_URL + "activity/activitys";
 	public static final String ACTIVITY_SHOW_URL = SERVER_URL + "activity/mobile&id=";

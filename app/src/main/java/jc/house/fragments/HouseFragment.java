@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
@@ -56,9 +57,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mApplication = (MApplication)this.getActivity().getApplication();
+        this.mApplication = (MApplication) this.getActivity().getApplication();
         this.mapBtn = (ImageButton) this.view.findViewById(R.id.id_map_btn);
         this.mapBtn.setOnClickListener(this);
+        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.HOUSE);
         initListView();
 
         if (PRODUCT) {
@@ -85,16 +87,13 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected void initListView() {
-        this.xlistView = (XListView) this.view.findViewById(R.id.list);
-        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.HOUSE);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 if (pos >= 1 && pos <= dataSet.size()) {
                     Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-//                    intent.putExtra(HouseDetailActivity.FLAG_ID, dataSet.get(pos - 1).getId());
-                    HouseDetail house = (HouseDetail)(dataSet.get(pos - 1));
+                    HouseDetail house = (HouseDetail) (dataSet.get(pos - 1));
                     intent.putExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL, house);
                     if (null != house.getHelper()) {
                         intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, house.getHelper().getName());
@@ -136,14 +135,11 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && firstShow) {
-            LogUtils.debug("it is true");
             if (!hasLocalRes) {
                 showDialog();
             }
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             firstShow = false;
-        } else {
-            LogUtils.debug("It is false");
         }
     }
 

@@ -56,7 +56,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     }
 
     private void setMapViewData(House house) {
-        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(house.getLat(), house.getLng())).title(house.getName() + "\n" + house.getIntro()).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
+        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(house.getLat(), house.getLng())).title(house.getName()).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
         marker.setDraggable(true);
         marker.showInfoWindow();
         if (this.isSingleMarker) {
@@ -117,9 +117,9 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         if (!isSingleMarker && mapHouses.size() > 0) {
             double latAll = 0;
             double lngAll = 0;
-            Iterator iterator = (mapHouses.entrySet().iterator());
+            Iterator<Map.Entry<String, House>> iterator = mapHouses.entrySet().iterator();
             while(iterator.hasNext()) {
-                Map.Entry<String, House> entry = (Map.Entry<String, House>)iterator.next();
+                Map.Entry<String, House> entry = iterator.next();
                 latAll += entry.getValue().getLat();
                 lngAll += entry.getValue().getLng();
             }

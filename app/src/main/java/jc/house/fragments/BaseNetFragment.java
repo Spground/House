@@ -3,6 +3,7 @@ package jc.house.fragments;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.BaseAdapter;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -13,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +122,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void initListView() {
-        this.xlistView.setAdapter(adapter);
+        this.xlistView = (XListView) this.view.findViewById(R.id.list);
+        this.xlistView.setAdapter(this.adapter);
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullLoadEnable(false);
         this.xlistView.setPullRefreshEnable(false);
@@ -150,8 +151,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
                     handleResponse(statusCode, response, fetchType, ServerResultType.Array);
+                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
                 }
 
                 @Override
@@ -166,8 +167,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
                     handleResponse(statusCode, response, fetchType, ServerResultType.Array);
+                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
                 }
 
                 @Override
@@ -179,20 +180,18 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             });
         }
 
-
     }
 
     protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResultType resultType) {
-        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result;
-            result = ServerUtils.parseServerResponse(response, resultType);
+        if (!ServerUtils.isConnectServerSuccess(statusCode, response)) {
+            handleFailure();
+        } else {
+            ServerResult result = ServerUtils.parseServerResponse(response, resultType);
             if (result.isSuccess) {
                 handleResponse(result, fetchtype);
             } else {
-                handleCode(result.code, "server code");
+                handleCode(result.code, "statusCode");
             }
-        } else {
-            handleFailure();
         }
     }
 
@@ -226,32 +225,31 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void updateListView(List<BaseModel> dataSet, final FetchType fetchType) {
-        if (null != dataSet && dataSet.size() > 0) {
+        resetXListView();
+        hideDialog();
+        if (null == dataSet) return;
+        int num = dataSet.size();
+        if (0 == num) {
+            isOver = true;
+            toastNoMoreData();
+        } else {
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.dataSet.clear();
-                this.isOver = false;
                 this.xlistView.setPullLoadEnable(true);
-            } else {
-                if (dataSet.size() < pageSize) {
-                    this.isOver = true;
-                }
             }
+            this.isOver = (num < pageSize);
             this.dataSet.addAll(dataSet);
             this.adapter.notifyDataSetChanged();
             if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
                 this.xlistView.smoothScrollToPosition(0);
             }
-        } else if (null != dataSet && dataSet.size() == 0) {
-            isOver = true;
-            toastNoMoreData();
         }
-        resetXListView();
-        hideDialog();
     }
 
     protected Class<? extends BaseModel> getModelClass() {
         return BaseModel.class;
     }
+
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
     protected void handleResponse(final ServerResult result, final FetchType fetchType) {
@@ -266,6 +264,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 }
             });
         } else {
+            //暂时没有用到
             MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
                 @Override
                 public void onSuccess(BaseModel model) {
@@ -278,7 +277,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected void loadLocalData() {
         String content = mApplication.getJsonString(this.getModelClass());
         if (!StringUtils.strEmpty(content)) {
-            LogUtils.debug(tag, "load data from local + " + this.getModelClass().toString());
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(content);
@@ -287,12 +285,13 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
                         updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
+                        hasLocalRes = true;
                     }
                 });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            hasLocalRes = true;
+            LogUtils.debug(tag, "Load data from local + " + content + this.getModelClass().toString());
         }
     }
 

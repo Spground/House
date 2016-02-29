@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -36,6 +37,7 @@ import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.models.ServerResult;
 import jc.house.models.Slideshow;
+import jc.house.utils.ListUtils;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
@@ -61,12 +63,17 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mApplication = (MApplication)this.getActivity().getApplication();
+        this.mApplication = (MApplication) this.getActivity().getApplication();
         circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
         circleView.setTimeInterval(3.6f);
         circleView.setOnCircleViewItemClickListener(this);
         this.loadSlideSuccess = false;
+        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
+        initListView();
+        if (PRODUCT) {
+            this.xlistView.setPullLoadEnable(true);
+        }
         if (PRODUCT) {
             circleView.setImageReIds(imageReIds);
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
@@ -81,21 +88,14 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             this.fetchSlideshows();
         }
-        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
-        initListView();
-        if (!PRODUCT) {
-            this.xlistView.setPullLoadEnable(false);
-        }
     }
 
     @Override
     protected void initListView() {
-        this.xlistView = (XListView) view.findViewById(R.id.list);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LogUtils.debug(TAG, "position is " + position);
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
                     if (PRODUCT) {
@@ -106,6 +106,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                     intent.putExtra(WebActivity.FLAG_TITLE, "新闻详情");
                     startActivity(intent);
                 }
+                LogUtils.debug(TAG, "Click position is " + position);
             }
         });
     }
@@ -154,22 +155,29 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+                handleFailure();
                 LogUtils.debug(TAG, responseString.toString());
             }
         });
     }
 
     private void setSlideshows(List<Slideshow> models) {
-        if (null != models && models.size() > 0) {
-            String[] urls = new String[models.size()];
-            int i = 0;
-            for (Slideshow slide : models) {
-                urls[i++] = slide.getPicUrl();
-            }
-            circleView.setImageUrls(urls);
-            this.slideshows = models;
-            this.loadSlideSuccess = true;
+        if (ListUtils.listEmpty(models)) {
+            return;
         }
+        String[] urls = new String[models.size()];
+        int i = 0;
+        for (Slideshow slide : models) {
+            urls[i++] = Constants.IMAGE_URL_ORIGIN + slide.getPicUrl();
+        }
+        circleView.setImageUrls(urls);
+        this.slideshows = models;
+        this.loadSlideSuccess = true;
+    }
+
+    private void setDefaultCircleView() {
+        this.circleView.setImageReIds(imageReIds);
+        this.circleView.setOnCircleViewItemClickListener(null);
     }
 
     private void handleSlideshows(int statusCode, JSONObject response) {
@@ -179,15 +187,15 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
-                        setSlideshows((List<Slideshow>)models);
+                        setSlideshows((List<Slideshow>) models);
                         mApplication.saveJsonString(result.array.toString(), Slideshow.class);
                     }
                 });
             } else {
-                circleView.setImageReIds(imageReIds);
+                setDefaultCircleView();
             }
         } else {
-            circleView.setImageReIds(imageReIds);
+            setDefaultCircleView();
         }
     }
 
@@ -205,7 +213,9 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     protected void loadLocalData() {
         super.loadLocalData();
         String slides = mApplication.getJsonString(Slideshow.class);
-        if (!StringUtils.strEmpty(slides)) {
+        if (StringUtils.strEmpty(slides)) {
+            this.setDefaultCircleView();
+        } else {
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(slides);
@@ -213,7 +223,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
-                        setSlideshows((List<Slideshow>)models);
+                        setSlideshows((List<Slideshow>) models);
                     }
                 });
             } catch (JSONException e) {
