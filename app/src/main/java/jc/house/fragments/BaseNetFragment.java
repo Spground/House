@@ -3,6 +3,7 @@ package jc.house.fragments;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.BaseAdapter;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -121,7 +122,8 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void initListView() {
-        this.xlistView.setAdapter(adapter);
+        this.xlistView = (XListView) this.view.findViewById(R.id.list);
+        this.xlistView.setAdapter(this.adapter);
         this.xlistView.setXListViewListener(this);
         this.xlistView.setPullLoadEnable(false);
         this.xlistView.setPullRefreshEnable(false);
@@ -184,8 +186,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         if (!ServerUtils.isConnectServerSuccess(statusCode, response)) {
             handleFailure();
         } else {
-            ServerResult result;
-            result = ServerUtils.parseServerResponse(response, resultType);
+            ServerResult result = ServerUtils.parseServerResponse(response, resultType);
             if (result.isSuccess) {
                 handleResponse(result, fetchtype);
             } else {

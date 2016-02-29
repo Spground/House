@@ -38,7 +38,7 @@ public final class ParseJson {
     public static final List<? extends BaseModel> jsonArray2ModelList(JSONArray array, Class<? extends BaseModel> clazz) {
         List<BaseModel> modelList = new ArrayList<>();
         if (null == array || array.length() == 0) {
-            return null;
+            return modelList;
         }
         Map<String, Class> fieldMap = mapFromClass(clazz);
         for (int i = 0; i < array.length(); i++) {
@@ -50,10 +50,10 @@ public final class ParseJson {
     }
 
     private static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
-        if (null == object || null == mClass) {
-            return null;
-        }
         BaseModel result = null;
+        if (null == object || null == mClass || null == fieldMap) {
+            return result;
+        }
         try {
             result = mClass.newInstance();
             Iterator<String> keys = object.keys();
@@ -92,10 +92,10 @@ public final class ParseJson {
     }
 
     private static final Map<String, Class> mapFromClass(Class<? extends BaseModel> mClass) {
-        if (null == mClass) {
-            return null;
-        }
         Map<String, Class> result = new HashMap<>();
+        if (null == mClass) {
+            return result;
+        }
         Class curClass = mClass;
         while (curClass != Object.class) {
             Field[] fields = curClass.getDeclaredFields();

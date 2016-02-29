@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -68,6 +69,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         circleView.setTimeInterval(3.6f);
         circleView.setOnCircleViewItemClickListener(this);
         this.loadSlideSuccess = false;
+        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
         if (PRODUCT) {
             this.xlistView.setPullLoadEnable(true);
@@ -90,8 +92,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     protected void initListView() {
-        this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
-        this.xlistView = (XListView) view.findViewById(R.id.list);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -155,6 +155,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+                handleFailure();
                 LogUtils.debug(TAG, responseString.toString());
             }
         });
@@ -167,7 +168,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         String[] urls = new String[models.size()];
         int i = 0;
         for (Slideshow slide : models) {
-            urls[i++] = slide.getPicUrl();
+            urls[i++] = Constants.IMAGE_URL_ORIGIN + slide.getPicUrl();
         }
         circleView.setImageUrls(urls);
         this.slideshows = models;

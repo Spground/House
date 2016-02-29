@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,7 @@ public class ActivityFragment extends BaseNetFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.mApplication = (MApplication)this.getActivity().getApplication();
+        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
         initListView();
         if (PRODUCT) {
             this.dataSet.add(new JCActivity(1, "", "金宸•蓝郡一期"));
@@ -63,14 +65,13 @@ public class ActivityFragment extends BaseNetFragment {
         } else {
             showDialog();
             loadLocalData();
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         }
         this.firstShow = true;
     }
 
     @Override
     protected void initListView() {
-        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
-        this.xlistView = (XListView) view.findViewById(R.id.list);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,6 +92,11 @@ public class ActivityFragment extends BaseNetFragment {
                 startActivity(intent);
             }
         });
+    }
+
+    protected BaseAdapter getMAdapter() {
+        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
+        return this.adapter;
     }
 
     @Override

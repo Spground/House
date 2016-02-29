@@ -1,5 +1,7 @@
 package jc.house.utils;
 
+import jc.house.global.Constants;
+
 public final class StringUtils {
 	public static boolean strEmpty(String str) {
 		if(null == str || str.trim().equals("") || str.trim().length() == 0) {
@@ -12,7 +14,7 @@ public final class StringUtils {
 		if(null == str || str.length() <= length) {
 			return str;
 		}
-		return str.substring(0,length);
+		return str.substring(0, length);
 	}
 
 	public static String getMethodNameByFieldName(String fieldName) {
@@ -22,7 +24,7 @@ public final class StringUtils {
 	}
 
 	public static final String[] parseHouseLables(String labels) {
-		if (null == labels || strEmpty(labels)) {
+		if (strEmpty(labels)) {
 			return null;
 		}
 		String[] result = new String[2];
@@ -36,6 +38,17 @@ public final class StringUtils {
 			sb.append(labelArray[i]).append("   ");
 		}
 		result[1] = sb.toString();
+		return result;
+	}
+
+	public static final String[] parseHouseImageUrls(String imageUrl) {
+		if (strEmpty(imageUrl)) {
+			return null;
+		}
+		String[] result = imageUrl.split(";");
+		for (int i = 0; i < result.length; i++) {
+			result[i] = Constants.IMAGE_URL_ORIGIN + result[i];
+		}
 		return result;
 	}
 }

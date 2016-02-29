@@ -38,10 +38,11 @@ import jc.house.models.HouseDetail;
 import jc.house.models.ServerResult;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
+import jc.house.views.CircleView;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
-public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener {
+public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener,CircleView.CircleViewOnClickListener {
     private static final String TAG = "HouseDetailActivity";
     public static final String HOUSE_DETAIL_URL = Constants.SERVER_URL + "house/detail";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
@@ -52,7 +53,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private TextView mapTextView;
     private TextView chatTextView;
     private int currentIndex;
-    private ImageView houseImageView;
+    private CircleView circleView;
     private TextView tvAddress;
     private TextView tvHouseType;
     private TextView tvForceType;
@@ -89,11 +90,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     private void initViews() {
-        this.houseImageView = (ImageView) findViewById(R.id.house_image_view);
-        this.houseImageView.setOnClickListener(this);
-        if (PRODUCT) {
-            houseImageView.setImageResource(R.drawable.failure_image_red);
-        }
+        this.circleView = (CircleView)this.findViewById(R.id.house_circle_view);
+        this.circleView.setTimeInterval(3.6f);
         this.mapTextView = (TextView) this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
         this.mapTextView.setText("地图");
         this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
@@ -114,9 +112,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 if (PRODUCT) {
                     intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 39.70, 116.445));
                 } else {
-                    //TODO 跳转
                     intent.putExtra(MapActivity.FLAG_IsSingleMarker, true);
-                    intent.putExtra(MapActivity.FLAG_HOUSE, (House)houseDetail);
+                    intent.putExtra(MapActivity.FLAG_HOUSE, houseDetail);
                 }
                 startActivity(intent);
             }
@@ -175,7 +172,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     private void initViewPager() {
-        this.viewPager = (MViewPager) this.findViewById(R.id.viewpager);
+        this.viewPager = (MViewPager) this.findViewById(R.id.house_detail_viewpager);
         this.currentIndex = 0;
         this.titles = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
@@ -248,6 +245,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void setServerData(HouseDetail model) {
         if (null != model) {
             this.houseDetail = model;
+            hideDialog();
+            showViews();
             this.tvAddress.setText(this.houseDetail.getAddress());
             this.tvHouseType.setText(this.houseDetail.getHouseType());
             this.tvForceType.setText(this.houseDetail.getForceType());
@@ -256,12 +255,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             this.textViews.get(0).setText(this.houseDetail.getRecReason());
             this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
             this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
-            this.loadImage(houseImageView, this.houseDetail.getUrl());
-            hideDialog();
-            showViews();
-            if (null != houseDetail.getHelper() && PRODUCT) {
-                Toast.makeText(this, houseDetail.getHelper().getName() + houseDetail.getHelper().getHxID(), Toast.LENGTH_SHORT).show();
-            }
+            this.circleView.setImageUrls(houseDetail.getImageUrls());
+            this.circleView.setOnCircleViewItemClickListener(this);
         }
     }
 
@@ -302,15 +297,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.house_image_view) {
-            Intent showOriImg = new Intent(this, PhotoViewActivity.class);
-            if (!PRODUCT) {
-                if (null != houseDetail) {
-                    showOriImg.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, Constants.IMAGE_URL + houseDetail.getUrl());
-                    startActivity(showOriImg);
-                }
-            }
-        } else {
+        if (v.getClass().isAssignableFrom(ViewPagerTitle.class)) {
             int index = ((ViewPagerTitle) v).getIndex();
             if (index != currentIndex) {
                 titles.get(currentIndex).setSelected(false);
@@ -321,4 +308,12 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         }
     }
 
+    @Override
+    public void onCircleViewItemClick(View v, int index) {
+        if (null != houseDetail.getImageUrls()) {
+            Intent intent = new Intent(this, PhotoViewActivity.class);
+            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, (houseDetail.getImageUrls())[index]);
+            startActivity(intent);
+        }
+    }
 }

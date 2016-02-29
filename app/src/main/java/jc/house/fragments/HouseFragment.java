@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         this.mApplication = (MApplication) this.getActivity().getApplication();
         this.mapBtn = (ImageButton) this.view.findViewById(R.id.id_map_btn);
         this.mapBtn.setOnClickListener(this);
+        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.HOUSE);
         initListView();
 
         if (PRODUCT) {
@@ -77,7 +79,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             this.dataSet.add(new House(1, "", "金宸.蓝郡四期", "甘井子-机场新区 小户型 普通住宅 双卫",
                     "0411-86536589", 39.30, 116.425));
         } else {
-//            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             loadLocalData();
         }
         this.firstShow = true;
@@ -85,8 +87,6 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
 
     @Override
     protected void initListView() {
-        this.xlistView = (XListView) this.view.findViewById(R.id.list);
-        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.HOUSE);
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -135,14 +135,11 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && firstShow) {
-            LogUtils.debug("it is true");
             if (!hasLocalRes) {
                 showDialog();
             }
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             firstShow = false;
-        } else {
-            LogUtils.debug("It is false");
         }
     }
 
