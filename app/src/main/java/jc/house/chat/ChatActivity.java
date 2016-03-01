@@ -91,7 +91,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         setContentView(R.layout.activity_chat);
         this.nickName = getIntent().getStringExtra("nickName");
         this.nickName = this.nickName == null ? "金宸客服" : this.nickName;
-        this.house = (HouseDetail)(this.getIntent().getParcelableExtra(EXTRA_HOUSE));
+        this.house = (this.getIntent().getParcelableExtra(EXTRA_HOUSE));
         if (null != house && house.isValid()) {
             LogUtils.debug(TAG, "house is " + house.toString());
             canSendHouseDetail = true;
@@ -300,8 +300,9 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      * 产品展示的时候调用
      */
     private void sendDebugMessage() {
-        sendTxtMessage("顾客您好,请问有什么可以帮忙吗？", toChatUserName);
-
+        //客服版默认发送一条信息
+        if(!Constants.APPINFO.USER_VERSION)
+            sendTxtMessage("顾客您好,请问有什么可以帮忙吗？", toChatUserName);
 //        sendTxtMessage("[:3d:]", toChatUserName);
 //        EMMessage imgMsg = EMMessage.createSendMessage(EMMessage.Type.IMAGE);
 //        imgMsg.direct = EMMessage.Direct.SEND;
@@ -504,6 +505,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onBubbleLongClick(EMMessage message) {
+
     }
 
     @Override

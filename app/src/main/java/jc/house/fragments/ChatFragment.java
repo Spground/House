@@ -243,6 +243,7 @@ public class ChatFragment extends BaseFragment implements IRefresh {
 
     @Override
     public void refresh() {
-
+        LogUtils.debug(TAG, "refresh() is invoked!");
+        refreshHistoryConversationList();
     }
 }

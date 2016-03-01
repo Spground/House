@@ -106,7 +106,7 @@ public class House extends BaseModel implements Parcelable {
 				imageUrls[1] = Constants.IMAGE_URL_ORIGIN + hxUrl;
 			} else {
 				imageUrls = new String[1];
-				imageUrls[0] = url;
+				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
 			}
 		}
 		return imageUrls;

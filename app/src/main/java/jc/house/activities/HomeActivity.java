@@ -30,6 +30,8 @@ import com.easemob.exceptions.EaseMobException;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
+import jc.house.global.FetchType;
 import jc.house.global.MApplication;
 import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
@@ -55,6 +58,7 @@ import jc.house.models.ServerResult;
 import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
+import jc.house.utils.StringUtils;
 import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;
 
@@ -114,11 +118,13 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     }
 
     /**
-     * 获取客户名称
+     * 获取客服==>环信ID名称映射规则
      */
     private void getCustomerHelperNickName() {
         LogUtils.debug(TAG, "getCustomerHelperNickName");
         AsyncHttpClient client = new AsyncHttpClient();
+        //get cache first
+        loadDataFromLocal(CustomerHelper.class);
         client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -129,6 +135,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
                 if (!result.isSuccess)
                     return;
+                //cache to local
+                saveToLocal(result.array.toString(), CustomerHelper.class);
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, CustomerHelper.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
@@ -155,6 +163,44 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 LogUtils.debug(TAG, statusCode + responseString);
             }
         });
+    }
+
+    /**
+     * 将jsonStr缓存到本地
+     * @param jsonStr
+     * @param cls
+     */
+    private void  saveToLocal(String jsonStr, Class<? extends BaseModel> cls){
+        LogUtils.debug("===jsonStr===", jsonStr);
+        ((MApplication) getApplicationContext()).saveJsonString(jsonStr, cls);
+    }
+
+    /**
+     * 将本地的jsonStr缓存数据取出来
+     */
+    private void loadDataFromLocal(Class<? extends BaseModel> cls) {
+        String content = ((MApplication)getApplicationContext()).getJsonString(cls);
+        if (!StringUtils.strEmpty(content)) {
+            ServerResult result = new ServerResult();
+            try {
+                result.array = new JSONArray(content);
+                result.resultType = ServerResultType.Array;
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, cls) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        for(BaseModel model : models) {
+                            CustomerHelper customerHelper = (CustomerHelper)model;
+                            if(customerHelper == null)
+                                continue;
+                            ((MApplication)getApplicationContext()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
+                        }
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            LogUtils.debug("===TAG===", "customer helper content is + " + content + cls.toString());
+        }
     }
 
     @Override

@@ -134,7 +134,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="折扣"
+                android:text="利率折扣"
                 android:textColor="@color/font_grey_700"
                 android:textSize="@dimen/font_large_size" />
 
@@ -157,6 +157,7 @@
                 android:layout_span="2"
                 android:background="@drawable/basic_large_btn_selector"
                 android:text="计     算"
+                android:textStyle="bold"
                 android:textColor="@color/white" />
         </TableRow>
 

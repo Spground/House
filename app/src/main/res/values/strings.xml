@@ -321,4 +321,9 @@
     <string name="title_activity_photo_view">PhotoViewActivity</string>
     <string name="title_activity_base_net">BaseNetActivity</string>
     <!-- -->
+    <string name="group_headoffice_addr">辽宁省大连市金州区五一路166号</string>
+    <string name="zip_code">111111</string>
+    <string name="fax_number">0411-87879912</string>
+    <string name="tel">0411-87879911</string>
+    <string name="website">www.jinchenchina.cn</string>
 </resources>

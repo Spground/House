@@ -78,9 +78,11 @@ public class EaseChatRowHouse extends EaseChatRow {
 
     @Override
     protected void onBubbleClick() {
+        LogUtils.debug("===EaseChatRowHouse===", "HouseDetail Bubble Click");
         Intent intent = new Intent(context, HouseDetailActivity.class);
+        LogUtils.debug("===EaseChatRowHouse===", "Message ID Attr is： " + message.getIntAttribute(HouseDetailActivity.FLAG_ID, -1));
         intent.putExtra(HouseDetailActivity.FLAG_ID, message.getIntAttribute(HouseDetailActivity.FLAG_ID, -1));
-//        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);
     }
 }

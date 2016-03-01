@@ -141,8 +141,8 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         //close soft keyboard
-        InputMethodManager imm =  (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-        if(imm != null) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null) {
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
         calculate();

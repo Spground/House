@@ -19,6 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/company_des"
                 android:layout_width="0dp"
@@ -27,10 +28,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/tv_company_selector"
                 android:gravity="center"
-                android:paddingBottom="28dp"
-                android:paddingTop="28dp"
+                android:paddingBottom="36dp"
+                android:paddingTop="36dp"
                 android:text="公司简介"
-                android:textSize="17sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/company_video"
                 android:layout_width="0dp"
@@ -38,16 +41,18 @@
                 android:layout_weight="1"
                 android:background="@drawable/tv_company_selector"
                 android:gravity="center"
-                android:paddingBottom="28dp"
-                android:paddingTop="28dp"
+                android:paddingBottom="36dp"
+                android:paddingTop="36dp"
                 android:text="公司视频"
-                android:textSize="17sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
+
             <TextView
                 android:id="@+id/company_contact"
                 android:layout_width="0dp"
@@ -56,10 +61,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/tv_company_selector"
                 android:gravity="center"
-                android:paddingBottom="28dp"
-                android:paddingTop="28dp"
+                android:paddingBottom="36dp"
+                android:paddingTop="36dp"
                 android:text="联系我们"
-                android:textSize="17sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/company_business"
                 android:layout_width="0dp"
@@ -67,12 +74,139 @@
                 android:layout_weight="1"
                 android:background="@drawable/tv_company_selector"
                 android:gravity="center"
-                android:paddingBottom="28dp"
-                android:paddingTop="28dp"
+                android:paddingBottom="36dp"
+                android:paddingTop="36dp"
                 android:text="公司业务"
-                android:textSize="17sp"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>
 
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="大连金宸集团有限公司"
+        android:textColor="@color/red_jc"
+        android:textSize="16sp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <TableRow
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="集团总部地址:"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:text="@string/group_headoffice_addr"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="邮政编码:"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:text="111111"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="传        真:"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:text="@string/fax_number"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="电        话:"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:text="@string/tel"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="网        址:"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:text="@string/website"
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </TableRow>
+    </TableLayout>
 </LinearLayout>

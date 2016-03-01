@@ -79,6 +79,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.setScrollRightBack(true);
         if (!PRODUCT) {
             id = this.getIntent().getIntExtra(FLAG_ID, -1);
+            LogUtils.debug("====HouseDetail===", "house id is " + id);
             if (id >= 0) {
                 //getCache first
                 this.houseDetail = getCache(id);
@@ -106,6 +107,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
      */
     private HouseDetail getCache(int id) {
         LogUtils.debug("===HouseDetailActivity===", "getCache id is " + id);
+        if(houseDetailCache.get(id) == null)
+            return null;
         return (houseDetailCache.get(id)).get();
     }
 
@@ -318,7 +321,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class){
                     @Override
                     public void onSuccess(BaseModel model) {
-                        setServerData((HouseDetail)model);
+                        HouseDetail hModel = (HouseDetail)model;
+                        setServerData(hModel);
                     }
                 });
             } else {
