@@ -77,14 +77,12 @@ public class MThreadPool {
             } else {
                 if (null != task.getResult()) {
                     final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(task.getResult().array, task.getMClass());
-//                    if (null != models && models.size() > 0) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                task.onSuccess(models);
-                            }
-                        });
-//                    }
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            task.onSuccess(models);
+                        }
+                    });
                 }
             }
         }

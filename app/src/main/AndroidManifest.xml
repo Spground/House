@@ -67,7 +67,7 @@
         <activity
             android:name=".activities.HouseDetailActivity"
             android:label="@string/title_activity_news_detail"
-            android:theme="@android:style/Theme.NoTitleBar" />
+             />
         <activity
             android:name=".activities.MapActivity"
             android:label="@string/title_activity_map" />
@@ -104,7 +104,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="jc.house.activities.BaseActivity" />
         </activity>
+
+        <activity android:name=".activities.CalculatorActivity" >
+        </activity>
+
         <activity android:name=".activities.CustomerHelperLoginActivity"></activity>
+
     </application>
 
 </manifest>

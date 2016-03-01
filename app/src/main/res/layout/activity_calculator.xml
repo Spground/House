@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="jc.house.activities.CalculatorActivity">
+
+    <TableLayout
+        android:id="@+id/calculate_param"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:stretchColumns="1">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="还款方式"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <Spinner
+                android:id="@+id/payment_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size"></Spinner>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单价(元/平方米)"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <EditText
+                android:id="@+id/unit_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="面积(平方米)"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <EditText
+                android:id="@+id/area"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="decimal" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="首付成数"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <Spinner
+                android:id="@+id/first_payment_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size"></Spinner>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="贷款期限"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <Spinner
+                android:id="@+id/loan_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size"></Spinner>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="年利率"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <EditText
+                android:id="@+id/interest_rate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:text="6.15"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="折扣"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <Spinner
+                android:id="@+id/interest_rate_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size"></Spinner>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/calculate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:background="@drawable/basic_large_btn_selector"
+                android:text="计     算"
+                android:textColor="@color/white" />
+        </TableRow>
+
+    </TableLayout>
+
+    <!--计算结果显示区域-->
+    <TableLayout
+        android:id="@+id/calculate_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/calculate_param"
+        android:layout_marginTop="10dp">
+
+        <TableRow>
+
+            <TextView
+                android:text="贷款总额："
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <TextView
+                android:id="@+id/loan_total"
+                android:text=""
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="还款月数："
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <TextView
+                android:id="@+id/repayment_months"
+                android:text=""
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/repayment_first_month"
+                android:text="每月还款："
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <TextView
+                android:id="@+id/repayment_per_month"
+                android:text=""
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="总支付利息："
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <TextView
+                android:id="@+id/total_interest"
+                android:text=""
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="本息合计："
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+
+            <TextView
+                android:id="@+id/total_payment"
+                android:text=""
+                android:textColor="@color/font_grey_700"
+                android:textSize="@dimen/font_large_size" />
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

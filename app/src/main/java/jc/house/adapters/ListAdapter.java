@@ -114,7 +114,7 @@ public class ListAdapter extends BaseAdapter {
 					if (PRODUCT) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
-						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl());
+						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl(), false);
 					}
 					viewHolderNews.author.setText(news.getAuthor());
 					viewHolderNews.title.setText(news.getTitle());
@@ -148,7 +148,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 						viewHolderHouse.ratingView.setParams(5, 3);
 					} else {
-						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl());
+						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl(), false);
 						viewHolderHouse.ratingView.setParams(house.getStars(), 3);
 						viewHolderHouse.recStars.setText("推荐指数" + house.getStars());
 						if (null != house.getLabelsResult()) {
@@ -179,7 +179,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						viewHolderActivity.postTime.setText("");
 					} else {
-						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl());
+						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl(), true);
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						convertView.setId(activityModel.id);
 						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
@@ -192,10 +192,16 @@ public class ListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void loadImageWithPicasso(ImageView imageView, String url) {
-		Picasso.with(context).load(Constants.IMAGE_URL_ORIGIN + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
+	private void loadImageWithPicasso(ImageView imageView, String url, boolean isOriginal) {
+		url = (isOriginal ? Constants.IMAGE_URL_ORIGIN : Constants.IMAGE_URL) + url;
+		Picasso.with(context).load(url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
+
 	}
-	
+
+	private void loadImageWithPicasso(ImageView imageView, String url) {
+		Picasso.with(context).load(url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
+	}
+
 	private static final class ViewHolderChatUser {
 		public ImageView portrait;
 		public TextView name;

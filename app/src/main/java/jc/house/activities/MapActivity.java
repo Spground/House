@@ -45,6 +45,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
             House house = intent.getParcelableExtra(FLAG_HOUSE);
             setMapViewData(house);
             this.mapView.getMap().setCenter(new LatLng(house.getLat(), house.getLng()));
+            this.mapView.getMap().setZoom(15);
         } else {
             List<House> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
             setMapViewDatas(houses);
@@ -52,6 +53,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
             if (null != center) {
                 this.mapView.getMap().setCenter(center);
             }
+            this.mapView.getMap().setZoom(12);
         }
     }
 

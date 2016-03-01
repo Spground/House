@@ -82,6 +82,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                parseServerData(statusCode, response);
             }
 
             @Override
