@@ -1,6 +1,9 @@
 package jc.house.models;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class News extends BaseModel implements Serializable{
 	private String picUrl;
@@ -50,6 +53,20 @@ public final class News extends BaseModel implements Serializable{
 
 	public void setTime(String date) {
 		this.time = date;
+	}
+
+	public boolean isNew() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			Date date = format.parse(time);
+			long timeStamp = date.getTime();
+			if (System.currentTimeMillis() - timeStamp <= 7 * 24 * 3600 * 1000) {
+				return true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }
