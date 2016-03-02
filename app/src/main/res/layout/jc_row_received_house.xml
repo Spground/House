@@ -40,6 +40,7 @@
 
             <include layout="@layout/jc_chat_row_house_item"/>
 
+            <!-- 进度条-->
             <LinearLayout
                 android:id="@+id/ll_loading"
                 android:layout_width="wrap_content"
@@ -49,6 +50,7 @@
                 android:orientation="vertical" >
 
                 <ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
                     android:id="@+id/progress_bar"
                     android:layout_width="28dp"
                     android:layout_height="28dp"

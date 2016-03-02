@@ -9,6 +9,8 @@
     <dimen name="font_small_size">12sp</dimen>
     <dimen name="font_very_small_size">11sp</dimen>
     <dimen name="font_large_size">16sp</dimen>
+    <dimen name="font_larger_size">18sp</dimen>
+    <dimen name="font_super_large_size">22sp</dimen>
 
     <!-- custom dimens value-->
     <dimen name="height_top_bar">46dp</dimen>
