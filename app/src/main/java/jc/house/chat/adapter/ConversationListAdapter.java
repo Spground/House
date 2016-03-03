@@ -64,7 +64,7 @@ public class ConversationListAdapter extends BaseAdapter {
         }
         return null;
     }
-
+    
     @Override
     public long getItemId(int position) {
         return position;
@@ -97,11 +97,14 @@ public class ConversationListAdapter extends BaseAdapter {
         /**set view**/
         holder.avatar.setImageResource(R.drawable.jc_default_avatar);
         //TODO 名字显示 用户版得知道映射规则
+        //显示用户名的后六位
+        String suffix = huanxinid.length() >= 6 ?
+                (huanxinid.substring(huanxinid.length() - 6, huanxinid.length())) : "";
         holder.name.setText(Constants.APPINFO.USER_VERSION ?
                 (customerHelperMap == null ?
                         huanxinid : (customerHelperMap.get(huanxinid) == null ?
                             huanxinid : customerHelperMap.get(huanxinid).getName()))
-                : "某用户");
+                : "某用户" + suffix);
         holder.huanxinid = huanxinid;
 
         if (conversation != null && conversation.getUnreadMsgCount() > 0) {

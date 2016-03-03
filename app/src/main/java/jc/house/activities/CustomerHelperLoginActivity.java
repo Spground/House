@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.easemob.EMCallBack;
+import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 
 import jc.house.R;
@@ -89,12 +90,19 @@ public class CustomerHelperLoginActivity extends BaseActivity implements View.On
             }
 
             @Override
-            public void onError(int code, String message) {
-                LogUtils.debug(TAG, "登陆聊天服务器失败！");
+            public void onError(final int code, String message) {
+                LogUtils.debug(TAG, "code is" + code + ", message is " + message + " 登陆聊天服务器失败！");
                 runOnUiThread(new Runnable() {
                     public void run() {
                         CustomerHelperLoginActivity.this.progressDialog.hide();
-                        ToastUtils.show(CustomerHelperLoginActivity.this, "登录失败， 用户名或密码错误");
+                        String info;
+                        if (code == EMError.UNABLE_CONNECT_TO_SERVER)
+                            info = "无法连接到服务器，请检查您的网络是否连接";
+                        else if(code == EMError.INVALID_PASSWORD_USERNAME)
+                            info = "登录失败， 用户名或密码错误";
+                        else
+                            info = "未知错误，请稍后再试";
+                        ToastUtils.show(CustomerHelperLoginActivity.this, info);
                     }
                 });
             }
