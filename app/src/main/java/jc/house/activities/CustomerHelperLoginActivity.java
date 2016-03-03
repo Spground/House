@@ -3,6 +3,7 @@ package jc.house.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -40,6 +41,12 @@ public class CustomerHelperLoginActivity extends BaseActivity implements View.On
 
     @Override
     public void onClick(View v) {
+        //close soft keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
+
         huanxinid = idET.getText().toString().trim();
         pwd = pwdET.getText().toString().trim();
 

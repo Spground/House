@@ -22,37 +22,40 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/id_company_introduction"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="64dp"
-                android:background="@drawable/jc_aboutfragment_textview_selector"
-                android:clickable="true"
-                android:drawableLeft="@drawable/about_company"
-                android:drawablePadding="10dp"
-                android:drawableRight="@drawable/mm_submenu_normal"
-                android:gravity="left|center"
-                android:paddingBottom="8dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="8dp"
-                android:text="公司简介"
-                android:textColor="@color/font_grey_700"
-                android:textSize="@dimen/font_large_size" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:background="@color/bg_gray" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@color/white"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/bg_gray"
+                    />
+                <TextView
+                    android:id="@+id/id_company_introduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="64dp"
+                    android:background="@drawable/jc_aboutfragment_textview_selector"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/about_company"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/mm_submenu_normal"
+                    android:gravity="left|center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="8dp"
+                    android:text="公司简介"
+                    android:textColor="@color/font_grey_700"
+                    android:textSize="@dimen/font_large_size" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@color/bg_gray" />
 
                 <TextView
                     android:id="@+id/id_user_feedback"
@@ -126,16 +129,16 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/bg_gray"
-
-                    />
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@color/bg_gray" />
                 <TextView
                     android:id="@+id/id_calculator"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@drawable/jc_aboutfragment_textview_selector"
                     android:clickable="true"
-                    android:drawableLeft="@drawable/about_us"
+                    android:drawableLeft="@drawable/about_calculator"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/mm_submenu_normal"
                     android:gravity="left|center"
@@ -151,11 +154,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/bg_gray"
-
                     />
-
+                <Button
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="退出登录"
+                    android:visibility="gone"
+                    android:id="@+id/id_btn_logout"
+                    android:textColor="@color/white"
+                    android:background="@drawable/basic_large_btn_selector"
+                    />
             </LinearLayout>
         </LinearLayout>
-
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </RelativeLayout>
