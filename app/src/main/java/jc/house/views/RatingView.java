@@ -26,12 +26,10 @@ public class RatingView extends LinearLayout {
     private Context context;
     private boolean hasInit;
     public RatingView(Context context) {
-        super(context);
-        initView(context);
+        this(context, null);
     }
     public RatingView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs, 0);
-        initView(context);
+        this(context, attrs, 0);
     }
 
     public RatingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

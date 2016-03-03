@@ -27,10 +27,10 @@ import jc.house.models.BaseModel;
 public final class ParseJson {
 
     /**
-     * json对象数组转对应的model对象List(json数组必须是同类)
+     * json对象数组转对应的model对象List
      *
-     * @param array
-     * @param clazz model的class对象
+     * @param array  A JSONArray object
+     * @param clazz model对应的的Class
      * @return
      * @throws IllegalAccessException
      * @throws InstantiationException
@@ -49,11 +49,35 @@ public final class ParseJson {
         return modelList;
     }
 
-    private static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
-        BaseModel result = null;
-        if (null == object || null == mClass || null == fieldMap) {
-            return result;
+    /**
+     * 说明参见下面的方法
+     *
+     * @param object
+     * @param mClass
+     * @return
+     */
+    public static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass) {
+        if (null == object || null == mClass) {
+            throw new NullPointerException("object and mClass should not be null");
         }
+        Map<String, Class> fieldMap = mapFromClass(mClass);
+        return jsonObj2Model(object, mClass, fieldMap);
+    }
+
+    /**
+     * 将JSONObject数据解析成对应某个类的对象
+     *
+     * @param object JSONObject对象
+     * @param mClass 对应的model对象的Class
+     * @param fieldMap mClass对应的（属性值-class）键值对
+     * @return mClass对应的一个对象
+     */
+    private static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
+
+        if (null == object || null == mClass || null == fieldMap) {
+            throw new NullPointerException("object and mClass and fieldMap should not be null");
+        }
+        BaseModel result = null;
         try {
             result = mClass.newInstance();
             Iterator<String> keys = object.keys();
@@ -91,6 +115,9 @@ public final class ParseJson {
         return result;
     }
 
+    /**
+     * 获取某个Class的（属性名称-Class）键值对
+     */
     private static final Map<String, Class> mapFromClass(Class<? extends BaseModel> mClass) {
         Map<String, Class> result = new HashMap<>();
         if (null == mClass) {
@@ -108,14 +135,6 @@ public final class ParseJson {
             curClass = curClass.getSuperclass();
         }
         return result;
-    }
-
-    public static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass) {
-        if (null == object || null == mClass) {
-            return null;
-        }
-        Map<String, Class> fieldMap = mapFromClass(mClass);
-        return jsonObj2Model(object, mClass, fieldMap);
     }
 
     private static final boolean isSubclassOfBaseModel(Class mClass) {

@@ -16,13 +16,11 @@ public class ViewPagerTitle extends TextView {
     private int normalTextColor = Color.rgb(160, 160, 160);
     private int selectedTextColor = Color.rgb(255, 255, 255);
     public ViewPagerTitle(Context context) {
-        super(context);
-        initView();
+        this(context, null);
     }
 
     public ViewPagerTitle(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView();
+        this(context, attrs, 0);
     }
 
     public ViewPagerTitle(Context context, AttributeSet attrs, int defStyleAttr) {

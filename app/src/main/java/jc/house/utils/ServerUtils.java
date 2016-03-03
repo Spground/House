@@ -17,20 +17,30 @@ public final class ServerUtils {
         return (statusCode == HttpURLConnection.HTTP_OK && null != response);
     }
 
+    /**
+     *  初步解析JSON数据
+     * @param response response from the server.
+     * @param resultType array or object
+     * @return ServerResult
+     */
     public static ServerResult parseServerResponse(JSONObject response, ServerResultType resultType) {
         ServerResult result = new ServerResult();
         try {
             int code = response.getInt(ServerResult.CODE);
             result.code = code;
-            result.isSuccess = (ServerResult.CODE_SUCCESS == code);
-            if (result.isSuccess) {
+            boolean success = (ServerResult.CODE_SUCCESS == code);
+            if (success) {
                 if (ServerResultType.Array == resultType) {
-                    result.array = response.getJSONArray(ServerResult.RESULT);
+                    result.array = response.optJSONArray(ServerResult.RESULT);
+                    result.isSuccess = (null != result.array);
                     result.resultType = ServerResultType.Array;
                 } else {
-                    result.object = response.getJSONObject(ServerResult.RESULT);
+                    result.object = response.optJSONObject(ServerResult.RESULT);
+                    result.isSuccess = (null != result.object);
                     result.resultType = ServerResultType.Object;
                 }
+            } else {
+                result.isSuccess = false;
             }
         } catch (JSONException e) {
             e.printStackTrace();

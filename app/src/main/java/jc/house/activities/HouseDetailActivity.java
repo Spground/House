@@ -44,7 +44,7 @@ import jc.house.views.CircleView;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
-public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener,CircleView.CircleViewOnClickListener {
+public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener, CircleView.CircleViewOnClickListener {
     public static final String HOUSE_DETAIL_URL = Constants.SERVER_URL + "house/detail";
     public static final String FLAG_ID = "id";
     public static final String FLAG_HOUSE_DETAIL = "HouseDetail";
@@ -52,6 +52,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public static final String FLAG_HELPER_NAME = "HelperName";
     private static final String TAG = "HouseDetailActivity";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
+    private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
     private MViewPager viewPager;
     private List<TextView> textViews;
     private List<ViewPagerTitle> titles;
@@ -69,7 +70,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private String hxID;
     private String nickName;
 
-    private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +79,10 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.setScrollRightBack(true);
         if (!PRODUCT) {
             id = this.getIntent().getIntExtra(FLAG_ID, -1);
-            LogUtils.debug("====HouseDetail===", "house id is " + id);
             if (id >= 0) {
                 //getCache first
                 this.houseDetail = getCache(id);
-                if(this.houseDetail != null)
+                if (this.houseDetail != null)
                     setServerData(houseDetail);
                 else {
                     //cache miss
@@ -102,18 +101,20 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     /**
      * 取缓存houseDetail
+     *
      * @param id
      * @return
      */
     private HouseDetail getCache(int id) {
         LogUtils.debug("===HouseDetailActivity===", "getCache id is " + id);
-        if(houseDetailCache.get(id) == null)
+        if (houseDetailCache.get(id) == null)
             return null;
         return (houseDetailCache.get(id)).get();
     }
 
     /**
      * 缓存HouseDetail
+     *
      * @param id
      * @param houseDetail
      */
@@ -124,7 +125,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     private void initViews() {
-        this.circleView = (CircleView)this.findViewById(R.id.house_circle_view);
+        this.circleView = (CircleView) this.findViewById(R.id.house_circle_view);
         this.circleView.setTimeInterval(3.6f);
         this.mapTextView = (TextView) this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
         this.mapTextView.setText("地图");
@@ -277,24 +278,23 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     private void setServerData(HouseDetail model) {
-        if (null != model) {
-            this.houseDetail = model;
-            //cache housedetail
-            putCache(model.getId(), model);
-            hideDialog();
-            showViews();
-            this.tvAddress.setText(this.houseDetail.getAddress());
-            this.tvHouseType.setText(this.houseDetail.getHouseType());
-            this.tvForceType.setText(this.houseDetail.getForceType());
-            this.tvAvgPrice.setText(this.houseDetail.getAvgPrice());
-            this.tvPhone.setText(this.houseDetail.getPhone());
-            this.textViews.get(0).setText(this.houseDetail.getRecReason());
-            this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
-            this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
-            LogUtils.debug("===HOUSE_DETAIL 0===", houseDetail.getImageUrls()[0]);
-            this.circleView.setImageUrls(houseDetail.getImageUrls());
-            this.circleView.setOnCircleViewItemClickListener(this);
+        if (null == model) {
+            return;
         }
+        this.houseDetail = model;
+        putCache(model.getId(), model);
+        hideDialog();
+        showViews();
+        this.tvAddress.setText(this.houseDetail.getAddress());
+        this.tvHouseType.setText(this.houseDetail.getHouseType());
+        this.tvForceType.setText(this.houseDetail.getForceType());
+        this.tvAvgPrice.setText(this.houseDetail.getAvgPrice());
+        this.tvPhone.setText(this.houseDetail.getPhone());
+        this.textViews.get(0).setText(this.houseDetail.getRecReason());
+        this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
+        this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
+        this.circleView.setImageUrls(houseDetail.getImageUrls());
+        this.circleView.setOnCircleViewItemClickListener(this);
     }
 
     private void fetchDataFromServer() {
@@ -318,10 +318,10 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
             if (result.isSuccess) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class){
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class) {
                     @Override
                     public void onSuccess(BaseModel model) {
-                        HouseDetail hModel = (HouseDetail)model;
+                        HouseDetail hModel = (HouseDetail) model;
                         setServerData(hModel);
                     }
                 });
@@ -350,7 +350,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public void onCircleViewItemClick(View v, int index) {
         if (null != houseDetail.getImageUrls()) {
             Intent intent = new Intent(this, PhotoViewActivity.class);
-            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, (houseDetail.getImageUrls())[index]);
+            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, houseDetail.getImageUrls());
+            intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
             startActivity(intent);
         }
     }

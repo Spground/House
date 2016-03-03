@@ -97,7 +97,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //create shared preferences;
         this.getSharedPreferences(REGISTER_INFO, 0);
         setContentView(R.layout.activity_home);
         this.currentIndex = 0;
@@ -284,7 +283,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             @Override
             public void onPageSelected(int pos) {
                 /**set little red dot invisible**/
-                tabViewItems.get(pos).unlightLittleRedDot();
+                tabViewItems.get(pos).hideLittleRedDot();
                 if (pos != currentIndex) {
                     tabViewItems.get(pos).setSelected(true);
                     tabViewItems.get(currentIndex).setSelected(false);
@@ -293,7 +292,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             }
 
         });
-        this.currentIndex = 0;
 
         /**如果是用户版**/
         if (Constants.APPINFO.USER_VERSION) {
@@ -335,7 +333,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         TabViewItem item = (TabViewItem) v;
         int index = item.getIndex();
         /**set little red dot invisible**/
-        tabViewItems.get(index).unlightLittleRedDot();
+        tabViewItems.get(index).showLittleRedDot();
         if (currentIndex != index) {
             viewPager.setCurrentItem(index, false);
         } else {
@@ -448,51 +446,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * @param pwd
      */
     private void register(final String huanxinid, final String pwd) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    EMChatManager.getInstance().createAccountOnServer(huanxinid, pwd);
-//                    //write to shared preference if register succeed
-//                    SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
-//                    SharedPreferences.Editor editor = prf.edit();
-//                    editor.putString(HUANXINID_KEY, huanxinid);
-//                    editor.putString(PWD_KEY, pwd);
-//                    editor.commit();
-//                    //login when register succeed
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            loginHuanXin(huanxinid, pwd);
-//                        }
-//                    });
-//                } catch (EaseMobException e) {
-//                    e.printStackTrace();
-//                    //register failed
-//                    int errorCode = e.getErrorCode();
-//                    //set preferences`s value as null if register failed
-//                    SharedPreferences prf = getSharedPreferences(REGISTER_INFO, 0);
-//                    SharedPreferences.Editor editor = prf.edit();
-//                    if(prf.getString(HUANXINID_KEY, null) != null) {
-//                        editor.putString(HUANXINID_KEY, null);
-//                        editor.putString(PWD_KEY, null);
-//                        editor.commit();
-//                    }
-//
-//                    if (errorCode == EMError.NONETWORK_ERROR) {
-//                        ToastUtils.show(getApplicationContext(), "网络异常，请检查网络！");
-//                    } else if (errorCode == EMError.USER_ALREADY_EXISTS) {
-//                        LogUtils.debug("===HomeActivity===", "用户已存在");
-//                    } else if (errorCode == EMError.UNAUTHORIZED) {
-//                        LogUtils.debug("===HomeActivity===", "注册失败，无权限");
-//                    } else {
-//                        LogUtils.debug("===HomeActivity===", "注册失败");
-//                    }
-//
-//                }
-//            }
-//        }).start();
-
         MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
@@ -542,7 +495,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     public void onNewMessageReceived() {
         /**update tab item's unread**/
         if (currentIndex != 3)
-            tabViewItems.get(3).lightLittleRedDot();
+            tabViewItems.get(3).showLittleRedDot();
     }
 
     /**

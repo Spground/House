@@ -24,11 +24,15 @@ public final class StringUtils {
 	}
 
 	public static final String[] parseHouseLables(String labels) {
-		if (strEmpty(labels)) {
+		String temStr = labels.trim();
+		while (temStr.length() > 0 && temStr.charAt(0) == ';') {
+			temStr = temStr.substring(1);
+		}
+		if (strEmpty(temStr)) {
 			return null;
 		}
 		String[] result = new String[2];
-		String[] labelArray = labels.trim().split(";");
+		String[] labelArray = temStr.split(";");
 		int len = labelArray.length;
 		if (len > 0) {
 			result[0] = labelArray[0];

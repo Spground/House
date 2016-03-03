@@ -68,7 +68,7 @@ public class EaseChatRowHouse extends EaseChatRow {
         house_name.setText(str_house_name);
         avgprice.setText(str_avgprice);
         tag.setText(str_tag);
-        Picasso.with(context).setIndicatorsEnabled(true);
+        Picasso.with(context).setIndicatorsEnabled(false);
         Picasso.with(context).load(img_url)
                 .placeholder(R.drawable.failure_image_red)
                 .error(R.drawable.failure_image_red)
