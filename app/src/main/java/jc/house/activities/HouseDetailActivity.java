@@ -10,11 +10,10 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.easemob.chat.EMChatManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -44,7 +43,7 @@ import jc.house.views.CircleView;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
 
-public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener,CircleView.CircleViewOnClickListener {
+public class HouseDetailActivity extends BaseNetActivity implements View.OnClickListener, CircleView.CircleViewOnClickListener {
     public static final String HOUSE_DETAIL_URL = Constants.SERVER_URL + "house/detail";
     public static final String FLAG_ID = "id";
     public static final String FLAG_HOUSE_DETAIL = "HouseDetail";
@@ -70,6 +69,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private String nickName;
 
     private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +83,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             if (id >= 0) {
                 //getCache first
                 this.houseDetail = getCache(id);
-                if(this.houseDetail != null)
+                if (this.houseDetail != null)
                     setServerData(houseDetail);
                 else {
                     //cache miss
@@ -102,18 +102,20 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     /**
      * 取缓存houseDetail
+     *
      * @param id
      * @return
      */
     private HouseDetail getCache(int id) {
         LogUtils.debug("===HouseDetailActivity===", "getCache id is " + id);
-        if(houseDetailCache.get(id) == null)
+        if (houseDetailCache.get(id) == null)
             return null;
         return (houseDetailCache.get(id)).get();
     }
 
     /**
      * 缓存HouseDetail
+     *
      * @param id
      * @param houseDetail
      */
@@ -124,7 +126,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     private void initViews() {
-        this.circleView = (CircleView)this.findViewById(R.id.house_circle_view);
+        this.circleView = (CircleView) this.findViewById(R.id.house_circle_view);
         this.circleView.setTimeInterval(3.6f);
         this.mapTextView = (TextView) this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
         this.mapTextView.setText("地图");
@@ -160,9 +162,18 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 //跳转到聊天页面
+                //判断不能和自己聊天
+                if(!canChat()) {
+                    android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(HouseDetailActivity.this);
+                    dialog.setTitle("提示");
+                    dialog.setMessage("你不能和自己聊天！");
+                    dialog.show();
+                    return;
+                }
                 Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
                 if (!PRODUCT) {
                     if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
+                        LogUtils.debug(TAG, "helper huanxinID is " + houseDetail.getHelper().getHxID().trim());
                         intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());
                         intent.putExtra("nickName", houseDetail.getHelper().getName());
                         intent.putExtra(ChatActivity.EXTRA_HOUSE, houseDetail);
@@ -185,6 +196,23 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.tvForceType = (TextView) this.findViewById(R.id.forceType);
         this.tvAvgPrice = (TextView) this.findViewById(R.id.avgPrice);
         this.tvPhone = (TextView) this.findViewById(R.id.phone);
+    }
+
+    /**
+     * 检查是否可以聊天，自己和自己不能聊天
+     * @return
+     */
+    private boolean canChat() {
+        String curUser = EMChatManager.getInstance().getCurrentUser().trim();
+        if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
+            LogUtils.debug(TAG, "helper huanxinID is " + houseDetail.getHelper().getHxID().trim());
+            if(houseDetail.getHelper().getHxID().trim().equalsIgnoreCase(curUser))
+                return false;
+        } else if (!StringUtils.strEmpty(hxID) && !StringUtils.strEmpty(nickName)) {
+            if(hxID.equalsIgnoreCase(curUser))
+                return false;
+        }
+        return true;
     }
 
     private void hideViews() {
@@ -318,10 +346,10 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
             if (result.isSuccess) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class){
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class) {
                     @Override
                     public void onSuccess(BaseModel model) {
-                        HouseDetail hModel = (HouseDetail)model;
+                        HouseDetail hModel = (HouseDetail) model;
                         setServerData(hModel);
                     }
                 });
