@@ -1,13 +1,11 @@
 package jc.house.utils;
 
 import android.os.Build;
-import android.os.Environment;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 
 /**

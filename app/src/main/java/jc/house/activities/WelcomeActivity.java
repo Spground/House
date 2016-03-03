@@ -14,6 +14,7 @@ import android.widget.Scroller;
 
 import jc.house.R;
 import jc.house.global.Constants;
+import jc.house.global.MApplication;
 import jc.house.models.CustomerHelper;
 
 public class WelcomeActivity extends Activity {
@@ -23,8 +24,10 @@ public class WelcomeActivity extends Activity {
             if(msg.what == 0x123){
                 if(Constants.APPINFO.USER_VERSION)
                     startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-                else
+                else if(!((MApplication)getApplicationContext()).isEmployeeLogin)
                     startActivity(new Intent(WelcomeActivity.this, CustomerHelperLoginActivity.class));
+                else
+                    startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
                 WelcomeActivity.this.finish();
             }
         }

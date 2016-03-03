@@ -1,6 +1,7 @@
 package jc.house.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -114,6 +115,14 @@ public class ChatFragment extends BaseFragment implements IRefresh {
                 intent.putExtra("nickName", nickName);
                 intent.setClass(getActivity(), ChatActivity.class);
                 startActivity(intent);
+            }
+        });
+        //长按删除会话
+        this.xlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteConversion(((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid.toString());
+                return true;
             }
         });
     }
@@ -245,5 +254,30 @@ public class ChatFragment extends BaseFragment implements IRefresh {
     public void refresh() {
         LogUtils.debug(TAG, "refresh() is invoked!");
         refreshHistoryConversationList();
+    }
+
+    /**
+     * 删除会话
+     * @param huanxinID
+     */
+    private void deleteConversion(final String huanxinID) {
+        android.app.AlertDialog dlg = new android.app.AlertDialog.Builder(getActivity())
+                .setTitle("删除对话")
+                .setMessage("确认删除此对话吗？")
+                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EMChatManager.getInstance().deleteConversation(huanxinID);
+                        refreshHistoryConversationList();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create();
+        dlg.show();
     }
 }

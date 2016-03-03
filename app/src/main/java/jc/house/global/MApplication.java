@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import com.easemob.EMConnectionListener;
 import com.easemob.chat.EMChat;
+import com.easemob.chat.EMChatManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,6 +27,8 @@ public class MApplication extends Application {
 	public static final  String SP = "JC_HOUSE";
 	private SharedPreferences sp;
 
+	public boolean isEmployeeLogin = false;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -32,6 +36,18 @@ public class MApplication extends Application {
 		initHuanXinSDK();
 		EMChat.getInstance().setAppInited();
 		this.sp = this.getSharedPreferences(SP, MODE_PRIVATE);
+		//监听是否已经连接到聊天服务器了
+		EMChatManager.getInstance().addConnectionListener(new EMConnectionListener() {
+			@Override
+			public void onConnected() {
+				isEmployeeLogin = true;
+			}
+
+			@Override
+			public void onDisconnected(int i) {
+				isEmployeeLogin = false;
+			}
+		});
 	}
 
 	/**

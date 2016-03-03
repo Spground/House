@@ -10,11 +10,10 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.easemob.chat.EMChatManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -161,9 +160,18 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 //跳转到聊天页面
+                //判断不能和自己聊天
+                if(!canChat()) {
+                    android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(HouseDetailActivity.this);
+                    dialog.setTitle("提示");
+                    dialog.setMessage("你不能和自己聊天！");
+                    dialog.show();
+                    return;
+                }
                 Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
                 if (!PRODUCT) {
                     if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
+                        LogUtils.debug(TAG, "helper huanxinID is " + houseDetail.getHelper().getHxID().trim());
                         intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());
                         intent.putExtra("nickName", houseDetail.getHelper().getName());
                         intent.putExtra(ChatActivity.EXTRA_HOUSE, houseDetail);
@@ -186,6 +194,23 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.tvForceType = (TextView) this.findViewById(R.id.forceType);
         this.tvAvgPrice = (TextView) this.findViewById(R.id.avgPrice);
         this.tvPhone = (TextView) this.findViewById(R.id.phone);
+    }
+
+    /**
+     * 检查是否可以聊天，自己和自己不能聊天
+     * @return
+     */
+    private boolean canChat() {
+        String curUser = EMChatManager.getInstance().getCurrentUser().trim();
+        if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
+            LogUtils.debug(TAG, "helper huanxinID is " + houseDetail.getHelper().getHxID().trim());
+            if(houseDetail.getHelper().getHxID().trim().equalsIgnoreCase(curUser))
+                return false;
+        } else if (!StringUtils.strEmpty(hxID) && !StringUtils.strEmpty(nickName)) {
+            if(hxID.equalsIgnoreCase(curUser))
+                return false;
+        }
+        return true;
     }
 
     private void hideViews() {

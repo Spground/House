@@ -2,6 +2,7 @@ package jc.house.chat.widget.chatrow;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,6 +42,53 @@ public class EaseChatRowHouse extends EaseChatRow {
             str_tag = "NULL";
         }
 
+        if(message.direct == EMMessage.Direct.RECEIVE) {
+            if(message.status == EMMessage.Status.INPROGRESS) {
+                setMessageReceiveCallback();
+            } else {
+                percentageView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            }
+        } else {
+            handleSendMessage();
+        }
+    }
+
+    /**
+     * 处理发送消息的消息的状态变化
+     */
+    private void handleSendMessage() {
+        setMessageSendCallback();
+        switch (message.status) {
+            case SUCCESS:
+                progressBar.setVisibility(View.INVISIBLE);
+                if(percentageView != null)
+                    percentageView.setVisibility(View.INVISIBLE);
+                statusView.setVisibility(View.INVISIBLE);
+                break;
+            case FAIL:
+                progressBar.setVisibility(View.INVISIBLE);
+                if(percentageView != null)
+                    percentageView.setVisibility(View.INVISIBLE);
+                statusView.setVisibility(View.VISIBLE);
+                break;
+            case INPROGRESS:
+                progressBar.setVisibility(View.VISIBLE);
+                if(percentageView != null){
+                    percentageView.setVisibility(View.VISIBLE);
+                    percentageView.setText(message.progress + "%");
+                }
+                statusView.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                progressBar.setVisibility(View.VISIBLE);
+                if(percentageView != null){
+                    percentageView.setVisibility(View.VISIBLE);
+                    percentageView.setText(message.progress + "%");
+                }
+                statusView.setVisibility(View.INVISIBLE);
+                break;
+        }
     }
 
     @Override
@@ -56,6 +104,8 @@ public class EaseChatRowHouse extends EaseChatRow {
         avgprice = (TextView)findViewById(R.id.avgprice);
         tag = (TextView)findViewById(R.id.tag);
         house_imageView = (ImageView)findViewById(R.id.house_image_view);
+        percentageView = (TextView) findViewById(R.id.percentage);
+
     }
 
     @Override
@@ -73,6 +123,7 @@ public class EaseChatRowHouse extends EaseChatRow {
                 .placeholder(R.drawable.failure_image_red)
                 .error(R.drawable.failure_image_red)
                 .into(house_imageView);
+
 
     }
 
