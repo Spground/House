@@ -68,7 +68,7 @@ public final class ParseJson {
      * 将JSONObject数据解析成对应某个类的对象
      *
      * @param object JSONObject对象
-     * @param mClass 对应的model对象的Class
+     * @param mClass 对应的model的Class
      * @param fieldMap mClass对应的（属性值-class）键值对
      * @return mClass对应的一个对象
      */
