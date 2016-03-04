@@ -27,7 +27,7 @@ import jc.house.models.BaseModel;
 public final class ParseJson {
 
     /**
-     * json对象数组转对应的model对象List
+     * json对象数组转对应的model对象list
      *
      * @param array  A JSONArray object
      * @param clazz model对应的的Class
@@ -70,7 +70,7 @@ public final class ParseJson {
      * @param object JSONObject对象
      * @param mClass 对应的model的Class
      * @param fieldMap mClass对应的（属性值-class）键值对
-     * @return mClass对应的一个对象
+     * @return mClass对应的对象
      */
     private static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
 

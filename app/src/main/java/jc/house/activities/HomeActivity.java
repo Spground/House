@@ -140,17 +140,10 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
                         super.onSuccess(models);
-                        if (models == null) {
-                            LogUtils.debug(TAG, "models is null");
-                            return;
-                        }
-
-                        LogUtils.debug(TAG, "submitParseDataTask onSuccess");
                         //populate the customer helper mapping
                         for (BaseModel model : models) {
                             CustomerHelper c = (CustomerHelper) model;
                             ((MApplication) getApplication()).customerHelperNameMapping.put(c.getHxID(), c);
-                            LogUtils.debug(TAG, c.getHxID() + " ====> " + c.getName());
                         }
                     }
                 });

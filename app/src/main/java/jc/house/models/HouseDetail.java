@@ -13,6 +13,7 @@ public final class HouseDetail extends House {
     private String recReason;
     private String trafficLines;
     private String designIdea;
+
     private CustomerHelper helper;
 
     public HouseDetail() {}

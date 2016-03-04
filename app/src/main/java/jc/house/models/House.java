@@ -3,6 +3,9 @@ package jc.house.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jc.house.global.Constants;
 import jc.house.utils.StringUtils;
 
@@ -10,6 +13,7 @@ public class House extends BaseModel implements Parcelable {
 	public static final int MAX_INTRO_LENGTH = 25;
 	private String url;
 	private String hxUrl;
+	private String otherUrl;
 	private String name;
 	private String intro;
 	private String phone;
@@ -53,6 +57,7 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeString(labelContent);
 		dest.writeString(avgPrice);
 		dest.writeString(hxUrl);
+		dest.writeString(otherUrl);
 	}
 
 	protected House(Parcel origin) {
@@ -67,6 +72,7 @@ public class House extends BaseModel implements Parcelable {
 		this.labelContent = origin.readString();
 		this.avgPrice = origin.readString();
 		this.hxUrl = origin.readString();
+		this.otherUrl = origin.readString();
 	}
 
 	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
@@ -100,14 +106,31 @@ public class House extends BaseModel implements Parcelable {
 
 	public String[] getImageUrls() {
 		if (null == imageUrls) {
+			List<String> list = new ArrayList<>();
 			if (!StringUtils.strEmpty(hxUrl) && !hxUrl.equalsIgnoreCase("null")) {
-				imageUrls = new String[2];
-				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
-				imageUrls[1] = Constants.IMAGE_URL_ORIGIN + hxUrl;
+				list.add(Constants.IMAGE_URL_ORIGIN + url);
+				list.add(Constants.IMAGE_URL_ORIGIN + hxUrl);
+//				imageUrls = new String[2];
+//				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
+//				imageUrls[1] = Constants.IMAGE_URL_ORIGIN + hxUrl;
 			} else {
-				imageUrls = new String[1];
-				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
+//				imageUrls = new String[1];
+//				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
+				list.add(Constants.IMAGE_URL_ORIGIN + hxUrl);
 			}
+			if (!StringUtils.strEmpty(otherUrl) && !otherUrl.equalsIgnoreCase("null")) {
+				String[] urls = StringUtils.parseImageUrls(otherUrl);
+				if (null != urls && urls.length > 0) {
+					for (int i = 0; i < urls.length; i++) {
+						list.add(urls[i]);
+					}
+				}
+			}
+			String[] array = new String[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				array[i] = list.get(i);
+			}
+			imageUrls = array;
 		}
 		return imageUrls;
 	}
@@ -135,6 +158,10 @@ public class House extends BaseModel implements Parcelable {
 
 	public void setHxUrl(String hxUrl) {
 		this.hxUrl = hxUrl;
+	}
+
+	public void setOtherUrl(String otherUrl) {
+		this.otherUrl = otherUrl;
 	}
 
 	public String getName() {
