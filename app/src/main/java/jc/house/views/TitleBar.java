@@ -18,13 +18,11 @@ public class TitleBar extends LinearLayout {
 	private LinearLayout rightView;
 
 	public TitleBar(Context context) {
-		super(context);
-		this.initView(context);
+		this(context, null);
 	}
 
 	public TitleBar(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		this.initView(context);
+		this(context, attrs, 0);
 	}
 
 	public TitleBar(Context context, AttributeSet attrs, int defStyle) {

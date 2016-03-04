@@ -17,10 +17,10 @@ import jc.house.utils.ParseJson;
  * Created by hzj on 2015/12/11.
  */
 public class MThreadPool {
-    private static MThreadPool instance = null;
-    private ExecutorService executorService = null;
     private static final int THREAD_NUM = 3;
     private static final String TAG = "MThreadPool";
+    private static MThreadPool instance = null;
+    private ExecutorService executorService = null;
     private Handler mHandler = null;
 
     private MThreadPool() {
@@ -45,47 +45,6 @@ public class MThreadPool {
 
     public void submitParseDataTask(ParseTask task) {
         this.executorService.submit(new ParseDataTask(task));
-    }
-
-    private class ParseDataTask implements Runnable {
-        private ParseTask task;
-
-        public ParseDataTask(ParseTask task) {
-            this.task = task;
-        }
-
-        @Override
-        public void run() {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    task.onStart();
-                }
-            });
-            if (ServerResultType.Object == task.getResultType()) {
-                if (null != task.getResult()) {
-                    final BaseModel model = ParseJson.jsonObj2Model(task.getResult().object, task.getMClass());
-                    if (null != model) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                task.onSuccess(model);
-                            }
-                        });
-                    }
-                }
-            } else {
-                if (null != task.getResult()) {
-                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(task.getResult().array, task.getMClass());
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            task.onSuccess(models);
-                        }
-                    });
-                }
-            }
-        }
     }
 
     /**
@@ -118,6 +77,43 @@ public class MThreadPool {
                 LogUtils.debug(TAG, "线程池已经关闭");
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private class ParseDataTask implements Runnable {
+        private ParseTask task;
+
+        public ParseDataTask(ParseTask task) {
+            this.task = task;
+        }
+
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    task.onStart();
+                }
+            });
+            if (null != task.getResult()) {
+                if (ServerResultType.Object == task.getResultType()) {
+                    final BaseModel model = ParseJson.jsonObj2Model(task.getResult().object, task.getMClass());
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            task.onSuccess(model);
+                        }
+                    });
+                } else {
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(task.getResult().array, task.getMClass());
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            task.onSuccess(models);
+                        }
+                    });
+                }
             }
         }
     }

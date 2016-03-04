@@ -20,18 +20,20 @@ import jc.house.global.ServerResultType;
 import jc.house.models.CompanyIntroItem;
 import jc.house.models.ServerResult;
 import jc.house.utils.ListUtils;
+import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 
-public class CompanyIntroActivity extends BaseNetActivity implements View.OnClickListener {
+public class CompanyIntroActivity extends BaseNetActivity implements View.OnClickListener, CircleView.CircleViewOnClickListener {
 
     private static final String[] NAMES = {"公司简介", "公司视频", "联系我们", "公司业务"};
     private static final String[] URLS = {"introduction/viewintroduction&id=1", "introduction/viewvideo&id=1", "introduction/viewphone&id=1", "introduction/viewcontent&id=1"};
-    private static final String[] CIRCLE_URLS = {Constants.IMAGE_URL_ORIGIN + "home01.jpg", Constants.IMAGE_URL_ORIGIN + "home02.jpg", Constants.IMAGE_URL_ORIGIN + "home03.jpg"};
     private static final String TAG = "CompanyIntroActivity";
-    private static final String URL = Constants.SERVER_URL + "";
+    private static final int[] imageReIds = {R.drawable.home01,
+            R.drawable.home02, R.drawable.home03};
+    private static final String URL = Constants.SERVER_URL + "introduction/images";
     private CircleView circleView;
     private TextView companyDes, companyVideo, companyContact, companyBusiness;
     private List<CompanyIntroItem> introItems;
@@ -44,6 +46,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
         setTitleBarTitle("公司简介");
         initViews();
         setDefaultData();
+        fetchDataFromServer();
     }
 
     private void setDefaultData() {
@@ -51,7 +54,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
         for (int i = 0; i < NAMES.length; i++) {
             this.introItems.add(new CompanyIntroItem(NAMES[i], URLS[i]));
         }
-        this.circleView.setImageUrls(CIRCLE_URLS);
+        this.circleView.setImageReIds(imageReIds);
     }
 
     private void initViews() {
@@ -83,6 +86,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 parseServerData(statusCode, response);
+                LogUtils.debug(response.toString());
             }
 
             @Override
@@ -100,11 +104,6 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
                 try {
                     String url = result.object.getString("url");
                     setUrls(url);
-                    List<CompanyIntroItem> list = (List<CompanyIntroItem>)ParseJson.jsonArray2ModelList(result.object.optJSONArray("items"), CompanyIntroItem.class);
-                    if (!ListUtils.listEmpty(list)) {
-                        this.introItems.clear();
-                        this.introItems.addAll(list);
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -117,9 +116,20 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
     }
 
     private void setUrls(String url) {
-        if (null != urls) {
+        if (null != url) {
             this.urls = StringUtils.parseImageUrls(url);
             this.circleView.setImageUrls(urls);
+            this.circleView.setOnCircleViewItemClickListener(this);
+        }
+    }
+
+    @Override
+    public void onCircleViewItemClick(View v, int index) {
+        if (null != urls && index < urls.length) {
+            Intent intent = new Intent(this, PhotoViewActivity.class);
+            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, urls);
+            intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
+            startActivity(intent);
         }
     }
 

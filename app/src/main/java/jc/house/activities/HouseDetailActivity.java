@@ -50,6 +50,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public static final String FLAG_HELPER_NAME = "HelperName";
     private static final String TAG = "HouseDetailActivity";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
+    private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
     private MViewPager viewPager;
     private List<TextView> textViews;
     private List<ViewPagerTitle> titles;
@@ -67,8 +68,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private String hxID;
     private String nickName;
 
-    private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +77,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.setScrollRightBack(true);
         if (!PRODUCT) {
             id = this.getIntent().getIntExtra(FLAG_ID, -1);
-            LogUtils.debug("====HouseDetail===", "house id is " + id);
             if (id >= 0) {
                 //getCache first
                 this.houseDetail = getCache(id);
@@ -304,24 +302,23 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     private void setServerData(HouseDetail model) {
-        if (null != model) {
-            this.houseDetail = model;
-            //cache housedetail
-            putCache(model.getId(), model);
-            hideDialog();
-            showViews();
-            this.tvAddress.setText(this.houseDetail.getAddress());
-            this.tvHouseType.setText(this.houseDetail.getHouseType());
-            this.tvForceType.setText(this.houseDetail.getForceType());
-            this.tvAvgPrice.setText(this.houseDetail.getAvgPrice());
-            this.tvPhone.setText(this.houseDetail.getPhone());
-            this.textViews.get(0).setText(this.houseDetail.getRecReason());
-            this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
-            this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
-            LogUtils.debug("===HOUSE_DETAIL 0===", houseDetail.getImageUrls()[0]);
-            this.circleView.setImageUrls(houseDetail.getImageUrls());
-            this.circleView.setOnCircleViewItemClickListener(this);
+        if (null == model) {
+            return;
         }
+        this.houseDetail = model;
+        putCache(model.getId(), model);
+        hideDialog();
+        showViews();
+        this.tvAddress.setText(this.houseDetail.getAddress());
+        this.tvHouseType.setText(this.houseDetail.getHouseType());
+        this.tvForceType.setText(this.houseDetail.getForceType());
+        this.tvAvgPrice.setText(this.houseDetail.getAvgPrice());
+        this.tvPhone.setText(this.houseDetail.getPhone());
+        this.textViews.get(0).setText(this.houseDetail.getRecReason());
+        this.textViews.get(1).setText(this.houseDetail.getTrafficLines());
+        this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
+        this.circleView.setImageUrls(houseDetail.getImageUrls());
+        this.circleView.setOnCircleViewItemClickListener(this);
     }
 
     private void fetchDataFromServer() {
@@ -377,7 +374,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public void onCircleViewItemClick(View v, int index) {
         if (null != houseDetail.getImageUrls()) {
             Intent intent = new Intent(this, PhotoViewActivity.class);
-            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, (houseDetail.getImageUrls())[index]);
+            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, houseDetail.getImageUrls());
+            intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
             startActivity(intent);
         }
     }

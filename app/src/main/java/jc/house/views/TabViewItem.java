@@ -15,21 +15,18 @@ public class TabViewItem extends LinearLayout {
 	private ImageView imageView;
 	private TextView textView;
 	private View littleRedDotView;//小红点
-
 	private boolean selected;
-	private int normalResId, selectedResId;
-	private int index;
+	private int normalResId, selectedResId;//默认和点击显示的图片，需要设置
+	private int index;//处理点击事件用到，可选
 	private final int normalTextColor = Color.rgb(99, 99, 99);
 	private final int selectedTextColor = Color.rgb(255, 0 , 0);
 
 	public TabViewItem(Context context) {
-		super(context);
-		this.initView(context);
+		this(context, null);
 	}
 
 	public TabViewItem(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		this.initView(context);
+		this(context, attrs, 0);
 	}
 	
 	public TabViewItem(Context context, AttributeSet attrs, int defStyle) {
@@ -42,7 +39,6 @@ public class TabViewItem extends LinearLayout {
 		this.imageView = (ImageView) this.findViewById(R.id.tab_image);
 		this.textView = (TextView) this.findViewById(R.id.tab_name);
 		this.littleRedDotView = this.findViewById(R.id.unread_msg_little_red_dot);
-		this.setBackgroundColor(Color.rgb(231, 231, 231));
 		this.textView.setTextColor(normalTextColor);
 		this.selected = false;
 		this.index = 0;
@@ -83,14 +79,11 @@ public class TabViewItem extends LinearLayout {
 		this.normalResId = normalResId;
 	}
 
-	/**
-	 * set little red dot visible
-	 */
-	public void lightLittleRedDot(){
+	public void showLittleRedDot(){
 		this.littleRedDotView.setVisibility(View.VISIBLE);
 	}
 
-	public void unlightLittleRedDot(){
+	public void hideLittleRedDot(){
 		this.littleRedDotView.setVisibility(View.INVISIBLE);
 	}
 }
