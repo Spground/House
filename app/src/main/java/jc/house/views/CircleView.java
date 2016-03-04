@@ -222,9 +222,11 @@ public class CircleView extends LinearLayout {
             attacher.update();
             this.imageViews.add(photoView);
         }
-        this.indicatorView.setNum(urls.length);
+        if(num > 1) {
+            this.indicatorView.setNum(num);
+            this.viewPager.addOnPageChangeListener(new CircleOnPageChangeListener());
+        }
         this.viewPager.setAdapter(new CirclePagerAdapter());
-        this.viewPager.addOnPageChangeListener(new CircleOnPageChangeListener());
     }
 
     private void loadImage(ImageView imageView, String url) {

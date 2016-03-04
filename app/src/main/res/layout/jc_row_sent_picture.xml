@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:src="@drawable/temp_house_a"
                 />
         </RelativeLayout>	
         <LinearLayout

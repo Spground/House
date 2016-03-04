@@ -1,7 +1,11 @@
 package jc.house.activities;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -21,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
@@ -333,7 +338,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         TabViewItem item = (TabViewItem) v;
         int index = item.getIndex();
         /**set little red dot invisible**/
-        tabViewItems.get(index).showLittleRedDot();
+        //tabViewItems.get(index).showLittleRedDot();
         if (currentIndex != index) {
             viewPager.setCurrentItem(index, false);
         } else {
@@ -358,6 +363,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         //add new message broadcast action
         this.filter.addAction(EMChatManager.getInstance().getNewMessageBroadcastAction());
+        //增加账号冲突的广播
+        this.filter.addAction(MApplication.CONNECTION_CONFLICT);
         this.mReceiver = new MyReceiver();
         this.registerReceiver(this.mReceiver, this.filter);
     }
@@ -514,6 +521,13 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                         isNetAvailable = true;
                         LogUtils.debug(TAG, "NetWork is connected!");
                     }
+                    break;
+                case MApplication.CONNECTION_CONFLICT:
+                    LogUtils.debug(TAG, "账号冲突");
+                    ToastUtils.show(getApplicationContext(), "您的账号在别的设备登录");
+                    Intent it = new Intent(HomeActivity.this, CustomerHelperLoginActivity.class);
+                    it.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    startActivity(it);
                     break;
                 default:
                     break;
