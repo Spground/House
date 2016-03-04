@@ -99,6 +99,11 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
     }

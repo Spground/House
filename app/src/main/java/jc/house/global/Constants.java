@@ -1,5 +1,8 @@
 package jc.house.global;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import jc.house.R;
 
 //wujie
@@ -45,3 +48,4 @@ public final class Constants {
 		public static boolean USER_VERSION = false;
 	}
 }
+
