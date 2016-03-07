@@ -35,7 +35,7 @@ public class BaseNetActivity extends BaseActivity {
     }
 
     protected void loadImage(ImageView imageView, String url) {
-        Picasso.with(this).load(Constants.IMAGE_URL + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
+        Picasso.with(this).load(Constants.IMAGE_URL_THUMBNAIL + url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
     }
 
     protected void handleFailure() {

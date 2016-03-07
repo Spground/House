@@ -26,7 +26,7 @@ public class BaseActivity extends Activity implements View.OnTouchListener {
     protected LinearLayout baseLayout;
     protected RelativeLayout contentLayout;
     private boolean isScrollRightBack;
-    public static final boolean PRODUCT = Constants.PRODUCT;
+    public static final boolean PRODUCING = Constants.PRODUCING;
     private float xPre = 0;
     private static final float MIN_DISTANCE = 150;
     private static final float MIN_SPEED = 200;

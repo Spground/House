@@ -33,7 +33,7 @@ public class EaseChatRowHouse extends EaseChatRow {
             str_house_name = message.getStringAttribute("house_name");
             str_avgprice = message.getStringAttribute("avgprice");
             str_tag = message.getStringAttribute("tag");
-            img_url = Constants.IMAGE_URL + message.getStringAttribute("img_url");
+            img_url = Constants.IMAGE_URL_THUMBNAIL + message.getStringAttribute("img_url");
             LogUtils.debug("===IMAGE_URL===", img_url);
         } catch (EaseMobException e) {
             e.printStackTrace();

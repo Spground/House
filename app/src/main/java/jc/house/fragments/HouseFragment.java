@@ -63,7 +63,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.HOUSE);
         initListView();
 
-        if (PRODUCT) {
+        if (PRODUCING) {
             this.dataSet.add(new House(1, "", "金宸.蓝郡一期", "沙河口 小户型 南北通透 双卫 ",
                     "0411-86536589", 39.80, 116.435));
             this.dataSet.add(new House(1, "", "连大.文润金宸三期", "高新园区 花园洋房 低密度 品牌地产",

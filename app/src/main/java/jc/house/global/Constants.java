@@ -1,14 +1,11 @@
 package jc.house.global;
 
-import android.view.View;
-import android.view.ViewGroup;
-
 import jc.house.R;
 
 //wujie
 public final class Constants {
-	public static final boolean PRODUCT = false;
-	public static final boolean DEBUG = true;
+	public static final boolean PRODUCING = false;
+	public static final boolean DEBUG = false;
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	public static final String MESSAGE_ATTR_IS_HOUSE = "is_house";
 	public static final String DEFAULT_PWD = "123456";
@@ -25,7 +22,7 @@ public final class Constants {
 
 	private static final String SERVER_ROOT = "http://202.118.67.200:10717/house/";
 	public static final String SERVER_URL = SERVER_ROOT + "web/index.php?r=";
-	public static final String IMAGE_URL = SERVER_ROOT + "images_mobile/";
+	public static final String IMAGE_URL_THUMBNAIL = SERVER_ROOT + "images_mobile/";
 	public static final String IMAGE_URL_ORIGIN = SERVER_ROOT + "images/";
 	public static final String FEEDBACK_URL = SERVER_URL + "feedback/feedbacks";
 	public static final String ACTIVITY_URL = SERVER_URL + "activity/activitys";
@@ -45,7 +42,7 @@ public final class Constants {
 	public static class APPINFO {
 		public static String APPVERSION = "1.0";
 		public static String RELEASETIME = "";
-		public static boolean USER_VERSION = false;
+		public static boolean USER_VERSION = true;
 	}
 }
 
