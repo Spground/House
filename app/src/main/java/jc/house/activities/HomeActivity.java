@@ -519,6 +519,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     startActivity(it);
                     break;
                 default:
+                    LogUtils.debug(TAG, "intent action is " + intent.getAction());
                     break;
             }
 

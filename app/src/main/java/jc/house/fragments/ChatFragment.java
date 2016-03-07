@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,16 +27,27 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import de.greenrobot.event.EventBus;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 import jc.house.JCListView.XListView;
 import jc.house.R;
+import jc.house.async.MThreadPool;
+import jc.house.async.ParseTask;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
+import jc.house.global.Constants;
+import jc.house.global.MApplication;
+import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
+import jc.house.models.BaseModel;
+import jc.house.models.CustomerHelper;
+import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
+import jc.house.utils.ServerUtils;
 
-public class ChatFragment extends BaseFragment implements IRefresh {
+public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment.OnPullToRefreshBeginListener {
     public static final String TAG = "ChatFragment";
     private boolean isEventBusRegister = false;
     private List<EMConversation> conversationList;
@@ -47,6 +62,7 @@ public class ChatFragment extends BaseFragment implements IRefresh {
     public ChatFragment() {
         super();
         conversationList = new ArrayList<>();
+        setOnRefreshBeginListener(this);
     }
 
     @Override
@@ -279,5 +295,71 @@ public class ChatFragment extends BaseFragment implements IRefresh {
                 })
                 .create();
         dlg.show();
+    }
+
+    @Override
+    public void onPullToRefreshBegin(final PtrFrameLayout ptrFrameLayout) {
+        //聊天界面刷新
+        refresh();
+        getCustomerHelperNickName();
+        ptrFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrFrameLayout.refreshComplete();
+            }
+        }, 1500);
+    }
+
+
+    /**
+     * 获取客服==>环信ID名称映射规则
+     */
+    private void getCustomerHelperNickName() {
+        LogUtils.debug(TAG, "getCustomerHelperNickName");
+        AsyncHttpClient client = new AsyncHttpClient();
+        //get cache first
+        client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                LogUtils.debug(TAG, "onSuccess");
+                if (!ServerUtils.isConnectServerSuccess(statusCode, response))
+                    return;
+                ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+                if (!result.isSuccess)
+                    return;
+                //cache to local
+                saveToLocal(result.array.toString(), CustomerHelper.class);
+                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, CustomerHelper.class) {
+                    @Override
+                    public void onSuccess(List<? extends BaseModel> models) {
+                        super.onSuccess(models);
+                        //populate the customer helper mapping
+                        for (BaseModel model : models) {
+                            CustomerHelper c = (CustomerHelper) model;
+                            ((MApplication) getActivity().getApplication())
+                                    .customerHelperNameMapping.put(c.getHxID(), c);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                LogUtils.debug(TAG, statusCode + responseString);
+            }
+        });
+    }
+
+    /**
+     * 将jsonStr缓存到本地
+     *
+     * @param jsonStr
+     * @param cls
+     */
+    private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
+        LogUtils.debug("===jsonStr===", jsonStr);
+        ((MApplication) getActivity().getApplicationContext()).saveJsonString(jsonStr, cls);
     }
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 
 import de.greenrobot.event.EventBus;
@@ -27,7 +28,7 @@ public class ReceiveNewMessageService extends BaseService {
             receiver = new NewMessageReceiver();
             //register broadcast receiver
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.setPriority(3);
+            intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
             intentFilter.addAction(EMChatManager.getInstance().getNewMessageBroadcastAction());
             registerReceiver(receiver, intentFilter);
             LogUtils.debug(TAG, "NewMessageService is started up!");
@@ -55,6 +56,7 @@ public class ReceiveNewMessageService extends BaseService {
         @Override
         public void onReceive(Context context, Intent intent) {
             /**post an new message event **/
+            LogUtils.debug(TAG, "received a new message broadcast");
             NewMessageEvent event = new NewMessageEvent(intent);
             EventBus.getDefault().post(event);
             //abort the broadcast
