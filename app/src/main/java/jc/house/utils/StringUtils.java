@@ -51,7 +51,7 @@ public final class StringUtils {
 		}
 		String[] result = imageUrl.split(";");
 		for (int i = 0; i < result.length; i++) {
-			result[i] = Constants.IMAGE_URL_ORIGIN + result[i];
+			result[i] = Constants.IMAGE_URL_THUMBNAIL + result[i];
 		}
 		return result;
 	}

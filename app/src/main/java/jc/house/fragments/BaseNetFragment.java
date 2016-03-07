@@ -105,7 +105,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void onRefresh() {
-        if (!PRODUCT) {
+        if (!PRODUCING) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
         } else {
             this.xlistView.stopRefresh();
@@ -114,7 +114,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     @Override
     public void onLoadMore() {
-        if (!PRODUCT) {
+        if (!PRODUCING) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_LOAD_MORE);
         } else {
             this.xlistView.stopLoadMore();

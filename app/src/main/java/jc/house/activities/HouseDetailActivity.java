@@ -76,7 +76,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         initViews();
         initViewPager();
         this.setScrollRightBack(true);
-        if (!PRODUCT) {
+        if (!PRODUCING) {
             id = this.getIntent().getIntExtra(FLAG_ID, -1);
             if (id >= 0) {
                 //getCache first
@@ -143,7 +143,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HouseDetailActivity.this, MapActivity.class);
-                if (PRODUCT) {
+                if (PRODUCING) {
                     intent.putExtra(MapActivity.FLAG_HOUSE, new House(12, "123", "456", "789", "hello", 39.70, 116.445));
                 } else {
                     intent.putExtra(MapActivity.FLAG_IsSingleMarker, true);
@@ -169,7 +169,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     return;
                 }
                 Intent intent = new Intent(HouseDetailActivity.this, ChatActivity.class);
-                if (!PRODUCT) {
+                if (!PRODUCING) {
                     if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
                         LogUtils.debug(TAG, "helper huanxinID is " + houseDetail.getHelper().getHxID().trim());
                         intent.putExtra("toChatUserName", houseDetail.getHelper().getHxID());

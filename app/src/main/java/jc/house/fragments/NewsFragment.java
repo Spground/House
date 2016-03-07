@@ -71,10 +71,10 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         this.loadSlideSuccess = false;
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
-        if (PRODUCT) {
+        if (PRODUCING) {
             this.xlistView.setPullLoadEnable(true);
         }
-        if (PRODUCT) {
+        if (PRODUCING) {
             circleView.setImageReIds(imageReIds);
             dataSet.add(new News(1, "" + R.drawable.temp_zhaotong, "心系昭通 情献灾区", "管理员", "2015/11/18"));
             dataSet.add(new News(1, "" + R.drawable.temp_jianzhu, "创新营销 挑战逆境 创回款年度新", "管理员", "2015/11/18"));
@@ -98,7 +98,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 2 && position <= dataSet.size() + 1) {
                     Intent intent = new Intent(getActivity(), WebActivity.class);
-                    if (PRODUCT) {
+                    if (PRODUCING) {
                         intent.putExtra(WebActivity.FLAG_URL, Constants.NEWS_MOBILE_URL + "12");
                     } else {
                         intent.putExtra(WebActivity.FLAG_URL, Constants.NEWS_MOBILE_URL + ((News) dataSet.get(position - 2)).id);

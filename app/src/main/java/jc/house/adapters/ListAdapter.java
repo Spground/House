@@ -35,7 +35,7 @@ public class ListAdapter extends BaseAdapter {
 	private CircleView circleView;
 	private boolean hasCircleView;
 	private static final boolean DEBUG = Constants.DEBUG;
-	private static final boolean PRODUCT = Constants.PRODUCT;
+	private static final boolean PRODUCING = Constants.PRODUCING;
 	
 	public ListAdapter(Context context, List<? extends BaseModel> dataSet, ModelType modelType) {
 		this(context, dataSet, modelType, null);
@@ -111,7 +111,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderNews = (ViewHolderNews)convertView.getTag();
 					}
 					News news = (News)this.dataSet.get(mPos);
-					if (PRODUCT) {
+					if (PRODUCING) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
 						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl(), false);
@@ -144,7 +144,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderHouse = (ViewHolderHouse)convertView.getTag();
 					}
 					House house = (House)this.dataSet.get(mPos);
-					if (PRODUCT) {
+					if (PRODUCING) {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 						viewHolderHouse.ratingView.setParams(5, 3);
 					} else {
@@ -174,12 +174,12 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderActivity = (ViewHolderActivity)convertView.getTag();
 					}
 
-					if(PRODUCT) {
+					if(PRODUCING) {
 						viewHolderActivity.picture.setImageResource(Constants.resActivity[(int) (Math.random() * 5)]);
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						viewHolderActivity.postTime.setText("");
 					} else {
-						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl(), true);
+						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl(), false);
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						convertView.setId(activityModel.id);
 						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
@@ -193,7 +193,7 @@ public class ListAdapter extends BaseAdapter {
 	}
 
 	private void loadImageWithPicasso(ImageView imageView, String url, boolean isOriginal) {
-		url = (isOriginal ? Constants.IMAGE_URL_ORIGIN : Constants.IMAGE_URL) + url;
+		url = (isOriginal ? Constants.IMAGE_URL_ORIGIN : Constants.IMAGE_URL_THUMBNAIL) + url;
 		Picasso.with(context).load(url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
 
 	}

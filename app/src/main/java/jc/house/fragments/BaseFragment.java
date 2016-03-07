@@ -19,7 +19,7 @@ import jc.house.global.MApplication;
  */
 public class BaseFragment extends Fragment {
     protected View view;
-    protected static final boolean PRODUCT = Constants.PRODUCT;
+    protected static final boolean PRODUCING = Constants.PRODUCING;
     protected ProgressDialog progressDialog;
     protected MApplication mApplication;
 
