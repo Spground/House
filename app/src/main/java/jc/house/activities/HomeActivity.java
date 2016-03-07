@@ -337,6 +337,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             ((IRefresh) (fragments.get(index))).refresh();
         }
         currentIndex = index;
+        if(index == 3)
+            ((IRefresh) (fragments.get(index))).refresh();
     }
 
     @Override
