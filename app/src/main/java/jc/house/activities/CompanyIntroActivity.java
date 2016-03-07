@@ -59,7 +59,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
 
     private void initViews() {
         this.circleView = (CircleView) this.findViewById(R.id.company_circle_view);
-        this.circleView.setTimeInterval(3.6f);
+        this.circleView.setTimeInterval(5.0f);
         this.companyDes = (TextView) this.findViewById(R.id.company_des);
         this.companyVideo = (TextView) this.findViewById(R.id.company_video);
         this.companyContact = (TextView) this.findViewById(R.id.company_contact);

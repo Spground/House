@@ -66,7 +66,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         this.mApplication = (MApplication) this.getActivity().getApplication();
         circleView = new CircleView(this.getActivity());
         circleView.setAutoPlay(true);
-        circleView.setTimeInterval(3.6f);
+        circleView.setTimeInterval(5.0f);
         circleView.setOnCircleViewItemClickListener(this);
         this.loadSlideSuccess = false;
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);

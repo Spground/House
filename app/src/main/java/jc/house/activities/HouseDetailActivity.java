@@ -320,6 +320,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.textViews.get(2).setText(this.houseDetail.getDesignIdea());
         this.circleView.setImageUrls(houseDetail.getImageUrls());
         this.circleView.setOnCircleViewItemClickListener(this);
+        this.circleView.setTimeInterval(5.0f);
     }
 
     private void fetchDataFromServer() {
