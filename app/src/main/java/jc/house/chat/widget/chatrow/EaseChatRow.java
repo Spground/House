@@ -15,14 +15,18 @@ import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.Direct;
-import jc.house.R;
-
 import com.easemob.util.DateUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-import jc.house.utils.ToastUtils;
+import jc.house.R;
 import jc.house.chat.widget.ChatMessageList;
+import jc.house.global.Constants;
+import jc.house.global.MApplication;
+import jc.house.models.CustomerHelper;
+import jc.house.utils.LogUtils;
+import jc.house.utils.ToastUtils;
 
 public abstract class EaseChatRow extends LinearLayout {
     protected static final String TAG = EaseChatRow.class.getSimpleName();
@@ -102,6 +106,15 @@ public abstract class EaseChatRow extends LinearLayout {
      * */
     private void setUpBaseView() {
         // 设置用户昵称头像，bubble背景等
+        String huanxinID;
+        String avatarUrl;
+        //TODO 设置用户的头像
+        huanxinID = this.message.getFrom();
+        LogUtils.debug(TAG, "the message is from " + huanxinID);
+        avatarUrl = findAvatarUserUrl(huanxinID);
+        LogUtils.debug(TAG, "avatarUrl in EaseChatRow is " + (avatarUrl == null ? "null" : avatarUrl));
+        if(avatarUrl != null)
+            loadImage(this.userAvatarView, avatarUrl);
         /** timestamp visible logic **/
         TextView timestamp = (TextView) findViewById(R.id.timestamp);
         if (timestamp != null) {
@@ -328,5 +341,30 @@ public abstract class EaseChatRow extends LinearLayout {
      */
     protected abstract void onBubbleClick();
 
+    /**
+     * 加载用户头像
+     * @param imageView
+     * @param url
+     */
+    private void loadImage(ImageView imageView, String url) {
+        url = Constants.IMAGE_URL_ORIGIN + url;
+        Picasso.with(context).load(url).
+                placeholder(R.drawable.jc_default_avatar).
+                error(R.drawable.jc_default_avatar)
+                .into(imageView);
+    }
 
+    /**
+     * 根据客服环信ID查找客服的头像
+     * @param huanxinID
+     * @return
+     */
+    protected String findAvatarUserUrl(String huanxinID) {
+        CustomerHelper customerHelper = ((MApplication)this.context.getApplicationContext())
+                .customerHelperNameMapping.get(huanxinID);
+        if(customerHelper != null)
+            return customerHelper.getPicUrl();
+        else
+            return null;
+    }
 }

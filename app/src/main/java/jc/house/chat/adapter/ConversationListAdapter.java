@@ -13,6 +13,7 @@ import android.widget.TextView.BufferType;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
 import com.easemob.util.DateUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +29,6 @@ import jc.house.models.CustomerHelper;
 
 /**
  * 会话列表adapter
- *
  */
 public class ConversationListAdapter extends BaseAdapter {
     private static final String TAG = "ConversationListAdapter";
@@ -46,13 +46,13 @@ public class ConversationListAdapter extends BaseAdapter {
         this.conversationList = conversationList;
         copyConversationList = new ArrayList<>();
         copyConversationList.addAll(conversationList);
-        customerHelperMap = ((MApplication)context.getApplicationContext()).customerHelperNameMapping;
+        customerHelperMap = ((MApplication) context.getApplicationContext()).customerHelperNameMapping;
     }
 
     @Override
     public int getCount() {
         //debug模式下返回一个item
-        if(Constants.DEBUG && conversationList != null && conversationList.size() == 0)
+        if (Constants.DEBUG && conversationList != null && conversationList.size() == 0)
             return 1;
         return conversationList != null ? conversationList.size() : (Constants.DEBUG ? 1 : 0);
     }
@@ -64,7 +64,7 @@ public class ConversationListAdapter extends BaseAdapter {
         }
         return null;
     }
-    
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -93,9 +93,14 @@ public class ConversationListAdapter extends BaseAdapter {
         // 获取toChatUserName
         String huanxinid = conversation == null ? (!Constants.APPINFO.USER_VERSION ? "admin" : "wujie")
                 : conversation.getUserName();
+        //显示客服的头像
+        String avatarUrl = findAvatarUserUrl(huanxinid);
+        if (avatarUrl != null)
+            loadImage(holder.avatar, avatarUrl);
+        else
+            /**set view**/
+            holder.avatar.setImageResource(R.drawable.jc_default_avatar);
 
-        /**set view**/
-        holder.avatar.setImageResource(R.drawable.jc_default_avatar);
         //TODO 名字显示 用户版得知道映射规则
         //显示用户名的后六位
         String suffix = huanxinid.length() >= 6 ?
@@ -103,8 +108,8 @@ public class ConversationListAdapter extends BaseAdapter {
         holder.name.setText(Constants.APPINFO.USER_VERSION ?
                 (customerHelperMap == null ?
                         huanxinid : (customerHelperMap.get(huanxinid) == null ?
-                            huanxinid : customerHelperMap.get(huanxinid).getName()))
-                : "某用户" + suffix);
+                        huanxinid : customerHelperMap.get(huanxinid).getName()))
+                : "顾客" + suffix);
         holder.huanxinid = huanxinid;
 
         if (conversation != null && conversation.getUnreadMsgCount() > 0) {
@@ -119,7 +124,7 @@ public class ConversationListAdapter extends BaseAdapter {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
             holder.message.setText(EmojiUtils.getSmiledText(this.context,
-                    CommonUtils.getMessageDigest(lastMessage, (this.context))),
+                            CommonUtils.getMessageDigest(lastMessage, (this.context))),
                     BufferType.SPANNABLE);
 
             holder.time.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
@@ -136,27 +141,70 @@ public class ConversationListAdapter extends BaseAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        if(!notifyByFilter){
+        if (!notifyByFilter) {
             copyConversationList.clear();
             copyConversationList.addAll(conversationList);
             notifyByFilter = false;
         }
     }
 
+    /**
+     * 加载用户头像
+     *
+     * @param imageView
+     * @param url
+     */
+    private void loadImage(ImageView imageView, String url) {
+        url = Constants.IMAGE_URL_ORIGIN + url;
+        Picasso.with(context).load(url).
+                placeholder(R.drawable.jc_default_avatar).
+                error(R.drawable.jc_default_avatar)
+                .into(imageView);
+    }
+
+    /**
+     * 根据客服环信ID查找客服的头像
+     *
+     * @param huanxinID
+     * @return
+     */
+    private String findAvatarUserUrl(String huanxinID) {
+        CustomerHelper customerHelper = ((MApplication) this.context.getApplicationContext())
+                .customerHelperNameMapping.get(huanxinID);
+        if (customerHelper != null)
+            return customerHelper.getPicUrl();
+        else
+            return null;
+    }
+
     public static class ViewHolder {
-        /** 和谁的聊天记录 */
+        /**
+         * 和谁的聊天记录
+         */
         public TextView name;
-        /** 消息未读数 */
+        /**
+         * 消息未读数
+         */
         TextView unreadLabel;
-        /** 最后一条消息的内容 */
+        /**
+         * 最后一条消息的内容
+         */
         TextView message;
-        /** 最后一条消息的时间 */
+        /**
+         * 最后一条消息的时间
+         */
         TextView time;
-        /** 用户头像 */
+        /**
+         * 用户头像
+         */
         ImageView avatar;
-        /** 最后一条消息的发送状态 */
+        /**
+         * 最后一条消息的发送状态
+         */
         View msgState;
-        /** 整个list中每一行总布局 */
+        /**
+         * 整个list中每一行总布局
+         */
         RelativeLayout list_itease_layout;
 
         public String huanxinid;
