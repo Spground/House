@@ -119,7 +119,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void putCache(int id, HouseDetail houseDetail) {
         WeakReference<HouseDetail> item = new WeakReference<>(houseDetail);
         houseDetailCache.put(id, item);
-        LogUtils.debug("===HouseDetailActivity===", "putCache id is " + id);
     }
 
     private void initViews() {
@@ -356,6 +355,12 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         } else {
             handleFailure();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.circleView.cancelTimer();
+        super.onDestroy();
     }
 
     @Override

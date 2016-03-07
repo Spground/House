@@ -1,19 +1,11 @@
 package jc.house.global;
 
-import android.view.View;
-import android.view.ViewGroup;
-
 import jc.house.R;
 
 //wujie
 public final class Constants {
-<<<<<<< HEAD
 	public static final boolean PRODUCING = false;
-	public static final boolean DEBUG = false;
-=======
-	public static final boolean PRODUCT = false;
 	public static final boolean DEBUG = true;
->>>>>>> 57c38db57bc8febf5692c36a2e26976b8b86fedd
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	public static final String MESSAGE_ATTR_IS_HOUSE = "is_house";
 	public static final String DEFAULT_PWD = "123456";

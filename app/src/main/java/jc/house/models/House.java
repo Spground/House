@@ -108,15 +108,15 @@ public class House extends BaseModel implements Parcelable {
 		if (null == imageUrls) {
 			List<String> list = new ArrayList<>();
 			if (!StringUtils.strEmpty(hxUrl) && !hxUrl.equalsIgnoreCase("null")) {
-				list.add(smallImageUrl(url));
-				list.add(smallImageUrl(hxUrl));
+				list.add(originImageUrl(url));
+				list.add(originImageUrl(hxUrl));
 //				imageUrls = new String[2];
 //				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
 //				imageUrls[1] = Constants.IMAGE_URL_ORIGIN + hxUrl;
 			} else {
 //				imageUrls = new String[1];
 //				imageUrls[0] = Constants.IMAGE_URL_ORIGIN + url;
-				list.add(smallImageUrl(hxUrl));
+				list.add(originImageUrl(url));
 			}
 			if (!StringUtils.strEmpty(otherUrl) && !otherUrl.equalsIgnoreCase("null")) {
 				String[] urls = StringUtils.parseImageUrls(otherUrl);

@@ -46,10 +46,14 @@ public final class StringUtils {
 	}
 
 	public static final String[] parseImageUrls(String imageUrl) {
-		if (strEmpty(imageUrl)) {
+		String temStr = imageUrl.trim();
+		while (temStr.length() > 0 && temStr.charAt(0) == ';') {
+			temStr = temStr.substring(1);
+		}
+		if (strEmpty(temStr)) {
 			return null;
 		}
-		String[] result = imageUrl.split(";");
+		String[] result = temStr.split(";");
 		for (int i = 0; i < result.length; i++) {
 			result[i] = Constants.IMAGE_URL_THUMBNAIL + result[i];
 		}
