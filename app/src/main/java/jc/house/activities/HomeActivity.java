@@ -1,5 +1,6 @@
 package jc.house.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,8 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
@@ -515,8 +518,13 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     LogUtils.debug(TAG, "账号冲突");
                     ToastUtils.show(getApplicationContext(), "您的账号在别的设备登录");
                     Intent it = new Intent(HomeActivity.this, CustomerHelperLoginActivity.class);
-                    it.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     startActivity(it);
+                    //销毁所有的Activity
+                    for(WeakReference<Activity> activityWeakReference : ((MApplication)getApplicationContext()).loadedActivities) {
+                        Activity activity = activityWeakReference.get();
+                        if(activity != null)
+                            activity.finish();
+                    }
                     break;
                 default:
                     LogUtils.debug(TAG, "intent action is " + intent.getAction());

@@ -1,5 +1,6 @@
 package jc.house.global;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Window;
@@ -19,10 +21,13 @@ import com.easemob.EMError;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jc.house.async.MThreadPool;
 import jc.house.models.BaseModel;
@@ -30,7 +35,7 @@ import jc.house.models.CustomerHelper;
 import jc.house.utils.LogUtils;
 import jc.house.utils.StringUtils;
 
-public class MApplication extends Application {
+public class MApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
 	public final String TAG = "MApplication";
 	/**huanxinid and name mapping **/
@@ -40,6 +45,7 @@ public class MApplication extends Application {
 	public final static String CONNECTION_CONFLICT = "jc.house.CONNECTION_CONFLICT";
 	public boolean isEmployeeLogin = false;
 
+	public Set<WeakReference<Activity>> loadedActivities = new HashSet<>();
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -67,6 +73,40 @@ public class MApplication extends Application {
 				}
 			}
 		});
+		this.registerActivityLifecycleCallbacks(this);
+	}
+
+	@Override
+	public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+		loadedActivities.add(new WeakReference<>(activity));
+	}
+
+	@Override
+	public void onActivityStarted(Activity activity) {
+
+	}
+
+	@Override
+	public void onActivityResumed(Activity activity) {
+	}
+
+	@Override
+	public void onActivityPaused(Activity activity) {
+
+	}
+
+	@Override
+	public void onActivityStopped(Activity activity) {
+
+	}
+
+	@Override
+	public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+	}
+
+	@Override
+	public void onActivityDestroyed(Activity activity) {
 	}
 
 	/**
