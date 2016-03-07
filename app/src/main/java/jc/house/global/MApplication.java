@@ -1,12 +1,21 @@
 package jc.house.global;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.easemob.EMConnectionListener;
+import com.easemob.EMError;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 
@@ -18,15 +27,17 @@ import java.util.Map;
 import jc.house.async.MThreadPool;
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
+import jc.house.utils.LogUtils;
 import jc.house.utils.StringUtils;
 
 public class MApplication extends Application {
 
+	public final String TAG = "MApplication";
 	/**huanxinid and name mapping **/
 	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
 	public static final  String SP = "JC_HOUSE";
 	private SharedPreferences sp;
-
+	public final static String CONNECTION_CONFLICT = "jc.house.CONNECTION_CONFLICT";
 	public boolean isEmployeeLogin = false;
 
 	@Override
@@ -41,11 +52,19 @@ public class MApplication extends Application {
 			@Override
 			public void onConnected() {
 				isEmployeeLogin = true;
+				LogUtils.debug(TAG, ">> connected to server");
 			}
 
 			@Override
-			public void onDisconnected(int i) {
+			public void onDisconnected(final int error) {
 				isEmployeeLogin = false;
+				LogUtils.debug(TAG, ">> error code is " + error);
+				//被迫下线，账号在另一处设备登录
+				if(error == EMError.CONNECTION_CONFLICT) {
+					Intent intent = new Intent();
+					intent.setAction(MApplication.CONNECTION_CONFLICT);
+					sendBroadcast(intent);
+				}
 			}
 		});
 	}

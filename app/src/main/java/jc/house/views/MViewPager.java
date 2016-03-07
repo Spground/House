@@ -23,5 +23,4 @@ public class MViewPager extends ViewPager {
 		super.onTouchEvent(event);
 		return true;
 	}
-
 }

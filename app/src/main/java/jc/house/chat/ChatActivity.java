@@ -6,11 +6,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.DebugUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,7 +31,6 @@ import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
 import jc.house.global.Constants;
-import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
@@ -44,7 +41,6 @@ import jc.house.views.TitleBar;
  */
 public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener,
         ChatMessageList.MessageListItemClickListener {
-    private boolean ISFIRST = false;
     public static final String TAG = "ChatActivity";
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
@@ -62,10 +58,10 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     public static ChatActivity instance = null;
 
-    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
-    protected int[] itemsDrawables = { R.drawable.jc_chat_takepic_selector, R.drawable.jc_chat_image_selector,
+    protected int[] itemStrings = {R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location};
+    protected int[] itemsDrawables = {R.drawable.jc_chat_takepic_selector, R.drawable.jc_chat_image_selector,
             R.drawable.jc_chat_location_selector};
-    protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION };
+    protected int[] itemIds = {ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION};
 
     private TitleBar titleBar;
 
@@ -83,6 +79,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private boolean canSendHouseDetail = false;
     private HouseDetail house;
     public static final String EXTRA_HOUSE = "house";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,10 +96,11 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         init();
         initChatMsgList();
         instance = this;
-        if(!ISFIRST) {
-            sendDebugMessage();
-            ISFIRST = true;
-        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -137,12 +135,12 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     /**
      * 初始化各种视图
      */
-    private void init(){
-        this.titleBar = (TitleBar)findViewById(R.id.titlebar);
+    private void init() {
+        this.titleBar = (TitleBar) findViewById(R.id.titlebar);
         this.toChatUserName = getIntent().getStringExtra("toChatUserName");
         this.titleBar.setTitle(this.nickName);
         /**chat message ListView init**/
-        this.chatMsgList = (ChatMessageList)findViewById(R.id.message_list);
+        this.chatMsgList = (ChatMessageList) findViewById(R.id.message_list);
 
         /**swipe refresh layout init**/
         this.swipeRefreshLayout = chatMsgList.getSwipeRefreshLayout();
@@ -152,7 +150,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
         //下方扩展菜单栏的监听器
         extendMenuItemClickListener = new MyItemClickListener();
-        inputMenu = (ChatInputMenu)findViewById(R.id.input_menu);
+        inputMenu = (ChatInputMenu) findViewById(R.id.input_menu);
         //注册扩展菜单项
         registerExtendMenuItem();
         inputMenu.init();
@@ -176,8 +174,8 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     /**
      * 注册底部菜单扩展栏item; 覆盖此方法时如果不覆盖已有item，item的id需大于3
      */
-    protected void registerExtendMenuItem(){
-        for(int i = 0; i < itemStrings.length && i < 2; i++){
+    protected void registerExtendMenuItem() {
+        for (int i = 0; i < itemStrings.length && i < 2; i++) {
             inputMenu.registerExtendMenuItem(itemStrings[i], itemsDrawables[i], itemIds[i], extendMenuItemClickListener);
         }
         if (canSendHouseDetail) {
@@ -188,7 +186,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     /**
      * 初始化聊天对话列表
      */
-    private void initChatMsgList(){
+    private void initChatMsgList() {
         LogUtils.debug(TAG, "初始化ChatMsgList");
         LogUtils.debug(TAG, "和" + toChatUserName + "的聊天对话中有" +
                 EMChatManager.getInstance().getConversation(toChatUserName).getUnreadMsgCount() +
@@ -198,11 +196,12 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     }
 
     /**
-     *发送TXT消息
+     * 发送TXT消息
+     *
      * @param content：发送的内容
      * @param toChatUserName：发送给谁
      */
-    private void sendTxtMessage(String content,String toChatUserName){
+    private void sendTxtMessage(String content, String toChatUserName) {
         EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
         /**创建一条文本消息**/
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
@@ -234,6 +233,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     /**
      * 发送图片消息
+     *
      * @param imagePath 图片在本机的绝对路径
      */
     protected void sendImageMessage(String imagePath) {
@@ -244,7 +244,6 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     }
 
     /**
-     *
      * @param imgUrl
      * @param houseName
      * @param tag
@@ -294,25 +293,6 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         } else {
             Toast.makeText(this, "暂时没有房产信息！", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /**
-     * 产品展示的时候调用
-     */
-    private void sendDebugMessage() {
-        //客服版默认发送一条信息
-        if(!Constants.APPINFO.USER_VERSION)
-            sendTxtMessage("顾客您好,请问有什么可以帮忙吗？", toChatUserName);
-//        sendTxtMessage("[:3d:]", toChatUserName);
-//        EMMessage imgMsg = EMMessage.createSendMessage(EMMessage.Type.IMAGE);
-//        imgMsg.direct = EMMessage.Direct.SEND;
-//        imgMsg.setTo("admin");
-//        EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
-//        conversation.addMessage(imgMsg);
-//        sendHouseMessage(1, "1", "1", "1", "1");
-
-        chatMsgList.refreshSelectLast();
-
     }
 
     @Override
@@ -374,15 +354,15 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     }
 
-    private void registerEventBus(){
-        if(!isEventBusRegister){
+    private void registerEventBus() {
+        if (!isEventBusRegister) {
             EventBus.getDefault().register(this);
             isEventBusRegister = true;
         }
     }
 
-    private void unregisterEventBus(){
-        if(isEventBusRegister){
+    private void unregisterEventBus() {
+        if (isEventBusRegister) {
             EventBus.getDefault().unregister(this);
             isEventBusRegister = false;
         }
@@ -390,16 +370,17 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     /**
      * called when new message is coming!
+     *
      * @param event new message event
      */
-    public void onEventMainThread(NewMessageEvent event){
+    public void onEventMainThread(NewMessageEvent event) {
         Intent intent = event.getIntent();
-        if(intent == null)
+        if (intent == null)
             return;
         String msgId = intent.getStringExtra("msgid");
         String from = intent.getStringExtra("from");
         //if receive other person's message ignore
-        if(!from.equals(toChatUserName))
+        if (!from.equals(toChatUserName))
             return;
         EMMessage message = EMChatManager.getInstance().getMessage(msgId);
         LogUtils.debug(TAG, "收到消息" + msgId);
@@ -414,7 +395,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      * @param selectedImage
      */
     protected void sendPicByUri(Uri selectedImage) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -495,6 +476,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     /**
      * 对话的消息被点击时
+     *
      * @param message
      * @return
      */

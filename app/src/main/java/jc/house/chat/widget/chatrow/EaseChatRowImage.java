@@ -113,9 +113,10 @@ public class EaseChatRowImage extends EaseChatRow {
             /**接收到的图片, 显示原图 而非 本地的缩略图**/
             url = body.getRemoteUrl();
         }
-
+        String[] urls = new String[1];
+        urls[0] = url;
         Log.v("===TAG===", "image url is :" + url);
-        showBigImgIntent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, url);
+        showBigImgIntent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, urls);
         context.startActivity(showBigImgIntent);
     }
 
