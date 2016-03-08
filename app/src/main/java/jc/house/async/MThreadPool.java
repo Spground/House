@@ -39,8 +39,8 @@ public class MThreadPool {
         return instance;
     }
 
-    public ExecutorService getExecutorService() {
-        return executorService;
+    public void submit(Runnable task) {
+        this.executorService.submit(task);
     }
 
     public void submitParseDataTask(ParseTask task) {

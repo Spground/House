@@ -45,6 +45,7 @@ import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
+import jc.house.utils.SP;
 import jc.house.utils.ServerUtils;
 
 public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment.OnPullToRefreshBeginListener {
@@ -360,6 +361,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
      */
     private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
         LogUtils.debug("===jsonStr===", jsonStr);
-        ((MApplication) getActivity().getApplicationContext()).saveJsonString(jsonStr, cls);
+        SP.with(this.getActivity()).saveJsonString(jsonStr, cls);
     }
 }

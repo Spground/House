@@ -1,6 +1,9 @@
 package jc.house.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,7 +211,7 @@ public class CircleView extends LinearLayout {
         }
     }
 
-    public void setPhotoViews(String[] urls) {
+    public void setPhotoViews(String[] urls, boolean isPIcasso) {
         if (null != urls && urls.length <= 0) {
             return;
         }
@@ -218,7 +222,12 @@ public class CircleView extends LinearLayout {
         for (int i = 0; i < urls.length; i++) {
             PhotoView photoView = new PhotoView(context);
             photoView.setScaleType(ScaleType.FIT_CENTER);
-            loadImage(photoView, urls[i]);
+            if (isPIcasso) {
+                loadImageLocal(photoView, urls[i]);
+            } else {
+                Bitmap bitmap = BitmapFactory.decodeFile(urls[i]);
+                photoView.setImageBitmap(bitmap);
+            }
             PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
             attacher.setZoomable(true);
             attacher.setScaleLevels(0.5f, 1.2f, 2.5f);
@@ -234,6 +243,10 @@ public class CircleView extends LinearLayout {
 
     private void loadImage(ImageView imageView, String url) {
         Picasso.with(context).load(url).placeholder(R.drawable.failure_image_red).error(R.drawable.failure_image_red).into(imageView);
+    }
+
+    private void loadImageLocal(ImageView imageView, String url) {
+        Picasso.with(context).load(url).placeholder(R.drawable.failure_image_red).skipMemoryCache().config(Bitmap.Config.ALPHA_8).error(R.drawable.failure_image_red).into(imageView);
     }
 
     private class CircleOnPageChangeListener implements OnPageChangeListener {

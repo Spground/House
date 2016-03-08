@@ -39,6 +39,7 @@ import jc.house.models.ServerResult;
 import jc.house.models.Slideshow;
 import jc.house.utils.ListUtils;
 import jc.house.utils.LogUtils;
+import jc.house.utils.SP;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
@@ -188,7 +189,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
                         setSlideshows((List<Slideshow>) models);
-                        mApplication.saveJsonString(result.array.toString(), Slideshow.class);
+                        SP.with(getActivity()).saveJsonString(result.array.toString(), Slideshow.class);
                     }
                 });
             } else {
@@ -212,7 +213,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     protected void loadLocalData() {
         super.loadLocalData();
-        String slides = mApplication.getJsonString(Slideshow.class);
+        String slides = SP.with(getActivity()).getJsonString(Slideshow.class);
         if (StringUtils.strEmpty(slides)) {
             this.setDefaultCircleView();
         } else {

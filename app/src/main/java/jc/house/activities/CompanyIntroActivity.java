@@ -5,24 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import jc.house.R;
+import jc.house.async.FetchServer;
+import jc.house.async.StringTask;
 import jc.house.global.Constants;
-import jc.house.global.ServerResultType;
 import jc.house.models.CompanyIntroItem;
-import jc.house.models.ServerResult;
-import jc.house.utils.ListUtils;
-import jc.house.utils.LogUtils;
-import jc.house.utils.ParseJson;
-import jc.house.utils.ServerUtils;
+import jc.house.utils.SP;
 import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 
@@ -45,7 +36,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
         setJCContentView(R.layout.activity_company_introduction);
         setTitleBarTitle("公司简介");
         initViews();
-        setDefaultData();
+        fetchLocalUrl();
         fetchDataFromServer();
     }
 
@@ -81,45 +72,46 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
     }
 
     private void fetchDataFromServer() {
-        this.client.get(URL, new JsonHttpResponseHandler() {
+        FetchServer.fetchCompanyInfo(new StringTask() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                parseServerData(statusCode, response);
-                LogUtils.debug(response.toString());
+            public void onSuccess(String result) {
+                setUrls(result);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
+            public void onFail(String msg) {
+                super.onFail(msg);
                 handleFailure();
+            }
+
+            @Override
+            public void onCode(int code) {
+                handleCode(code, TAG);
             }
         });
     }
 
-    private void parseServerData(int statusCode, JSONObject response) {
-        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
-            if (result.isSuccess) {
-                try {
-                    String url = result.object.getString("url");
-                    setUrls(url);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                handleCode(statusCode, TAG);
-            }
-        } else {
-            handleFailure();
-        }
-    }
-
     private void setUrls(String url) {
-        if (null != url) {
+        if (!StringUtils.strEmpty(url)) {
             this.urls = StringUtils.parseImageUrlsOrigin(url);
             this.circleView.setImageUrls(urls);
             this.circleView.setOnCircleViewItemClickListener(this);
+            saveUrlToLocal(url);
+        }
+    }
+
+    private void saveUrlToLocal(String url) {
+        SP.with(this).saveString(TAG, url);
+    }
+
+    private void fetchLocalUrl() {
+        String url = SP.with(this).getString(TAG);
+        if (!StringUtils.strEmpty(url)) {
+            this.urls = StringUtils.parseImageUrlsOrigin(url);
+            this.circleView.setImageUrls(urls);
+            this.circleView.setOnCircleViewItemClickListener(this);
+        } else {
+            setDefaultData();
         }
     }
 
