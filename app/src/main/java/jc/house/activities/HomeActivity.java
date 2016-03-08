@@ -59,6 +59,7 @@ import jc.house.models.CustomerHelper;
 import jc.house.models.ServerResult;
 import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
+import jc.house.utils.SP;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 import jc.house.utils.ToastUtils;
@@ -166,14 +167,14 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      */
     private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
         LogUtils.debug("===jsonStr===", jsonStr);
-        ((MApplication) getApplicationContext()).saveJsonString(jsonStr, cls);
+        SP.with(this).saveJsonString(jsonStr, cls);
     }
 
     /**
      * 将本地的jsonStr缓存数据取出来
      */
     private boolean loadDataFromLocal(Class<? extends BaseModel> cls) {
-        String content = ((MApplication) getApplicationContext()).getJsonString(cls);
+        String content = SP.with(this).getJsonString(cls);
         if (!StringUtils.strEmpty(content)) {
             ServerResult result = new ServerResult();
             try {
@@ -447,7 +448,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * @param pwd
      */
     private void register(final String huanxinid, final String pwd) {
-        MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
+        MThreadPool.getInstance().submit(new Runnable() {
             @Override
             public void run() {
                 try {

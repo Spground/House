@@ -40,8 +40,6 @@ public class MApplication extends Application implements Application.ActivityLif
 	public final String TAG = "MApplication";
 	/**huanxinid and name mapping **/
 	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
-	public static final  String SP = "JC_HOUSE";
-	private SharedPreferences sp;
 	public final static String CONNECTION_CONFLICT = "jc.house.CONNECTION_CONFLICT";
 	public boolean isEmployeeLogin = false;
 
@@ -52,7 +50,6 @@ public class MApplication extends Application implements Application.ActivityLif
 		//初始化环信SDK
 		initHuanXinSDK();
 		EMChat.getInstance().setAppInited();
-		this.sp = this.getSharedPreferences(SP, MODE_PRIVATE);
 		//监听是否已经连接到聊天服务器了
 		EMChatManager.getInstance().addConnectionListener(new EMConnectionListener() {
 			@Override
@@ -153,23 +150,6 @@ public class MApplication extends Application implements Application.ActivityLif
 		}
 		/**init huanxing SDK**/
 		EMChat.getInstance().init(getApplicationContext());
-	}
-
-	public void saveJsonString(final String content, final Class<? extends BaseModel> cls) {
-		if (!StringUtils.strEmpty(content)) {
-			MThreadPool.getInstance().getExecutorService().submit(new Runnable() {
-				@Override
-				public void run() {
-					SharedPreferences.Editor editor = sp.edit();
-					editor.putString(cls.toString(), content);
-					editor.apply();
-				}
-			});
-		}
-	}
-
-	public String getJsonString(Class<? extends BaseModel> cls) {
-		return sp.getString(cls.toString(), null);
 	}
 
 }

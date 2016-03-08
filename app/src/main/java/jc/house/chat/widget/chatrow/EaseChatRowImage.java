@@ -109,6 +109,7 @@ public class EaseChatRowImage extends EaseChatRow {
             /**使用本地的全图, 让picasso自己去压缩显示**/
             Log.v("===TAG===", "image getLocalUrl is :" + body.getLocalUrl());
             url = "file:" + body.getLocalUrl();
+//            url = body.getLocalUrl();
         } else {
             /**接收到的图片, 显示原图 而非 本地的缩略图**/
             url = body.getRemoteUrl();
@@ -117,6 +118,7 @@ public class EaseChatRowImage extends EaseChatRow {
         urls[0] = url;
         Log.v("===TAG===", "image url is :" + url);
         showBigImgIntent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, urls);
+//        showBigImgIntent.putExtra(PhotoViewActivity.FLAG_PICASSO, false);
         context.startActivity(showBigImgIntent);
     }
 

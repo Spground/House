@@ -35,6 +35,7 @@ import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
+import jc.house.utils.SP;
 import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 
@@ -275,7 +276,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void loadLocalData() {
-        String content = mApplication.getJsonString(this.getModelClass());
+        String content = SP.with(this.getActivity()).getJsonString(this.getModelClass());
         if (!StringUtils.strEmpty(content)) {
             ServerResult result = new ServerResult();
             try {
@@ -296,6 +297,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void saveToLocal(String content) {
-        this.mApplication.saveJsonString(content, this.getModelClass());
+        SP.with(this.getActivity()).saveJsonString(content, this.getModelClass());
     }
 }
