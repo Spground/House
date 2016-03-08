@@ -40,6 +40,8 @@ public class WelcomeActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
         imageView = (ImageView)findViewById(R.id.id_imageview);
+        if(!Constants.APPINFO.USER_VERSION)
+            imageView.setImageResource(R.drawable.guide_customer_helper);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_welcome_image);
         animation.setFillAfter(true);
         imageView.startAnimation(animation);

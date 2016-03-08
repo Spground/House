@@ -17,7 +17,7 @@ import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.views.TitleBar;
 
-public class BaseActivity extends Activity implements View.OnTouchListener {
+public class BaseActivity extends Activity {
 
     protected ProgressDialog progressDialog;
     protected TitleBar titleBar;
@@ -97,8 +97,26 @@ public class BaseActivity extends Activity implements View.OnTouchListener {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (this.isScrollRightBack) {
+            createVelocityTracker(event);
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    xPre = event.getRawX();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    float xCur = event.getRawX();
+                    handleMove(xCur);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                default:
+                    xPre = 0;
+                    recycleVelocityTracker();
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 
     protected void ToastL(String msg) {
@@ -107,31 +125,8 @@ public class BaseActivity extends Activity implements View.OnTouchListener {
 
     protected final void setScrollRightBack(boolean flag) {
         if (this.isScrollRightBack != flag) {
-            this.contentLayout.setOnTouchListener(flag ? this : null);
-//            this.contentLayout.getParent().requestDisallowInterceptTouchEvent(true);
             this.isScrollRightBack = flag;
         }
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        createVelocityTracker(event);
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                xPre = event.getRawX();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float xCur = event.getRawX();
-                handleMove(xCur);
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-            default:
-                xPre = 0;
-                recycleVelocityTracker();
-                break;
-        }
-        return true;
     }
 
     private void handleMove(float xCur) {
