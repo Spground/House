@@ -1,11 +1,8 @@
 package jc.house.activities;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -25,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
@@ -39,8 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
@@ -53,7 +51,6 @@ import jc.house.fragments.ChatFragment;
 import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
-import jc.house.global.FetchType;
 import jc.house.global.MApplication;
 import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
@@ -111,14 +108,13 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.initViewPager();
         this.initNetConnectManager();
         startUpReceiveNewMessageService();
-        if (Constants.APPINFO.USER_VERSION) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getCustomerHelperNickName();
-                }
-            }, 2000);
-        }
+        //获取客服环信ID-Model映射表
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getCustomerHelperNickName();
+            }
+        }, 0);
     }
 
     /**
@@ -164,10 +160,11 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
     /**
      * 将jsonStr缓存到本地
+     *
      * @param jsonStr
      * @param cls
      */
-    private void  saveToLocal(String jsonStr, Class<? extends BaseModel> cls){
+    private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
         LogUtils.debug("===jsonStr===", jsonStr);
         ((MApplication) getApplicationContext()).saveJsonString(jsonStr, cls);
     }
@@ -175,8 +172,8 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     /**
      * 将本地的jsonStr缓存数据取出来
      */
-    private void loadDataFromLocal(Class<? extends BaseModel> cls) {
-        String content = ((MApplication)getApplicationContext()).getJsonString(cls);
+    private boolean loadDataFromLocal(Class<? extends BaseModel> cls) {
+        String content = ((MApplication) getApplicationContext()).getJsonString(cls);
         if (!StringUtils.strEmpty(content)) {
             ServerResult result = new ServerResult();
             try {
@@ -185,11 +182,11 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, cls) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
-                        for(BaseModel model : models) {
-                            CustomerHelper customerHelper = (CustomerHelper)model;
-                            if(customerHelper == null)
+                        for (BaseModel model : models) {
+                            CustomerHelper customerHelper = (CustomerHelper) model;
+                            if (customerHelper == null)
                                 continue;
-                            ((MApplication)getApplicationContext()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
+                            ((MApplication) getApplicationContext()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
                         }
                     }
                 });
@@ -197,7 +194,9 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 e.printStackTrace();
             }
             LogUtils.debug("===TAG===", "customer helper content is + " + content + cls.toString());
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -236,7 +235,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
     private void initViewPager() {
         this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
-        this.viewPager.setOffscreenPageLimit(3);
+        this.viewPager.setOffscreenPageLimit(2);
         this.viewPager.setAdapter(new FragmentPagerAdapter(this
                 .getSupportFragmentManager()) {
 
@@ -519,10 +518,16 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     LogUtils.debug(TAG, "账号冲突");
                     ToastUtils.show(getApplicationContext(), "您的账号在别的设备登录");
                     Intent it = new Intent(HomeActivity.this, CustomerHelperLoginActivity.class);
-                    it.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     startActivity(it);
+                    //销毁所有的Activity
+                    for(WeakReference<Activity> activityWeakReference : ((MApplication)getApplicationContext()).loadedActivities) {
+                        Activity activity = activityWeakReference.get();
+                        if(activity != null)
+                            activity.finish();
+                    }
                     break;
                 default:
+                    LogUtils.debug(TAG, "intent action is " + intent.getAction());
                     break;
             }
 

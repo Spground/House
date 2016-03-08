@@ -117,7 +117,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
 
     private void setUrls(String url) {
         if (null != url) {
-            this.urls = StringUtils.parseImageUrls(url);
+            this.urls = StringUtils.parseImageUrlsOrigin(url);
             this.circleView.setImageUrls(urls);
             this.circleView.setOnCircleViewItemClickListener(this);
         }

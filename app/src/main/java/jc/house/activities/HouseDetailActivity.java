@@ -380,6 +380,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public void onCircleViewItemClick(View v, int index) {
         if (null != houseDetail.getImageUrls()) {
             Intent intent = new Intent(this, PhotoViewActivity.class);
+//            String[] array = new String[1];
+//            array[0] = (houseDetail.getImageUrls())[index];
             intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, houseDetail.getImageUrls());
             intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
             startActivity(intent);

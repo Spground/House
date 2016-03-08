@@ -6,6 +6,15 @@ package jc.house.models;
 public class CustomerHelper extends BaseModel {
     private String name;
     private String hxID;
+    private String picUrl;
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 
     public String getName() {
         return name;

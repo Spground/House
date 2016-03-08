@@ -45,7 +45,7 @@ public final class StringUtils {
 		return result;
 	}
 
-	public static final String[] parseImageUrls(String imageUrl) {
+	public static final String[] parseImageUrlsThumb(String imageUrl) {
 		String temStr = imageUrl.trim();
 		while (temStr.length() > 0 && temStr.charAt(0) == ';') {
 			temStr = temStr.substring(1);
@@ -60,5 +60,19 @@ public final class StringUtils {
 		return result;
 	}
 
+	public static final String[] parseImageUrlsOrigin(String imageUrl) {
+		String temStr = imageUrl.trim();
+		while (temStr.length() > 0 && temStr.charAt(0) == ';') {
+			temStr = temStr.substring(1);
+		}
+		if (strEmpty(temStr)) {
+			return null;
+		}
+		String[] result = temStr.split(";");
+		for (int i = 0; i < result.length; i++) {
+			result[i] = Constants.IMAGE_URL_ORIGIN + result[i];
+		}
+		return result;
+	}
 
 }
