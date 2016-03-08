@@ -23,6 +23,7 @@ import java.util.List;
 
 import jc.house.R;
 import jc.house.global.Constants;
+import jc.house.utils.LogUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -68,6 +69,8 @@ public class CircleView extends LinearLayout {
 
     private void initView() {
         this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
+        this.viewPager.setOffscreenPageLimit(1);
+        this.viewPager.setCurrentItem(0, true);
         this.indicatorView = (IndicatorView) this
                 .findViewById(R.id.indicatorView);
     }
@@ -277,7 +280,6 @@ public class CircleView extends LinearLayout {
                 container.removeView(imageViews.get(position));
             }
         }
-
     }
 
     private void setCurrentIndex(int index) {
@@ -285,6 +287,13 @@ public class CircleView extends LinearLayout {
             this.viewPager.setCurrentItem(index);
             this.indicatorView.setSelectedIndex(index);
             this.currentIndex = index;
+        }
+    }
+
+    public void cancelTimer() {
+        if (null != timer) {
+            this.setAutoPlay(false);
+            timer.cancel();
         }
     }
 

@@ -119,7 +119,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void putCache(int id, HouseDetail houseDetail) {
         WeakReference<HouseDetail> item = new WeakReference<>(houseDetail);
         houseDetailCache.put(id, item);
-        LogUtils.debug("===HouseDetailActivity===", "putCache id is " + id);
     }
 
     private void initViews() {
@@ -359,6 +358,12 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     @Override
+    protected void onDestroy() {
+        this.circleView.cancelTimer();
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View v) {
         if (v.getClass().isAssignableFrom(ViewPagerTitle.class)) {
             int index = ((ViewPagerTitle) v).getIndex();
@@ -375,6 +380,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public void onCircleViewItemClick(View v, int index) {
         if (null != houseDetail.getImageUrls()) {
             Intent intent = new Intent(this, PhotoViewActivity.class);
+//            String[] array = new String[1];
+//            array[0] = (houseDetail.getImageUrls())[index];
             intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, houseDetail.getImageUrls());
             intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
             startActivity(intent);
