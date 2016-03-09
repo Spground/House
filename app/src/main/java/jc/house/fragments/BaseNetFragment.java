@@ -3,7 +3,6 @@ package jc.house.fragments;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.BaseAdapter;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -30,7 +29,6 @@ import jc.house.async.MThreadPool;
 import jc.house.async.ParseTask;
 import jc.house.global.FetchType;
 import jc.house.global.RequestType;
-import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
@@ -152,7 +150,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    handleResponse(statusCode, response, fetchType, ServerResultType.Array);
+                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
                     LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
                 }
 
@@ -168,7 +166,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                    handleResponse(statusCode, response, fetchType, ServerResultType.Array);
+                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
                     LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
                 }
 
@@ -183,7 +181,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     }
 
-    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResultType resultType) {
+    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResult.Type resultType) {
         if (!ServerUtils.isConnectServerSuccess(statusCode, response)) {
             handleFailure();
         } else {
@@ -193,6 +191,28 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             } else {
                 handleCode(result.code, "statusCode");
             }
+        }
+    }
+
+    protected void handleResponse(final ServerResult result, final FetchType fetchType) {
+        if (result.isArrayType()) {
+            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                @Override
+                public void onSuccess(List<? extends BaseModel> models) {
+                    updateListView((List<BaseModel>) models, fetchType);
+                    if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                        saveToLocal(result.array.toString());
+                    }
+                }
+            });
+        } else {
+            //暂时没有用到
+            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+                @Override
+                public void onSuccess(BaseModel model) {
+                    super.onSuccess(model);
+                }
+            });
         }
     }
 
@@ -253,35 +273,13 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     protected abstract void fetchDataFromServer(final FetchType fetchType);
 
-    protected void handleResponse(final ServerResult result, final FetchType fetchType) {
-        if (result.isArrayType()) {
-            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-                @Override
-                public void onSuccess(List<? extends BaseModel> models) {
-                    updateListView((List<BaseModel>) models, fetchType);
-                    if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                        saveToLocal(result.array.toString());
-                    }
-                }
-            });
-        } else {
-            //暂时没有用到
-            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-                @Override
-                public void onSuccess(BaseModel model) {
-                    super.onSuccess(model);
-                }
-            });
-        }
-    }
-
     protected void loadLocalData() {
         String content = SP.with(this.getActivity()).getJsonString(this.getModelClass());
         if (!StringUtils.strEmpty(content)) {
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(content);
-                result.resultType = ServerResultType.Array;
+                result.resultType = ServerResult.Type.Array;
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {

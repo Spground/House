@@ -92,7 +92,7 @@ public class CircleView extends LinearLayout {
     private void initViewBefore(Context context) {
         this.context = context;
         this.first = true;
-        this.autoPlay = true;
+        this.autoPlay = false;
         this.timeInterval = 3.0f;
         this.num = 0;
         this.imageViews = new ArrayList<>();
@@ -103,6 +103,10 @@ public class CircleView extends LinearLayout {
 
     public void setAutoPlay(boolean autoPlay) {
         this.autoPlay = autoPlay;
+        if (null == timer) {
+            timer = new TimerCircle(System.currentTimeMillis() / 1000 + (long) timeInterval * 1000, (long) timeInterval * 1000, this);
+            timer.start();
+        }
     }
 
     public void setTimeInterval(float timeInterval) {
@@ -222,6 +226,8 @@ public class CircleView extends LinearLayout {
         for (int i = 0; i < urls.length; i++) {
             PhotoView photoView = new PhotoView(context);
             photoView.setScaleType(ScaleType.FIT_CENTER);
+            photoView.setZoomable(false);
+            photoView.setEnabled(false);
             if (isPIcasso) {
                 loadImageLocal(photoView, urls[i]);
             } else {
@@ -229,8 +235,12 @@ public class CircleView extends LinearLayout {
                 photoView.setImageBitmap(bitmap);
             }
             PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
-            attacher.setZoomable(true);
-            attacher.setScaleLevels(0.5f, 1.2f, 2.5f);
+            attacher.setZoomable(false);
+            attacher.setOnDoubleTapListener(null);
+            attacher.setOnScaleChangeListener(null);
+            attacher.setAllowParentInterceptOnEdge(true);
+//            attacher.setMinimumScale(1.0f);
+//            attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
             attacher.update();
             this.imageViews.add(photoView);
         }
@@ -264,6 +274,7 @@ public class CircleView extends LinearLayout {
         @Override
         public void onPageSelected(int index) {
             indicatorView.setSelectedIndex(index);
+            currentIndex = index;
         }
 
     }
@@ -319,7 +330,7 @@ public class CircleView extends LinearLayout {
     }
 
     private void circle() {
-        if (autoPlay) {
+        if (autoPlay && num > 1) {
             if (SCROLL_ORIENTATION.RIGHT == this.orientation) {
                 currentIndex = (currentIndex + 1) % num;
             } else {

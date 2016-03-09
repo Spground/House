@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import jc.house.global.Constants;
 import jc.house.global.MApplication;
+import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
 
 public class BaseActivity extends Activity {
@@ -116,7 +117,14 @@ public class BaseActivity extends Activity {
                     break;
             }
         }
+        LogUtils.debug("eventA + " + event.toString());
         return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        LogUtils.debug("eventB + " + event.toString());
+        return super.onTouchEvent(event);
     }
 
     protected void ToastL(String msg) {

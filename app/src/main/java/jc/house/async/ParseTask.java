@@ -2,7 +2,6 @@ package jc.house.async;
 
 import java.util.List;
 
-import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
@@ -20,7 +19,7 @@ public class ParseTask extends BaseTask {
         this.mClass = mClass;
     }
 
-    public ServerResultType getResultType() {
+    public ServerResult.Type getResultType() {
         return result.resultType;
     }
 

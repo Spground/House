@@ -2,12 +2,13 @@ package jc.house.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -21,17 +22,17 @@ import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
-import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
+import jc.house.async.FetchServer;
 import jc.house.async.MThreadPool;
+import jc.house.async.ModelsTask;
 import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.MApplication;
 import jc.house.global.RequestType;
-import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
@@ -66,9 +67,14 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         super.onActivityCreated(savedInstanceState);
         this.mApplication = (MApplication) this.getActivity().getApplication();
         circleView = new CircleView(this.getActivity());
-        circleView.setAutoPlay(true);
         circleView.setTimeInterval(5.0f);
         circleView.setOnCircleViewItemClickListener(this);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                circleView.setAutoPlay(true);
+            }
+        }, 2000);
         this.loadSlideSuccess = false;
         this.adapter = new ListAdapter(this.getActivity(), dataSet, ModelType.NEWS, circleView);
         initListView();
@@ -138,8 +144,34 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
-    protected void fetchDataFromServer(FetchType fetchType) {
+    protected void fetchDataFromServer(final FetchType fetchType) {
         fetchDataFromServer(fetchType, RequestType.POST);
+        /*
+        if (isOver(fetchType)) {
+            return;
+        }
+        FetchServer.share().postModelsFromServer(this.url, getParams(FetchType.FETCH_TYPE_REFRESH), getModelClass(), new ModelsTask() {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+                updateListView((List<BaseModel>) models, fetchType);
+                if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
+                    saveToLocal(result.array.toString());
+                }
+            }
+
+            @Override
+            public void onCode(int code) {
+                handleCode(code, TAG);
+            }
+
+            @Override
+            public void onFail(String msg) {
+                super.onFail(msg);
+                handleFailure();
+                resetXListView();
+            }
+        });
+        */
     }
 
     private void fetchSlideshows() {
@@ -174,6 +206,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         circleView.setImageUrls(urls);
         this.slideshows = models;
         this.loadSlideSuccess = true;
+        this.circleView.setOnCircleViewItemClickListener(this);
     }
 
     private void setDefaultCircleView() {
@@ -183,7 +216,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     private void handleSlideshows(int statusCode, JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
             if (result.isSuccess) {
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
@@ -220,7 +253,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(slides);
-                result.resultType = ServerResultType.Array;
+                result.resultType = ServerResult.Type.Array;
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {
