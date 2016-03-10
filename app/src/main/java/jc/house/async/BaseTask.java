@@ -14,7 +14,6 @@ public class BaseTask {
     }
 
     public void onCode(int code) {
-
     }
 
     public void onFail(String msg) {

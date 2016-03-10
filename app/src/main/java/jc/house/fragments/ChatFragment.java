@@ -39,7 +39,6 @@ import jc.house.chat.adapter.ConversationListAdapter;
 import jc.house.chat.event.NewMessageEvent;
 import jc.house.global.Constants;
 import jc.house.global.MApplication;
-import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
@@ -326,7 +325,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
                 LogUtils.debug(TAG, "onSuccess");
                 if (!ServerUtils.isConnectServerSuccess(statusCode, response))
                     return;
-                ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+                ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
                 if (!result.isSuccess)
                     return;
                 //cache to local

@@ -53,7 +53,7 @@
         <!-- huanxing SDK -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="wujieim#houstest" />
+            android:value="jinchenchina01#jinchengroup" />
 
         <service android:name="com.easemob.chat.EMChatService" />
         <!-- Welcome Page -->

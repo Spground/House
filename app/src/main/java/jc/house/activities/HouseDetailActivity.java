@@ -3,6 +3,8 @@ package jc.house.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
@@ -28,9 +30,9 @@ import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.async.MThreadPool;
 import jc.house.async.ParseTask;
+import jc.house.async.StringTask;
 import jc.house.chat.ChatActivity;
 import jc.house.global.Constants;
-import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
@@ -123,7 +125,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     private void initViews() {
         this.circleView = (CircleView) this.findViewById(R.id.house_circle_view);
-        this.circleView.setTimeInterval(3.6f);
+        this.circleView.setTimeInterval(5.0f);
         this.mapTextView = (TextView) this.getLayoutInflater().inflate(R.layout.div_titlebar_rightview, null);
         this.mapTextView.setText("地图");
         this.mapTextView.setOnTouchListener(new View.OnTouchListener() {
@@ -319,6 +321,12 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.circleView.setImageUrls(houseDetail.getImageUrls());
         this.circleView.setOnCircleViewItemClickListener(this);
         this.circleView.setTimeInterval(5.0f);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                circleView.setAutoPlay(true);
+            }
+        }, 2000);
     }
 
     private void fetchDataFromServer() {
@@ -340,7 +348,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     private void parseServerData(int statusCode, final JSONObject response) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Object);
+            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Object);
             if (result.isSuccess) {
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class) {
                     @Override
@@ -378,11 +386,12 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     @Override
     public void onCircleViewItemClick(View v, int index) {
-        if (null != houseDetail.getImageUrls()) {
+        if (null != houseDetail.getImageUrls() && index < houseDetail.getImageUrls().length) {
             Intent intent = new Intent(this, PhotoViewActivity.class);
-//            String[] array = new String[1];
-//            array[0] = (houseDetail.getImageUrls())[index];
+//            String[] single = new String[1];
+//            single[0] = (houseDetail.getImageUrls())[index];
             intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, houseDetail.getImageUrls());
+//            intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, single);
             intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
             startActivity(intent);
         }

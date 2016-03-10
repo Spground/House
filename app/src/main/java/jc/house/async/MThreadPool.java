@@ -8,8 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import jc.house.global.ServerResultType;
 import jc.house.models.BaseModel;
+import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
 
@@ -97,7 +97,7 @@ public class MThreadPool {
                 }
             });
             if (null != task.getResult()) {
-                if (ServerResultType.Object == task.getResultType()) {
+                if (ServerResult.Type.Object == task.getResultType()) {
                     final BaseModel model = ParseJson.jsonObj2Model(task.getResult().object, task.getMClass());
                     mHandler.post(new Runnable() {
                         @Override

@@ -38,7 +38,6 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
@@ -52,7 +51,6 @@ import jc.house.fragments.HouseFragment;
 import jc.house.fragments.NewsFragment;
 import jc.house.global.Constants;
 import jc.house.global.MApplication;
-import jc.house.global.ServerResultType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
@@ -133,7 +131,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 LogUtils.debug(TAG, "onSuccess");
                 if (!ServerUtils.isConnectServerSuccess(statusCode, response))
                     return;
-                ServerResult result = ServerUtils.parseServerResponse(response, ServerResultType.Array);
+                ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
                 if (!result.isSuccess)
                     return;
                 //cache to local
@@ -179,7 +177,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             ServerResult result = new ServerResult();
             try {
                 result.array = new JSONArray(content);
-                result.resultType = ServerResultType.Array;
+                result.resultType = ServerResult.Type.Array;
                 MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, cls) {
                     @Override
                     public void onSuccess(List<? extends BaseModel> models) {

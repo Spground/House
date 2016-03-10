@@ -21,9 +21,8 @@ public class MViewPager extends ViewPager {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        getParent().requestDisallowInterceptTouchEvent(true);
-        super.onTouchEvent(event);
-        return true;
+//        getParent().requestDisallowInterceptTouchEvent(false);
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -32,10 +31,15 @@ public class MViewPager extends ViewPager {
             return super.dispatchTouchEvent(ev);
         } catch (IllegalArgumentException ignored) {
             ignored.printStackTrace();
-//            LogUtils.debug(ignored.toString());
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
         return false;
     }
+
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        super.onInterceptTouchEvent(ev);
+//        return false;
+//    }
 }

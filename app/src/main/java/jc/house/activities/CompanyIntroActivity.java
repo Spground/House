@@ -2,6 +2,8 @@ package jc.house.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
         setJCContentView(R.layout.activity_company_introduction);
         setTitleBarTitle("公司简介");
         initViews();
+        setDefaultData();
         fetchLocalUrl();
         fetchDataFromServer();
     }
@@ -45,12 +48,18 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
         for (int i = 0; i < NAMES.length; i++) {
             this.introItems.add(new CompanyIntroItem(NAMES[i], URLS[i]));
         }
-        this.circleView.setImageReIds(imageReIds);
     }
 
     private void initViews() {
         this.circleView = (CircleView) this.findViewById(R.id.company_circle_view);
         this.circleView.setTimeInterval(5.0f);
+        this.circleView.setAutoPlay(false);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                circleView.setAutoPlay(true);
+            }
+        }, 2000);
         this.companyDes = (TextView) this.findViewById(R.id.company_des);
         this.companyVideo = (TextView) this.findViewById(R.id.company_video);
         this.companyContact = (TextView) this.findViewById(R.id.company_contact);
@@ -72,7 +81,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
     }
 
     private void fetchDataFromServer() {
-        FetchServer.fetchCompanyInfo(new StringTask() {
+        FetchServer.share().fetchCompanyInfo(new StringTask() {
             @Override
             public void onSuccess(String result) {
                 setUrls(result);
@@ -111,7 +120,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
             this.circleView.setImageUrls(urls);
             this.circleView.setOnCircleViewItemClickListener(this);
         } else {
-            setDefaultData();
+            this.circleView.setImageReIds(imageReIds);
         }
     }
 
