@@ -127,6 +127,12 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
+    public void onDetach() {
+        this.circleView.cancelTimer();
+        super.onDetach();
+    }
+
+    @Override
     protected Class<? extends BaseModel> getModelClass() {
         return News.class;
     }

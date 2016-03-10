@@ -366,8 +366,15 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     }
 
     @Override
-    protected void onDestroy() {
+    public void finish() {
         this.circleView.cancelTimer();
+        LogUtils.debug("===" + TAG + "===", "HouseDetailActivity onFinish() is invoked!");
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LogUtils.debug("===" + TAG + "===", "HouseDetailActivity onDestroy() is invoked!");
         super.onDestroy();
     }
 

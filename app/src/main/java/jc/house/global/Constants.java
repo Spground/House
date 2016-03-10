@@ -5,7 +5,7 @@ import jc.house.R;
 //wujie
 public final class Constants {
 	public static final boolean PRODUCING = false;
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	public static final String MESSAGE_ATTR_IS_HOUSE = "is_house";
 	public static final String DEFAULT_PWD = "123456";
@@ -42,7 +42,7 @@ public final class Constants {
 	public static class APPINFO {
 		public static String APPVERSION = "1.0";
 		public static String RELEASETIME = "";
-		public static boolean USER_VERSION = true;
+		public static boolean USER_VERSION = false;
 	}
 }
 
