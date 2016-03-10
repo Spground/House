@@ -104,7 +104,7 @@ public class ConversationListAdapter extends BaseAdapter {
         //TODO 名字显示 用户版得知道映射规则
         //显示用户名的后六位
         String suffix = huanxinid.length() >= 6 ?
-                (huanxinid.substring(huanxinid.length() - 6, huanxinid.length())) : "";
+                (huanxinid.substring(huanxinid.length() - 6, huanxinid.length())) : huanxinid;
         holder.name.setText(Constants.APPINFO.USER_VERSION ?
                 (customerHelperMap == null ?
                         huanxinid : (customerHelperMap.get(huanxinid) == null ?

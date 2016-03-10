@@ -160,7 +160,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     /**
      * 将jsonStr缓存到本地
      *
-     * @param jsonStr
      * @param cls
      */
     private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
@@ -534,4 +533,5 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
         }
     }
+
 }

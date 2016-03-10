@@ -2,18 +2,12 @@ package jc.house.global;
 
 import jc.house.R;
 
-//wujie
 public final class Constants {
 	public static final boolean PRODUCING = false;
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
 	public static final String MESSAGE_ATTR_IS_HOUSE = "is_house";
 	public static final String DEFAULT_PWD = "123456";
-
-	public static class ACCOUNT{
-		public static final String Account = "wujie";
-		public static final String Pwd = "wujie";
-	}
 
 	/**shared preference name**/
 	public static class PREFERENCESNAME {
