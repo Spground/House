@@ -59,7 +59,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
             public void run() {
                 circleView.setAutoPlay(true);
             }
-        }, 2000);
+        }, 1000);
         this.companyDes = (TextView) this.findViewById(R.id.company_des);
         this.companyVideo = (TextView) this.findViewById(R.id.company_video);
         this.companyContact = (TextView) this.findViewById(R.id.company_contact);
@@ -132,6 +132,12 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
             intent.putExtra(PhotoViewActivity.FLAG_CURRENT_INDEX, index);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void finish() {
+        this.circleView.cancelTimer();
+        super.finish();
     }
 
     @Override

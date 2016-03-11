@@ -127,26 +127,32 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     @Override
+    public void onDetach() {
+        this.circleView.cancelTimer();
+        super.onDetach();
+    }
+
+    @Override
     protected Class<? extends BaseModel> getModelClass() {
         return News.class;
     }
 
-    @Override
-    protected Map<String, String> getParams(FetchType fetchType) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-            if (dataSet.size() > 0) {
-                params.put(PARAM_ID, String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
-            }
-        }
-        return params;
-    }
+//    @Override
+//    protected Map<String, String> getParams(FetchType fetchType) {
+//        Map<String, String> params = new HashMap<>();
+//        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+//        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+//            if (dataSet.size() > 0) {
+//                params.put(PARAM_ID, String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
+//            }
+//        }
+//        return params;
+//    }
 
+            /*
     @Override
     protected void fetchDataFromServer(final FetchType fetchType) {
         fetchDataFromServer(fetchType, RequestType.POST);
-        /*
         if (isOver(fetchType)) {
             return;
         }
@@ -171,8 +177,8 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 resetXListView();
             }
         });
-        */
     }
+    */
 
     private void fetchSlideshows() {
         Map<String, String> params = new HashMap<>();

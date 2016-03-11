@@ -82,6 +82,8 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     @Override
     public void onResume() {
         super.onResume();
+        /**register event bus**/
+        registerEventBus();
         LogUtils.debug(TAG, "onResume() is invoked!");
         refreshHistoryConversationList();
     }

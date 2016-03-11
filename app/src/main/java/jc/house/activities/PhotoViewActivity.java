@@ -3,7 +3,6 @@ package jc.house.activities;
 import android.os.Bundle;
 
 import jc.house.R;
-import jc.house.async.StringTask;
 import jc.house.views.CircleView;
 
 public class PhotoViewActivity extends BaseActivity {
@@ -40,8 +39,9 @@ public class PhotoViewActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void finish() {
         this.circleView.cancelTimer();
-        super.onDestroy();
+        super.finish();
     }
+
 }

@@ -25,6 +25,7 @@ import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
+import jc.house.models.News;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,22 +95,22 @@ public class ActivityFragment extends BaseNetFragment {
         });
     }
 
-    protected BaseAdapter getMAdapter() {
-        this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
-        return this.adapter;
-    }
-
     @Override
     protected Class<? extends BaseModel> getModelClass() {
         return JCActivity.class;
     }
 
-    @Override
-    protected Map<String, String> getParams(FetchType fetchType) {
-        Map<String, String> reqParams = new HashMap<>();
-        reqParams.put(PARAM_PAGE_SIZE, String.valueOf(pageSize));
-        return reqParams;
-    }
+//    @Override
+//    protected Map<String, String> getParams(FetchType fetchType) {
+//        Map<String, String> reqParams = new HashMap<>();
+//        reqParams.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+//        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+//            if (dataSet.size() > 0) {
+//                reqParams.put(PARAM_ID, String.valueOf(((JCActivity) dataSet.get(dataSet.size() - 1)).id));
+//            }
+//        }
+//        return reqParams;
+//    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -120,8 +121,10 @@ public class ActivityFragment extends BaseNetFragment {
         }
     }
 
+    /*
     @Override
     protected void fetchDataFromServer(FetchType fetchtype) {
         fetchDataFromServer(fetchtype, RequestType.GET);
     }
+    */
 }

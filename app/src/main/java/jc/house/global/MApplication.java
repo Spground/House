@@ -20,6 +20,7 @@ import com.easemob.EMConnectionListener;
 import com.easemob.EMError;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class MApplication extends Application implements Application.ActivityLif
 				isEmployeeLogin = false;
 				LogUtils.debug(TAG, ">> error code is " + error);
 				//被迫下线，账号在另一处设备登录
-				if(error == EMError.CONNECTION_CONFLICT) {
+				if (error == EMError.CONNECTION_CONFLICT) {
 					Intent intent = new Intent();
 					intent.setAction(MApplication.CONNECTION_CONFLICT);
 					sendBroadcast(intent);
@@ -71,6 +72,8 @@ public class MApplication extends Application implements Application.ActivityLif
 			}
 		});
 		this.registerActivityLifecycleCallbacks(this);
+		if(Constants.DEBUG)
+			Picasso.with(this).setIndicatorsEnabled(true);
 	}
 
 	@Override
