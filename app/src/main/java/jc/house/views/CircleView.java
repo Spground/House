@@ -224,10 +224,12 @@ public class CircleView extends LinearLayout {
         this.imageUrls = urls;
         this.num = urls.length;
         for (int i = 0; i < urls.length; i++) {
+            boolean canZoom = false;
             PhotoView photoView = new PhotoView(context);
             photoView.setScaleType(ScaleType.FIT_CENTER);
-            photoView.setZoomable(false);
-            photoView.setEnabled(false);
+            photoView.setZoomable(canZoom);
+            photoView.setEnabled(canZoom);
+//            photoView.setAdjustViewBounds(true);
             if (isPIcasso) {
                 loadImageLocal(photoView, urls[i]);
             } else {
@@ -235,12 +237,17 @@ public class CircleView extends LinearLayout {
                 photoView.setImageBitmap(bitmap);
             }
             PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
-            attacher.setZoomable(false);
-            attacher.setOnDoubleTapListener(null);
-            attacher.setOnScaleChangeListener(null);
+            attacher.setZoomable(canZoom);
+            if (!canZoom) {
+                attacher.setOnDoubleTapListener(null);
+                attacher.setOnScaleChangeListener(null);
+            }
             attacher.setAllowParentInterceptOnEdge(true);
-//            attacher.setMinimumScale(1.0f);
-//            attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
+//            photoView.setAdjustViewBounds(true);
+            if (canZoom) {
+                attacher.setMinimumScale(1.0f);
+                attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
+            }
             attacher.update();
             this.imageViews.add(photoView);
         }

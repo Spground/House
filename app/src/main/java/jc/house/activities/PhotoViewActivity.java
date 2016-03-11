@@ -38,4 +38,10 @@ public class PhotoViewActivity extends BaseActivity {
         this.circleView.setPhotoViews(imageUrls, isPicasso);
         this.circleView.setShowIndex(currentIndex);
     }
+
+    @Override
+    protected void onDestroy() {
+        this.circleView.cancelTimer();
+        super.onDestroy();
+    }
 }
