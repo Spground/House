@@ -28,7 +28,10 @@ import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
+import jc.house.async.FetchServer;
 import jc.house.async.MThreadPool;
+import jc.house.async.ModelTask;
+import jc.house.async.ModelsTask;
 import jc.house.async.ParseTask;
 import jc.house.async.StringTask;
 import jc.house.chat.ChatActivity;
@@ -332,6 +335,26 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private void fetchDataFromServer() {
         Map<String, String> params = new HashMap<>();
         params.put(FLAG_ID, String.valueOf(id));
+        FetchServer.share().postModelFromServer(HOUSE_DETAIL_URL, params, HouseDetail.class, new ModelTask() {
+            @Override
+            public void onSuccess(BaseModel model, ServerResult result) {
+                super.onSuccess(model, result);
+                setServerData((HouseDetail)model);
+            }
+
+            @Override
+            public void onFail(String msg) {
+                super.onFail(msg);
+                handleFailure();
+            }
+
+            @Override
+            public void onCode(int code) {
+                super.onCode(code);
+                handleCode(code, TAG);
+            }
+        });
+        /*
         this.client.post(HOUSE_DETAIL_URL, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -344,26 +367,27 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
+        */
     }
 
-    private void parseServerData(int statusCode, final JSONObject response) {
-        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Object);
-            if (result.isSuccess) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class) {
-                    @Override
-                    public void onSuccess(BaseModel model) {
-                        HouseDetail hModel = (HouseDetail) model;
-                        setServerData(hModel);
-                    }
-                });
-            } else {
-                handleCode(result.code, TAG);
-            }
-        } else {
-            handleFailure();
-        }
-    }
+//    private void parseServerData(int statusCode, final JSONObject response) {
+//        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
+//            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Object);
+//            if (result.isSuccess) {
+//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class) {
+//                    @Override
+//                    public void onSuccess(BaseModel model) {
+//                        HouseDetail hModel = (HouseDetail) model;
+//                        setServerData(hModel);
+//                    }
+//                });
+//            } else {
+//                handleCode(result.code, TAG);
+//            }
+//        } else {
+//            handleFailure();
+//        }
+//    }
 
     @Override
     public void finish() {

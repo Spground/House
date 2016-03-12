@@ -1,8 +1,11 @@
 package jc.house.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
 import com.tencent.mapsdk.raster.model.LatLng;
@@ -58,10 +61,10 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     }
 
     private void setMapViewData(House house) {
-        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(house.getLat(), house.getLng())).title(house.getName()).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
+        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(house.getLat(), house.getLng())).title("    坐标").anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
         marker.setDraggable(true);
         marker.showInfoWindow();
-        marker.setMarkerView(null);
+        marker.setSnippet(house.getName());
         if (this.isSingleMarker) {
             this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
                 @Override

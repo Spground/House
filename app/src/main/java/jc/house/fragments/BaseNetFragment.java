@@ -6,9 +6,6 @@ import android.view.View;
 
 import com.loopj.android.http.AsyncHttpClient;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,24 +19,22 @@ import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.adapters.ListAdapter;
+import jc.house.async.FetchLocal;
 import jc.house.async.FetchServer;
-import jc.house.async.MThreadPool;
 import jc.house.async.ModelsTask;
-import jc.house.async.ParseTask;
 import jc.house.global.FetchType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.SP;
-import jc.house.utils.StringUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public abstract class BaseNetFragment extends BaseFragment implements IRefresh, XListView.IXListViewListener {
     protected XListView xlistView;
-    protected AsyncHttpClient client;
+//    protected AsyncHttpClient client;
     protected boolean isOver;
     protected List<BaseModel> dataSet;
     protected ListAdapter adapter;
@@ -52,7 +47,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     protected BaseNetFragment() {
         super();
-        this.client = new AsyncHttpClient();
+//        this.client = new AsyncHttpClient();
         this.isOver = false;
         this.dataSet = new ArrayList<>();
     }
@@ -281,7 +276,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         if (isOver(fetchType)) {
             return;
         }
-        FetchServer.share().postModelsFromServer(this.url, getParams(fetchType), getModelClass() ,new ModelsTask() {
+        FetchServer.share().postModelsFromServer(this.url, getParams(fetchType), getModelClass(), new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
                 updateListView((List<BaseModel>) models, fetchType);
@@ -303,27 +298,40 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void loadLocalData() {
-        String content = SP.with(this.getActivity()).getJsonString(this.getModelClass());
-        if (!StringUtils.strEmpty(content)) {
-            ServerResult result = new ServerResult();
-            try {
-                result.array = new JSONArray(content);
-                result.resultType = ServerResult.Type.Array;
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-                    @Override
-                    public void onSuccess(List<? extends BaseModel> models) {
-                        updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
-                        hasLocalRes = true;
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
+//        String content = SP.with(this.getActivity()).getJsonString(this.getModelClass());
+//        if (!StringUtils.strEmpty(content)) {
+//            ServerResult result = new ServerResult();
+//            try {
+//                result.array = new JSONArray(content);
+//                result.resultType = ServerResult.Type.Array;
+//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
+//                    @Override
+//                    public void onSuccess(List<? extends BaseModel> models) {
+//                        updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
+//                        hasLocalRes = true;
+//                    }
+//                });
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            LogUtils.debug(tag, "Load data from local + " + content + this.getModelClass().toString());
+//        }
+
+        FetchLocal.share(getActivity()).fetchModelsFromLocal(getModelClass(), new ModelsTask() {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+                super.onSuccess(models, result);
+                updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
+                hasLocalRes = true;
             }
-            LogUtils.debug(tag, "Load data from local + " + content + this.getModelClass().toString());
-        }
+        });
     }
 
     protected void saveToLocal(String content) {
         SP.with(this.getActivity()).saveJsonString(content, this.getModelClass());
+    }
+
+    protected void saveToLocal(String content, Class<? extends BaseModel> cls) {
+        SP.with(this.getActivity()).saveJsonString(content, cls);
     }
 }
