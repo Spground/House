@@ -25,6 +25,7 @@ import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
+import jc.house.async.FetchLocal;
 import jc.house.async.FetchServer;
 import jc.house.async.MThreadPool;
 import jc.house.async.ModelsTask;
@@ -183,21 +184,42 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     private void fetchSlideshows() {
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_PAGE_SIZE, SLIDE_PAGE_SIZE);
-        this.client.post(Constants.SLIDE_URL, new RequestParams(params), new JsonHttpResponseHandler() {
+        FetchServer.share().postModelsFromServer(Constants.SLIDE_URL, params, Slideshow.class,new ModelsTask() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                LogUtils.debug(TAG, response.toString());
-                handleSlideshows(statusCode, response);
+            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+                super.onSuccess(models, result);
+                setSlideshows((List<Slideshow>) models);
+                saveToLocal(result.array.toString(), Slideshow.class);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                handleFailure();
-                LogUtils.debug(TAG, responseString.toString());
+            public void onFail(String msg) {
+                super.onFail(msg);
+                setDefaultCircleView();
+            }
+
+            @Override
+            public void onCode(int code) {
+                super.onCode(code);
+                handleCode(code, "Slideshow");
+                setDefaultCircleView();
             }
         });
+//        this.client.post(Constants.SLIDE_URL, new RequestParams(params), new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                super.onSuccess(statusCode, headers, response);
+//                LogUtils.debug(TAG, response.toString());
+//                handleSlideshows(statusCode, response);
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                super.onFailure(statusCode, headers, responseString, throwable);
+//                handleFailure();
+//                LogUtils.debug(TAG, responseString.toString());
+//            }
+//        });
     }
 
     private void setSlideshows(List<Slideshow> models) {
@@ -220,24 +242,24 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         this.circleView.setOnCircleViewItemClickListener(null);
     }
 
-    private void handleSlideshows(int statusCode, JSONObject response) {
-        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
-            if (result.isSuccess) {
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
-                    @Override
-                    public void onSuccess(List<? extends BaseModel> models) {
-                        setSlideshows((List<Slideshow>) models);
-                        SP.with(getActivity()).saveJsonString(result.array.toString(), Slideshow.class);
-                    }
-                });
-            } else {
-                setDefaultCircleView();
-            }
-        } else {
-            setDefaultCircleView();
-        }
-    }
+//    private void handleSlideshows(int statusCode, JSONObject response) {
+//        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
+//            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
+//            if (result.isSuccess) {
+//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
+//                    @Override
+//                    public void onSuccess(List<? extends BaseModel> models) {
+//                        setSlideshows((List<Slideshow>) models);
+//                        saveToLocal(result.array.toString(), Slideshow.class);
+//                    }
+//                });
+//            } else {
+//                setDefaultCircleView();
+//            }
+//        } else {
+//            setDefaultCircleView();
+//        }
+//    }
 
     @Override
     public void onCircleViewItemClick(View v, int index) {
@@ -252,23 +274,30 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     protected void loadLocalData() {
         super.loadLocalData();
-        String slides = SP.with(getActivity()).getJsonString(Slideshow.class);
-        if (StringUtils.strEmpty(slides)) {
-            this.setDefaultCircleView();
-        } else {
-            ServerResult result = new ServerResult();
-            try {
-                result.array = new JSONArray(slides);
-                result.resultType = ServerResult.Type.Array;
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
-                    @Override
-                    public void onSuccess(List<? extends BaseModel> models) {
-                        setSlideshows((List<Slideshow>) models);
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
+//        String slides = SP.with(getActivity()).getJsonString(Slideshow.class);
+//        if (StringUtils.strEmpty(slides)) {
+//            this.setDefaultCircleView();
+//        } else {
+//            ServerResult result = new ServerResult();
+//            try {
+//                result.array = new JSONArray(slides);
+//                result.resultType = ServerResult.Type.Array;
+//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
+//                    @Override
+//                    public void onSuccess(List<? extends BaseModel> models) {
+//                        setSlideshows((List<Slideshow>) models);
+//                    }
+//                });
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        FetchLocal.share(getActivity()).fetchModelsFromLocal(Slideshow.class, new ModelsTask() {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+                super.onSuccess(models, result);
+                setSlideshows((List<Slideshow>) models);
             }
-        }
+        });
     }
 }
