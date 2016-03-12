@@ -224,12 +224,11 @@ public class CircleView extends LinearLayout {
         this.imageUrls = urls;
         this.num = urls.length;
         for (int i = 0; i < urls.length; i++) {
+            boolean canZoom = false;
             PhotoView photoView = new PhotoView(context);
-//            photoView.setScaleType(ScaleType.FIT_CENTER);
-            photoView.setLayoutParams(new ViewGroup.LayoutParams(400, 800));
-            LogUtils.debug(TAG, "====width" + photoView.getWidth() + "===height" + photoView.getHeight());
-            photoView.setZoomable(false);
-            photoView.setEnabled(false);
+            photoView.setScaleType(ScaleType.FIT_CENTER);
+            photoView.setZoomable(canZoom);
+            photoView.setEnabled(canZoom);
             if (isPIcasso) {
                 loadImageLocal(photoView, urls[i]);
             } else {
@@ -237,12 +236,16 @@ public class CircleView extends LinearLayout {
                 photoView.setImageBitmap(bitmap);
             }
             PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
-            attacher.setZoomable(false);
-            attacher.setOnDoubleTapListener(null);
-            attacher.setOnScaleChangeListener(null);
+            attacher.setZoomable(canZoom);
+            if (!canZoom) {
+                attacher.setOnDoubleTapListener(null);
+                attacher.setOnScaleChangeListener(null);
+            }
             attacher.setAllowParentInterceptOnEdge(true);
-//            attacher.setMinimumScale(1.0f);
-//            attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
+            if (canZoom) {
+                attacher.setMinimumScale(1.0f);
+                attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
+            }
             attacher.update();
             this.imageViews.add(photoView);
         }
@@ -258,7 +261,7 @@ public class CircleView extends LinearLayout {
                 .load(url)
                 .config(Bitmap.Config.RGB_565)
                 .resize(GeneralUtils.getScreenSize(context).widthPixels,
-                        GeneralUtils.dip2px(context, 160))
+                        GeneralUtils.dip2px(context, 160))//参数化最好
                 .centerInside()
                 .placeholder(R.drawable.failure_image_red)
                 .error(R.drawable.failure_image_red)
@@ -278,7 +281,7 @@ public class CircleView extends LinearLayout {
         LogUtils.debug(TAG, "====screen width" + GeneralUtils.getScreenSize(context).widthPixels
                 + "===screen height" + GeneralUtils.getScreenSize(context).heightPixels);
         LogUtils.debug(TAG, "====width" + imageView.getWidth() + "===height" + imageView.getHeight());
-        Picasso.with(context).getSnapshot().dump();
+//        Picasso.with(context).getSnapshot().dump();
     }
 
     private class CircleOnPageChangeListener implements OnPageChangeListener {

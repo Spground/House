@@ -5,18 +5,15 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
@@ -25,16 +22,16 @@ import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.adapters.ListAdapter;
+import jc.house.async.FetchServer;
 import jc.house.async.MThreadPool;
+import jc.house.async.ModelsTask;
 import jc.house.async.ParseTask;
 import jc.house.global.FetchType;
-import jc.house.global.RequestType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.SP;
-import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 
 /**
@@ -129,7 +126,14 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected Map<String, String> getParams(final FetchType fetchType) {
-        return null;
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_PAGE_SIZE, String.valueOf(pageSize));
+        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+            if (dataSet.size() > 0) {
+                params.put(PARAM_ID, String.valueOf((dataSet.get(dataSet.size() - 1)).id));
+            }
+        }
+        return params;
     }
 
     protected boolean isOver(final FetchType fetchType) {
@@ -141,46 +145,47 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         return false;
     }
 
-    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType) {
-        if (this.isOver(fetchType)) {
-            return;
-        }
-        if (requestType == RequestType.POST) {
-            this.client.post(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
-                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
-                }
+//    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType) {
+//        if (this.isOver(fetchType)) {
+//            return;
+//        }
+//        if (requestType == RequestType.POST) {
+//            this.client.post(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
+//                @Override
+//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                    super.onSuccess(statusCode, headers, response);
+//                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
+//                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
+//                }
+//
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                    super.onFailure(statusCode, headers, responseString, throwable);
+//                    resetXListView();
+//                    handleFailure();
+//                }
+//            });
+//        } else {
+//            this.client.get(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
+//                @Override
+//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                    super.onSuccess(statusCode, headers, response);
+//                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
+//                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
+//                }
+//
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                    super.onFailure(statusCode, headers, responseString, throwable);
+//                    resetXListView();
+//                    handleFailure();
+//                }
+//            });
+//        }
+//
+//    }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    resetXListView();
-                    handleFailure();
-                }
-            });
-        } else {
-            this.client.get(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
-                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    resetXListView();
-                    handleFailure();
-                }
-            });
-        }
-
-    }
-
+    /*
     protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResult.Type resultType) {
         if (!ServerUtils.isConnectServerSuccess(statusCode, response)) {
             handleFailure();
@@ -215,6 +220,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             });
         }
     }
+    */
 
     @Override
     protected void setHeader() {
@@ -271,7 +277,30 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         return BaseModel.class;
     }
 
-    protected abstract void fetchDataFromServer(final FetchType fetchType);
+    protected void fetchDataFromServer(final FetchType fetchType) {
+        if (isOver(fetchType)) {
+            return;
+        }
+        FetchServer.share().postModelsFromServer(this.url, getParams(fetchType), getModelClass() ,new ModelsTask() {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+                updateListView((List<BaseModel>) models, fetchType);
+                saveToLocal(result.array.toString());
+            }
+
+            @Override
+            public void onFail(String msg) {
+                super.onFail(msg);
+                handleFailure();
+            }
+
+            @Override
+            public void onCode(int code) {
+                handleCode(code, getActivity().toString());
+            }
+
+        });
+    }
 
     protected void loadLocalData() {
         String content = SP.with(this.getActivity()).getJsonString(this.getModelClass());

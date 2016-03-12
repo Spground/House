@@ -105,17 +105,17 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         });
     }
 
-    @Override
-    protected Map<String, String> getParams(FetchType fetchType) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-            if (dataSet.size() > 0) {
-                params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
-            }
-        }
-        return params;
-    }
+//    @Override
+//    protected Map<String, String> getParams(FetchType fetchType) {
+//        Map<String, String> params = new HashMap<>();
+//        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
+//        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
+//            if (dataSet.size() > 0) {
+//                params.put(PARAM_ID, String.valueOf(((House) dataSet.get(dataSet.size() - 1)).id));
+//            }
+//        }
+//        return params;
+//    }
 
     @Override
     public void onClick(View v) {
@@ -148,8 +148,10 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
         return HouseDetail.class;
     }
 
+    /*
     @Override
     protected void fetchDataFromServer(FetchType fetchType) {
         super.fetchDataFromServer(fetchType, RequestType.POST);
     }
+    */
 }
