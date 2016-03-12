@@ -118,7 +118,6 @@ public class EaseChatRowImage extends EaseChatRow {
         urls[0] = url;
         Log.v("===TAG===", "image url is :" + url);
         showBigImgIntent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, urls);
-//        showBigImgIntent.putExtra(PhotoViewActivity.FLAG_PICASSO, false);
         context.startActivity(showBigImgIntent);
     }
 

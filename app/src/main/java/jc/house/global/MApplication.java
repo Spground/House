@@ -36,44 +36,30 @@ import jc.house.models.CustomerHelper;
 import jc.house.utils.LogUtils;
 import jc.house.utils.StringUtils;
 
-public class MApplication extends Application implements Application.ActivityLifecycleCallbacks {
+public class MApplication extends Application implements Application.ActivityLifecycleCallbacks, EMConnectionListener {
 
 	public final String TAG = "MApplication";
 	/**huanxinid and name mapping **/
 	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
 	public final static String CONNECTION_CONFLICT = "jc.house.CONNECTION_CONFLICT";
 	public boolean isEmployeeLogin = false;
-
 	public Set<WeakReference<Activity>> loadedActivities = new HashSet<>();
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		//初始化环信SDK
 		initHuanXinSDK();
+		EMChatManager.getInstance().addConnectionListener(this);
 		EMChat.getInstance().setAppInited();
-		//监听是否已经连接到聊天服务器了
-		EMChatManager.getInstance().addConnectionListener(new EMConnectionListener() {
-			@Override
-			public void onConnected() {
-				isEmployeeLogin = true;
-				LogUtils.debug(TAG, ">> connected to server");
-			}
-
-			@Override
-			public void onDisconnected(final int error) {
-				isEmployeeLogin = false;
-				LogUtils.debug(TAG, ">> error code is " + error);
-				//被迫下线，账号在另一处设备登录
-				if (error == EMError.CONNECTION_CONFLICT) {
-					Intent intent = new Intent();
-					intent.setAction(MApplication.CONNECTION_CONFLICT);
-					sendBroadcast(intent);
-				}
-			}
-		});
 		this.registerActivityLifecycleCallbacks(this);
-		if(Constants.DEBUG)
-			Picasso.with(this).setIndicatorsEnabled(true);
+		initPicasso();
+	}
+
+	/**
+	 * 初始化Picasso
+	 */
+	private void initPicasso() {
+		MPicasso.initPicasso(getApplicationContext());
 	}
 
 	@Override
@@ -107,6 +93,31 @@ public class MApplication extends Application implements Application.ActivityLif
 
 	@Override
 	public void onActivityDestroyed(Activity activity) {
+	}
+
+	/**
+	 * 当环信账号登录成功的时候
+	 */
+	@Override
+	public void onConnected() {
+		isEmployeeLogin = true;
+		LogUtils.debug(TAG, ">> connected to server");
+	}
+
+	/**
+	 * 当环信账号被迫下线的时候
+	 * @param error
+	 */
+	@Override
+	public void onDisconnected(final int error) {
+		isEmployeeLogin = false;
+		LogUtils.debug(TAG, ">> error code is " + error);
+		//被迫下线，账号在另一处设备登录
+		if (error == EMError.CONNECTION_CONFLICT) {
+			Intent intent = new Intent();
+			intent.setAction(MApplication.CONNECTION_CONFLICT);
+			sendBroadcast(intent);
+		}
 	}
 
 	/**

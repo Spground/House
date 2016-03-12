@@ -1,8 +1,6 @@
 package jc.house.views;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.CountDownTimer;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,14 +15,12 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import jc.house.R;
 import jc.house.utils.GeneralUtils;
-import jc.house.utils.LogUtils;
+import jc.house.utils.ImageLoader;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -154,6 +150,10 @@ public class CircleView extends LinearLayout {
         }
     }
 
+    /**
+     * 顶部轮播图
+     * @param isLocalRes
+     */
     private void addImageViews(boolean isLocalRes) {
         if (null != timer) {
             timer.cancel();
@@ -166,7 +166,8 @@ public class CircleView extends LinearLayout {
                 if (isLocalRes) {
                     imageView.setImageResource(imageReIds[i]);
                 } else {
-                    loadImage(imageView, imageUrls[i]);
+                    ImageLoader.loadImage(imageView, imageUrls[i], false, GeneralUtils.getScreenSize(context).widthPixels,
+                            GeneralUtils.dip2px(context, 160));
                 }
                 imageView.setOnClickListener(new OnClickListener() {
 
@@ -206,7 +207,8 @@ public class CircleView extends LinearLayout {
                 }
             } else {
                 for (int i = 0; i < num && i < size; i++) {
-                    this.loadImage(this.imageViews.get(i), this.imageUrls[i]);
+                    ImageLoader.loadImage(this.imageViews.get(i), this.imageUrls[i], false, GeneralUtils.getScreenSize(context).widthPixels,
+                            GeneralUtils.dip2px(context, 160));
                 }
             }
             if (null != timer) {
@@ -215,7 +217,11 @@ public class CircleView extends LinearLayout {
         }
     }
 
-    public void setPhotoViews(String[] urls, boolean isPIcasso) {
+    /**
+     * 查看原图
+     * @param urls
+     */
+    public void setPhotoViews(String[] urls) {
         if (null != urls && urls.length <= 0) {
             return;
         }
@@ -229,12 +235,8 @@ public class CircleView extends LinearLayout {
             photoView.setScaleType(ScaleType.FIT_CENTER);
             photoView.setZoomable(canZoom);
             photoView.setEnabled(canZoom);
-            if (isPIcasso) {
-                loadImageLocal(photoView, urls[i]);
-            } else {
-                Bitmap bitmap = BitmapFactory.decodeFile(urls[i]);
-                photoView.setImageBitmap(bitmap);
-            }
+            ImageLoader.loadImage(photoView, urls[i], true, GeneralUtils.getScreenSize(context).widthPixels,
+                    GeneralUtils.getScreenSize(context).heightPixels);
             PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
             attacher.setZoomable(canZoom);
             if (!canZoom) {
@@ -254,34 +256,6 @@ public class CircleView extends LinearLayout {
             this.viewPager.addOnPageChangeListener(new CircleOnPageChangeListener());
         }
         this.viewPager.setAdapter(new CirclePagerAdapter());
-    }
-
-    private void loadImage(ImageView imageView, String url) {
-        Picasso.with(context)
-                .load(url)
-                .config(Bitmap.Config.RGB_565)
-                .resize(GeneralUtils.getScreenSize(context).widthPixels,
-                        GeneralUtils.dip2px(context, 160))//参数化最好
-                .centerInside()
-                .placeholder(R.drawable.failure_image_red)
-                .error(R.drawable.failure_image_red)
-                .into(imageView);
-    }
-
-    private void loadImageLocal(ImageView imageView, String url) {
-        Picasso.with(context)
-                .load(url)
-                .placeholder(R.drawable.failure_image_red)
-                .config(Bitmap.Config.RGB_565)
-                .resize(GeneralUtils.getScreenSize(context).widthPixels,
-                        GeneralUtils.getScreenSize(context).heightPixels)
-                .centerInside()
-                .error(R.drawable.failure_image_red)
-                .into(imageView);
-        LogUtils.debug(TAG, "====screen width" + GeneralUtils.getScreenSize(context).widthPixels
-                + "===screen height" + GeneralUtils.getScreenSize(context).heightPixels);
-        LogUtils.debug(TAG, "====width" + imageView.getWidth() + "===height" + imageView.getHeight());
-//        Picasso.with(context).getSnapshot().dump();
     }
 
     private class CircleOnPageChangeListener implements OnPageChangeListener {

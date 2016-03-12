@@ -25,6 +25,8 @@ import jc.house.chat.widget.ChatMessageList;
 import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.models.CustomerHelper;
+import jc.house.utils.GeneralUtils;
+import jc.house.utils.ImageLoader;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ToastUtils;
 
@@ -84,13 +86,13 @@ public abstract class EaseChatRow extends LinearLayout {
 
     /**
      * 根据当前message和position设置控件属性等
-     * 
-     * @param message ChatRow对应的Message对象
-     * @param position ChatRow在ListView中的位置
+     *
+     * @param message           ChatRow对应的Message对象
+     * @param position          ChatRow在ListView中的位置
      * @param itemClickListener ChatRow的点击事件监听者
      */
     public void setUpView(EMMessage message, int position,
-            ChatMessageList.MessageListItemClickListener itemClickListener) {
+                          ChatMessageList.MessageListItemClickListener itemClickListener) {
 
         this.message = message;
         this.position = position;
@@ -103,7 +105,7 @@ public abstract class EaseChatRow extends LinearLayout {
 
     /**
      * 设置基本的View
-     * */
+     */
     private void setUpBaseView() {
         // 设置用户昵称头像，bubble背景等
         String huanxinID;
@@ -113,8 +115,11 @@ public abstract class EaseChatRow extends LinearLayout {
         LogUtils.debug(TAG, "the message is from " + huanxinID);
         avatarUrl = findAvatarUserUrl(huanxinID);
         LogUtils.debug(TAG, "avatarUrl in EaseChatRow is " + (avatarUrl == null ? "null" : avatarUrl));
-        if(avatarUrl != null)
-            loadImage(this.userAvatarView, avatarUrl);
+        //压缩显示头像
+        if (avatarUrl != null)
+            ImageLoader.loadImage(this.userAvatarView, avatarUrl, false,
+                    GeneralUtils.dip2px(context, 48),
+                    GeneralUtils.dip2px(context, 48));
         /** timestamp visible logic **/
         TextView timestamp = (TextView) findViewById(R.id.timestamp);
         if (timestamp != null) {
@@ -135,7 +140,7 @@ public abstract class EaseChatRow extends LinearLayout {
         }
 
         //设置已发送提示
-        if(deliveredView != null){
+        if (deliveredView != null) {
             if (message.isDelivered) {
                 deliveredView.setVisibility(View.VISIBLE);
             } else {
@@ -144,7 +149,7 @@ public abstract class EaseChatRow extends LinearLayout {
         }
 
         //设置消息发送的回执
-        if(ackedView != null){
+        if (ackedView != null) {
             if (message.isAcked) {
                 if (deliveredView != null) {
                     deliveredView.setVisibility(View.INVISIBLE);
@@ -159,10 +164,10 @@ public abstract class EaseChatRow extends LinearLayout {
     /**
      * 设置消息发送callback
      */
-    protected void setMessageSendCallback(){
-        if(messageSendCallback == null){
+    protected void setMessageSendCallback() {
+        if (messageSendCallback == null) {
             messageSendCallback = new EMCallBack() {
-                
+
                 @Override
                 public void onSuccess() {
                     updateView();
@@ -173,12 +178,12 @@ public abstract class EaseChatRow extends LinearLayout {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(percentageView != null)
+                            if (percentageView != null)
                                 percentageView.setText(progress + "%");
                         }
                     });
                 }
-                
+
                 @Override
                 public void onError(int code, String error) {
                     updateView();
@@ -187,30 +192,30 @@ public abstract class EaseChatRow extends LinearLayout {
         }
         message.setMessageStatusCallback(messageSendCallback);
     }
-    
+
     /**
      * 设置消息接收callback
      */
-    protected void setMessageReceiveCallback(){
-        if(messageReceiveCallback == null){
+    protected void setMessageReceiveCallback() {
+        if (messageReceiveCallback == null) {
             messageReceiveCallback = new EMCallBack() {
-                
+
                 @Override
                 public void onSuccess() {
                     updateView();
                 }
-                
+
                 @Override
                 public void onProgress(final int progress, String status) {
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
-                            if(percentageView != null){
+                            if (percentageView != null) {
                                 percentageView.setText(progress + "%");
                             }
                         }
                     });
                 }
-                
+
                 @Override
                 public void onError(int code, String error) {
                     updateView();
@@ -227,12 +232,12 @@ public abstract class EaseChatRow extends LinearLayout {
      * 头像的点击
      */
     private void setClickListener() {
-        if(bubbleLayout != null){
+        if (bubbleLayout != null) {
             bubbleLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (itemClickListener != null){
-                        if(!itemClickListener.onBubbleClick(message)){
+                    if (itemClickListener != null) {
+                        if (!itemClickListener.onBubbleClick(message)) {
                             //如果listener返回false不处理这个事件，执行lib默认的处理
                             onBubbleClick();
                         }
@@ -241,7 +246,7 @@ public abstract class EaseChatRow extends LinearLayout {
             });
             //长按的事件监听
             bubbleLayout.setOnLongClickListener(new OnLongClickListener() {
-    
+
                 @Override
                 public boolean onLongClick(View v) {
                     if (itemClickListener != null) {
@@ -305,18 +310,6 @@ public abstract class EaseChatRow extends LinearLayout {
     }
 
     /**
-     * 得到该ChatRow的对应的消息的类型
-     * @return EMMessage.Type ChatRow的对应的消息的类型
-     */
-    public  EMMessage.Direct getMessageDirect() {
-        return this.message.direct;
-    }
-
-    public EMMessage.Type getMessageType() {
-        return this.message.getType();
-    }
-
-    /**
      * 填充layout
      */
     protected abstract void onInflatView();
@@ -335,34 +328,22 @@ public abstract class EaseChatRow extends LinearLayout {
      * 设置更新控件属性
      */
     protected abstract void onSetUpView();
-    
+
     /**
      * 聊天气泡被点击事件
      */
     protected abstract void onBubbleClick();
 
     /**
-     * 加载用户头像
-     * @param imageView
-     * @param url
-     */
-    private void loadImage(ImageView imageView, String url) {
-        url = Constants.IMAGE_URL_ORIGIN + url;
-        Picasso.with(context).load(url).
-                placeholder(R.drawable.jc_default_avatar).
-                error(R.drawable.jc_default_avatar)
-                .into(imageView);
-    }
-
-    /**
      * 根据客服环信ID查找客服的头像
+     *
      * @param huanxinID
      * @return
      */
     protected String findAvatarUserUrl(String huanxinID) {
-        CustomerHelper customerHelper = ((MApplication)this.context.getApplicationContext())
+        CustomerHelper customerHelper = ((MApplication) this.context.getApplicationContext())
                 .customerHelperNameMapping.get(huanxinID);
-        if(customerHelper != null)
+        if (customerHelper != null)
             return customerHelper.getPicUrl();
         else
             return null;

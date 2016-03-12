@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,12 +26,15 @@ import java.io.File;
 
 import de.greenrobot.event.EventBus;
 import jc.house.R;
+import jc.house.activities.PhotoViewActivity;
 import jc.house.chat.event.NewMessageEvent;
 import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
 import jc.house.chat.widget.ChatMessageList;
 import jc.house.global.Constants;
+import jc.house.global.MApplication;
+import jc.house.models.CustomerHelper;
 import jc.house.models.HouseDetail;
 import jc.house.utils.LogUtils;
 import jc.house.views.TitleBar;
@@ -329,11 +333,6 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
         @Override
         public void onClick(int itemId, View view) {
-//            if(chatFragmentListener != null){
-//                if(chatFragmentListener.onExtendMenuItemClick(itemId, view)){
-//                    return;
-//                }
-//            }
             switch (itemId) {
                 case ITEM_TAKE_PICTURE: // 拍照
                     selectPicFromCamera();
@@ -342,7 +341,6 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     selectPicFromLocal(); // 图库选择图片
                     break;
                 case ITEM_LOCATION: // 位置
-//                    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
                     break;
                 case HOUSE_MESSAGE:
                     sendHouseMessage();
@@ -491,8 +489,21 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
-    public void onUserAvatarClick(String username) {
-
+    public void onUserAvatarClick(String huanxinID) {
+        LogUtils.debug(TAG, "onUserAvatarClick");
+        String avatarUrl;
+        CustomerHelper customerHelper = ((MApplication) this.getApplicationContext())
+                .customerHelperNameMapping.get(huanxinID);
+        if (customerHelper != null)
+            avatarUrl = customerHelper.getPicUrl();
+        else
+            avatarUrl = null;
+        String[] urls = new String[1];
+        urls[0] = avatarUrl;
+        LogUtils.debug(TAG, "avatarUrl image url is :" + avatarUrl);
+        Intent showBigImgIntent = new Intent(this, PhotoViewActivity.class);
+        showBigImgIntent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, urls);
+        startActivity(showBigImgIntent);
     }
 }
 

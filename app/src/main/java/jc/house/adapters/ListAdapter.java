@@ -1,7 +1,6 @@
 package jc.house.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,6 +20,7 @@ import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
 import jc.house.models.News;
 import jc.house.utils.GeneralUtils;
+import jc.house.utils.ImageLoader;
 import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 import jc.house.views.RatingView;
@@ -113,7 +111,7 @@ public class ListAdapter extends BaseAdapter {
 					if (PRODUCING) {
 						viewHolderNews.picture.setImageResource(Integer.valueOf(news.getPicUrl().trim()));
 					} else {
-						loadImageWithPicasso(viewHolderNews.picture, news.getPicUrl(), false,
+						ImageLoader.loadImage(viewHolderNews.picture, news.getPicUrl(), false,
 								GeneralUtils.dip2px(context, 59), GeneralUtils.dip2px(context, 36));
 					}
 					viewHolderNews.author.setText(news.getAuthor());
@@ -148,7 +146,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderHouse.picture.setImageResource(Constants.resHouse[(int) (Math.random() * 4)]);
 						viewHolderHouse.ratingView.setParams(5, 3);
 					} else {
-						loadImageWithPicasso(viewHolderHouse.picture, house.getUrl(), false,
+						ImageLoader.loadImage(viewHolderHouse.picture, house.getUrl(), false,
 								GeneralUtils.dip2px(context, 110), GeneralUtils.dip2px(context, 80));
 						viewHolderHouse.ratingView.setParams(house.getStars(), 3);
 						viewHolderHouse.recStars.setText("推荐指数" + house.getStars());
@@ -180,7 +178,7 @@ public class ListAdapter extends BaseAdapter {
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						viewHolderActivity.postTime.setText("");
 					} else {
-						loadImageWithPicasso(viewHolderActivity.picture, activityModel.getPicUrl(), false,
+						ImageLoader.loadImage(viewHolderActivity.picture, activityModel.getPicUrl(), false,
 								GeneralUtils.dip2px(context, GeneralUtils.getScreenSize(context).widthPixels), GeneralUtils.dip2px(context, 132));
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						convertView.setId(activityModel.id);
@@ -192,44 +190,6 @@ public class ListAdapter extends BaseAdapter {
 			}
 		}
 		return convertView;
-	}
-
-	private void loadImageWithPicasso(ImageView imageView, String url, boolean isOriginal) {
-		url = (isOriginal ? Constants.IMAGE_URL_ORIGIN : Constants.IMAGE_URL_THUMBNAIL) + url;
-		Picasso.with(context)
-				.load(url)
-				.config(Bitmap.Config.RGB_565)
-				.placeholder(R.drawable.failure_image_red)
-				.error(R.drawable.failure_image_red)
-				.into(imageView);
-
-	}
-
-	/**
-	 * resize image with Picasso
-	 * @param imageView
-	 * @param url
-	 * @param isOriginal
-	 * @param targetWidth
-	 * @param targetHeight
-	 */
-	private void loadImageWithPicasso(ImageView imageView, String url, boolean isOriginal, int targetWidth, int targetHeight) {
-		url = (isOriginal ? Constants.IMAGE_URL_ORIGIN : Constants.IMAGE_URL_THUMBNAIL) + url;
-		if(targetHeight < 0 || targetWidth < 0) {
-			loadImageWithPicasso(imageView, url, isOriginal);
-		} else if(targetHeight == 0 || targetWidth == 0){
-			throw new RuntimeException("targetHeight and targetWidth should be more than zero");
-		} else {
-			Picasso.with(context)
-					.load(url)
-					.config(Bitmap.Config.RGB_565)
-					.resize(targetWidth, targetHeight)
-					.centerInside()
-					.placeholder(R.drawable.failure_image_red)
-					.error(R.drawable.failure_image_red)
-					.into(imageView);
-		}
-
 	}
 
 	private static final class ViewHolderChatUser {
