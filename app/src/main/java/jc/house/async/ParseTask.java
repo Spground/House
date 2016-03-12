@@ -37,6 +37,11 @@ public class ParseTask extends BaseTask {
     public void onSuccess(BaseModel model) {
     }
 
+    @Override
+    public void onCode(int code) {
+
+    }
+
     public void onFail(String msg) {
         LogUtils.debug(TAG, msg);
     }

@@ -120,7 +120,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * 获取客服==>环信ID名称映射规则
      */
     private void getCustomerHelperNickName() {
-        LogUtils.debug(TAG, "getCustomerHelperNickName");
         AsyncHttpClient client = new AsyncHttpClient();
         //get cache first
         loadDataFromLocal(CustomerHelper.class);
@@ -163,7 +162,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * @param cls
      */
     private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
-        LogUtils.debug("===jsonStr===", jsonStr);
         SP.with(this).saveJsonString(jsonStr, cls);
     }
 

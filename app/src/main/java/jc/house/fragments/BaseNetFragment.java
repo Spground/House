@@ -320,9 +320,12 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         FetchLocal.share(getActivity()).fetchModelsFromLocal(getModelClass(), new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
-                super.onSuccess(models, result);
                 updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
                 hasLocalRes = true;
+            }
+
+            @Override
+            public void onCode(int code) {
             }
         });
     }

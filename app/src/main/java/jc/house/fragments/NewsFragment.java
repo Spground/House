@@ -187,7 +187,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         FetchServer.share().postModelsFromServer(Constants.SLIDE_URL, params, Slideshow.class,new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
-                super.onSuccess(models, result);
                 setSlideshows((List<Slideshow>) models);
                 saveToLocal(result.array.toString(), Slideshow.class);
             }
@@ -200,7 +199,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
             @Override
             public void onCode(int code) {
-                super.onCode(code);
                 handleCode(code, "Slideshow");
                 setDefaultCircleView();
             }
@@ -295,8 +293,11 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         FetchLocal.share(getActivity()).fetchModelsFromLocal(Slideshow.class, new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
-                super.onSuccess(models, result);
                 setSlideshows((List<Slideshow>) models);
+            }
+
+            @Override
+            public void onCode(int code) {
             }
         });
     }
