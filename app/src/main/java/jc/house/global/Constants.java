@@ -36,7 +36,7 @@ public final class Constants {
 	public static class APPINFO {
 		public static String APPVERSION = "1.0";
 		public static String RELEASETIME = "";
-		public static boolean USER_VERSION = false;
+		public static boolean USER_VERSION = true;
 	}
 }
 

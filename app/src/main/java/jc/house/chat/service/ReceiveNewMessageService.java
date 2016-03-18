@@ -60,7 +60,7 @@ public class ReceiveNewMessageService extends BaseService {
             NewMessageEvent event = new NewMessageEvent(intent);
             EventBus.getDefault().post(event);
             //abort the broadcast
-            abortBroadcast();
+//            abortBroadcast();
         }
     }
 }

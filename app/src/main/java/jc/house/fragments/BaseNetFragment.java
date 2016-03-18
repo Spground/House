@@ -4,8 +4,6 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.loopj.android.http.AsyncHttpClient;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +23,7 @@ import jc.house.async.ModelsTask;
 import jc.house.global.FetchType;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
+import jc.house.models.ServerArrayResult;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.SP;
@@ -34,7 +33,6 @@ import jc.house.utils.SP;
  */
 public abstract class BaseNetFragment extends BaseFragment implements IRefresh, XListView.IXListViewListener {
     protected XListView xlistView;
-//    protected AsyncHttpClient client;
     protected boolean isOver;
     protected List<BaseModel> dataSet;
     protected ListAdapter adapter;
@@ -47,7 +45,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
     protected BaseNetFragment() {
         super();
-//        this.client = new AsyncHttpClient();
         this.isOver = false;
         this.dataSet = new ArrayList<>();
     }
@@ -278,7 +275,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         }
         FetchServer.share().postModelsFromServer(this.url, getParams(fetchType), getModelClass(), new ModelsTask() {
             @Override
-            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+            public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
                 updateListView((List<BaseModel>) models, fetchType);
                 saveToLocal(result.array.toString());
             }
@@ -319,7 +316,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
 
         FetchLocal.share(getActivity()).fetchModelsFromLocal(getModelClass(), new ModelsTask() {
             @Override
-            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+            public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
                 updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
                 hasLocalRes = true;
             }

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import jc.house.R;
 import jc.house.models.House;
+import jc.house.models.HouseDetail;
 import jc.house.views.TitleBar;
 
 public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
@@ -30,7 +31,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     public static final String FLAG_IsSingleMarker = "isSingleMarker";
     public static final String FLAG_HOUSE = "house";
     public static final String FLAG_HOUSES = "houses";
-    private Map<String, House> mapHouses;
+    private Map<String, HouseDetail> mapHouses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +46,12 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         Intent intent = this.getIntent();
         isSingleMarker = intent.getBooleanExtra(FLAG_IsSingleMarker, true);
         if (isSingleMarker) {
-            House house = intent.getParcelableExtra(FLAG_HOUSE);
+            HouseDetail house = intent.getParcelableExtra(FLAG_HOUSE);
             setMapViewData(house);
             this.mapView.getMap().setCenter(new LatLng(house.getLat(), house.getLng()));
             this.mapView.getMap().setZoom(15);
         } else {
-            List<House> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
+            List<HouseDetail> houses = intent.getParcelableArrayListExtra(FLAG_HOUSES);
             setMapViewDatas(houses);
             LatLng center = getCenterPoint();
             if (null != center) {
@@ -60,11 +61,11 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         }
     }
 
-    private void setMapViewData(House house) {
-        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(house.getLat(), house.getLng())).title("    坐标").anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
+    private void setMapViewData(HouseDetail houseDetail) {
+        Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(houseDetail.getLat(), houseDetail.getLng())).title("    坐标").anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
         marker.setDraggable(true);
         marker.showInfoWindow();
-        marker.setSnippet(house.getName());
+        marker.setSnippet(houseDetail.getName());
         if (this.isSingleMarker) {
             this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
                 @Override
@@ -73,14 +74,18 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
                 }
             });
         } else {
-            mapHouses.put(marker.getTitle(), house);
+            mapHouses.put(marker.getSnippet(), houseDetail);
             this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(MapActivity.this, HouseDetailActivity.class);
-                    House item = mapHouses.get(marker.getTitle());
+                    HouseDetail item = mapHouses.get(marker.getSnippet());
                     if (null != item) {
-                        intent.putExtra(HouseDetailActivity.FLAG_ID, item.id);
+                        intent.putExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL, item);
+                        if (null != item.getHelper()) {
+                            intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, item.getHelper().getName());
+                            intent.putExtra(HouseDetailActivity.FLAG_HELPER_ID, item.getHelper().getHxID());
+                        }
                         startActivity(intent);
                     }
                 }
@@ -88,9 +93,9 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         }
     }
 
-    private void setMapViewDatas(List<House> houses) {
+    private void setMapViewDatas(List<HouseDetail> houses) {
         this.mapHouses = new HashMap<>();
-        for (House house : houses) {
+        for (HouseDetail house : houses) {
             setMapViewData(house);
         }
     }
@@ -123,9 +128,9 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         if (!isSingleMarker && mapHouses.size() > 0) {
             double latAll = 0;
             double lngAll = 0;
-            Iterator<Map.Entry<String, House>> iterator = mapHouses.entrySet().iterator();
+            Iterator<Map.Entry<String, HouseDetail>> iterator = mapHouses.entrySet().iterator();
             while(iterator.hasNext()) {
-                Map.Entry<String, House> entry = iterator.next();
+                Map.Entry<String, HouseDetail> entry = iterator.next();
                 latAll += entry.getValue().getLat();
                 lngAll += entry.getValue().getLng();
             }

@@ -121,9 +121,9 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
     public void onClick(View v) {
         if (v.getId() == R.id.id_map_btn) {
             Intent intent = new Intent(getActivity(), MapActivity.class);
-            ArrayList<House> houses = new ArrayList<>();
+            ArrayList<HouseDetail> houses = new ArrayList<>();
             for (BaseModel model : dataSet) {
-                houses.add((House) model);
+                houses.add((HouseDetail) model);
             }
             intent.putParcelableArrayListExtra(MapActivity.FLAG_HOUSES, houses);
             intent.putExtra(MapActivity.FLAG_IsSingleMarker, false);

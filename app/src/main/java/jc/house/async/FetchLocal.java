@@ -11,7 +11,8 @@ import org.json.JSONObject;
 import java.util.List;
 
 import jc.house.models.BaseModel;
-import jc.house.models.ServerResult;
+import jc.house.models.ServerArrayResult;
+import jc.house.models.ServerObjectResult;
 import jc.house.utils.ParseJson;
 import jc.house.utils.SP;
 import jc.house.utils.StringUtils;
@@ -43,9 +44,8 @@ public class FetchLocal {
         if (!StringUtils.strEmpty(content)) {
             try {
                 final JSONArray array = new JSONArray(content);
-                final ServerResult result = new ServerResult();
+                final ServerArrayResult result = new ServerArrayResult();
                 result.array = array;
-                result.resultType = ServerResult.Type.Array;
                 MThreadPool.getInstance().submit(new Runnable() {
                     @Override
                     public void run() {
@@ -69,9 +69,8 @@ public class FetchLocal {
         if (!StringUtils.strEmpty(content)) {
             try {
                 final JSONObject object = new JSONObject(content);
-                final ServerResult result = new ServerResult();
+                final ServerObjectResult result = new ServerObjectResult();
                 result.object = object;
-                result.resultType = ServerResult.Type.Object;
                 MThreadPool.getInstance().submit(new Runnable() {
                     @Override
                     public void run() {

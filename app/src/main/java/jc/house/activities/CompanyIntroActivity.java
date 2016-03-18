@@ -81,7 +81,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
     }
 
     private void fetchDataFromServer() {
-        FetchServer.share().fetchCompanyInfo(new StringTask() {
+        FetchServer.share().fetchCompanyImages(new StringTask() {
             @Override
             public void onSuccess(String result) {
                 setUrls(result);

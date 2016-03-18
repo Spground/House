@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import jc.house.models.BaseModel;
+import jc.house.models.ServerArrayResult;
+import jc.house.models.ServerObjectResult;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
@@ -98,7 +100,7 @@ public class MThreadPool {
             });
             if (null != task.getResult()) {
                 if (ServerResult.Type.Object == task.getResultType()) {
-                    final BaseModel model = ParseJson.jsonObj2Model(task.getResult().object, task.getMClass());
+                    final BaseModel model = ParseJson.jsonObj2Model(((ServerObjectResult)task.getResult()).object, task.getMClass());
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -106,7 +108,7 @@ public class MThreadPool {
                         }
                     });
                 } else {
-                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(task.getResult().array, task.getMClass());
+                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(((ServerArrayResult)task.getResult()).array, task.getMClass());
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {

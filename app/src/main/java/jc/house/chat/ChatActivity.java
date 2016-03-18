@@ -1,15 +1,19 @@
 package jc.house.chat;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +31,6 @@ import java.io.File;
 import de.greenrobot.event.EventBus;
 import jc.house.R;
 import jc.house.activities.PhotoViewActivity;
-import jc.house.chat.event.NewMessageEvent;
 import jc.house.chat.util.CommonUtils;
 import jc.house.chat.widget.ChatExtendMenu;
 import jc.house.chat.widget.ChatInputMenu;
@@ -83,6 +86,9 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private boolean canSendHouseDetail = false;
     private HouseDetail house;
     public static final String EXTRA_HOUSE = "house";
+    private NewMessageBroadcastReceiver msgReceiver;
+    private Handler mHandler;
+    private boolean stop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +106,30 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         init();
         initChatMsgList();
         instance = this;
+
+        msgReceiver = new NewMessageBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
+        intentFilter.setPriority(3);
+        this.registerReceiver(msgReceiver, intentFilter);
+        mHandler = new Handler(Looper.myLooper());
+        stop = false;
+        if (MApplication.isLowerVersion) {
+            circle();
+        }
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
+    private void circle() {
+        //匿名内部类和非静态类都会持有外部类的一个引用，容易引起内存泄露。post的message包含一个handler（也就是message的target），
+        // handler如果是下面MHandler的写法则也会引用到外部类，导致内存泄露
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                chatMsgList.refresh();
+                if (!stop) {
+                    circle();
+                }
+            }
+        }, 1200);
     }
 
     @Override
@@ -115,14 +140,16 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     @Override
     protected void onResume() {
         super.onResume();
-        registerEventBus();
+//        registerEventBus();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         instance = null;
-        unregisterEventBus();
+//        unregisterEventBus();
+        unregisterReceiver(msgReceiver);
+        stop = true;
     }
 
     @Override
@@ -133,7 +160,11 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterEventBus();
+//        unregisterEventBus();
+    }
+
+    public String getToChatUserName() {
+        return this.toChatUserName;
     }
 
     /**
@@ -371,6 +402,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
      *
      * @param event new message event
      */
+    /*
     public void onEventMainThread(NewMessageEvent event) {
         Intent intent = event.getIntent();
         if (intent == null)
@@ -386,6 +418,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         //refresh ListView
         chatMsgList.refresh();
     }
+    */
 
     /**
      * 根据图库图片uri发送图片
@@ -465,6 +498,18 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         chatMsgList.refreshSelectLast();
         this.swipeRefreshLayout.setRefreshing(false);
 
+    }
+
+    private class NewMessageBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String from = intent.getStringExtra("from");
+            String msgID = intent.getStringExtra("msgid");
+            EMMessage message = EMChatManager.getInstance().getMessage(msgID);
+            LogUtils.debug("I received message in chatActivity from " + from);
+//            abortBroadcast();
+            chatMsgList.refresh();
+        }
     }
 
     @Override
