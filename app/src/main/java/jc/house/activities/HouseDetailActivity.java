@@ -338,7 +338,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         FetchServer.share().postModelFromServer(HOUSE_DETAIL_URL, params, HouseDetail.class, new ModelTask() {
             @Override
             public void onSuccess(BaseModel model, ServerResult result) {
-                super.onSuccess(model, result);
                 setServerData((HouseDetail)model);
             }
 
@@ -350,7 +349,6 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
             @Override
             public void onCode(int code) {
-                super.onCode(code);
                 handleCode(code, TAG);
             }
         });

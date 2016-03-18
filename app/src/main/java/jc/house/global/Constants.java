@@ -14,7 +14,7 @@ public final class Constants {
 		public static final String RegisterInfo = "registerinfo";
 	}
 
-	private static final String SERVER_ROOT = "http://202.118.67.200:10717/house/";
+	private static final String SERVER_ROOT = "http://218.24.163.140:808/house/";
 	public static final String SERVER_URL = SERVER_ROOT + "web/index.php?r=";
 	public static final String IMAGE_URL_THUMBNAIL = SERVER_ROOT + "images_mobile/";
 	public static final String IMAGE_URL_ORIGIN = SERVER_ROOT + "images/";
@@ -36,7 +36,7 @@ public final class Constants {
 	public static class APPINFO {
 		public static String APPVERSION = "1.0";
 		public static String RELEASETIME = "";
-		public static boolean USER_VERSION = true;
+		public static boolean USER_VERSION = false;
 	}
 }
 

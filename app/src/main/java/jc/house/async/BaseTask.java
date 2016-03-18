@@ -5,7 +5,7 @@ import jc.house.utils.LogUtils;
 /**
  * Created by hzj on 2015/12/29.
  */
-public class BaseTask {
+public abstract class BaseTask {
 
     public void onStart() {
     }
@@ -13,8 +13,7 @@ public class BaseTask {
     public void onSuccess() {
     }
 
-    public void onCode(int code) {
-    }
+    public abstract void onCode(int code);
 
     public void onFail(String msg) {
         LogUtils.debug(msg);
