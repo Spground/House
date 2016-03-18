@@ -15,6 +15,8 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 import jc.house.global.Constants;
 import jc.house.models.BaseModel;
+import jc.house.models.ServerArrayResult;
+import jc.house.models.ServerObjectResult;
 import jc.house.models.ServerResult;
 import jc.house.utils.ParseJson;
 import jc.house.utils.ServerUtils;
@@ -43,7 +45,7 @@ public class FetchServer {
         return instance;
     }
 
-    public void fetchCompanyInfo(final StringTask task) {
+    public void fetchCompanyImages(final StringTask task) {
         client.get(Constants.SERVER_URL + "introduction/images", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -61,7 +63,7 @@ public class FetchServer {
 
     private void handleStringTask(int statusCode, JSONObject response, final StringTask task, final String key) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Object);
+            final ServerObjectResult result = ServerUtils.parseServerObjectResponse(response);
             if (result.isSuccess) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -95,7 +97,7 @@ public class FetchServer {
 
     private void handleModelsTask(int statusCode, JSONObject response, final Class<? extends BaseModel> cls, final ModelsTask task) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
+            final ServerArrayResult result = ServerUtils.parseServerArrayResponse(response);
             if (result.isSuccess) {
                 MThreadPool.getInstance().submit(new Runnable() {
                     @Override
@@ -135,7 +137,7 @@ public class FetchServer {
 
     private void handleModelTask(int statusCode, JSONObject response, final Class<? extends BaseModel> cls, final ModelTask task) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Object);
+            final ServerObjectResult result = ServerUtils.parseServerObjectResponse(response);
             if (result.isSuccess) {
                 MThreadPool.getInstance().submit(new Runnable() {
                     @Override

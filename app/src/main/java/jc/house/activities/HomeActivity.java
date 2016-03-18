@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.easemob.EMCallBack;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMChatService;
 import com.easemob.exceptions.EaseMobException;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -41,7 +43,10 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import jc.house.R;
+import jc.house.async.FetchLocal;
+import jc.house.async.FetchServer;
 import jc.house.async.MThreadPool;
+import jc.house.async.ModelsTask;
 import jc.house.async.ParseTask;
 import jc.house.chat.service.ReceiveNewMessageService;
 import jc.house.fragments.AboutFragment;
@@ -54,6 +59,7 @@ import jc.house.global.MApplication;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
+import jc.house.models.ServerArrayResult;
 import jc.house.models.ServerResult;
 import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
@@ -106,8 +112,9 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.lastTime = 0;
         this.initViewPager();
         this.initNetConnectManager();
-        startUpReceiveNewMessageService();
+//        startUpReceiveNewMessageService();
         //获取客服环信ID-Model映射表
+        loadDataFromLocal(CustomerHelper.class);
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -120,6 +127,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * 获取客服==>环信ID名称映射规则
      */
     private void getCustomerHelperNickName() {
+        /*
         AsyncHttpClient client = new AsyncHttpClient();
         //get cache first
         loadDataFromLocal(CustomerHelper.class);
@@ -130,7 +138,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 LogUtils.debug(TAG, "onSuccess");
                 if (!ServerUtils.isConnectServerSuccess(statusCode, response))
                     return;
-                ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
+                ServerArrayResult result = ServerUtils.parseServerArrayResponse(response);
                 if (!result.isSuccess)
                     return;
                 //cache to local
@@ -154,6 +162,23 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                 LogUtils.debug(TAG, statusCode + responseString);
             }
         });
+        */
+        FetchServer.share().postModelsFromServer(Constants.CUSTOMER_HELPER_NAME_URL, null, CustomerHelper.class, new ModelsTask() {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
+                for (BaseModel model : models) {
+                    CustomerHelper c = (CustomerHelper) model;
+                    ((MApplication) getApplication()).customerHelperNameMapping.put(c.getHxID(), c);
+                }
+                LogUtils.debug("fetch customer from server successfully " + models.size());
+                saveToLocal(result.array.toString(), CustomerHelper.class);
+            }
+
+            @Override
+            public void onCode(int code) {
+
+            }
+        });
     }
 
     /**
@@ -171,25 +196,39 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     private boolean loadDataFromLocal(Class<? extends BaseModel> cls) {
         String content = SP.with(this).getJsonString(cls);
         if (!StringUtils.strEmpty(content)) {
-            ServerResult result = new ServerResult();
-            try {
-                result.array = new JSONArray(content);
-                result.resultType = ServerResult.Type.Array;
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, cls) {
-                    @Override
-                    public void onSuccess(List<? extends BaseModel> models) {
-                        for (BaseModel model : models) {
-                            CustomerHelper customerHelper = (CustomerHelper) model;
-                            if (customerHelper == null)
-                                continue;
-                            ((MApplication) getApplicationContext()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
-                        }
+            FetchLocal.share(this).fetchModelsFromLocal(cls, new ModelsTask() {
+                @Override
+                public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
+                    for (BaseModel model : models) {
+                        CustomerHelper customerHelper = (CustomerHelper) model;
+                        ((MApplication) getApplication()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
                     }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            LogUtils.debug("===TAG===", "customer helper content is + " + content + cls.toString());
+                    LogUtils.debug("fetch customer helper from local successfully " + models.size());
+                }
+
+                @Override
+                public void onCode(int code) {
+
+                }
+            });
+//            ServerArrayResult result = new ServerArrayResult();
+//            try {
+//                result.array = new JSONArray(content);
+//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, cls) {
+//                    @Override
+//                    public void onSuccess(List<? extends BaseModel> models) {
+//                        for (BaseModel model : models) {
+//                            CustomerHelper customerHelper = (CustomerHelper) model;
+//                            if (customerHelper == null)
+//                                continue;
+//                            ((MApplication) getApplicationContext()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
+//                        }
+//                    }
+//                });
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            LogUtils.debug("===TAG===", "customer helper content is + " + content + cls.toString());
             return true;
         }
         return false;

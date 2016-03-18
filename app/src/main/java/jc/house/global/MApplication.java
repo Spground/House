@@ -2,25 +2,17 @@ package jc.house.global;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.easemob.EMConnectionListener;
 import com.easemob.EMError;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
-import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -30,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jc.house.async.MThreadPool;
-import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
 import jc.house.utils.LogUtils;
 import jc.house.utils.StringUtils;
@@ -44,6 +34,7 @@ public class MApplication extends Application implements Application.ActivityLif
 	public final static String CONNECTION_CONFLICT = "jc.house.CONNECTION_CONFLICT";
 	public boolean isEmployeeLogin = false;
 	public Set<WeakReference<Activity>> loadedActivities = new HashSet<>();
+	public static boolean isLowerVersion = false;
 
 	@Override
 	public void onCreate() {
@@ -53,6 +44,18 @@ public class MApplication extends Application implements Application.ActivityLif
 		EMChat.getInstance().setAppInited();
 		this.registerActivityLifecycleCallbacks(this);
 		initPicasso();
+		String version = Build.VERSION.RELEASE;
+		isLowerVersion = checkVersion(version);
+	}
+
+	private boolean checkVersion(String version) {
+		if (!StringUtils.strEmpty(version)) {
+			float r = Float.valueOf(StringUtils.subStr(version, 1));
+			if (r < 5.0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

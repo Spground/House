@@ -39,6 +39,7 @@ import jc.house.global.Constants;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
+import jc.house.models.ServerObjectResult;
 import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
 import jc.house.utils.ServerUtils;
@@ -337,7 +338,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         params.put(FLAG_ID, String.valueOf(id));
         FetchServer.share().postModelFromServer(HOUSE_DETAIL_URL, params, HouseDetail.class, new ModelTask() {
             @Override
-            public void onSuccess(BaseModel model, ServerResult result) {
+            public void onSuccess(BaseModel model, ServerObjectResult result) {
                 setServerData((HouseDetail)model);
             }
 

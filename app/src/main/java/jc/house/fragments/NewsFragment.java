@@ -10,39 +10,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.activities.WebActivity;
 import jc.house.adapters.ListAdapter;
 import jc.house.async.FetchLocal;
 import jc.house.async.FetchServer;
-import jc.house.async.MThreadPool;
 import jc.house.async.ModelsTask;
-import jc.house.async.ParseTask;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.MApplication;
-import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.ModelType;
 import jc.house.models.News;
-import jc.house.models.ServerResult;
+import jc.house.models.ServerArrayResult;
 import jc.house.models.Slideshow;
 import jc.house.utils.ListUtils;
 import jc.house.utils.LogUtils;
 import jc.house.utils.SP;
-import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 import jc.house.views.CircleView;
 
@@ -186,7 +174,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         params.put(PARAM_PAGE_SIZE, SLIDE_PAGE_SIZE);
         FetchServer.share().postModelsFromServer(Constants.SLIDE_URL, params, Slideshow.class,new ModelsTask() {
             @Override
-            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
+            public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
                 setSlideshows((List<Slideshow>) models);
                 saveToLocal(result.array.toString(), Slideshow.class);
             }
@@ -290,15 +278,20 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 //                e.printStackTrace();
 //            }
 //        }
-        FetchLocal.share(getActivity()).fetchModelsFromLocal(Slideshow.class, new ModelsTask() {
-            @Override
-            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
-                setSlideshows((List<Slideshow>) models);
-            }
+        String slides = SP.with(getActivity()).getJsonString(Slideshow.class);
+        if (StringUtils.strEmpty(slides)) {
+            this.setDefaultCircleView();
+        } else {
+            FetchLocal.share(getActivity()).fetchModelsFromLocal(Slideshow.class, new ModelsTask() {
+                @Override
+                public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
+                    setSlideshows((List<Slideshow>) models);
+                }
 
-            @Override
-            public void onCode(int code) {
-            }
-        });
+                @Override
+                public void onCode(int code) {
+                }
+            });
+        }
     }
 }

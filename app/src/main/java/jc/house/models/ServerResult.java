@@ -1,8 +1,5 @@
 package jc.house.models;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 /**
  * Created by hzj on 2015/12/10.
  */
@@ -18,15 +15,9 @@ public class ServerResult {
     public static final String RESULT = "result";
     public int code;
     public boolean isSuccess;
-    public JSONArray array;
-    public JSONObject object;
     public Type resultType;
-
     public ServerResult() {
         code = -1;
-    }
-
-    public boolean isArrayType() {
-        return resultType == Type.Array;
+        isSuccess = false;
     }
 }
