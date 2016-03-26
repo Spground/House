@@ -353,40 +353,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 handleCode(code, TAG);
             }
         });
-        /*
-        this.client.post(HOUSE_DETAIL_URL, new RequestParams(params), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                parseServerData(statusCode, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
-        */
     }
-
-//    private void parseServerData(int statusCode, final JSONObject response) {
-//        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-//            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Object);
-//            if (result.isSuccess) {
-//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, HouseDetail.class) {
-//                    @Override
-//                    public void onSuccess(BaseModel model) {
-//                        HouseDetail hModel = (HouseDetail) model;
-//                        setServerData(hModel);
-//                    }
-//                });
-//            } else {
-//                handleCode(result.code, TAG);
-//            }
-//        } else {
-//            handleFailure();
-//        }
-//    }
 
     @Override
     public void finish() {

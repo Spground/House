@@ -100,18 +100,6 @@ public class ActivityFragment extends BaseNetFragment {
         return JCActivity.class;
     }
 
-//    @Override
-//    protected Map<String, String> getParams(FetchType fetchType) {
-//        Map<String, String> reqParams = new HashMap<>();
-//        reqParams.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-//        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-//            if (dataSet.size() > 0) {
-//                reqParams.put(PARAM_ID, String.valueOf(((JCActivity) dataSet.get(dataSet.size() - 1)).id));
-//            }
-//        }
-//        return reqParams;
-//    }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -120,11 +108,4 @@ public class ActivityFragment extends BaseNetFragment {
             firstShow = false;
         }
     }
-
-    /*
-    @Override
-    protected void fetchDataFromServer(FetchType fetchtype) {
-        fetchDataFromServer(fetchtype, RequestType.GET);
-    }
-    */
 }

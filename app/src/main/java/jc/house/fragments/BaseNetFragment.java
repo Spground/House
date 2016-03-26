@@ -137,83 +137,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
         return false;
     }
 
-//    protected void fetchDataFromServer(final FetchType fetchType, final RequestType requestType) {
-//        if (this.isOver(fetchType)) {
-//            return;
-//        }
-//        if (requestType == RequestType.POST) {
-//            this.client.post(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
-//                @Override
-//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                    super.onSuccess(statusCode, headers, response);
-//                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
-//                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
-//                }
-//
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                    super.onFailure(statusCode, headers, responseString, throwable);
-//                    resetXListView();
-//                    handleFailure();
-//                }
-//            });
-//        } else {
-//            this.client.get(url, new RequestParams(this.getParams(fetchType)), new JsonHttpResponseHandler() {
-//                @Override
-//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                    super.onSuccess(statusCode, headers, response);
-//                    handleResponse(statusCode, response, fetchType, ServerResult.Type.Array);
-//                    LogUtils.debug(tag, "statusCode is " + statusCode + response.toString());
-//                }
-//
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                    super.onFailure(statusCode, headers, responseString, throwable);
-//                    resetXListView();
-//                    handleFailure();
-//                }
-//            });
-//        }
-//
-//    }
-
-    /*
-    protected void handleResponse(int statusCode, JSONObject response, final FetchType fetchtype, ServerResult.Type resultType) {
-        if (!ServerUtils.isConnectServerSuccess(statusCode, response)) {
-            handleFailure();
-        } else {
-            ServerResult result = ServerUtils.parseServerResponse(response, resultType);
-            if (result.isSuccess) {
-                handleResponse(result, fetchtype);
-            } else {
-                handleCode(result.code, "statusCode");
-            }
-        }
-    }
-
-    protected void handleResponse(final ServerResult result, final FetchType fetchType) {
-        if (result.isArrayType()) {
-            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-                @Override
-                public void onSuccess(List<? extends BaseModel> models) {
-                    updateListView((List<BaseModel>) models, fetchType);
-                    if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                        saveToLocal(result.array.toString());
-                    }
-                }
-            });
-        } else {
-            //暂时没有用到
-            MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-                @Override
-                public void onSuccess(BaseModel model) {
-                    super.onSuccess(model);
-                }
-            });
-        }
-    }
-    */
-
     @Override
     protected void setHeader() {
         final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
@@ -295,25 +218,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void loadLocalData() {
-//        String content = SP.with(this.getActivity()).getJsonString(this.getModelClass());
-//        if (!StringUtils.strEmpty(content)) {
-//            ServerResult result = new ServerResult();
-//            try {
-//                result.array = new JSONArray(content);
-//                result.resultType = ServerResult.Type.Array;
-//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, getModelClass()) {
-//                    @Override
-//                    public void onSuccess(List<? extends BaseModel> models) {
-//                        updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
-//                        hasLocalRes = true;
-//                    }
-//                });
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            LogUtils.debug(tag, "Load data from local + " + content + this.getModelClass().toString());
-//        }
-
         FetchLocal.share(getActivity()).fetchModelsFromLocal(getModelClass(), new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {

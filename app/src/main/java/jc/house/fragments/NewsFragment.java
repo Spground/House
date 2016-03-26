@@ -126,49 +126,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         return News.class;
     }
 
-//    @Override
-//    protected Map<String, String> getParams(FetchType fetchType) {
-//        Map<String, String> params = new HashMap<>();
-//        params.put(PARAM_PAGE_SIZE, String.valueOf(PAGE_SIZE));
-//        if (FetchType.FETCH_TYPE_LOAD_MORE == fetchType) {
-//            if (dataSet.size() > 0) {
-//                params.put(PARAM_ID, String.valueOf(((News) dataSet.get(dataSet.size() - 1)).id));
-//            }
-//        }
-//        return params;
-//    }
-
-            /*
-    @Override
-    protected void fetchDataFromServer(final FetchType fetchType) {
-        fetchDataFromServer(fetchType, RequestType.POST);
-        if (isOver(fetchType)) {
-            return;
-        }
-        FetchServer.share().postModelsFromServer(this.url, getParams(FetchType.FETCH_TYPE_REFRESH), getModelClass(), new ModelsTask() {
-            @Override
-            public void onSuccess(List<? extends BaseModel> models, ServerResult result) {
-                updateListView((List<BaseModel>) models, fetchType);
-                if (fetchType == FetchType.FETCH_TYPE_REFRESH) {
-                    saveToLocal(result.array.toString());
-                }
-            }
-
-            @Override
-            public void onCode(int code) {
-                handleCode(code, TAG);
-            }
-
-            @Override
-            public void onFail(String msg) {
-                super.onFail(msg);
-                handleFailure();
-                resetXListView();
-            }
-        });
-    }
-    */
-
     private void fetchSlideshows() {
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_PAGE_SIZE, SLIDE_PAGE_SIZE);
@@ -191,21 +148,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
                 setDefaultCircleView();
             }
         });
-//        this.client.post(Constants.SLIDE_URL, new RequestParams(params), new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                super.onSuccess(statusCode, headers, response);
-//                LogUtils.debug(TAG, response.toString());
-//                handleSlideshows(statusCode, response);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                super.onFailure(statusCode, headers, responseString, throwable);
-//                handleFailure();
-//                LogUtils.debug(TAG, responseString.toString());
-//            }
-//        });
     }
 
     private void setSlideshows(List<Slideshow> models) {
@@ -228,25 +170,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
         this.circleView.setOnCircleViewItemClickListener(null);
     }
 
-//    private void handleSlideshows(int statusCode, JSONObject response) {
-//        if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
-//            final ServerResult result = ServerUtils.parseServerResponse(response, ServerResult.Type.Array);
-//            if (result.isSuccess) {
-//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
-//                    @Override
-//                    public void onSuccess(List<? extends BaseModel> models) {
-//                        setSlideshows((List<Slideshow>) models);
-//                        saveToLocal(result.array.toString(), Slideshow.class);
-//                    }
-//                });
-//            } else {
-//                setDefaultCircleView();
-//            }
-//        } else {
-//            setDefaultCircleView();
-//        }
-//    }
-
     @Override
     public void onCircleViewItemClick(View v, int index) {
         if (this.loadSlideSuccess && index < this.slideshows.size()) {
@@ -260,24 +183,6 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     @Override
     protected void loadLocalData() {
         super.loadLocalData();
-//        String slides = SP.with(getActivity()).getJsonString(Slideshow.class);
-//        if (StringUtils.strEmpty(slides)) {
-//            this.setDefaultCircleView();
-//        } else {
-//            ServerResult result = new ServerResult();
-//            try {
-//                result.array = new JSONArray(slides);
-//                result.resultType = ServerResult.Type.Array;
-//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, Slideshow.class) {
-//                    @Override
-//                    public void onSuccess(List<? extends BaseModel> models) {
-//                        setSlideshows((List<Slideshow>) models);
-//                    }
-//                });
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
         String slides = SP.with(getActivity()).getJsonString(Slideshow.class);
         if (StringUtils.strEmpty(slides)) {
             this.setDefaultCircleView();
