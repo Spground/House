@@ -1,7 +1,6 @@
 package jc.house;
 
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,10 +9,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;

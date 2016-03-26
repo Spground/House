@@ -7,13 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.activities.HomeActivity;
 import jc.house.activities.WebActivity;
@@ -21,11 +17,10 @@ import jc.house.adapters.ListAdapter;
 import jc.house.global.Constants;
 import jc.house.global.FetchType;
 import jc.house.global.MApplication;
-import jc.house.global.RequestType;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
-import jc.house.models.News;
+import jc.house.utils.SP;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +29,7 @@ public class ActivityFragment extends BaseNetFragment {
 
     private final int PAGE_SIZE = 5;
     private static final String TAG = "ActivityFragment";
+    private static final String JCACTIVITY_ID = "activity_id";
     private boolean firstShow;
 
     public ActivityFragment() {
@@ -72,6 +68,21 @@ public class ActivityFragment extends BaseNetFragment {
     }
 
     @Override
+    protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
+        //判断是否出现新活动,显示小红点
+        if(dataSet != null && dataSet.size() >= 1) {
+            JCActivity newest = (JCActivity)dataSet.get(0);
+            int newestID = newest.getId();
+            String val = SP.with(this.getActivity()).getString(JCACTIVITY_ID);
+            int lastID = val.isEmpty() ? -1 : Integer.valueOf(val.trim());
+            if(newestID > lastID)
+                ((HomeActivity)this.getActivity()).showLittleRedDot(2);
+            SP.with(this.getActivity()).saveString(JCACTIVITY_ID, String.valueOf(newestID));
+        }
+        super.updateListView(dataSet, fetchType);
+    }
+
+    @Override
     protected void initListView() {
         super.initListView();
         this.xlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,9 +114,7 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && firstShow) {
             this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
             firstShow = false;
-        }
     }
 }

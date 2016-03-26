@@ -112,7 +112,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.lastTime = 0;
         this.initViewPager();
         this.initNetConnectManager();
-//        startUpReceiveNewMessageService();
         //获取客服环信ID-Model映射表
         loadDataFromLocal(CustomerHelper.class);
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -127,42 +126,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
      * 获取客服==>环信ID名称映射规则
      */
     private void getCustomerHelperNickName() {
-        /*
-        AsyncHttpClient client = new AsyncHttpClient();
-        //get cache first
-        loadDataFromLocal(CustomerHelper.class);
-        client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                LogUtils.debug(TAG, "onSuccess");
-                if (!ServerUtils.isConnectServerSuccess(statusCode, response))
-                    return;
-                ServerArrayResult result = ServerUtils.parseServerArrayResponse(response);
-                if (!result.isSuccess)
-                    return;
-                //cache to local
-                saveToLocal(result.array.toString(), CustomerHelper.class);
-                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, CustomerHelper.class) {
-                    @Override
-                    public void onSuccess(List<? extends BaseModel> models) {
-                        super.onSuccess(models);
-                        //populate the customer helper mapping
-                        for (BaseModel model : models) {
-                            CustomerHelper c = (CustomerHelper) model;
-                            ((MApplication) getApplication()).customerHelperNameMapping.put(c.getHxID(), c);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                LogUtils.debug(TAG, statusCode + responseString);
-            }
-        });
-        */
         FetchServer.share().postModelsFromServer(Constants.CUSTOMER_HELPER_NAME_URL, null, CustomerHelper.class, new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
@@ -211,24 +174,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
                 }
             });
-//            ServerArrayResult result = new ServerArrayResult();
-//            try {
-//                result.array = new JSONArray(content);
-//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, cls) {
-//                    @Override
-//                    public void onSuccess(List<? extends BaseModel> models) {
-//                        for (BaseModel model : models) {
-//                            CustomerHelper customerHelper = (CustomerHelper) model;
-//                            if (customerHelper == null)
-//                                continue;
-//                            ((MApplication) getApplicationContext()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
-//                        }
-//                    }
-//                });
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            LogUtils.debug("===TAG===", "customer helper content is + " + content + cls.toString());
             return true;
         }
         return false;
@@ -365,7 +310,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         TabViewItem item = (TabViewItem) v;
         int index = item.getIndex();
         /**set little red dot invisible**/
-        //tabViewItems.get(index).showLittleRedDot();
         if (currentIndex != index) {
             viewPager.setCurrentItem(index, false);
         } else {
@@ -453,15 +397,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     }
 
     /**
-     * startup service to receive new message
-     */
-    private void startUpReceiveNewMessageService() {
-        Intent intent = new Intent(this, ReceiveNewMessageService.class);
-        startService(intent);
-        LogUtils.debug(TAG, "ReceiveNewMessageService is starting up...");
-    }
-
-    /**
      * check isRegister
      *
      * @return
@@ -531,9 +466,19 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     public void onNewMessageReceived() {
         /**update tab item's unread**/
         if (currentIndex != 3)
-            tabViewItems.get(3).showLittleRedDot();
+            showLittleRedDot(3);
     }
 
+    /**
+     * 显示Tab小红点
+     * @param index
+     */
+    public void showLittleRedDot(int index) {
+        TabViewItem item = tabViewItems.get(index);
+        if(item != null) {
+            item.showLittleRedDot();
+        }
+    }
     /**
      * 广播接收者
      */
