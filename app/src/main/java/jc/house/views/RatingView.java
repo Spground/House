@@ -46,14 +46,17 @@ public class RatingView extends LinearLayout {
     }
 
     public void setParams(int ratingRedNumber, int spacing) {
+        if (ratingRedNumber < 0 || spacing < 0) {
+            throw new IllegalArgumentException("ratingRedNumber and spacing should be >= 0");
+        }
         if (this.ratingRedNumber == ratingRedNumber && ratingRedNumber > 0) {
             return;
         }
         if (ratingRedNumber > ALL_NUMBER) {
             ratingRedNumber = ALL_NUMBER;
         }
-        this.spacing = spacing <= 0 ? 0 : spacing;
-        this.ratingRedNumber = ratingRedNumber < 0 ? 0 : ratingRedNumber;
+        this.spacing = spacing;
+        this.ratingRedNumber = ratingRedNumber;
         if (!hasInit) {
             this.removeAllViews();
         }
