@@ -181,6 +181,12 @@ public class ListAdapter extends BaseAdapter {
 						ImageLoader.loadImage(viewHolderActivity.picture, activityModel.getPicUrl(), false,
 								GeneralUtils.dip2px(context, GeneralUtils.getScreenSize(context).widthPixels), GeneralUtils.dip2px(context, 132));
 						viewHolderActivity.title.setText(activityModel.getTitle());
+						//置顶
+						if(pos == 0) {
+							Drawable rightDrawable = context.getApplicationContext().getResources().getDrawable(R.drawable.top);
+							rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
+							viewHolderActivity.title.setCompoundDrawables(null, null, rightDrawable, null);
+						}
 						convertView.setId(activityModel.id);
 						viewHolderActivity.postTime.setText(GeneralUtils.getDateString(activityModel.getPostTime()));
 					}

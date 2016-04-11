@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import java.util.List;
+import java.util.Map;
 
 import jc.house.R;
 import jc.house.activities.HomeActivity;
@@ -31,6 +32,7 @@ public class ActivityFragment extends BaseNetFragment {
     private static final String TAG = "ActivityFragment";
     private static final String JCACTIVITY_ID = "activity_id";
     private boolean firstShow;
+    private static final String PARAM_HAS_NUM = "hasNum";
 
     public ActivityFragment() {
         super();
@@ -45,6 +47,14 @@ public class ActivityFragment extends BaseNetFragment {
         this.view = inflater.inflate(R.layout.fragment_activity, container, false);
         setHeader();
         return view;
+    }
+
+    @Override
+    protected Map<String, String> getParams(FetchType fetchType) {
+        Map<String, String> params = super.getParams(fetchType);
+        params.remove(PARAM_ID);
+        params.put(PARAM_HAS_NUM, this.dataSet.size() + "");
+        return params;
     }
 
     @Override
@@ -70,14 +80,15 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
         //判断是否出现新活动,显示小红点
-        if(dataSet != null && dataSet.size() >= 1) {
-            JCActivity newest = (JCActivity)dataSet.get(0);
+        if(this.dataSet != null && this.dataSet.size() >= 1) {
+            JCActivity newest = (JCActivity)this.dataSet.get(0);
             int newestID = newest.getId();
             String val = SP.with(this.getActivity()).getString(JCACTIVITY_ID);
             int lastID = val.isEmpty() ? -1 : Integer.valueOf(val.trim());
-            if(newestID > lastID)
+            if(newestID > lastID) {
                 ((HomeActivity)this.getActivity()).showLittleRedDot(2);
-            SP.with(this.getActivity()).saveString(JCACTIVITY_ID, String.valueOf(newestID));
+                SP.with(this.getActivity()).saveString(JCACTIVITY_ID, String.valueOf(newestID));
+            }
         }
         super.updateListView(dataSet, fetchType);
     }

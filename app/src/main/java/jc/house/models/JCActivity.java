@@ -7,6 +7,15 @@ public final class JCActivity extends BaseModel {
     private String title;
     private String picUrl;
     private long postTime;
+    private int isTop;//0 false; 1 true
+
+    public int getIsTop() {
+        return isTop;
+    }
+
+    public void setIsTop(int isTop) {
+        this.isTop = isTop;
+    }
 
     public JCActivity(int id, String picUrl, String title) {
         super(id);
