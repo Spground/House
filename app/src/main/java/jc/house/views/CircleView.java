@@ -67,7 +67,7 @@ public class CircleView extends LinearLayout {
 
     private void initView() {
         this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
-        this.viewPager.setOffscreenPageLimit(1);
+        this.viewPager.setOffscreenPageLimit(3);
         this.viewPager.setCurrentItem(0, true);
         this.indicatorView = (IndicatorView) this
                 .findViewById(R.id.indicatorView);
@@ -104,11 +104,10 @@ public class CircleView extends LinearLayout {
     }
 
     public void setTimeInterval(float timeInterval) {
-        if (timeInterval > 0) {
-            this.timeInterval = timeInterval;
-        } else {
-            throw new IllegalStateException("timeInterval should be > 0");
+        if (timeInterval <= 0) {
+            throw new IllegalArgumentException("timeInterval should be > 0");
         }
+        this.timeInterval = timeInterval;
     }
 
     public void setOnCircleViewItemClickListener(
@@ -234,21 +233,30 @@ public class CircleView extends LinearLayout {
             PhotoView photoView = new PhotoView(context);
             photoView.setScaleType(ScaleType.FIT_CENTER);
             photoView.setZoomable(canZoom);
-            photoView.setEnabled(canZoom);
+//            photoView.setEnabled(canZoom);
+            photoView.setOnDoubleTapListener(null);
+            photoView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != circleClickListener) {
+                        circleClickListener.onCircleViewItemClick(v, currentIndex);
+                    }
+                }
+            });
             ImageLoader.loadImage(photoView, urls[i], true, GeneralUtils.getScreenSize(context).widthPixels,
                     GeneralUtils.getScreenSize(context).heightPixels);
-            PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
-            attacher.setZoomable(canZoom);
-            if (!canZoom) {
-                attacher.setOnDoubleTapListener(null);
-                attacher.setOnScaleChangeListener(null);
-            }
-            attacher.setAllowParentInterceptOnEdge(true);
-            if (canZoom) {
-                attacher.setMinimumScale(1.0f);
-                attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
-            }
-            attacher.update();
+//            PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
+//            attacher.setZoomable(canZoom);
+//            if (!canZoom) {
+//                attacher.setOnDoubleTapListener(null);
+//                attacher.setOnScaleChangeListener(null);
+//            }
+//            attacher.setAllowParentInterceptOnEdge(true);
+//            if (canZoom) {
+//                attacher.setMinimumScale(1.0f);
+//                attacher.setScaleLevels(1.0f, 1.5f, 2.5f);
+//            }
+//            attacher.update();
             this.imageViews.add(photoView);
         }
         if(num > 1) {
@@ -306,11 +314,12 @@ public class CircleView extends LinearLayout {
     }
 
     private void setCurrentIndex(int index) {
-        if (index >= 0 && index < num) {
-            this.viewPager.setCurrentItem(index);
-            this.indicatorView.setSelectedIndex(index);
-            this.currentIndex = index;
+        if (index < 0 || index >= num) {
+            throw new IllegalArgumentException("index should be >= 0 and < num");
         }
+        this.viewPager.setCurrentItem(index);
+        this.indicatorView.setSelectedIndex(index);
+        this.currentIndex = index;
     }
 
     public void cancelTimer() {

@@ -20,7 +20,7 @@ public class IndicatorView extends LinearLayout {
 	private List<ImageView> imageViews;
 
 	public IndicatorView(Context context) {
-		this(context,null);
+		this(context, null);
 	}
 
 	public IndicatorView(Context context, AttributeSet attrs) {
@@ -43,30 +43,33 @@ public class IndicatorView extends LinearLayout {
 	}
 
 	public synchronized void setNum(int num) {
-		if (num > 0) {
-			this.imageViews.clear();
-			this.removeAllViews();
-			this.num = 0;
-			for (int i = 0; i < num; i++) {
-				ImageView imageView = new ImageView(this.context);
-				imageView.setLayoutParams(new LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				if (this.selectedIndex == i) {
-					imageView.setImageResource(this.selectedResId);
-				} else {
-					imageView.setImageResource(this.normalResId);
-				}
-				imageView.setPadding(this.spacing, 0, 0, 0);
-				imageViews.add(imageView);
-				this.addView(imageView);
-			}
-			this.num = num;
+		if (num < 0) {
+			throw new IllegalArgumentException("num should be >= 0");
 		}
+		this.imageViews.clear();
+		this.removeAllViews();
+		this.num = 0;
+		for (int i = 0; i < num; i++) {
+			ImageView imageView = new ImageView(this.context);
+			imageView.setLayoutParams(new LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			if (this.selectedIndex == i) {
+				imageView.setImageResource(this.selectedResId);
+			} else {
+				imageView.setImageResource(this.normalResId);
+			}
+			imageView.setPadding(this.spacing, 0, 0, 0);
+			imageViews.add(imageView);
+			this.addView(imageView);
+		}
+		this.num = num;
 	}
 
 	public void setSelectedIndex(int selectedIndex) {
-		if (this.selectedIndex != selectedIndex && selectedIndex < this.num
-				&& selectedIndex >= 0) {
+		if (selectedIndex < 0 || selectedIndex >= num) {
+			throw new IllegalArgumentException("selectedIndex should be >= 0 and < num");
+		}
+		if (this.selectedIndex != selectedIndex) {
 			(imageViews.get(this.selectedIndex))
 					.setImageResource(this.normalResId);
 			(imageViews.get(selectedIndex))
@@ -84,7 +87,7 @@ public class IndicatorView extends LinearLayout {
 	}
 
 	public void setSpacing(int spacing) {
-		if (spacing > 0) {
+		if (spacing >= 0) {
 			this.spacing = spacing;
 		}
 	}
