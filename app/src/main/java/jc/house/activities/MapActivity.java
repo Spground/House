@@ -1,11 +1,8 @@
 package jc.house.activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
 
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
 import com.tencent.mapsdk.raster.model.LatLng;
@@ -20,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import jc.house.R;
-import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.views.TitleBar;
 
@@ -125,18 +121,18 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
     }
 
     private LatLng getCenterPoint() {
-        if (!isSingleMarker && mapHouses.size() > 0) {
-            double latAll = 0;
-            double lngAll = 0;
-            Iterator<Map.Entry<String, HouseDetail>> iterator = mapHouses.entrySet().iterator();
-            while(iterator.hasNext()) {
-                Map.Entry<String, HouseDetail> entry = iterator.next();
-                latAll += entry.getValue().getLat();
-                lngAll += entry.getValue().getLng();
-            }
-            return new LatLng(latAll / mapHouses.size(), lngAll / mapHouses.size());
+        if (isSingleMarker || mapHouses.isEmpty()) {
+            return null;
         }
-        return null;
+        double latAll = 0;
+        double lngAll = 0;
+        Iterator<Map.Entry<String, HouseDetail>> iterator = mapHouses.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, HouseDetail> entry = iterator.next();
+            latAll += entry.getValue().getLat();
+            lngAll += entry.getValue().getLng();
+        }
+        return new LatLng(latAll / mapHouses.size(), lngAll / mapHouses.size());
     }
 
     @Override
