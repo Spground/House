@@ -18,6 +18,7 @@ import jc.house.models.BaseModel;
 import jc.house.models.ServerArrayResult;
 import jc.house.models.ServerObjectResult;
 import jc.house.models.ServerResult;
+import jc.house.utils.LogUtils;
 import jc.house.utils.ParseJson;
 import jc.house.utils.ServerUtils;
 
@@ -84,11 +85,13 @@ public class FetchServer {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                LogUtils.debug("FetchServer", "onSuccess() statusCode is " + statusCode);
                 handleModelsTask(statusCode, response, cls, task);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                LogUtils.debug("FetchServer", "onFailure statusCode is " + statusCode );
                 super.onFailure(statusCode, headers, responseString, throwable);
                 task.onFail(responseString);
             }

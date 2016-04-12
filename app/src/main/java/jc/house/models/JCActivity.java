@@ -7,7 +7,7 @@ public final class JCActivity extends BaseModel {
     private String title;
     private String picUrl;
     private long postTime;
-    private int isTop;//0 false; 1 true
+    private int isTop = 0;//0 false; 1 true
 
     public int getIsTop() {
         return isTop;

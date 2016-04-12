@@ -42,7 +42,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     protected static final String PARAM_PAGE_SIZE = "pageSize";
     protected static final String PARAM_ID = "id";
     protected boolean hasLocalRes;
-
+    private final static String TAG = "BaseNetFragment";
     protected BaseNetFragment() {
         super();
         this.isOver = false;
@@ -193,6 +193,7 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
     }
 
     protected void fetchDataFromServer(final FetchType fetchType) {
+        LogUtils.debug(TAG, "fetchDataFromServer begin");
         if (isOver(fetchType)) {
             return;
         }
@@ -200,18 +201,21 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
                 updateListView((List<BaseModel>) models, fetchType);
+                LogUtils.debug(TAG, " fetchDataFromServer onSuccess()" + result.array.toString());
                 saveToLocal(result.array.toString());
             }
 
             @Override
             public void onFail(String msg) {
                 super.onFail(msg);
+                LogUtils.debug(TAG, " fetchDataFromServer onFail() Failed msg is " + msg);
                 handleFailure();
             }
 
             @Override
             public void onCode(int code) {
-                handleCode(code, getActivity().toString());
+                handleCode(code, TAG);
+                LogUtils.debug(TAG, " fetchDataFromServer onCode() msg is " + getActivity().toString());
             }
 
         });

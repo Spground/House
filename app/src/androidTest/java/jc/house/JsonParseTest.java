@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
@@ -167,5 +168,12 @@ public class JsonParseTest extends AndroidTestCase {
         boolean flag = BaseModel.class.isAssignableFrom(CustomerHelper.class);
         assertTrue("customerhelper is subclass of basemodel", flag);
 
+    }
+
+    public void testMapFromClass() {
+        Map<String, Class> map = ParseJson.mapFromClass(JCActivity.class);
+        for (String key : map.keySet()) {
+            LogUtils.debug("TEST", key + " ===> " + map.get(key).getSimpleName());
+        }
     }
 }

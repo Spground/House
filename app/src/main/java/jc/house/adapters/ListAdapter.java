@@ -182,7 +182,7 @@ public class ListAdapter extends BaseAdapter {
 								GeneralUtils.dip2px(context, GeneralUtils.getScreenSize(context).widthPixels), GeneralUtils.dip2px(context, 132));
 						viewHolderActivity.title.setText(activityModel.getTitle());
 						//置顶
-						if(pos == 0) {
+						if(activityModel.getIsTop() == 1) {
 							Drawable rightDrawable = context.getApplicationContext().getResources().getDrawable(R.drawable.top);
 							rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
 							viewHolderActivity.title.setCompoundDrawables(null, null, rightDrawable, null);
