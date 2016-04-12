@@ -224,10 +224,6 @@ public abstract class BaseNetFragment extends BaseFragment implements IRefresh, 
                 updateListView((List<BaseModel>) models, FetchType.FETCH_TYPE_REFRESH);
                 hasLocalRes = true;
             }
-
-            @Override
-            public void onCode(int code) {
-            }
         });
     }
 

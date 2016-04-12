@@ -42,7 +42,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     private static final String SLIDE_PAGE_SIZE = "3";
     private CircleView circleView;
     private boolean loadSlideSuccess;
-    private List<Slideshow> slideshows;
+    private List<Slideshow> slideShows;
 
     public NewsFragment() {
         super();
@@ -151,7 +151,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
     }
 
     private void setSlideshows(List<Slideshow> models) {
-        if (ListUtils.listEmpty(models)) {
+        if (ListUtils.isValid(models)) {
             return;
         }
         String[] urls = new String[models.size()];
@@ -160,7 +160,7 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
             urls[i++] = Constants.IMAGE_URL_ORIGIN + slide.getPicUrl();
         }
         circleView.setImageUrls(urls);
-        this.slideshows = models;
+        this.slideShows = models;
         this.loadSlideSuccess = true;
         this.circleView.setOnCircleViewItemClickListener(this);
     }
@@ -172,10 +172,10 @@ public class NewsFragment extends BaseNetFragment implements CircleView.CircleVi
 
     @Override
     public void onCircleViewItemClick(View v, int index) {
-        if (this.loadSlideSuccess && index < this.slideshows.size()) {
+        if (this.loadSlideSuccess && index < this.slideShows.size()) {
             Intent intent = new Intent(getActivity(), WebActivity.class);
             intent.putExtra(WebActivity.FLAG_TITLE, "详情");
-            intent.putExtra(WebActivity.FLAG_URL, Constants.SLIDE_MOBILE_URL + this.slideshows.get(index).getId());
+            intent.putExtra(WebActivity.FLAG_URL, Constants.SLIDE_MOBILE_URL + this.slideShows.get(index).getId());
             startActivity(intent);
         }
     }

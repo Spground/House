@@ -7,13 +7,11 @@ import jc.house.utils.LogUtils;
  */
 public abstract class BaseTask {
 
-    public void onStart() {
-    }
+    public void onStart() {}
 
-    public void onSuccess() {
-    }
+    public void onSuccess() {}
 
-    public abstract void onCode(int code);
+    public void onCode(int code) {};
 
     public void onFail(String msg) {
         LogUtils.debug(msg);

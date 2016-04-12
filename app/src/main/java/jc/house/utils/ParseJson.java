@@ -23,7 +23,7 @@ public final class ParseJson {
     /**
      * json对象数组转对应的model对象list
      *
-     * @param array  A JSONArray object
+     * @param array A JSONArray object
      * @param clazz model对应的的Class
      * @return
      * @throws IllegalAccessException
@@ -61,15 +61,15 @@ public final class ParseJson {
     /**
      * 将JSONObject数据解析成对应某个类的对象
      *
-     * @param object JSONObject对象
-     * @param mClass 对应的model的Class
+     * @param object   JSONObject对象
+     * @param mClass   对应的model的Class
      * @param fieldMap mClass对应的（属性值-class）键值对
      * @return mClass对应的对象
      */
     private static final BaseModel jsonObj2Model(JSONObject object, Class<? extends BaseModel> mClass, Map<String, Class> fieldMap) {
 
         if (null == object || null == mClass || null == fieldMap) {
-            throw new NullPointerException("object and mClass and fieldMap should not be null");
+            throw new NullPointerException("object & mClass & fieldMap should not be null");
         }
         BaseModel result = null;
         try {
@@ -77,28 +77,28 @@ public final class ParseJson {
             Iterator<String> keys = object.keys();
             while (keys.hasNext()) {
                 String key = keys.next();
-                if (fieldMap.containsKey(key)) {
+                if (!fieldMap.containsKey(key)) {
+                    continue;
+                }
+                try {
+                    Method method = mClass.getMethod(StringUtils.getMethodNameByFieldName(key), fieldMap.get(key));
+                    if (object.isNull(key)) {
+                        continue;
+                    }
                     try {
-                        Method method = mClass.getMethod(StringUtils.getMethodNameByFieldName(key), fieldMap.get(key));
-                        try {
-                            if (JSONObject.NULL != object.get(key) && !object.isNull(key)) {
-                                if (isSubclassOfBaseModel(fieldMap.get(key))) {
-                                    //递归赋值
-                                    method.invoke(result, jsonObj2Model((object.optJSONObject(key)), fieldMap.get(key)));
-                                } else if (isSubclassOfList(fieldMap.get(key))) {
-                                    method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), fieldMap.get(key)));
-                                } else {
-                                    method.invoke(result, object.get(key));
-                                }
-                            }
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (isSubclassOfBaseModel(fieldMap.get(key))) {
+                            //递归赋值
+                            method.invoke(result, jsonObj2Model((object.optJSONObject(key)), fieldMap.get(key)));
+                        } else if (isSubclassOfList(fieldMap.get(key))) {
+                            method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), fieldMap.get(key)));
+                        } else {
+                            method.invoke(result, object.opt(key));
                         }
-                    } catch (NoSuchMethodException e) {
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (InstantiationException e) {
@@ -132,10 +132,10 @@ public final class ParseJson {
     }
 
     private static final boolean isSubclassOfBaseModel(Class mClass) {
-        if (mClass.isPrimitive() || !BaseModel.class.isAssignableFrom(mClass)) {
-            return false;
+        if (!mClass.isPrimitive() && BaseModel.class.isAssignableFrom(mClass)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     private static final boolean isSubclassOfList(Class mClass) {
