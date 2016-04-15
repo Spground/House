@@ -230,6 +230,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5px"
                     android:background="@color/font_grey_300" />
+
+                <!-- online question-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/list_pressed"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="3dp"
+                        android:gravity="center"
+                        android:text="观看楼盘视频"
+                        android:textColor="@color/red"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- view pager-->
@@ -287,7 +310,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="127dp"
                     android:layout_gravity="center"
-                    android:background="#FFFFFF"></jc.house.views.MViewPager>
+                    android:background="#FFFFFF"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

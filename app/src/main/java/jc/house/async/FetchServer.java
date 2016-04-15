@@ -86,6 +86,7 @@ public class FetchServer {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 LogUtils.debug("FetchServer", "onSuccess() statusCode is " + statusCode);
+                LogUtils.debug("FetchServer", "onSuccess() response is " + response.toString());
                 handleModelsTask(statusCode, response, cls, task);
             }
 
@@ -102,6 +103,7 @@ public class FetchServer {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerArrayResult result = ServerUtils.parseServerArrayResponse(response);
             if (result.isSuccess) {
+                LogUtils.debug("FetchServer", "handleModelTask() is successful");
                 MThreadPool.getInstance().submit(new Runnable() {
                     @Override
                     public void run() {
