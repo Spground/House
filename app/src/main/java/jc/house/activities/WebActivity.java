@@ -17,6 +17,7 @@ public class WebActivity extends BaseActivity {
     public static final String FLAG_URL = "url";
     public static final String FLAG_TITLE = "title";
 
+    public static final String TAG = "WebActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +29,7 @@ public class WebActivity extends BaseActivity {
         this.webView.getSettings().setJavaScriptEnabled(true);
         Intent intent = this.getIntent();
         String url = intent.getStringExtra(FLAG_URL);
+        LogUtils.debug(TAG, "url is " + url);
         String title = intent.getStringExtra(FLAG_TITLE);
         setTitleBarTitle(title);
         if (!StringUtils.strEmpty(url)) {

@@ -30,9 +30,9 @@ public class PhotoViewActivity extends BaseActivity {
         int currentIndex = getIntent().getIntExtra(FLAG_CURRENT_INDEX, 0);
         isHouse = getIntent().getBooleanExtra(FLAG_IS_HOUSE, false);
         if (isHouse) {
-            house = getIntent().getParcelableExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL);
-            hxID = getIntent().getStringExtra(HouseDetailActivity.FLAG_HELPER_ID);
-            nickName = getIntent().getStringExtra(HouseDetailActivity.FLAG_HELPER_NAME);
+            this.house = getIntent().getParcelableExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL);
+            this.hxID = getIntent().getStringExtra(HouseDetailActivity.FLAG_HELPER_ID);
+            this.nickName = getIntent().getStringExtra(HouseDetailActivity.FLAG_HELPER_NAME);
         }
         if (null != imageUrls && this.imageUrls.length > 0) {
             initView(currentIndex);
@@ -53,10 +53,8 @@ public class PhotoViewActivity extends BaseActivity {
                 public void onCircleViewItemClick(View v, int index) {
                     Intent intent = new Intent(PhotoViewActivity.this, HouseDetailActivity.class);
                     intent.putExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL, house);
-                    if (null != house.getHelper()) {
-                        intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, house.getHelper().getName());
-                        intent.putExtra(HouseDetailActivity.FLAG_HELPER_ID, house.getHelper().getHxID());
-                    }
+                    intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, nickName);
+                    intent.putExtra(HouseDetailActivity.FLAG_HELPER_ID, hxID);
                     startActivity(intent);
                     finish();
                 }

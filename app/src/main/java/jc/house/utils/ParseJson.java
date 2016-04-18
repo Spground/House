@@ -112,7 +112,7 @@ public final class ParseJson {
     /**
      * 获取某个Class的（属性名称-Class）键值对
      */
-    private static final Map<String, Class> mapFromClass(Class<? extends BaseModel> mClass) {
+    public static final Map<String, Class> mapFromClass(Class<? extends BaseModel> mClass) {
         Map<String, Class> result = new HashMap<>();
         if (null == mClass) {
             return result;

@@ -94,16 +94,6 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 if (pos >= 1 && pos <= dataSet.size()) {
-                    /*
-                    Intent intent = new Intent(getActivity(), HouseDetailActivity.class);
-                    HouseDetail house = (HouseDetail) (dataSet.get(pos - 1));
-                    intent.putExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL, house);
-                    if (null != house.getHelper()) {
-                        intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, house.getHelper().getName());
-                        intent.putExtra(HouseDetailActivity.FLAG_HELPER_ID, house.getHelper().getHxID());
-                    }
-                    startActivity(intent);
-                    */
                     Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
                     HouseDetail house = (HouseDetail)(dataSet.get(pos - 1));
                     intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, house.getImageUrls());
@@ -112,6 +102,7 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
                     if (null != house.getHelper()) {
                         intent.putExtra(HouseDetailActivity.FLAG_HELPER_NAME, house.getHelper().getName());
                         intent.putExtra(HouseDetailActivity.FLAG_HELPER_ID, house.getHelper().getHxID());
+                        LogUtils.debug(TAG, "house.getHelper() == " + (house.getHelper().getName() + "--" + house.getHelper().getHxID()));
                     }
                     startActivity(intent);
                 }

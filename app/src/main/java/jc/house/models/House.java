@@ -13,6 +13,7 @@ public class House extends BaseModel implements Parcelable {
 	public static final int MAX_INTRO_LENGTH = 25;
 	private String url;
 	private String hxUrl;
+	private String videoUrl;
 	private String otherUrl;
 	private String name;
 	private String intro;
@@ -57,6 +58,7 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeString(labelContent);
 		dest.writeString(avgPrice);
 		dest.writeString(hxUrl);
+		dest.writeString(videoUrl);
 		dest.writeString(otherUrl);
 	}
 
@@ -72,6 +74,7 @@ public class House extends BaseModel implements Parcelable {
 		this.labelContent = origin.readString();
 		this.avgPrice = origin.readString();
 		this.hxUrl = origin.readString();
+		this.videoUrl = origin.readString();
 		this.otherUrl = origin.readString();
 	}
 
@@ -89,7 +92,8 @@ public class House extends BaseModel implements Parcelable {
 
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(name + "-").append(url + "-").append(id + "-").append(lat + "-").append(labelContent + "-").append(avgPrice);
+		stringBuilder.append(name + "-").append(url + "-").append(id + "-").append(lat + "-").append(labelContent + "-").append(avgPrice)
+		.append(videoUrl + "-");
 		return stringBuilder.toString();
 	}
 
@@ -221,5 +225,13 @@ public class House extends BaseModel implements Parcelable {
 
 	public void setAvgPrice(String avgPrice) {
 		this.avgPrice = avgPrice;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 }

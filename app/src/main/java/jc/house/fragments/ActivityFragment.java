@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import java.util.List;
+import java.util.Map;
 
 import jc.house.R;
 import jc.house.activities.HomeActivity;
@@ -20,6 +21,7 @@ import jc.house.global.MApplication;
 import jc.house.models.BaseModel;
 import jc.house.models.JCActivity;
 import jc.house.models.ModelType;
+import jc.house.utils.LogUtils;
 import jc.house.utils.SP;
 
 /**
@@ -31,6 +33,7 @@ public class ActivityFragment extends BaseNetFragment {
     private static final String TAG = "ActivityFragment";
     private static final String JCACTIVITY_ID = "activity_id";
     private boolean firstShow;
+    private static final String PARAM_HAS_NUM = "hasNum";
 
     public ActivityFragment() {
         super();
@@ -48,9 +51,24 @@ public class ActivityFragment extends BaseNetFragment {
     }
 
     @Override
+    protected Map<String, String> getParams(FetchType fetchType) {
+        Map<String, String> params = super.getParams(fetchType);
+        params.remove(PARAM_ID);
+        if (fetchType == FetchType.FETCH_TYPE_LOAD_MORE) {
+            params.put(PARAM_HAS_NUM, this.dataSet.size() + "");
+        } else if(fetchType == FetchType.FETCH_TYPE_REFRESH) {
+            params.put(PARAM_HAS_NUM, String.valueOf(0));
+        }
+        for(String key : params.keySet()) {
+            LogUtils.debug(TAG, "params is " + key + "==>" + params.get(key));
+        }
+        return params;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mApplication = (MApplication)this.getActivity().getApplication();
+        this.mApplication = (MApplication) this.getActivity().getApplication();
         this.adapter = new ListAdapter(this.getActivity(), this.dataSet, ModelType.ACTIVITY);
         initListView();
         if (PRODUCING) {
@@ -70,14 +88,15 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     protected void updateListView(List<BaseModel> dataSet, FetchType fetchType) {
         //判断是否出现新活动,显示小红点
-        if(dataSet != null && dataSet.size() >= 1) {
-            JCActivity newest = (JCActivity)dataSet.get(0);
+        if (this.dataSet != null && this.dataSet.size() >= 1) {
+            JCActivity newest = (JCActivity) this.dataSet.get(0);
             int newestID = newest.getId();
             String val = SP.with(this.getActivity()).getString(JCACTIVITY_ID);
             int lastID = val.isEmpty() ? -1 : Integer.valueOf(val.trim());
-            if(newestID > lastID)
-                ((HomeActivity)this.getActivity()).showLittleRedDot(2);
-            SP.with(this.getActivity()).saveString(JCACTIVITY_ID, String.valueOf(newestID));
+            if (newestID > lastID) {
+                ((HomeActivity) this.getActivity()).showLittleRedDot(2);
+                SP.with(this.getActivity()).saveString(JCACTIVITY_ID, String.valueOf(newestID));
+            }
         }
         super.updateListView(dataSet, fetchType);
     }
@@ -114,7 +133,7 @@ public class ActivityFragment extends BaseNetFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-            this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
-            firstShow = false;
+        this.fetchDataFromServer(FetchType.FETCH_TYPE_REFRESH);
+        firstShow = false;
     }
 }

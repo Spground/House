@@ -14,11 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.easemob.chat.EMChatManager;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONObject;
+import com.easemob.chat.EMChatManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -26,24 +23,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.async.FetchServer;
-import jc.house.async.MThreadPool;
 import jc.house.async.ModelTask;
-import jc.house.async.ModelsTask;
-import jc.house.async.ParseTask;
-import jc.house.async.StringTask;
 import jc.house.chat.ChatActivity;
 import jc.house.global.Constants;
 import jc.house.models.BaseModel;
 import jc.house.models.House;
 import jc.house.models.HouseDetail;
 import jc.house.models.ServerObjectResult;
-import jc.house.models.ServerResult;
 import jc.house.utils.LogUtils;
-import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
+import jc.house.utils.ToastUtils;
 import jc.house.views.CircleView;
 import jc.house.views.MViewPager;
 import jc.house.views.ViewPagerTitle;
@@ -54,6 +45,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     public static final String FLAG_HOUSE_DETAIL = "HouseDetail";
     public static final String FLAG_HELPER_ID = "HelperID";
     public static final String FLAG_HELPER_NAME = "HelperName";
+    public static final String FLAG_VIDEO_URL = "HouseVideoURL";
     private static final String TAG = "HouseDetailActivity";
     private static final int[] ids = {R.id.recommend, R.id.traffic, R.id.design};
     private static Map<Integer, WeakReference<HouseDetail>> houseDetailCache = new HashMap<>();
@@ -63,6 +55,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
     private HouseDetail houseDetail;
     private TextView mapTextView;
     private TextView chatTextView;
+    private TextView videoTextView;
     private int currentIndex;
     private CircleView circleView;
     private TextView tvAddress;
@@ -165,7 +158,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             public void onClick(View v) {
                 //跳转到聊天页面
                 //判断不能和自己聊天
-                if(!canChat()) {
+                if (!canChat()) {
                     android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(HouseDetailActivity.this);
                     dialog.setTitle("提示");
                     dialog.setMessage("你不能和自己聊天！");
@@ -192,7 +185,24 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                 }
             }
         });
-
+        this.videoTextView = (TextView) findViewById(R.id.video);
+        this.videoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HouseDetailActivity.this, WebActivity.class);
+                if (HouseDetailActivity.this.houseDetail.getVideoUrl() == null ||
+                        HouseDetailActivity.this.houseDetail.getVideoUrl().length() == 0
+                        ||
+                        HouseDetailActivity.this.houseDetail.getVideoUrl().equals("null")
+                        ) {
+                    ToastUtils.show(HouseDetailActivity.this.getApplicationContext(), "该房产没有对应视频");
+                    return;
+                }
+                intent.putExtra(WebActivity.FLAG_URL, Constants.IMAGE_URL_ORIGIN + HouseDetailActivity.this.houseDetail.getVideoUrl());
+                intent.putExtra(WebActivity.FLAG_TITLE, HouseDetailActivity.this.houseDetail.getName());
+                startActivity(intent);
+            }
+        });
         this.tvAddress = (TextView) this.findViewById(R.id.address);
         this.tvHouseType = (TextView) this.findViewById(R.id.houseType);
         this.tvForceType = (TextView) this.findViewById(R.id.forceType);
@@ -202,16 +212,17 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
 
     /**
      * 检查是否可以聊天，自己和自己不能聊天
+     *
      * @return
      */
     private boolean canChat() {
         String curUser = EMChatManager.getInstance().getCurrentUser().trim();
         if (id >= 0 && null != houseDetail && null != houseDetail.getHelper()) {
             LogUtils.debug(TAG, "helper huanxinID is " + houseDetail.getHelper().getHxID().trim());
-            if(houseDetail.getHelper().getHxID().trim().equalsIgnoreCase(curUser))
+            if (houseDetail.getHelper().getHxID().trim().equalsIgnoreCase(curUser))
                 return false;
         } else if (!StringUtils.strEmpty(hxID) && !StringUtils.strEmpty(nickName)) {
-            if(hxID.equalsIgnoreCase(curUser))
+            if (hxID.equalsIgnoreCase(curUser))
                 return false;
         }
         return true;
@@ -249,9 +260,9 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.textViews = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
             TextView textView = new TextView(this);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setPadding(12, 10, 12, 5);
-            textView.setTextSize(13.0f);
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 127));
+            textView.setPadding(12, 10, 12, 10);
+            textView.setTextSize(12.0f);
             textView.setTextColor(Color.rgb(120, 120, 120));
             textView.setBackgroundColor(Color.rgb(250, 250, 250));
             textView.setText("");
@@ -275,6 +286,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             public Object instantiateItem(ViewGroup container, int position) {
                 TextView textView = textViews.get(position);
                 container.addView(textView);
+//                textView.getParent().requestDisallowInterceptTouchEvent(true);
                 return textView;
             }
 
@@ -339,7 +351,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         FetchServer.share().postModelFromServer(HOUSE_DETAIL_URL, params, HouseDetail.class, new ModelTask() {
             @Override
             public void onSuccess(BaseModel model, ServerObjectResult result) {
-                setServerData((HouseDetail)model);
+                setServerData((HouseDetail) model);
             }
 
             @Override

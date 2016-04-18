@@ -5,26 +5,27 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <ScrollView
+    <jc.house.views.CircleView
+        android:id="@+id/house_circle_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"></jc.house.views.CircleView>
+
+    <jc.house.views.JCScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <jc.house.views.CircleView
-                android:id="@+id/house_circle_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></jc.house.views.CircleView>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:orientation="vertical">
                 <!-- house detail table style-->
                 <LinearLayout
@@ -200,9 +201,54 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5px"
+                    android:layout_height="0.5dp"
                     android:background="@color/font_grey_300" />
                 <!-- online question-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/list_pressed"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/chat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="在线咨询"
+                        android:gravity="center"
+                        android:textColor="@color/red"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/font_grey_300" />
+                    <TextView
+                        android:id="@+id/video"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="楼盘视频"
+                        android:textColor="@color/red"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+               <!-- <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5px"
+                    android:background="@color/font_grey_300" />
+
+                &lt;!&ndash; online question&ndash;&gt;
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,31 +260,25 @@
                     android:paddingTop="8dp">
 
                     <TextView
-                        android:id="@+id/chat"
+                        android:id="@+id/video"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="3dp"
-                        android:drawableRight="@drawable/ic_action_dialog"
                         android:gravity="center"
-                        android:text="点击在线咨询:"
+                        android:text="观看楼盘视频"
                         android:textColor="@color/red"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5px"
-                    android:background="@color/font_grey_300" />
+                </LinearLayout>-->
             </LinearLayout>
 
             <!-- view pager-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
                 android:background="#FFFFFF"
                 android:orientation="vertical"
                 android:padding="1dp">
@@ -287,8 +327,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="127dp"
                     android:layout_gravity="center"
-                    android:background="#FFFFFF"></jc.house.views.MViewPager>
+                    android:background="#FFFFFF"/>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </jc.house.views.JCScrollView>
 </LinearLayout>

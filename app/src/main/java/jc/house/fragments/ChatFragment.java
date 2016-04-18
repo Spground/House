@@ -25,16 +25,22 @@ import com.easemob.chat.EMMessage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import jc.house.JCListView.XListView;
 import jc.house.R;
 import jc.house.chat.ChatActivity;
 import jc.house.chat.adapter.ConversationListAdapter;
+import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.interfaces.IRefresh;
+import jc.house.models.CustomerHelper;
 import jc.house.utils.LogUtils;
 
 public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment.OnPullToRefreshBeginListener {
@@ -49,6 +55,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     private boolean stop;
     private int msgSize = -1;
     private boolean hasNew = false;
+    private MApplication mApplication;
 
     public interface OnNewMessageReceivedListener {
         void onNewMessageReceived();
@@ -111,11 +118,13 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         /**register event bus**/
 //        registerEventBus();
         msgReceiver = new NewMessageBroadcastReceiver();
+        mApplication = (MApplication)(this.getActivity().getApplication());
         IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
         intentFilter.setPriority(3);
         this.getActivity().registerReceiver(msgReceiver, intentFilter);
         xlistView = (XListView) view.findViewById(R.id.list);
         this.conversationList.addAll(loadHistoryConversationDataSource());
+//        fillList(conversationList);
         this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList);
         xlistView.setAdapter(this.conversationListAdapter);
         this.xlistView.setPullRefreshEnable(false);
@@ -250,7 +259,25 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
+        if (Constants.APPINFO.USER_VERSION) {
+            fillList(list);
+        }
         return list;
+    }
+
+    private void fillList(List<EMConversation> list) {
+        Set<String> sets = new HashSet<>();
+        for (EMConversation item : list) {
+            sets.add(item.getUserName());
+        }
+        Iterator<Map.Entry<String, CustomerHelper>> iterator = mApplication.customerHelperNameMapping.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, CustomerHelper> item = iterator.next();
+            if (sets.contains(item.getKey())) {
+                continue;
+            }
+            list.add(new EMConversation(item.getKey()));
+        }
     }
 
     private void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> sortList) {
