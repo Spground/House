@@ -31,5 +31,6 @@ dependencies {
     compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.linsea:universalvideoview:1.1.0@aar'
 }
 

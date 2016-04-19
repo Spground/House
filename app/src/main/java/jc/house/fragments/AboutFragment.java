@@ -67,7 +67,6 @@ public class AboutFragment extends BaseFragment implements IRefresh, View.OnClic
         switch (v.getId()) {
             case R.id.id_company_introduction:
                 Intent intent = new Intent(getActivity(), CompanyIntroActivity.class);
-//                intent.putExtra("url", "http://202.118.67.200:10717/house/web/index.php?r=introduction%2Fview");
                 startActivity(intent);
                 break;
             case R.id.id_user_feedback:

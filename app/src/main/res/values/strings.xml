@@ -326,4 +326,5 @@
     <string name="fax_number">0411-87879912</string>
     <string name="tel">0411-87879911</string>
     <string name="website">www.jinchenchina.cn</string>
+    <string name="title_activity_video">VideoActivity</string>
 </resources>

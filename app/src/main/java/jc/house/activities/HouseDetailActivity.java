@@ -189,7 +189,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.videoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HouseDetailActivity.this, WebActivity.class);
+                Intent intent = new Intent(HouseDetailActivity.this, VideoActivity.class);
                 if (HouseDetailActivity.this.houseDetail.getVideoUrl() == null ||
                         HouseDetailActivity.this.houseDetail.getVideoUrl().length() == 0
                         ||
@@ -198,8 +198,8 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
                     ToastUtils.show(HouseDetailActivity.this.getApplicationContext(), "该房产没有对应视频");
                     return;
                 }
-                intent.putExtra(WebActivity.FLAG_URL, Constants.IMAGE_URL_ORIGIN + HouseDetailActivity.this.houseDetail.getVideoUrl());
-                intent.putExtra(WebActivity.FLAG_TITLE, HouseDetailActivity.this.houseDetail.getName());
+                intent.putExtra(VideoActivity.FLAG_VIDEO_URL, Constants.IMAGE_URL_ORIGIN + HouseDetailActivity.this.houseDetail.getVideoUrl());
+                intent.putExtra(VideoActivity.FLAG_VIDEO_URL, HouseDetailActivity.this.houseDetail.getName());
                 startActivity(intent);
             }
         });

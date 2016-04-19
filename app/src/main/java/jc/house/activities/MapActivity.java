@@ -61,7 +61,7 @@ public class MapActivity extends com.tencent.tencentmap.mapsdk.map.MapActivity {
         Marker marker = mapView.getMap().addMarker(new MarkerOptions().position(new LatLng(houseDetail.getLat(), houseDetail.getLng())).title(houseDetail.getName()).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_icon)));
         marker.setDraggable(true);
         marker.showInfoWindow();
-        marker.setSnippet("项目位置:" + houseDetail.getAddress());
+//        marker.setSnippet("项目位置:" + houseDetail.getAddress());
         if (this.isSingleMarker) {
             this.mapView.getMap().setOnInfoWindowClickListener(new TencentMap.OnInfoWindowClickListener() {
                 @Override

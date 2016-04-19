@@ -22,11 +22,10 @@ import jc.house.views.CircleView;
 public class CompanyIntroActivity extends BaseNetActivity implements View.OnClickListener, CircleView.CircleViewOnClickListener {
 
     private static final String[] NAMES = {"公司简介", "公司视频", "联系我们", "公司业务"};
-    private static final String[] URLS = {"introduction/viewintroduction&id=1", "introduction/viewvideo&id=1", "introduction/viewphone&id=1", "introduction/viewcontent&id=1"};
+    private static final String[] URLS = {"introduction/viewintroduction&id=1", "1457568300.mp4", "introduction/viewphone&id=1", "introduction/viewcontent&id=1"};
     private static final String TAG = "CompanyIntroActivity";
     private static final int[] imageReIds = {R.drawable.home01,
             R.drawable.home02, R.drawable.home03};
-    private static final String URL = Constants.SERVER_URL + "introduction/images";
     private CircleView circleView;
     private TextView companyDes, companyVideo, companyContact, companyBusiness;
     private List<CompanyIntroItem> introItems;
@@ -71,13 +70,18 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
     }
 
     private void jumpToWebActivity(int pos) {
-        if (null != this.introItems && pos < introItems.size()) {
-            CompanyIntroItem item = this.introItems.get(pos);
-            Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra(WebActivity.FLAG_URL, Constants.SERVER_URL + item.getUrl());
-            intent.putExtra(WebActivity.FLAG_TITLE, item.getName());
-            startActivity(intent);
-        }
+        CompanyIntroItem item = this.introItems.get(pos);
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra(WebActivity.FLAG_URL, Constants.SERVER_URL + item.getUrl());
+        intent.putExtra(WebActivity.FLAG_TITLE, item.getName());
+        startActivity(intent);
+    }
+
+    private void jumpToVideoActivity() {
+        Intent intent = new Intent(this, VideoActivity.class);
+        intent.putExtra(VideoActivity.FLAG_VIDEO_URL, Constants.IMAGE_URL_ORIGIN + URLS[1]);
+        intent.putExtra(VideoActivity.FLAG_VIDEO_NAME, NAMES[1]);
+        startActivity(intent);
     }
 
     private void fetchDataFromServer() {
@@ -147,7 +151,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
                 jumpToWebActivity(0);
                 break;
             case R.id.company_video:
-                jumpToWebActivity(1);
+                jumpToVideoActivity();
                 break;
             case R.id.company_contact:
                 jumpToWebActivity(2);

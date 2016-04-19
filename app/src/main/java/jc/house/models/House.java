@@ -15,6 +15,7 @@ public class House extends BaseModel implements Parcelable {
 	private String hxUrl;
 	private String videoUrl;
 	private String otherUrl;
+	private String circleUrl;
 	private String name;
 	private String intro;
 	private String phone;
@@ -25,7 +26,7 @@ public class House extends BaseModel implements Parcelable {
 	protected String avgPrice;
 	private String[] labelsResult;
 	private String[] imageUrls;
-
+	private String[] circleUrls;
 	public House() {}
 
 	public House(int id, String url, String name, String intro,
