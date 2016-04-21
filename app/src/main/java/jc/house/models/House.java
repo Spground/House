@@ -61,6 +61,7 @@ public class House extends BaseModel implements Parcelable {
 		dest.writeString(hxUrl);
 		dest.writeString(videoUrl);
 		dest.writeString(otherUrl);
+		dest.writeString(circleUrl);
 	}
 
 	protected House(Parcel origin) {
@@ -77,6 +78,7 @@ public class House extends BaseModel implements Parcelable {
 		this.hxUrl = origin.readString();
 		this.videoUrl = origin.readString();
 		this.otherUrl = origin.readString();
+		this.circleUrl = origin.readString();
 	}
 
 	public static final Parcelable.Creator<House> CREATOR = new Parcelable.Creator<House>() {
@@ -107,6 +109,13 @@ public class House extends BaseModel implements Parcelable {
 			labelsResult = StringUtils.parseHouseLables(labelContent);
 		}
 		return labelsResult;
+	}
+
+	public String[] getCircleUrls() {
+		if (null == circleUrls) {
+			circleUrls = StringUtils.parseImageUrlsOrigin(circleUrl);
+		}
+		return circleUrls;
 	}
 
 	public String[] getImageUrls() {

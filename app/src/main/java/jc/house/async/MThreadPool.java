@@ -21,9 +21,9 @@ import jc.house.utils.ParseJson;
 public class MThreadPool {
     private static final int THREAD_NUM = 3;
     private static final String TAG = "MThreadPool";
-    private static MThreadPool instance = null;
-    private ExecutorService executorService = null;
-    private Handler mHandler = null;
+    private static MThreadPool instance;
+    private ExecutorService executorService;
+    private Handler mHandler;
 
     private MThreadPool() {
         executorService = Executors.newFixedThreadPool(THREAD_NUM);
@@ -43,10 +43,6 @@ public class MThreadPool {
 
     public void submit(Runnable task) {
         this.executorService.submit(task);
-    }
-
-    public void submitParseDataTask(ParseTask task) {
-        this.executorService.submit(new ParseDataTask(task));
     }
 
     /**
@@ -79,43 +75,6 @@ public class MThreadPool {
                 LogUtils.debug(TAG, "线程池已经关闭");
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    private class ParseDataTask implements Runnable {
-        private ParseTask task;
-
-        public ParseDataTask(ParseTask task) {
-            this.task = task;
-        }
-
-        @Override
-        public void run() {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    task.onStart();
-                }
-            });
-            if (null != task.getResult()) {
-                if (ServerResult.Type.Object == task.getResultType()) {
-                    final BaseModel model = ParseJson.jsonObj2Model(((ServerObjectResult)task.getResult()).object, task.getMClass());
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            task.onSuccess(model);
-                        }
-                    });
-                } else {
-                    final List<? extends BaseModel> models = ParseJson.jsonArray2ModelList(((ServerArrayResult)task.getResult()).array, task.getMClass());
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            task.onSuccess(models);
-                        }
-                    });
-                }
             }
         }
     }
