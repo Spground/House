@@ -22,7 +22,7 @@ import jc.house.views.CircleView;
 public class CompanyIntroActivity extends BaseNetActivity implements View.OnClickListener, CircleView.CircleViewOnClickListener {
 
     private static final String[] NAMES = {"公司简介", "公司视频", "联系我们", "公司业务"};
-    private static final String[] URLS = {"introduction/viewintroduction&id=1", "1457568300.mp4", "introduction/viewphone&id=1", "introduction/viewcontent&id=1"};
+    private static final String[] URLS = {"introduction/viewintroduction&id=1", "introductionvideo.mp4", "introduction/viewphone&id=1", "introduction/viewcontent&id=1"};
     private static final String TAG = "CompanyIntroActivity";
     private static final int[] imageReIds = {R.drawable.home01,
             R.drawable.home02, R.drawable.home03};

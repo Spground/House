@@ -186,6 +186,10 @@ public class House extends BaseModel implements Parcelable {
 		this.otherUrl = otherUrl;
 	}
 
+	public void setCircleUrl(String circleUrl) {
+		this.circleUrl = circleUrl;
+	}
+
 	public String getName() {
 		return name;
 	}

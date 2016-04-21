@@ -95,9 +95,9 @@ public class HouseFragment extends BaseNetFragment implements View.OnClickListen
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 if (pos >= 1 && pos <= dataSet.size()) {
                     HouseDetail house = (HouseDetail)(dataSet.get(pos - 1));
-                    if (null != house.getCircleUrls() && house.getImageUrls().length > 0) {
+                    if (null != house.getCircleUrls() && house.getCircleUrls().length > 0) {
                         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
-                        intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, house.getImageUrls());
+                        intent.putExtra(PhotoViewActivity.FLAG_IMAGE_URL, house.getCircleUrls());
                         intent.putExtra(PhotoViewActivity.FLAG_IS_HOUSE, true);
                         intent.putExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL, house);
                         if (null != house.getHelper()) {

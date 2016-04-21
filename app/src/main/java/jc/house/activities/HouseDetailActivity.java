@@ -189,10 +189,10 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.videoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (HouseDetailActivity.this.houseDetail.getVideoUrl() == null ||
-                        HouseDetailActivity.this.houseDetail.getVideoUrl().length() == 0
+                if (houseDetail.getVideoUrl() == null ||
+                        houseDetail.getVideoUrl().length() == 0
                         ||
-                        HouseDetailActivity.this.houseDetail.getVideoUrl().equalsIgnoreCase("null")
+                        houseDetail.getVideoUrl().equalsIgnoreCase("null")
                         ) {
                     ToastUtils.show(HouseDetailActivity.this.getApplicationContext(), "该房产没有对应视频");
                     return;
