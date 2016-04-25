@@ -1,12 +1,13 @@
 package jc.house.utils;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,7 +91,10 @@ public final class ParseJson {
                             //递归赋值
                             method.invoke(result, jsonObj2Model((object.optJSONObject(key)), fieldMap.get(key)));
                         } else if (isSubclassOfList(fieldMap.get(key))) {
-                            method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), fieldMap.get(key)));
+                            Class mCls = fieldMap.get(fieldMap.get(key).getName());
+                            if (null != mCls) {
+                                method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), mCls));
+                            }
                         } else {
                             method.invoke(result, object.opt(key));
                         }
@@ -121,7 +125,17 @@ public final class ParseJson {
         while (curClass != Object.class) {
             Field[] fields = curClass.getDeclaredFields();
             for (int i = 0; i < fields.length; i++) {
-                result.put(fields[i].getName(), fields[i].getType());
+                Class<?> fClass = fields[i].getType();
+                result.put(fields[i].getName(), fClass);
+                if (isSubclassOfList(fClass)) {
+                    Type type = fields[i].getGenericType();
+                    if (null == type) {
+                        continue;
+                    }
+                    if (type instanceof ParameterizedType) {
+                        result.put(fClass.getName(), (Class)(((ParameterizedType)type).getActualTypeArguments()[0]));
+                    }
+                }
             }
             if (curClass == BaseModel.class) {
                 break;
@@ -131,14 +145,16 @@ public final class ParseJson {
         return result;
     }
 
-    private static final boolean isSubclassOfBaseModel(Class mClass) {
+
+
+    public static final boolean isSubclassOfBaseModel(Class mClass) {
         if (!mClass.isPrimitive() && BaseModel.class.isAssignableFrom(mClass)) {
             return true;
         }
         return false;
     }
 
-    private static final boolean isSubclassOfList(Class mClass) {
+    public static final boolean isSubclassOfList(Class mClass) {
         if (!mClass.isPrimitive() && List.class.isAssignableFrom(mClass)) {
             return true;
         }

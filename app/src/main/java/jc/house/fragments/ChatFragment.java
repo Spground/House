@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -45,7 +44,6 @@ import jc.house.utils.LogUtils;
 
 public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment.OnPullToRefreshBeginListener {
     public static final String TAG = "ChatFragment";
-    private boolean isEventBusRegister = false;
     private List<EMConversation> conversationList;
     private OnNewMessageReceivedListener newMessageCallBack;
     private XListView xlistView;
@@ -85,7 +83,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     public void onResume() {
         super.onResume();
         /**register event bus**/
-//        registerEventBus();
         LogUtils.debug(TAG, "onResume() is invoked!");
         refreshHistoryConversationList();
     }
@@ -106,7 +103,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     public void onDestroy() {
         super.onDestroy();
         LogUtils.debug(TAG, "onDestroy() is invoked!");
-//        unregisterEventBus();
         getActivity().unregisterReceiver(msgReceiver);
         stop = true;
     }
@@ -116,7 +112,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         super.onActivityCreated(savedInstanceState);
         newMessageCallBack = (OnNewMessageReceivedListener) getActivity();
         /**register event bus**/
-//        registerEventBus();
         msgReceiver = new NewMessageBroadcastReceiver();
         mApplication = (MApplication)(this.getActivity().getApplication());
         IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
@@ -266,6 +261,9 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     }
 
     private void fillList(List<EMConversation> list) {
+        if (null == mApplication || null == mApplication.customerHelperNameMapping) {
+            return;
+        }
         Set<String> sets = new HashSet<>();
         for (EMConversation item : list) {
             sets.add(item.getUserName());
@@ -309,51 +307,18 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         }
     }
 
-    /*
-    public void onEventMainThread(NewMessageEvent event) {
-        LogUtils.debug(TAG, "Receive new message event");
-        Intent intent = event.getIntent();
-        String msgId = intent.getStringExtra("msgid");
-        String from = intent.getStringExtra("from");
-        //if user is in the ChatActivity do nothing just return;
-        if (ChatActivity.instance != null)
-            return;
-        Toast.makeText(this.getActivity(), "收到来自" + from + "的消息，请你查收！", Toast.LENGTH_SHORT).show();
-        //callback HomeActivity to update little red dot
-        if (newMessageCallBack != null)
-            newMessageCallBack.onNewMessageReceived();
-        refreshHistoryConversationList();
-    }
-
-    private void registerEventBus() {
-        if (!isEventBusRegister) {
-            EventBus.getDefault().register(this);
-            isEventBusRegister = true;
-        }
-    }
-
-    private void unregisterEventBus() {
-        if (isEventBusRegister) {
-            EventBus.getDefault().unregister(this);
-            isEventBusRegister = false;
-        }
-    }
-
-*/
     private class NewMessageBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String from = intent.getStringExtra("from");
             String msgID = intent.getStringExtra("msgid");
             EMMessage message = EMChatManager.getInstance().getMessage(msgID);
-            LogUtils.debug("I receive message from " + from + " haha");
             if (ChatActivity.instance != null) {
                 if (from.equals(ChatActivity.instance.getToChatUserName())) {
                     LogUtils.debug("I receive message from " + from + " AA--BB");
                     return;
                 }
             }
-//            abortBroadcast();
             if (newMessageCallBack != null)
                 newMessageCallBack.onNewMessageReceived();
             refresh();
@@ -404,58 +369,5 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
             }
         }, 1500);
     }
-
-
-//    /**
-//     * 获取客服==>环信ID名称映射规则
-//     */
-//    private void getCustomerHelperNickName() {
-//        LogUtils.debug(TAG, "getCustomerHelperNickName");
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        //get cache first
-//        client.post(Constants.CUSTOMER_HELPER_NAME_URL, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                super.onSuccess(statusCode, headers, response);
-//                LogUtils.debug(TAG, "onSuccess");
-//                if (!ServerUtils.isConnectServerSuccess(statusCode, response))
-//                    return;
-//                ServerArrayResult result = ServerUtils.parseServerArrayResponse(response);
-//                if (!result.isSuccess)
-//                    return;
-//                //cache to local
-//                saveToLocal(result.array.toString(), CustomerHelper.class);
-//                MThreadPool.getInstance().submitParseDataTask(new ParseTask(result, CustomerHelper.class) {
-//                    @Override
-//                    public void onSuccess(List<? extends BaseModel> models) {
-//                        super.onSuccess(models);
-//                        //populate the customer helper mapping
-//                        for (BaseModel model : models) {
-//                            CustomerHelper c = (CustomerHelper) model;
-//                            ((MApplication) getActivity().getApplication())
-//                                    .customerHelperNameMapping.put(c.getHxID(), c);
-//                        }
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                super.onFailure(statusCode, headers, responseString, throwable);
-//                LogUtils.debug(TAG, statusCode + responseString);
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 将jsonStr缓存到本地
-//     *
-//     * @param jsonStr
-//     * @param cls
-//     */
-//    private void saveToLocal(String jsonStr, Class<? extends BaseModel> cls) {
-//        LogUtils.debug("===jsonStr===", jsonStr);
-//        SP.with(this.getActivity()).saveJsonString(jsonStr, cls);
-//    }
 
 }

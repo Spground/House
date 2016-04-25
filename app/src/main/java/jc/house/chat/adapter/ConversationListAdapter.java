@@ -78,6 +78,7 @@ public class ConversationListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) convertView.getTag();
         if (holder == null) {
             holder = new ViewHolder();
+            holder.title = (TextView)convertView.findViewById(R.id.title);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
             holder.message = (TextView) convertView.findViewById(R.id.message);
@@ -178,6 +179,7 @@ public class ConversationListAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
+        public TextView title;
         /**
          * 和谁的聊天记录
          */

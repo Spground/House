@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@drawable/listview_selector"
+    android:gravity="center"
     android:orientation="horizontal" >
 
     <ImageView
@@ -16,43 +16,43 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="64dp"
-        android:layout_weight="1"
         android:layout_marginLeft="6dp"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical" >
         
         <RelativeLayout 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
             
             <TextView
 	            android:id="@+id/name"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textStyle="italic"
-	            android:textSize="18sp"/>
+	            android:textSize="18sp"
+	            android:textStyle="italic"/>
             
             <TextView
                 android:id="@+id/postTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="13sp"
                 android:layout_marginRight="10dp"
-                android:textColor="#999999"/>
+                android:textColor="#999999"
+                android:textSize="13sp"/>
             
         </RelativeLayout>
         
         <TextView 
             android:id="@+id/msg"
-            android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:paddingBottom="5dp"
-            android:textSize="16sp"
-            android:textColor="#777777"/>
+            android:textColor="#777777"
+            android:textSize="16sp"/>
     </RelativeLayout>
 
 </LinearLayout>

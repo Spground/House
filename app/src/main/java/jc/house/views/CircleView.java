@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -220,18 +221,18 @@ public class CircleView extends LinearLayout {
      * 查看原图
      * @param urls
      */
-    public void setPhotoViews(String[] urls) {
-        if (null != urls && urls.length <= 0) {
+    public void setPhotoViews(String[] urls, ScaleType scaleType) {
+        if (null == urls || urls.length <= 0) {
             return;
         }
         initViewForPhoto();
         this.imageViews.clear();
         this.imageUrls = urls;
         this.num = urls.length;
-        for (int i = 0; i < urls.length; i++) {
+        for (int i = 0; i < num; i++) {
             boolean canZoom = false;
             PhotoView photoView = new PhotoView(context);
-            photoView.setScaleType(ScaleType.FIT_CENTER);
+            photoView.setScaleType(scaleType);
             photoView.setZoomable(canZoom);
 //            photoView.setEnabled(canZoom);
             photoView.setOnDoubleTapListener(null);
@@ -259,7 +260,7 @@ public class CircleView extends LinearLayout {
 //            attacher.update();
             this.imageViews.add(photoView);
         }
-        if(num > 1) {
+        if(num > 0) {
             this.indicatorView.setNum(num);
             this.viewPager.addOnPageChangeListener(new CircleOnPageChangeListener());
         }

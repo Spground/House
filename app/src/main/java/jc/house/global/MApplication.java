@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import jc.house.models.CustomerHelper;
+import jc.house.models.HouseHelpers;
 import jc.house.utils.LogUtils;
 import jc.house.utils.StringUtils;
 
@@ -31,6 +32,7 @@ public class MApplication extends Application implements Application.ActivityLif
 	public final String TAG = "MApplication";
 	/**huanxinid and name mapping **/
 	public Map<String, CustomerHelper> customerHelperNameMapping = new HashMap<>();
+	public List<HouseHelpers> houseHelpersList;
 	public final static String CONNECTION_CONFLICT = "jc.house.CONNECTION_CONFLICT";
 	public boolean isEmployeeLogin = false;
 	public Set<WeakReference<Activity>> loadedActivities = new HashSet<>();
