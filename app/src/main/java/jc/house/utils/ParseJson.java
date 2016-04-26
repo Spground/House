@@ -91,7 +91,7 @@ public final class ParseJson {
                             //递归赋值
                             method.invoke(result, jsonObj2Model((object.optJSONObject(key)), fieldMap.get(key)));
                         } else if (isSubclassOfList(fieldMap.get(key))) {
-                            Class mCls = fieldMap.get(fieldMap.get(key).getName());
+                            Class mCls = fieldMap.get(key + fieldMap.get(key).getName());
                             if (null != mCls) {
                                 method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), mCls));
                             }
@@ -133,7 +133,7 @@ public final class ParseJson {
                         continue;
                     }
                     if (type instanceof ParameterizedType) {
-                        result.put(fClass.getName(), (Class)(((ParameterizedType)type).getActualTypeArguments()[0]));
+                        result.put(fields[i].getName() + fClass.getName(), (Class)(((ParameterizedType)type).getActualTypeArguments()[0]));
                     }
                 }
             }

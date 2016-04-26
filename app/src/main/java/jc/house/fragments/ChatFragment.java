@@ -24,6 +24,7 @@ import com.easemob.chat.EMMessage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -40,11 +41,13 @@ import jc.house.global.Constants;
 import jc.house.global.MApplication;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.CustomerHelper;
+import jc.house.models.HouseHelpers;
 import jc.house.utils.LogUtils;
 
 public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment.OnPullToRefreshBeginListener {
     public static final String TAG = "ChatFragment";
     private List<EMConversation> conversationList;
+    private Map<Integer, String> postionMap;
     private OnNewMessageReceivedListener newMessageCallBack;
     private XListView xlistView;
     private BaseAdapter conversationListAdapter;
@@ -62,6 +65,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     public ChatFragment() {
         super();
         conversationList = new ArrayList<>();
+        postionMap = new HashMap<>();
         setOnRefreshBeginListener(this);
     }
 
@@ -118,9 +122,10 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         intentFilter.setPriority(3);
         this.getActivity().registerReceiver(msgReceiver, intentFilter);
         xlistView = (XListView) view.findViewById(R.id.list);
-        this.conversationList.addAll(loadHistoryConversationDataSource());
+//        this.conversationList.addAll(loadHistoryConversationDataSource());
 //        fillList(conversationList);
-        this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList);
+        loadEMConversationList();
+        this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList, this.postionMap);
         xlistView.setAdapter(this.conversationListAdapter);
         this.xlistView.setPullRefreshEnable(false);
         this.xlistView.setPullLoadEnable(false);
@@ -254,9 +259,9 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
-        if (Constants.APPINFO.USER_VERSION) {
-            fillList(list);
-        }
+//        if (Constants.APPINFO.USER_VERSION) {
+//            fillList(list);
+//        }
         return list;
     }
 
@@ -278,6 +283,42 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         }
     }
 
+    private void loadEMConversationList() {
+        List<EMConversation> list = loadHistoryConversationDataSource();
+        if (null == mApplication || null == mApplication.houseHelpersList) {
+            this.conversationList.clear();
+            this.conversationList.addAll(list);
+            return;
+        }
+        Map<String, EMConversation> map = new HashMap<>(list != null ? list.size() : 0);
+        for (EMConversation item :list) {
+            map.put(item.getUserName(), item);
+        }
+        List<EMConversation> temList = new ArrayList<>();
+        Map<Integer, String> mapPos = new HashMap<>();
+        int count = 0;
+        for (HouseHelpers item : mApplication.houseHelpersList) {
+            int flag = 0;
+            for (CustomerHelper helper : item.getHelpers()) {
+                if (map.containsKey(helper.getHxID())) {
+                    temList.add(map.get(helper.getHxID()));
+                } else {
+                    temList.add(new EMConversation(helper.getHxID()));
+                }
+                if (flag == 0) {
+                    mapPos.put(count, item.getName());
+                    flag++;
+                }
+                count++;
+            }
+        }
+        this.conversationList.clear();
+        this.conversationList.addAll(temList);
+        postionMap.clear();
+        postionMap.putAll(mapPos);
+    }
+
+
     private void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> sortList) {
         Collections.sort(sortList, new Comparator<Pair<Long, EMConversation>>() {
             @Override
@@ -298,8 +339,9 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
      * refresh UI
      */
     private void refreshHistoryConversationList() {
-        this.conversationList.clear();
-        this.conversationList.addAll(loadHistoryConversationDataSource());
+//        this.conversationList.clear();
+//        this.conversationList.addAll(loadHistoryConversationDataSource());
+        loadEMConversationList();
         this.conversationListAdapter.notifyDataSetChanged();
         if (newMessageCallBack != null && hasNew) {
             newMessageCallBack.onNewMessageReceived();

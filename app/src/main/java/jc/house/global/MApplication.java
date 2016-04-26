@@ -15,6 +15,7 @@ import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,6 +49,44 @@ public class MApplication extends Application implements Application.ActivityLif
 		initPicasso();
 		String version = Build.VERSION.RELEASE;
 		isLowerVersion = checkVersion(version);
+		this.houseHelpersList = new ArrayList<>();
+		HouseHelpers helpers = new HouseHelpers();
+		helpers.setId(1);
+		helpers.setName("A");
+		List<CustomerHelper> list = new ArrayList<>();
+		CustomerHelper item = new CustomerHelper();
+		item.setId(1);
+		item.setName("楠楠");
+		item.setHxID("nannan");
+		item.setPicUrl("1457399788.jpg");
+		list.add(item);
+		CustomerHelper item2 = new CustomerHelper();
+		item2.setId(1);
+		item2.setName("陈洋");
+		item2.setHxID("cy");
+		item2.setPicUrl("1457483566.jpg");
+		list.add(item2);
+		helpers.setHelpers(list);
+		houseHelpersList.add(helpers);
+
+		HouseHelpers helpers2 = new HouseHelpers();
+		helpers2.setId(2);
+		helpers2.setName("B");
+		List<CustomerHelper> list2 = new ArrayList<>();
+		CustomerHelper item21 = new CustomerHelper();
+		item21.setId(1);
+		item21.setName("王晓宇");
+		item21.setHxID("wxy");
+		item21.setPicUrl("1457399788.jpg");
+		list2.add(item21);
+		CustomerHelper item22 = new CustomerHelper();
+		item22.setId(1);
+		item22.setName("李苗");
+		item22.setHxID("ly");
+		item22.setPicUrl("1458367788.jpg");
+		list2.add(item22);
+		helpers2.setHelpers(list2);
+		houseHelpersList.add(helpers2);
 	}
 
 	private boolean checkVersion(String version) {

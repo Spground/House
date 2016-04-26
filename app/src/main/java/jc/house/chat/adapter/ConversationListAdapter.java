@@ -35,18 +35,20 @@ public class ConversationListAdapter extends BaseAdapter {
 
     private List<EMConversation> conversationList;
     private List<EMConversation> copyConversationList;
+    private Map<Integer, String> posMap;
 
     private boolean notifyByFilter;
     private Context context;
 
     private Map<String, CustomerHelper> customerHelperMap;
 
-    public ConversationListAdapter(Context context, List<EMConversation> conversationList) {
+    public ConversationListAdapter(Context context, List<EMConversation> conversationList, Map<Integer, String> posMap) {
         this.context = context;
         this.conversationList = conversationList;
         copyConversationList = new ArrayList<>();
         copyConversationList.addAll(conversationList);
         customerHelperMap = ((MApplication) context.getApplicationContext()).customerHelperNameMapping;
+        this.posMap = posMap;
     }
 
     @Override
@@ -58,9 +60,9 @@ public class ConversationListAdapter extends BaseAdapter {
     }
 
     @Override
-    public EMConversation getItem(int arg0) {
-        if (arg0 < conversationList.size()) {
-            return conversationList.get(arg0);
+    public EMConversation getItem(int pos) {
+        if (pos < conversationList.size()) {
+            return conversationList.get(pos);
         }
         return null;
     }
@@ -79,6 +81,7 @@ public class ConversationListAdapter extends BaseAdapter {
         if (holder == null) {
             holder = new ViewHolder();
             holder.title = (TextView)convertView.findViewById(R.id.title);
+            holder.separator = (View)convertView.findViewById(R.id.separator);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
             holder.message = (TextView) convertView.findViewById(R.id.message);
@@ -101,6 +104,15 @@ public class ConversationListAdapter extends BaseAdapter {
         else
             /**set view**/
             holder.avatar.setImageResource(R.drawable.jc_default_avatar);
+
+        if (posMap.containsKey(position)) {
+            holder.title.setText(posMap.get(position));
+            holder.title.setVisibility(View.VISIBLE);
+            holder.separator.setVisibility(View.VISIBLE);
+        } else {
+            holder.title.setVisibility(View.GONE);
+            holder.separator.setVisibility(View.GONE);
+        }
 
         //TODO 名字显示 用户版得知道映射规则
         //显示用户名的后六位
@@ -180,6 +192,7 @@ public class ConversationListAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         public TextView title;
+        public View separator;
         /**
          * 和谁的聊天记录
          */
