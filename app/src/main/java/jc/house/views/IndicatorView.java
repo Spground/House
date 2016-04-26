@@ -6,6 +6,7 @@ import java.util.List;
 import jc.house.R;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,12 +44,11 @@ public class IndicatorView extends LinearLayout {
 	}
 
 	public synchronized void setNum(int num) {
-		if (num < 0) {
-			throw new IllegalArgumentException("num should be >= 0");
+		if (num <= 0) {
+			throw new IllegalArgumentException("num should be > 0");
 		}
 		this.imageViews.clear();
 		this.removeAllViews();
-		this.num = 0;
 		for (int i = 0; i < num; i++) {
 			ImageView imageView = new ImageView(this.context);
 			imageView.setLayoutParams(new LayoutParams(

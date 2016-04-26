@@ -11,7 +11,7 @@ public abstract class BaseTask {
 
     public void onSuccess() {}
 
-    public void onCode(int code) {};
+    public void onCode(int code) {}
 
     public void onFail(String msg) {
         LogUtils.debug(msg);

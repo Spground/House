@@ -189,17 +189,16 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.videoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HouseDetailActivity.this, WebActivity.class);
-                if (HouseDetailActivity.this.houseDetail.getVideoUrl() == null ||
-                        HouseDetailActivity.this.houseDetail.getVideoUrl().length() == 0
+                if (houseDetail.getVideoUrl() == null ||
+                        houseDetail.getVideoUrl().length() == 0
                         ||
-                        HouseDetailActivity.this.houseDetail.getVideoUrl().equals("null")
+                        houseDetail.getVideoUrl().equalsIgnoreCase("null")
                         ) {
                     ToastUtils.show(HouseDetailActivity.this.getApplicationContext(), "该房产没有对应视频");
                     return;
                 }
-                intent.putExtra(WebActivity.FLAG_URL, Constants.IMAGE_URL_ORIGIN + HouseDetailActivity.this.houseDetail.getVideoUrl());
-                intent.putExtra(WebActivity.FLAG_TITLE, HouseDetailActivity.this.houseDetail.getName());
+                Intent intent = new Intent(HouseDetailActivity.this, VideoActivity.class);
+                intent.putExtra(VideoActivity.FLAG_VIDEO_URL, Constants.IMAGE_URL_ORIGIN + HouseDetailActivity.this.houseDetail.getVideoUrl());
                 startActivity(intent);
             }
         });
@@ -260,9 +259,9 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
         this.textViews = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
             TextView textView = new TextView(this);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setPadding(12, 10, 12, 5);
-            textView.setTextSize(13.0f);
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 127));
+            textView.setPadding(12, 10, 12, 10);
+            textView.setTextSize(12.0f);
             textView.setTextColor(Color.rgb(120, 120, 120));
             textView.setBackgroundColor(Color.rgb(250, 250, 250));
             textView.setText("");
@@ -286,6 +285,7 @@ public class HouseDetailActivity extends BaseNetActivity implements View.OnClick
             public Object instantiateItem(ViewGroup container, int position) {
                 TextView textView = textViews.get(position);
                 container.addView(textView);
+//                textView.getParent().requestDisallowInterceptTouchEvent(true);
                 return textView;
             }
 

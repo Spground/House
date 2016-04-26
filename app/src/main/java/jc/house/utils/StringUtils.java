@@ -46,12 +46,12 @@ public final class StringUtils {
 	}
 
 	public static final String[] parseImageUrlsThumb(String imageUrl) {
+		if (strEmpty(imageUrl)) {
+			return null;
+		}
 		String temStr = imageUrl.trim();
 		while (temStr.length() > 0 && temStr.charAt(0) == ';') {
 			temStr = temStr.substring(1);
-		}
-		if (strEmpty(temStr)) {
-			return null;
 		}
 		String[] result = temStr.split(";");
 		for (int i = 0; i < result.length; i++) {
@@ -61,12 +61,12 @@ public final class StringUtils {
 	}
 
 	public static final String[] parseImageUrlsOrigin(String imageUrl) {
+		if (strEmpty(imageUrl)) {
+			return null;
+		}
 		String temStr = imageUrl.trim();
 		while (temStr.length() > 0 && temStr.charAt(0) == ';') {
 			temStr = temStr.substring(1);
-		}
-		if (strEmpty(temStr)) {
-			return null;
 		}
 		String[] result = temStr.split(";");
 		for (int i = 0; i < result.length; i++) {

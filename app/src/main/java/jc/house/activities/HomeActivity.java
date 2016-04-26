@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,26 +27,17 @@ import android.widget.Toast;
 import com.easemob.EMCallBack;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMChatService;
 import com.easemob.exceptions.EaseMobException;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import jc.house.R;
 import jc.house.async.FetchLocal;
 import jc.house.async.FetchServer;
 import jc.house.async.MThreadPool;
 import jc.house.async.ModelsTask;
-import jc.house.async.ParseTask;
 import jc.house.chat.service.ReceiveNewMessageService;
 import jc.house.fragments.AboutFragment;
 import jc.house.fragments.ActivityFragment;
@@ -60,11 +50,9 @@ import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
 import jc.house.models.ServerArrayResult;
-import jc.house.models.ServerResult;
 import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
 import jc.house.utils.SP;
-import jc.house.utils.ServerUtils;
 import jc.house.utils.StringUtils;
 import jc.house.utils.ToastUtils;
 import jc.house.views.TabViewItem;
@@ -113,13 +101,23 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         this.initViewPager();
         this.initNetConnectManager();
         //获取客服环信ID-Model映射表
-        loadDataFromLocal(CustomerHelper.class);
+        boolean flag = loadCustomerHelpersFromLocal();
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 getCustomerHelperNickName();
             }
-        }, 0);
+        }, flag ? 1000 : 0);
+
+        /*
+        Field[] fields = HouseHelpers.class.getDeclaredFields();
+        for (int i = 0 ; i < fields.length; i++) {
+            Log.v("field" + i, fields[i].getName() + "-" + fields[i].getType());
+            if (ParseJson.isSubclassOfList(fields[i].getType())) {
+                Log.v("field" + i, fields[i].getName() + "-" + (Class)(((ParameterizedType)(fields[i].getGenericType())).getActualTypeArguments()[0]));
+            }
+        }
+        */
     }
 
     /**
@@ -156,10 +154,10 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     /**
      * 将本地的jsonStr缓存数据取出来
      */
-    private boolean loadDataFromLocal(Class<? extends BaseModel> cls) {
-        String content = SP.with(this).getJsonString(cls);
+    private boolean loadCustomerHelpersFromLocal() {
+        String content = SP.with(this).getJsonString(CustomerHelper.class);
         if (!StringUtils.strEmpty(content)) {
-            FetchLocal.share(this).fetchModelsFromLocal(cls, new ModelsTask() {
+            FetchLocal.share(this).fetchModelsFromLocal(CustomerHelper.class, new ModelsTask() {
                 @Override
                 public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
                     for (BaseModel model : models) {
@@ -316,7 +314,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             ((IRefresh) (fragments.get(index))).refresh();
         }
         currentIndex = index;
-        if(index == 3)
+        if (index == 3)
             ((IRefresh) (fragments.get(index))).refresh();
     }
 
@@ -471,14 +469,16 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
     /**
      * 显示Tab小红点
+     *
      * @param index
      */
     public void showLittleRedDot(int index) {
         TabViewItem item = tabViewItems.get(index);
-        if(item != null) {
+        if (item != null) {
             item.showLittleRedDot();
         }
     }
+
     /**
      * 广播接收者
      */
@@ -502,9 +502,9 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                     Intent it = new Intent(HomeActivity.this, CustomerHelperLoginActivity.class);
                     startActivity(it);
                     //销毁所有的Activity
-                    for(WeakReference<Activity> activityWeakReference : ((MApplication)getApplicationContext()).loadedActivities) {
+                    for (WeakReference<Activity> activityWeakReference : ((MApplication) getApplicationContext()).loadedActivities) {
                         Activity activity = activityWeakReference.get();
-                        if(activity != null)
+                        if (activity != null)
                             activity.finish();
                     }
                     break;

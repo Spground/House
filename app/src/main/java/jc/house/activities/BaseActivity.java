@@ -74,7 +74,7 @@ public class BaseActivity extends Activity {
      */
     protected void setTitleBarTitle(String title) {
         this.titleBar.setTitle(title);
-        setTitleBarVisible();
+        visibleTitleBar();
     }
 
     protected void showDialog() {
@@ -85,12 +85,16 @@ public class BaseActivity extends Activity {
         this.progressDialog.hide();
     }
 
-    public void setTitleBarVisible() {
+    public void visibleTitleBar() {
         this.titleBar.setVisibility(View.VISIBLE);
     }
 
-    public void setTitleBarHide() {
+    public void hideTitleBar() {
         this.titleBar.setVisibility(View.GONE);
+    }
+
+    public void showTitleBar() {
+        this.titleBar.setVisibility(View.VISIBLE);
     }
 
     protected void ToastS(String msg) {

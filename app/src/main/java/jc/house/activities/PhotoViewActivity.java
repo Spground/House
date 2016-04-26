@@ -2,7 +2,9 @@ package jc.house.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import jc.house.R;
 import jc.house.models.House;
@@ -30,6 +32,7 @@ public class PhotoViewActivity extends BaseActivity {
         int currentIndex = getIntent().getIntExtra(FLAG_CURRENT_INDEX, 0);
         isHouse = getIntent().getBooleanExtra(FLAG_IS_HOUSE, false);
         if (isHouse) {
+            this.hideTitleBar();
             this.house = getIntent().getParcelableExtra(HouseDetailActivity.FLAG_HOUSE_DETAIL);
             this.hxID = getIntent().getStringExtra(HouseDetailActivity.FLAG_HELPER_ID);
             this.nickName = getIntent().getStringExtra(HouseDetailActivity.FLAG_HELPER_NAME);
@@ -45,7 +48,11 @@ public class PhotoViewActivity extends BaseActivity {
     private void initView(int currentIndex) {
         this.circleView = (CircleView)this.findViewById(R.id.photo_circleview);
         this.circleView.setAutoPlay(false);
-        this.circleView.setPhotoViews(imageUrls);
+        if (isHouse) {
+            this.circleView.setPhotoViews(imageUrls, ImageView.ScaleType.FIT_XY);
+        } else {
+            this.circleView.setPhotoViews(imageUrls, ImageView.ScaleType.FIT_CENTER);
+        }
         this.circleView.setShowIndex(currentIndex);
         if (isHouse) {
             this.circleView.setOnCircleViewItemClickListener(new CircleView.CircleViewOnClickListener() {
