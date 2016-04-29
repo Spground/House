@@ -122,9 +122,11 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         intentFilter.setPriority(3);
         this.getActivity().registerReceiver(msgReceiver, intentFilter);
         xlistView = (XListView) view.findViewById(R.id.list);
-//        this.conversationList.addAll(loadHistoryConversationDataSource());
-//        fillList(conversationList);
-        loadEMConversationList();
+        if (!Constants.APPINFO.USER_VERSION) {
+            this.conversationList.addAll(loadHistoryConversationDataSource());
+        } else {
+            loadEMConversationList();
+        }
         this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList, this.postionMap);
         xlistView.setAdapter(this.conversationListAdapter);
         this.xlistView.setPullRefreshEnable(false);

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
@@ -92,6 +93,10 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //透明状态栏
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         this.getSharedPreferences(REGISTER_INFO, 0);
         setContentView(R.layout.activity_home);
         this.currentIndex = 0;
@@ -165,11 +170,6 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
                         ((MApplication) getApplication()).customerHelperNameMapping.put(customerHelper.getHxID(), customerHelper);
                     }
                     LogUtils.debug("fetch customer helper from local successfully " + models.size());
-                }
-
-                @Override
-                public void onCode(int code) {
-
                 }
             });
             return true;
