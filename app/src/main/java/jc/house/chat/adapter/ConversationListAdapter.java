@@ -81,7 +81,7 @@ public class ConversationListAdapter extends BaseAdapter {
         if (holder == null) {
             holder = new ViewHolder();
             holder.title = (TextView)convertView.findViewById(R.id.title);
-            holder.separator = (View)convertView.findViewById(R.id.separator);
+            holder.separator = convertView.findViewById(R.id.separator);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
             holder.message = (TextView) convertView.findViewById(R.id.message);
@@ -105,13 +105,15 @@ public class ConversationListAdapter extends BaseAdapter {
             /**set view**/
             holder.avatar.setImageResource(R.drawable.jc_default_avatar);
 
-        if (posMap.containsKey(position)) {
-            holder.title.setText(posMap.get(position));
-            holder.title.setVisibility(View.VISIBLE);
-            holder.separator.setVisibility(View.VISIBLE);
-        } else {
-            holder.title.setVisibility(View.GONE);
-            holder.separator.setVisibility(View.GONE);
+        if(Constants.APPINFO.USER_VERSION) {
+            if (posMap.containsKey(position)) {
+                holder.title.setText(posMap.get(position));
+                holder.title.setVisibility(View.VISIBLE);
+                holder.separator.setVisibility(View.VISIBLE);
+            } else {
+                holder.title.setVisibility(View.GONE);
+                holder.separator.setVisibility(View.GONE);
+            }
         }
 
         //TODO 名字显示 用户版得知道映射规则

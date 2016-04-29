@@ -26,6 +26,7 @@ public final class Constants {
 	public static final String SLIDE_URL = Constants.SERVER_URL + "slideshow/slides";
 	public static final String SLIDE_MOBILE_URL = SERVER_URL + "slideshow/mobile&id=";
 	public static final String HOUSE_URL = SERVER_URL + "house/houses";
+	public static final String HOUSE_HELPERS_URL = SERVER_URL + "house/househelpers";
 	public static final String CUSTOMER_HELPER_NAME_URL = SERVER_URL + "helper/helpers";
 
 	public static final int[] resActivity = {R.drawable.temp_activity_a, R.drawable.temp_activity_b,

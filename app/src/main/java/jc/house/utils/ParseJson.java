@@ -93,7 +93,7 @@ public final class ParseJson {
                         } else if (isSubclassOfList(fieldMap.get(key))) {
                             Class mCls = fieldMap.get(key + fieldMap.get(key).getName());
                             if (null != mCls) {
-                                method.invoke(result, jsonArray2ModelList((object.optJSONArray(key)), mCls));
+                                method.invoke(result, jsonArray2ModelList(object.optJSONArray(key), mCls));
                             }
                         } else {
                             method.invoke(result, object.opt(key));

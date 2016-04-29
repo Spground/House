@@ -99,6 +99,25 @@ public class FetchServer {
         });
     }
 
+    public void getModelsFromServer(String url, Map<String, String> params, final Class<? extends BaseModel> cls, final ModelsTask task) {
+        client.get(url, new RequestParams(params), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                LogUtils.debug("FetchServer", "onSuccess() statusCode is " + statusCode);
+                LogUtils.debug("FetchServer", "onSuccess() response is " + response.toString());
+                handleModelsTask(statusCode, response, cls, task);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                LogUtils.debug("FetchServer", "onFailure statusCode is " + statusCode );
+                super.onFailure(statusCode, headers, responseString, throwable);
+                task.onFail(responseString);
+            }
+        });
+    }
+
     private void handleModelsTask(int statusCode, JSONObject response, final Class<? extends BaseModel> cls, final ModelsTask task) {
         if (ServerUtils.isConnectServerSuccess(statusCode, response)) {
             final ServerArrayResult result = ServerUtils.parseServerArrayResponse(response);
@@ -126,6 +145,22 @@ public class FetchServer {
 
     public void postModelFromServer(String url, Map<String, String> params, final Class<? extends BaseModel> cls, final ModelTask task) {
         client.post(url, new RequestParams(params), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                handleModelTask(statusCode, response, cls, task);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                task.onFail(responseString);
+            }
+        });
+    }
+
+    public void getModelFromServer(String url, Map<String, String> params, final Class<? extends BaseModel> cls, final ModelTask task) {
+        client.get(url, new RequestParams(params), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);

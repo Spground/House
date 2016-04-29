@@ -49,6 +49,7 @@ import jc.house.global.MApplication;
 import jc.house.interfaces.IRefresh;
 import jc.house.models.BaseModel;
 import jc.house.models.CustomerHelper;
+import jc.house.models.HouseHelpers;
 import jc.house.models.ServerArrayResult;
 import jc.house.utils.GeneralUtils;
 import jc.house.utils.LogUtils;
@@ -109,15 +110,16 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
             }
         }, flag ? 1000 : 0);
 
-        /*
-        Field[] fields = HouseHelpers.class.getDeclaredFields();
-        for (int i = 0 ; i < fields.length; i++) {
-            Log.v("field" + i, fields[i].getName() + "-" + fields[i].getType());
-            if (ParseJson.isSubclassOfList(fields[i].getType())) {
-                Log.v("field" + i, fields[i].getName() + "-" + (Class)(((ParameterizedType)(fields[i].getGenericType())).getActualTypeArguments()[0]));
-            }
-        }
-        */
+        //获取楼盘下的客户的信息
+       if(Constants.APPINFO.USER_VERSION) {
+           boolean flag0 = loadHouseHelpersListFromLocal();
+           new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   getHouseHelpersList();
+               }
+           }, flag0 ? 500 : 0);
+       }
     }
 
     /**
@@ -140,6 +142,53 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
 
             }
         });
+    }
+
+    private void getHouseHelpersList() {
+        //加载每个楼盘的Helpers List
+        FetchServer.share().getModelsFromServer(Constants.HOUSE_HELPERS_URL, null, HouseHelpers.class, new ModelsTask() {
+            @Override
+            public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
+                for (BaseModel model : models) {
+                    HouseHelpers c = (HouseHelpers) model;
+                    ((MApplication) getApplication()).houseHelpersList.add(c);
+                }
+                LogUtils.debug("fetch customer from server successfully " + models.size());
+                saveToLocal(result.array.toString(), HouseHelpers.class);
+            }
+
+            @Override
+            public void onCode(int code) {
+
+            }
+        });
+    }
+
+    /**
+     * 将本地的jsonStr缓存数据取出来
+     */
+    private boolean loadHouseHelpersListFromLocal() {
+        String content = SP.with(this).getJsonString(HouseHelpers.class);
+        if (!StringUtils.strEmpty(content)) {
+            FetchLocal.share(this).fetchModelsFromLocal(HouseHelpers.class, new ModelsTask() {
+                @Override
+                public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
+                    for (BaseModel model : models) {
+                        HouseHelpers helpers = (HouseHelpers) model;
+                        ((MApplication) getApplication()).houseHelpersList.clear();
+                        ((MApplication) getApplication()).houseHelpersList.add(helpers);
+                    }
+                    LogUtils.debug("fetch house helpers from local successfully " + models.size());
+                }
+
+                @Override
+                public void onCode(int code) {
+
+                }
+            });
+            return true;
+        }
+        return false;
     }
 
     /**
