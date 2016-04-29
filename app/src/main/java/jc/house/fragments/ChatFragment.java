@@ -345,8 +345,10 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     private void refreshHistoryConversationList() {
         if(Constants.APPINFO.USER_VERSION)
             loadEMConversationList();
-        else
-            loadHistoryConversationDataSource();
+        else {
+            this.conversationList.clear();
+            this.conversationList.addAll(loadHistoryConversationDataSource());
+        }
         this.conversationListAdapter.notifyDataSetChanged();
         if (newMessageCallBack != null && hasNew) {
             newMessageCallBack.onNewMessageReceived();
