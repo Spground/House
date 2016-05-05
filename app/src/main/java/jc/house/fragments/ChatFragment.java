@@ -19,7 +19,6 @@ import android.widget.BaseAdapter;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +85,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        /**register event bus**/
         LogUtils.debug(TAG, "onResume() is invoked!");
         refreshHistoryConversationList();
     }
@@ -115,18 +113,16 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         newMessageCallBack = (OnNewMessageReceivedListener) getActivity();
-        /**register event bus**/
         msgReceiver = new NewMessageBroadcastReceiver();
-        mApplication = (MApplication)(this.getActivity().getApplication());
+        mApplication = (MApplication) (this.getActivity().getApplication());
         IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
         intentFilter.setPriority(3);
         this.getActivity().registerReceiver(msgReceiver, intentFilter);
         xlistView = (XListView) view.findViewById(R.id.list);
-        if (!Constants.APPINFO.USER_VERSION) {
-            this.conversationList.addAll(loadHistoryConversationDataSource());
-        } else {
+        if (Constants.APPINFO.USER_VERSION)
             loadEMConversationList();
-        }
+        else
+            this.conversationList.addAll(loadHistoryConversationDataSource());
         this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList, this.postionMap);
         xlistView.setAdapter(this.conversationListAdapter);
         this.xlistView.setPullRefreshEnable(false);
@@ -136,11 +132,11 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos,
                                     long id) {
-                /**聊天Activity**/
-                String toChatUserName = ((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid.toString();
+                /**跳转到ChatActivity**/
+                String huanxinId = ((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid;
                 String nickName = ((ConversationListAdapter.ViewHolder) view.getTag()).name.getText().toString();
                 Intent intent = new Intent();
-                intent.putExtra("toChatUserName", toChatUserName);
+                intent.putExtra("toChatUserName", huanxinId);
                 intent.putExtra("nickName", nickName);
                 intent.setClass(getActivity(), ChatActivity.class);
                 startActivity(intent);
@@ -152,7 +148,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         this.xlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteConversion(((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid.toString());
+                deleteConversion(((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid);
                 return true;
             }
         });
@@ -163,6 +159,9 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         }
     }
 
+    /**
+     * 循环获取新消息，解决5.0以下版本获取不到环信新消息的广播的BUG
+     */
     private void circle() {
         //匿名内部类和非静态类都会持有外部类的一个引用，容易引起内存泄露。post的message包含一个handler（也就是message的target），
         // handler如果是下面MHandler的写法则也会引用到外部类，导致内存泄露
@@ -261,9 +260,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
-//        if (Constants.APPINFO.USER_VERSION) {
-//            fillList(list);
-//        }
         return list;
     }
 
@@ -285,7 +281,10 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         }
     }
 
+    //用户版才调用此方法
     private void loadEMConversationList() {
+        if (!Constants.APPINFO.USER_VERSION)
+            return;
         List<EMConversation> list = loadHistoryConversationDataSource();
         if (null == mApplication || null == mApplication.houseHelpersList) {
             this.conversationList.clear();
@@ -293,7 +292,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
             return;
         }
         Map<String, EMConversation> map = new HashMap<>(list != null ? list.size() : 0);
-        for (EMConversation item :list) {
+        for (EMConversation item : list) {
             map.put(item.getUserName(), item);
         }
         List<EMConversation> temList = new ArrayList<>();
@@ -341,9 +340,12 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
      * refresh UI
      */
     private void refreshHistoryConversationList() {
-//        this.conversationList.clear();
-//        this.conversationList.addAll(loadHistoryConversationDataSource());
-        loadEMConversationList();
+        if (Constants.APPINFO.USER_VERSION)
+            loadEMConversationList();
+        else {
+            this.conversationList.clear();
+            this.conversationList.addAll(loadHistoryConversationDataSource());
+        }
         this.conversationListAdapter.notifyDataSetChanged();
         if (newMessageCallBack != null && hasNew) {
             newMessageCallBack.onNewMessageReceived();
@@ -355,8 +357,6 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         @Override
         public void onReceive(Context context, Intent intent) {
             String from = intent.getStringExtra("from");
-            String msgID = intent.getStringExtra("msgid");
-            EMMessage message = EMChatManager.getInstance().getMessage(msgID);
             if (ChatActivity.instance != null) {
                 if (from.equals(ChatActivity.instance.getToChatUserName())) {
                     LogUtils.debug("I receive message from " + from + " AA--BB");
@@ -378,6 +378,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
 
     /**
      * 删除会话
+     *
      * @param huanxinID
      */
     private void deleteConversion(final String huanxinID) {
@@ -403,9 +404,8 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
 
     @Override
     public void onPullToRefreshBegin(final PtrFrameLayout ptrFrameLayout) {
-        //聊天界面刷新
+        //聊天历史会话界面刷新
         refresh();
-//        getCustomerHelperNickName();
         ptrFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {

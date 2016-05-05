@@ -11,7 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="标题"
-        android:textSize="18sp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="5dp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
@@ -20,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"
-        android:visibility="gone"></View>
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/list_itease_layout"
