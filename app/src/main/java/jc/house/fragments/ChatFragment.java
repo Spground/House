@@ -46,9 +46,8 @@ import jc.house.utils.LogUtils;
 public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment.OnPullToRefreshBeginListener {
     public static final String TAG = "ChatFragment";
     private List<EMConversation> conversationList;
-    private Map<Integer, String> postionMap;
+    private Map<Integer, String> positionMap;
     private OnNewMessageReceivedListener newMessageCallBack;
-    private XListView xlistView;
     private BaseAdapter conversationListAdapter;
     private NewMessageBroadcastReceiver msgReceiver;
     private Handler mHandler;
@@ -64,7 +63,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
     public ChatFragment() {
         super();
         conversationList = new ArrayList<>();
-        postionMap = new HashMap<>();
+        positionMap = new HashMap<>();
         setOnRefreshBeginListener(this);
     }
 
@@ -118,16 +117,16 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
         intentFilter.setPriority(3);
         this.getActivity().registerReceiver(msgReceiver, intentFilter);
-        xlistView = (XListView) view.findViewById(R.id.list);
+        XListView xlistView = (XListView) view.findViewById(R.id.list);
         if(Constants.APPINFO.USER_VERSION)
             loadEMConversationList();
         else
             this.conversationList.addAll(loadHistoryConversationDataSource());
-        this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList, this.postionMap);
+        this.conversationListAdapter = new ConversationListAdapter(this.getActivity(), this.conversationList, this.positionMap);
         xlistView.setAdapter(this.conversationListAdapter);
-        this.xlistView.setPullRefreshEnable(false);
-        this.xlistView.setPullLoadEnable(false);
-        this.xlistView.setOnItemClickListener(new OnItemClickListener() {
+        xlistView.setPullRefreshEnable(false);
+        xlistView.setPullLoadEnable(false);
+        xlistView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos,
@@ -145,7 +144,7 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
             }
         });
         //长按删除会话
-        this.xlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        xlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 deleteConversion(((ConversationListAdapter.ViewHolder) view.getTag()).huanxinid);
@@ -318,8 +317,8 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         }
         this.conversationList.clear();
         this.conversationList.addAll(temList);
-        postionMap.clear();
-        postionMap.putAll(mapPos);
+        positionMap.clear();
+        positionMap.putAll(mapPos);
     }
 
 

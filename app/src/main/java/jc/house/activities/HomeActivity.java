@@ -116,7 +116,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                @Override
                public void run() {
-                   getHouseHelpersList();
+                   getHouseHelpersListFromServer();
                }
            }, flag0 ? 500 : 0);
        }
@@ -144,11 +144,12 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
         });
     }
 
-    private void getHouseHelpersList() {
+    private void getHouseHelpersListFromServer() {
         //加载每个楼盘的Helpers List
         FetchServer.share().getModelsFromServer(Constants.HOUSE_HELPERS_URL, null, HouseHelpers.class, new ModelsTask() {
             @Override
             public void onSuccess(List<? extends BaseModel> models, ServerArrayResult result) {
+                ((MApplication) getApplication()).houseHelpersList.clear();
                 for (BaseModel model : models) {
                     HouseHelpers c = (HouseHelpers) model;
                     ((MApplication) getApplication()).houseHelpersList.add(c);
