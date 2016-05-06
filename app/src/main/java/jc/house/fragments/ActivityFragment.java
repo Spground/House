@@ -59,9 +59,6 @@ public class ActivityFragment extends BaseNetFragment {
         } else if(fetchType == FetchType.FETCH_TYPE_REFRESH) {
             params.put(PARAM_HAS_NUM, String.valueOf(0));
         }
-        for(String key : params.keySet()) {
-            LogUtils.debug(TAG, "params is " + key + "==>" + params.get(key));
-        }
         return params;
     }
 

@@ -117,13 +117,8 @@ public class ChatFragment extends BaseFragment implements IRefresh, BaseFragment
         IntentFilter intentFilter = new IntentFilter(EMChatManager.getInstance().getNewMessageBroadcastAction());
         intentFilter.setPriority(3);
         this.getActivity().registerReceiver(msgReceiver, intentFilter);
-<<<<<<< HEAD
-        xlistView = (XListView) view.findViewById(R.id.list);
-        if (Constants.APPINFO.USER_VERSION)
-=======
         XListView xlistView = (XListView) view.findViewById(R.id.list);
         if(Constants.APPINFO.USER_VERSION)
->>>>>>> 8e7895d4e22ab582eb2674dc0d109d4c5e2a751d
             loadEMConversationList();
         else
             this.conversationList.addAll(loadHistoryConversationDataSource());
