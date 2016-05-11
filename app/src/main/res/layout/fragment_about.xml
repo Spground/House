@@ -47,7 +47,31 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="8dp"
-                    android:text="公司简介"
+                    android:text="集团简介"
+                    android:textColor="@color/font_grey_700"
+                    android:textSize="@dimen/font_large_size" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@color/bg_gray" />
+
+                <TextView
+                    android:id="@+id/id_company_site"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/jc_aboutfragment_textview_selector"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/about_company"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/mm_submenu_normal"
+                    android:gravity="left|center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="8dp"
+                    android:text="集团官网"
                     android:textColor="@color/font_grey_700"
                     android:textSize="@dimen/font_large_size" />
                 <View

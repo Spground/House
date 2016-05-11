@@ -37,10 +37,21 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="18dp"
         android:layout_marginRight="14dp"
         android:background="@android:color/transparent"
         android:requiresFadingEdge="horizontal"
         android:scaleType="fitXY"
         android:src="@drawable/ic_action_globe_normal" />
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="地图"
+        android:textColor="@color/red_jc"
+        android:layout_alignLeft="@id/id_map_btn"
+        android:layout_alignStart="@id/id_map_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        />
 </RelativeLayout>

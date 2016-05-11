@@ -7,9 +7,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_web">WebActivity</string>
-    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_map">地图</string>
+    <string name="title_activity_web">网页</string>
+    <string name="title_activity_chat">咨询</string>
 
     <!-- -->
     <string name="text_ack_msg">已读</string>
@@ -315,9 +315,9 @@
     <string name="toast_updatenick_fail">更新昵称失败!</string>
     <string name="toast_updatephoto_success">更新头像成功!</string>
     <string name="toast_updatephoto_fail">更新头像失败!</string>
-    <string name="title_activity_company_introduction">CompanyIntroductionActivity</string>
-    <string name="title_activity_user_feedback">UserFeedbackActivity</string>
-    <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="title_activity_company_introduction">集团简介</string>
+    <string name="title_activity_user_feedback">用户反馈</string>
+    <string name="title_activity_about_us">关于</string>
     <string name="title_activity_photo_view">PhotoViewActivity</string>
     <string name="title_activity_base_net">BaseNetActivity</string>
     <!-- -->
@@ -325,6 +325,6 @@
     <string name="zip_code">111111</string>
     <string name="fax_number">0411-87879912</string>
     <string name="tel">0411-87879911</string>
-    <string name="website">www.jinchenchina.cn</string>
-    <string name="title_activity_video">VideoActivity</string>
+    <string name="website">http://www.jinchenchina.cn</string>
+    <string name="title_activity_video">视频播放</string>
 </resources>

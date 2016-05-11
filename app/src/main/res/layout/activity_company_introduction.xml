@@ -30,7 +30,7 @@
                 android:gravity="center"
                 android:paddingBottom="36dp"
                 android:paddingTop="36dp"
-                android:text="公司简介"
+                android:text="集团简介"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:paddingBottom="36dp"
                 android:paddingTop="36dp"
-                android:text="公司视频"
+                android:text="集团视频"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -76,7 +76,7 @@
                 android:gravity="center"
                 android:paddingBottom="36dp"
                 android:paddingTop="36dp"
-                android:text="公司业务"
+                android:text="集团业务"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -153,6 +153,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:text="传        真:"
+                android:autoLink="phone"
                 android:textColor="@color/grey"
                 android:textSize="12sp" />
 
@@ -174,6 +175,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:gravity="center"
+                android:autoLink="phone"
                 android:text="电        话:"
                 android:textColor="@color/grey"
                 android:textSize="12sp" />
@@ -182,6 +184,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
+                android:autoLink="phone"
                 android:text="@string/tel"
                 android:textColor="@color/grey"
                 android:textSize="12sp" />
@@ -204,6 +207,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
+                android:autoLink="all"
                 android:text="@string/website"
                 android:textColor="@color/grey"
                 android:textSize="12sp" />

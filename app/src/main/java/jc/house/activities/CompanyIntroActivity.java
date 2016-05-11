@@ -21,7 +21,7 @@ import jc.house.views.CircleView;
 
 public class CompanyIntroActivity extends BaseNetActivity implements View.OnClickListener, CircleView.CircleViewOnClickListener {
 
-    private static final String[] NAMES = {"公司简介", "公司视频", "联系我们", "公司业务"};
+    private static final String[] NAMES = {"集团简介", "集团视频", "联系我们", "集团业务"};
     private static final String[] URLS = {"introduction/viewintroduction&id=1", "introductionvideo.mp4", "introduction/viewphone&id=1", "introduction/viewcontent&id=1"};
     private static final String TAG = "CompanyIntroActivity";
     private static final int[] imageReIds = {R.drawable.home01,
@@ -35,7 +35,7 @@ public class CompanyIntroActivity extends BaseNetActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setJCContentView(R.layout.activity_company_introduction);
-        setTitleBarTitle("公司简介");
+        setTitleBarTitle("集团简介");
         initViews();
         setDefaultData();
         fetchLocalUrl();

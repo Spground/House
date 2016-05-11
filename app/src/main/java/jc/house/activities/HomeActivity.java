@@ -63,7 +63,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener, C
     private static final int EXIT_TIME_SPAN = 2000;
     private static final int TAB_ITEMS_NUM = 5;
     private static final String TAG = "HomeActivity";
-    private static final String[] tabNames = {"首页", "楼盘", "活动", "聊天", "关于"};
+    private static final String[] tabNames = {"首页", "楼盘", "活动", "咨询", "关于"};
     private static final int[] selectedResIds = {R.drawable.tab_home_selected,
             R.drawable.tab_building_selected,
             R.drawable.tab_activity_selected,
