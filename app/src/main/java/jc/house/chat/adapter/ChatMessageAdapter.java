@@ -161,8 +161,8 @@ public class ChatMessageAdapter extends BaseAdapter {
     private EaseChatRow createChatRow(Context context, EMMessage message, int position){
         //TXT消息
         if(message.getType().equals(EMMessage.Type.TXT )) {
-            boolean isHouse = message.getBooleanAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false);
-            if(isHouse)
+            String isHouse = message.getStringAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, "");
+            if(isHouse.equalsIgnoreCase("house"))
                 return new EaseChatRowHouse(context, message, position, this);
             else
                 return new EaseChatRowText(context, message, position, this);

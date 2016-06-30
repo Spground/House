@@ -35,7 +35,7 @@ public final class Constants {
 			R.drawable.temp_house_c, R.drawable.temp_house_d};
 
 	public static class APPINFO {
-		public static boolean USER_VERSION = true;
+		public static boolean USER_VERSION = false;
 	}
 }
 

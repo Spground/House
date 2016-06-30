@@ -242,7 +242,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
-        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, false);
+//        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, "house");
         message.setReceipt(toChatUserName);
         /**把消息加入到此会话对象中**/
         conversation.addMessage(message);
@@ -288,7 +288,7 @@ public class ChatActivity extends Activity implements SwipeRefreshLayout.OnRefre
         EMConversation conversation = EMChatManager.getInstance().getConversation(toChatUserName);
         //创建一条house消息
         final EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
-        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, true);
+        message.setAttribute(Constants.MESSAGE_ATTR_IS_HOUSE, "house");
         message.setAttribute("id", id);
         message.setAttribute("img_url", imgUrl);
         message.setAttribute("house_name", houseName);
