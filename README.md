@@ -1,2 +1,3 @@
 # House
-A house app based on Android.
+A House App based on Android.
+It's in Development Process
